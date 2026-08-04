@@ -2,13 +2,13 @@
  * Admin Base styles and input control resets.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url(https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap);
 
 .bks-root,
 :root {
 	box-sizing: border-box;
 	color: var(--bks-color-text, #334155);
-	font-family: var(--bks-font-family, 'Inter', sans-serif);
+	font-family: var(--bks-font-family, "Inter", sans-serif);
 	font-size: var(--bks-font-size-md, 14px);
 	line-height: var(--bks-line-height-base, 1.5);
 	-webkit-font-smoothing: antialiased;
@@ -35,7 +35,7 @@
 	border-radius: var(--bks-radius-xs, 8px) !important;
 	background-color: var(--bks-color-surface-muted, #f8fafc) !important;
 	color: var(--bks-color-text-strong, #0f172a) !important;
-	font-family: var(--bks-font-family, 'Inter', sans-serif) !important;
+	font-family: var(--bks-font-family, "Inter", sans-serif) !important;
 	font-size: 14px !important;
 	font-weight: 500 !important;
 	line-height: 1.4 !important;
@@ -49,20 +49,21 @@
 	padding: 12px 14px !important;
 }
 
-.bks-root input:hover:not(:disabled),
-.bks-root select:hover:not(:disabled),
-.bks-root textarea:hover:not(:disabled) {
-	border-color: var(--bks-color-border-strong, #cbd5e1) !important;
-	background-color: #ffffff !important;
-}
-
+/* Focus is declared before hover so the more specific rule still wins. */
 .bks-root input:focus,
 .bks-root select:focus,
 .bks-root textarea:focus {
 	border-color: var(--bks-color-brand, #2563eb) !important;
-	background-color: #ffffff !important;
+	background-color: #fff !important;
 	outline: none !important;
 	box-shadow: 0 0 0 3.5px var(--bks-shadow-focus, rgba(37, 99, 235, 0.15)) !important;
+}
+
+.bks-root input:hover:not(:disabled),
+.bks-root select:hover:not(:disabled),
+.bks-root textarea:hover:not(:disabled) {
+	border-color: var(--bks-color-border-strong, #cbd5e1) !important;
+	background-color: #fff !important;
 }
 
 /* Heading Resets */

@@ -17,9 +17,7 @@ const STATUS_TONES = {
 	pending: 'warning',
 	reserved: 'brand',
 	confirmed: 'success',
-	cancelled: 'danger',
-	completed: 'brand',
-	no_show: 'neutral',
+	completed: 'neutral',
 };
 
 const PAYMENT_TONES = {
@@ -60,12 +58,6 @@ const nextActions = ( booking ) => {
 			label: __( 'Mark completed', 'booking-suite' ),
 			changes: { status: 'completed' },
 		} );
-
-		actions.push( {
-			key: 'no_show',
-			label: __( 'No show', 'booking-suite' ),
-			changes: { status: 'no_show' },
-		} );
 	}
 
 	if ( 'paid' !== paymentStatus ) {
@@ -77,16 +69,18 @@ const nextActions = ( booking ) => {
 		} );
 	}
 
-	if ( ! [ 'cancelled', 'completed' ].includes( status ) ) {
+	// Sending a held booking back to pending is what frees its dates now that
+	// there is no cancelled status.
+	if ( [ 'reserved', 'confirmed' ].includes( status ) ) {
 		actions.push( {
-			key: 'cancel',
-			label: __( 'Cancel booking', 'booking-suite' ),
+			key: 'release',
+			label: __( 'Release dates', 'booking-suite' ),
 			variant: 'danger',
 			confirm: __(
-				'Cancel this booking? The dates become bookable again.',
+				'Send this booking back to pending? The dates become bookable again.',
 				'booking-suite'
 			),
-			changes: { status: 'cancelled' },
+			changes: { status: 'pending' },
 		} );
 	}
 
@@ -96,6 +90,7 @@ const nextActions = ( booking ) => {
 export default function BookingDetail( {
 	booking: initial,
 	onBack,
+	onEdit,
 	onUpdated,
 } ) {
 	const [ booking, setBooking ] = useState( initial );
@@ -193,6 +188,12 @@ export default function BookingDetail( {
 			{ error && <Notice tone="error">{ error }</Notice> }
 
 			<div className="bks-booking-detail__actions">
+				{ onEdit && (
+					<Button onClick={ onEdit } disabled={ '' !== busyAction }>
+						{ __( 'Edit booking', 'booking-suite' ) }
+					</Button>
+				) }
+
 				{ nextActions( booking ).map( ( action ) => (
 					<Button
 						key={ action.key }

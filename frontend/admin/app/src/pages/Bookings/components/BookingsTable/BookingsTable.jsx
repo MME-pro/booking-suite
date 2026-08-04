@@ -14,9 +14,7 @@ const STATUS_TONES = {
 	pending: 'warning',
 	reserved: 'brand',
 	confirmed: 'success',
-	cancelled: 'danger',
-	completed: 'brand',
-	no_show: 'neutral',
+	completed: 'neutral',
 };
 
 const PAYMENT_TONES = {

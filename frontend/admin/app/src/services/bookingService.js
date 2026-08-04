@@ -29,6 +29,10 @@ export const bookingService = {
 
 	get: ( id, signal ) => http.get( `${ RESOURCE }/${ id }`, {}, { signal } ),
 
+	// Take a booking on the guest's behalf.
+	create: ( values, signal ) =>
+		http.post( `${ RESOURCE }/create`, values, { signal } ),
+
 	/**
 	 * Move a booking along.
 	 *

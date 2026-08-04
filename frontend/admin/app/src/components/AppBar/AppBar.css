@@ -11,7 +11,7 @@
 	justify-content: space-between !important;
 	gap: var(--bks-space-4, 16px) !important;
 	padding: 16px 28px !important;
-	background: #ffffff !important;
+	background: #fff !important;
 	border-bottom: 1px solid var(--bks-color-border, #e2e8f0) !important;
 	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
 	transform: none !important;
@@ -31,7 +31,7 @@
 	height: 42px !important;
 	border-radius: 12px !important;
 	background: var(--bks-color-brand, #2563eb) !important;
-	color: #ffffff !important;
+	color: #fff !important;
 	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25) !important;
 	transform: none !important;
 }

@@ -20,12 +20,12 @@ final class BookingsTable {
 	/**
 	 * Lifecycle of the reservation itself.
 	 *
-	 * pending   — the request has arrived, nothing decided
+	 * pending   — the request has arrived, nothing decided; holds no dates
 	 * reserved  — held for the guest while payment is awaited
 	 * confirmed — approved and going ahead
 	 * completed — the stay has happened
 	 */
-	public const STATUSES = array( 'pending', 'reserved', 'confirmed', 'completed', 'cancelled', 'no_show' );
+	public const STATUSES = array( 'pending', 'reserved', 'confirmed', 'completed' );
 
 	/** Settlement state, tracked separately from the booking status. */
 	public const PAYMENT_STATUSES = array( 'unpaid', 'partial', 'paid', 'refunded' );

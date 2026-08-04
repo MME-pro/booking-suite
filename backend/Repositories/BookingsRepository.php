@@ -100,14 +100,14 @@ final class BookingsRepository {
 				'reference'      => self::unique_reference(),
 				'room_id'        => (int) $data['room_id'],
 				'customer_id'    => isset( $data['customer_id'] ) ? (int) $data['customer_id'] : null,
-				'status'         => 'pending',
-				'payment_status' => 'unpaid',
+				'status'         => (string) ( $data['status'] ?? 'pending' ),
+				'payment_status' => (string) ( $data['payment_status'] ?? 'unpaid' ),
 				'guests'         => (int) $data['guests'],
 				'starts_at'      => (string) $data['starts_at'],
 				'ends_at'        => (string) $data['ends_at'],
 				'total_amount'   => (float) $data['total_amount'],
 				'currency'       => SettingsRepository::currency(),
-				'source'         => 'website',
+				'source'         => (string) ( $data['source'] ?? 'website' ),
 				'notes'          => sanitize_textarea_field( (string) ( $data['notes'] ?? '' ) ),
 				'created_at'     => $now,
 				'updated_at'     => $now,
@@ -127,24 +127,45 @@ final class BookingsRepository {
 	}
 
 	/**
-	 * Change the booking status, the payment status, or both.
-	 *
-	 * @param array{status?: string, payment_status?: string} $data
+	 * Columns an update may write, with their $wpdb format.
 	 */
-	public static function update_state( int $id, array $data ): bool {
+	private const EDITABLE = array(
+		'room_id'        => '%d',
+		'customer_id'    => '%d',
+		'status'         => '%s',
+		'payment_status' => '%s',
+		'guests'         => '%d',
+		'starts_at'      => '%s',
+		'ends_at'        => '%s',
+		'total_amount'   => '%f',
+		'notes'          => '%s',
+	);
+
+	/**
+	 * Write the columns present in $data; absent keys are left alone.
+	 *
+	 * @param array<string, mixed> $data
+	 */
+	public static function update( int $id, array $data ): bool {
 		global $wpdb;
 
 		$fields  = array();
 		$formats = array();
 
-		if ( ! empty( $data['status'] ) ) {
-			$fields['status'] = (string) $data['status'];
-			$formats[]        = '%s';
-		}
+		foreach ( self::EDITABLE as $column => $format ) {
+			if ( ! array_key_exists( $column, $data ) || '' === $data[ $column ] ) {
+				continue;
+			}
 
-		if ( ! empty( $data['payment_status'] ) ) {
-			$fields['payment_status'] = (string) $data['payment_status'];
-			$formats[]                = '%s';
+			$value = $data[ $column ];
+
+			$fields[ $column ] = match ( $format ) {
+				'%d'    => (int) $value,
+				'%f'    => (float) $value,
+				default => (string) $value,
+			};
+
+			$formats[] = $format;
 		}
 
 		if ( ! $fields ) {
@@ -161,6 +182,15 @@ final class BookingsRepository {
 			$formats,
 			array( '%d' )
 		);
+	}
+
+	/**
+	 * Change the booking status, the payment status, or both.
+	 *
+	 * @param array{status?: string, payment_status?: string} $data
+	 */
+	public static function update_state( int $id, array $data ): bool {
+		return self::update( $id, $data );
 	}
 
 	/**
@@ -343,19 +373,38 @@ final class BookingsRepository {
 	}
 
 	/**
+	 * One booking, in the same shape as all() — guest and apartment resolved,
+	 * keys in camelCase. Callers must never have to know which one they got.
+	 *
 	 * @return array<string, mixed>|null
 	 */
 	public static function find( int $id ): ?array {
 		global $wpdb;
 
-		$table = BookingsTable::table();
+		$bookings  = BookingsTable::table();
+		$customers = CustomersTable::table();
+		$payments  = PaymentsTable::table();
 
 		$row = $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM $table WHERE id = %d", $id ),
+			$wpdb->prepare(
+				"SELECT b.*,
+					p.post_title AS apartment_name,
+					c.first_name, c.last_name, c.email, c.phone,
+					( SELECT pay.proof_attachment_id
+						FROM $payments pay
+						WHERE pay.booking_id = b.id AND pay.proof_attachment_id IS NOT NULL
+						ORDER BY pay.created_at DESC
+						LIMIT 1 ) AS proof_attachment_id
+				FROM $bookings b
+				LEFT JOIN {$wpdb->posts} p ON p.ID = b.room_id
+				LEFT JOIN $customers c ON c.id = b.customer_id
+				WHERE b.id = %d",
+				$id
+			),
 			ARRAY_A
 		);
 
-		return $row ?: null;
+		return $row ? self::cast( $row ) : null;
 	}
 
 	/**

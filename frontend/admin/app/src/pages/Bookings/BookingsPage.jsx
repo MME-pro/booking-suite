@@ -17,10 +17,12 @@ import {
 	CheckCircleIcon,
 	TrendingUpIcon,
 	RefreshIcon,
+	PlusIcon,
 } from '../../components/icons';
 import { bookingService } from '../../services';
 import { BookingsTable } from './components/BookingsTable';
 import { BookingDetail } from './components/BookingDetail';
+import { BookingForm } from './components/BookingForm';
 import { formatMoney } from './data/format';
 import './BookingsPage.css';
 
@@ -33,6 +35,9 @@ export default function BookingsPage() {
 	const [ isLoading, setLoading ] = useState( true );
 	const [ error, setError ] = useState( null );
 	const [ selectedBooking, setSelectedBooking ] = useState( null );
+
+	/** null when closed; a booking when editing; 'new' when adding. */
+	const [ editing, setEditing ] = useState( null );
 
 	const load = useCallback( async ( signal ) => {
 		setLoading( true );
@@ -110,29 +115,45 @@ export default function BookingsPage() {
 
 	const tabs = [ 'all', ...statuses ];
 
+	// A booking changed: refresh the row in place, then reload so the status
+	// tab counts follow.
+	const applyUpdate = ( updated ) => {
+		setBookings( ( current ) =>
+			current.map( ( item ) =>
+				item.id === updated.id ? { ...item, ...updated } : item
+			)
+		);
+
+		setSelectedBooking( ( current ) =>
+			current ? { ...current, ...updated } : current
+		);
+
+		load();
+	};
+
 	// The detail view replaces the list rather than sitting over it, so it
 	// reads as its own page.
 	if ( selectedBooking ) {
 		return (
-			<BookingDetail
-				booking={ selectedBooking }
-				onBack={ () => setSelectedBooking( null ) }
-				onUpdated={ ( updated ) => {
-					// Keep the row and its status tab counts in step.
-					setBookings( ( current ) =>
-						current.map( ( item ) =>
-							item.id === updated.id
-								? { ...item, ...updated }
-								: item
-						)
-					);
-					setSelectedBooking( ( current ) => ( {
-						...current,
-						...updated,
-					} ) );
-					load();
-				} }
-			/>
+			<>
+				<BookingDetail
+					booking={ selectedBooking }
+					onEdit={ () => setEditing( selectedBooking ) }
+					onBack={ () => setSelectedBooking( null ) }
+					onUpdated={ applyUpdate }
+				/>
+
+				{ editing && (
+					<BookingForm
+						booking={ editing }
+						onClose={ () => setEditing( null ) }
+						onSaved={ ( saved ) => {
+							applyUpdate( saved );
+							setEditing( null );
+						} }
+					/>
+				) }
+			</>
 		);
 	}
 
@@ -262,6 +283,14 @@ export default function BookingsPage() {
 								/>
 							</button>
 
+							<Button
+								variant="primary"
+								icon={ <PlusIcon /> }
+								onClick={ () => setEditing( 'new' ) }
+							>
+								{ __( 'Add Booking', 'booking-suite' ) }
+							</Button>
+
 							<span className="bks-bookings-toolbar__count">
 								{ sprintf(
 									/* translators: %d: number of bookings shown. */
@@ -310,6 +339,17 @@ export default function BookingsPage() {
 						) }
 					</Card>
 				</>
+			) }
+
+			{ editing && (
+				<BookingForm
+					booking={ 'new' === editing ? null : editing }
+					onClose={ () => setEditing( null ) }
+					onSaved={ () => {
+						setEditing( null );
+						load();
+					} }
+				/>
 			) }
 		</div>
 	);

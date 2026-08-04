@@ -1,0 +1,68 @@
+/**
+ * Base styles, scoped so nothing leaks into the host theme.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.bks-site-root,
+:root {
+	box-sizing: border-box;
+	color: var(--bks-site-text, #0f172a);
+	font-family: var(--bks-site-font, 'Inter', sans-serif);
+	line-height: 1.55;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.bks-site-root *,
+.bks-site-root *::before,
+.bks-site-root *::after {
+	box-sizing: inherit;
+}
+
+/* Ensure buttons across all themes maintain clear text visibility */
+.bks-site-root button,
+button.bks-book-now,
+.bks-book-now,
+.bks-booking__button,
+.bks-slots__slot,
+.bks-card__cta {
+	text-indent: 0 !important;
+	-webkit-text-fill-color: initial;
+	visibility: visible !important;
+	opacity: 1;
+	letter-spacing: normal;
+}
+
+.bks-site-root h2,
+.bks-site-root h3,
+.bks-site-root p {
+	margin: 0;
+}
+
+.bks-site-root img {
+	max-width: 100%;
+	display: block;
+}
+
+.bks-sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+
+	.bks-site-root *,
+	.bks-site-root *::before,
+	.bks-site-root *::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+	}
+}

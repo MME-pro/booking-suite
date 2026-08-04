@@ -1,0 +1,137 @@
+/**
+ * The "Book now" button.
+ *
+ * Rendered by PHP shortcode [booking_suite_book_now] and React components.
+ * High specificity overrides to ensure button text is crisp and visible across any theme.
+ */
+
+.bks-book-now,
+button.bks-book-now,
+a.bks-book-now {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 8px !important;
+	border: 1.5px solid transparent !important;
+	border-radius: var(--bks-site-radius-sm, 12px) !important;
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	color: #ffffff !important;
+	-webkit-text-fill-color: #ffffff !important;
+	font-family: var(--bks-site-font, 'Inter', sans-serif) !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+	line-height: 1.3 !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	text-indent: 0 !important;
+	letter-spacing: 0.01em !important;
+	cursor: pointer !important;
+	box-shadow: 0 2px 6px var(--bks-site-brand-glow, rgba(37, 99, 235, 0.16)) !important;
+	transition:
+		background-color var(--bks-site-transition-fast, 120ms ease),
+		box-shadow var(--bks-site-transition-fast, 120ms ease),
+		border-color var(--bks-site-transition-fast, 120ms ease) !important;
+	-webkit-font-smoothing: antialiased !important;
+	opacity: 1 !important;
+	visibility: visible !important;
+	transform: none !important;
+}
+
+.bks-book-now:hover,
+button.bks-book-now:hover,
+a.bks-book-now:hover {
+	background-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	color: #ffffff !important;
+	-webkit-text-fill-color: #ffffff !important;
+	transform: none !important;
+	box-shadow: 0 4px 14px var(--bks-site-brand-glow, rgba(37, 99, 235, 0.16)) !important;
+}
+
+.bks-book-now:active,
+button.bks-book-now:active,
+a.bks-book-now:active {
+	transform: none !important;
+	box-shadow: none !important;
+}
+
+.bks-book-now:focus-visible {
+	outline: 2px solid var(--bks-site-brand, #2563eb) !important;
+	outline-offset: 3px !important;
+}
+
+.bks-book-now[disabled] {
+	opacity: 0.5 !important;
+	cursor: wait !important;
+	pointer-events: none !important;
+	box-shadow: none !important;
+}
+
+/* Sizes */
+
+.bks-book-now--sm {
+	padding: 9px 18px !important;
+	font-size: 13px !important;
+	border-radius: var(--bks-site-radius-xs, 8px) !important;
+}
+
+.bks-book-now--md {
+	padding: 13px 28px !important;
+	font-size: 14px !important;
+	border-radius: var(--bks-site-radius-sm, 12px) !important;
+}
+
+.bks-book-now--lg {
+	padding: 16px 36px !important;
+	font-size: 16px !important;
+	border-radius: var(--bks-site-radius-sm, 12px) !important;
+}
+
+.bks-book-now--full {
+	display: flex !important;
+	width: 100% !important;
+}
+
+/* Variants */
+
+.bks-book-now--outline,
+button.bks-book-now--outline,
+a.bks-book-now--outline {
+	background-color: transparent !important;
+	border-color: var(--bks-site-brand, #2563eb) !important;
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+	box-shadow: none !important;
+}
+
+.bks-book-now--outline:hover,
+button.bks-book-now--outline:hover,
+a.bks-book-now--outline:hover {
+	background-color: var(--bks-site-brand-soft, #eff6ff) !important;
+	border-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	-webkit-text-fill-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	box-shadow: 0 4px 12px var(--bks-site-brand-glow, rgba(37, 99, 235, 0.16)) !important;
+	transform: none !important;
+}
+
+.bks-book-now--text,
+button.bks-book-now--text,
+a.bks-book-now--text {
+	padding-left: 6px !important;
+	padding-right: 6px !important;
+	background-color: transparent !important;
+	border-color: transparent !important;
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+	box-shadow: none !important;
+}
+
+.bks-book-now--text:hover,
+button.bks-book-now--text:hover,
+a.bks-book-now--text:hover {
+	background-color: var(--bks-site-brand-soft, #eff6ff) !important;
+	color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	-webkit-text-fill-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	box-shadow: none !important;
+	transform: none !important;
+}

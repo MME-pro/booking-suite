@@ -35,19 +35,19 @@
 
 	/* Surfaces */
 	--bks-color-canvas: #f8fafc;
-	--bks-color-surface: #ffffff;
+	--bks-color-surface: #fff;
 	--bks-color-surface-sunken: #f8fafc;
 	--bks-color-surface-muted: #f1f5f9;
 	--bks-color-surface-hover: #f8fafc;
-	--bks-gradient-surface: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-	--bks-gradient-header: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+	--bks-gradient-surface: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+	--bks-gradient-header: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
 
 	/* Text — Crisp slate typography */
 	--bks-color-text: #334155;
 	--bks-color-text-strong: #0f172a;
 	--bks-color-text-muted: #64748b;
 	--bks-color-text-subtle: #94a3b8;
-	--bks-color-text-inverse: #ffffff;
+	--bks-color-text-inverse: #fff;
 
 	/* Lines */
 	--bks-color-border: #e2e8f0;
@@ -73,7 +73,7 @@
 	--bks-radius-pill: 999px;
 
 	/* Typography */
-	--bks-font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	--bks-font-family: "Inter", system-ui, -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif;
 	--bks-font-size-xs: 11px;
 	--bks-font-size-sm: 12px;
 	--bks-font-size-md: 14px;

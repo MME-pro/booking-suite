@@ -1,0 +1,94 @@
+{
+    "generated_at": "2026-08-04T06:37:38+00:00",
+    "db_version": 2,
+    "site_url": "http://bookingsuite.local",
+    "tables": {
+        "blocks": [],
+        "bookings": [],
+        "customers": [],
+        "extra_booking": [],
+        "extras": [],
+        "payments": [],
+        "price_rules": [
+            {
+                "id": "1",
+                "room_id": "3",
+                "name": "Standard",
+                "type": "overnight",
+                "weekdays": "",
+                "holiday_rule": "ignore",
+                "package_prices": "{\"1_night\":89,\"7_nights\":534}",
+                "surcharge_guest": "15.00",
+                "surcharge_hour": "0.00",
+                "visibility": "public",
+                "active": "1",
+                "created_at": "2026-08-04 06:08:50",
+                "updated_at": "2026-08-04 06:08:50"
+            },
+            {
+                "id": "2",
+                "room_id": "4",
+                "name": "Standard",
+                "type": "overnight",
+                "weekdays": "",
+                "holiday_rule": "ignore",
+                "package_prices": "{\"1_night\":129,\"7_nights\":774}",
+                "surcharge_guest": "15.00",
+                "surcharge_hour": "0.00",
+                "visibility": "public",
+                "active": "1",
+                "created_at": "2026-08-04 06:08:50",
+                "updated_at": "2026-08-04 06:08:50"
+            }
+        ],
+        "rooms": [
+            {
+                "id": "2",
+                "name": "Deluxe Garden Villa",
+                "description": "A spacious villa with a private garden, modern amenities, and a peaceful atmosphere perfect for families or small groups.",
+                "images": "[]",
+                "capacity": "4",
+                "colour": "#3858e9",
+                "internal_short_link": "deluxe-garden-villa",
+                "booking_short_link": "garden-villa",
+                "holiday_hesse": "1",
+                "cleaning_min": "60",
+                "active": "1",
+                "created_at": "2026-08-03 12:12:03",
+                "updated_at": "2026-08-03 12:12:03"
+            },
+            {
+                "id": "3",
+                "name": "Studio Rheinblick",
+                "description": "Bright, quiet and a few minutes from the centre. Fully equipped kitchen, fast Wi-Fi and a private balcony.",
+                "images": "[]",
+                "capacity": "2",
+                "colour": "#4f46e5",
+                "internal_short_link": null,
+                "booking_short_link": null,
+                "holiday_hesse": "0",
+                "cleaning_min": "30",
+                "active": "1",
+                "created_at": "2026-08-04 06:08:50",
+                "updated_at": "2026-08-04 06:08:50"
+            },
+            {
+                "id": "4",
+                "name": "Apartment Altstadt",
+                "description": "Bright, quiet and a few minutes from the centre. Fully equipped kitchen, fast Wi-Fi and a private balcony.",
+                "images": "[]",
+                "capacity": "4",
+                "colour": "#0f9d58",
+                "internal_short_link": null,
+                "booking_short_link": null,
+                "holiday_hesse": "0",
+                "cleaning_min": "45",
+                "active": "1",
+                "created_at": "2026-08-04 06:08:50",
+                "updated_at": "2026-08-04 06:08:50"
+            }
+        ],
+        "settings": []
+    },
+    "attachments": []
+}

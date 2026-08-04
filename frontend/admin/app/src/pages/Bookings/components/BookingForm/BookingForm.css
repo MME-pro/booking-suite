@@ -1,0 +1,16 @@
+.bks-booking-form {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: var(--bks-space-5) !important;
+}
+
+.bks-booking-form__row {
+	display: flex !important;
+	gap: var(--bks-space-5) !important;
+	flex-wrap: wrap !important;
+}
+
+.bks-booking-form__row > * {
+	flex: 1 !important;
+	min-width: 200px !important;
+}

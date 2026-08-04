@@ -1,0 +1,61 @@
+/**
+ * Guest-facing design tokens.
+ *
+ * Clean, calm, modern light theme tokens for the "Book now" button and Booking Modal.
+ * Scoped to :root, .bks-site-root, and .bks-book-now so they apply universally.
+ */
+
+:root,
+.bks-site-root,
+.bks-book-now {
+
+	/* Brand — Soothing modern sapphire blue */
+	--bks-site-brand: #2563eb;
+	--bks-site-brand-hover: #1d4ed8;
+	--bks-site-brand-soft: #eff6ff;
+	--bks-site-brand-glow: rgba(37, 99, 235, 0.16);
+
+	/* Surfaces — Airy, crisp light theme */
+	--bks-site-surface: #ffffff;
+	--bks-site-surface-muted: #f8fafc;
+	--bks-site-surface-raised: #ffffff;
+	--bks-site-border: #e2e8f0;
+	--bks-site-border-focus: #cbd5e1;
+
+	/* Text — Deep readable slate typography */
+	--bks-site-text: #0f172a;
+	--bks-site-text-muted: #475569;
+	--bks-site-text-faint: #94a3b8;
+
+	/* Feedback */
+	--bks-site-success: #16a34a;
+	--bks-site-success-soft: #f0fdf4;
+	--bks-site-error: #dc2626;
+	--bks-site-error-soft: #fef2f2;
+
+	/* Typography & Shapes */
+	--bks-site-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+	--bks-site-radius: 18px;
+	--bks-site-radius-sm: 12px;
+	--bks-site-radius-xs: 8px;
+
+	/* Depth & Elevation */
+	--bks-site-shadow:
+		0 1px 3px rgba(15, 23, 42, 0.04),
+		0 4px 14px rgba(15, 23, 42, 0.03);
+	--bks-site-shadow-lifted:
+		0 12px 32px -4px rgba(15, 23, 42, 0.1),
+		0 4px 12px -2px rgba(15, 23, 42, 0.04);
+	--bks-site-shadow-modal:
+		0 0 0 1px rgba(15, 23, 42, 0.05),
+		0 24px 64px -12px rgba(15, 23, 42, 0.18),
+		0 8px 24px -4px rgba(15, 23, 42, 0.08);
+
+	/* Transitions */
+	--bks-site-transition: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+	--bks-site-transition-fast: 120ms cubic-bezier(0.16, 1, 0.3, 1);
+
+	/* Layout */
+	--bks-site-gap: 24px;
+	--bks-site-columns: 3;
+}

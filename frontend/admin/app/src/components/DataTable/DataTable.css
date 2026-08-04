@@ -12,7 +12,7 @@
 	border-collapse: separate !important;
 	border-spacing: 0 !important;
 	font-size: var(--bks-font-size-md, 14px) !important;
-	font-family: var(--bks-font-family, 'Inter', sans-serif) !important;
+	font-family: var(--bks-font-family, "Inter", sans-serif) !important;
 }
 
 .bks-data-table__table thead th {
@@ -30,7 +30,7 @@
 }
 
 .bks-data-table__table tbody tr {
-	background: #ffffff !important;
+	background: #fff !important;
 	transition: background-color 100ms ease !important;
 	transform: none !important;
 }
