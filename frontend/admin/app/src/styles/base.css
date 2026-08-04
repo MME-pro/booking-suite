@@ -21,14 +21,21 @@
 	box-sizing: inherit;
 }
 
-/* Global Form Control Overrides for Premium Aesthetic */
-.bks-root input[type="text"],
-.bks-root input[type="number"],
-.bks-root input[type="email"],
-.bks-root input[type="tel"],
-.bks-root input[type="date"],
-.bks-root select,
-.bks-root textarea {
+/*
+ * Global Form Control Overrides for Premium Aesthetic.
+ *
+ * The :not(.bs-ui) guards keep these !important rules away from shadcn/ui
+ * controls, which are tagged with .bs-ui by cn() and style themselves entirely
+ * through Tailwind classes. Without the guard these declarations win on
+ * !important alone and the shadcn inputs revert to this look.
+ */
+.bks-root input[type="text"]:not(.bs-ui),
+.bks-root input[type="number"]:not(.bs-ui),
+.bks-root input[type="email"]:not(.bs-ui),
+.bks-root input[type="tel"]:not(.bs-ui),
+.bks-root input[type="date"]:not(.bs-ui),
+.bks-root select:not(.bs-ui),
+.bks-root textarea:not(.bs-ui) {
 	height: var(--bks-field-height, 44px) !important;
 	padding: 10px 14px !important;
 	border: 1.5px solid var(--bks-color-border, #e2e8f0) !important;
@@ -43,25 +50,25 @@
 	transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease !important;
 }
 
-.bks-root textarea {
+.bks-root textarea:not(.bs-ui) {
 	height: auto !important;
 	min-height: 90px !important;
 	padding: 12px 14px !important;
 }
 
 /* Focus is declared before hover so the more specific rule still wins. */
-.bks-root input:focus,
-.bks-root select:focus,
-.bks-root textarea:focus {
+.bks-root input:focus:not(.bs-ui),
+.bks-root select:focus:not(.bs-ui),
+.bks-root textarea:focus:not(.bs-ui) {
 	border-color: var(--bks-color-brand, #2563eb) !important;
 	background-color: #fff !important;
 	outline: none !important;
 	box-shadow: 0 0 0 3.5px var(--bks-shadow-focus, rgba(37, 99, 235, 0.15)) !important;
 }
 
-.bks-root input:hover:not(:disabled),
-.bks-root select:hover:not(:disabled),
-.bks-root textarea:hover:not(:disabled) {
+.bks-root input:hover:not(:disabled):not(.bs-ui),
+.bks-root select:hover:not(:disabled):not(.bs-ui),
+.bks-root textarea:hover:not(:disabled):not(.bs-ui) {
 	border-color: var(--bks-color-border-strong, #cbd5e1) !important;
 	background-color: #fff !important;
 }

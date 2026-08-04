@@ -1,7 +1,4 @@
-.bks-apartments-page {
-	display: flex !important;
-	flex-direction: column !important;
-}
+/* Layout moved to Tailwind utilities on the element (`flex flex-col gap-4`). */
 
 .bks-apartments-page__notice {
 	margin-bottom: var(--bks-space-5) !important;

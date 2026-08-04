@@ -16,6 +16,7 @@ import { AppBar } from './components';
 import { ApartmentsPage } from './pages/Apartments';
 import { BookingsPage } from './pages/Bookings';
 import { DashboardPage } from './pages/Dashboard';
+import { SettingsPage } from './pages/Settings';
 import { settings } from './settings';
 import './App.css';
 
@@ -31,6 +32,10 @@ const VIEWS = {
 	bookings: {
 		title: __( 'Bookings', 'booking-suite' ),
 		Component: BookingsPage,
+	},
+	settings: {
+		title: __( 'Settings', 'booking-suite' ),
+		Component: SettingsPage,
 	},
 };
 

@@ -21,6 +21,7 @@ use BookingSuite\Frontend\Admin\Assets as AdminAssets;
 use BookingSuite\Frontend\Admin\Menu as AdminMenu;
 use BookingSuite\Backend\APIs\PublicApartmentsController;
 use BookingSuite\Backend\APIs\PublicBookingController;
+use BookingSuite\Backend\APIs\SettingsController;
 use BookingSuite\Frontend\Site\Assets as SiteAssets;
 use BookingSuite\Frontend\Site\Shortcodes as SiteShortcodes;
 
@@ -67,6 +68,7 @@ final class Plugin {
 
 		ApartmentsController::register();
 		BookingsController::register();
+		SettingsController::register();
 		PublicApartmentsController::register();
 		PublicBookingController::register();
 

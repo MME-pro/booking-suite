@@ -1,15 +1,38 @@
+/**
+ * ApartmentsPage — manage the estate.
+ *
+ * Built on shadcn/ui. The delete confirmation is an AlertDialog rather than
+ * window.confirm(), so it is styled with the rest of the admin and keeps focus
+ * inside the app.
+ */
+
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { __, sprintf, _n } from '@wordpress/i18n';
+import {
+	AlertCircle,
+	Building2,
+	CheckCircle2,
+	Clock,
+	Plus,
+	Users,
+} from 'lucide-react';
 
 import {
-	ApartmentIcon,
-	Button,
-	Card,
-	DashboardStats,
-	EmptyState,
-	Notice,
-	PlusIcon,
-} from '../../components';
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+
+import { StatCard } from '../../components/StatCard';
 import { apartmentService } from '../../services';
 import { ApartmentForm } from './components/ApartmentForm';
 import { ApartmentsTable } from './components/ApartmentsTable';
@@ -25,6 +48,9 @@ export default function ApartmentsPage() {
 	const [ editing, setEditing ] = useState( null );
 	const [ isFormOpen, setFormOpen ] = useState( false );
 	const [ busyId, setBusyId ] = useState( null );
+
+	/** The apartment awaiting delete confirmation, if any. */
+	const [ pendingDelete, setPendingDelete ] = useState( null );
 
 	const load = useCallback( async ( signal ) => {
 		setLoading( true );
@@ -64,6 +90,26 @@ export default function ApartmentsPage() {
 		} );
 	}, [ apartments, search, statusFilter ] );
 
+	const stats = useMemo( () => {
+		const total = apartments.length;
+		const active = apartments.filter( ( item ) => item.active ).length;
+		const capacity = apartments.reduce(
+			( acc, item ) => acc + ( parseInt( item.capacity, 10 ) || 0 ),
+			0
+		);
+		const cleaning = total
+			? Math.round(
+					apartments.reduce(
+						( acc, item ) =>
+							acc + ( parseInt( item.cleaningMin, 10 ) || 0 ),
+						0
+					) / total
+			  )
+			: 0;
+
+		return { total, active, capacity, cleaning };
+	}, [ apartments ] );
+
 	const openCreate = () => {
 		setEditing( null );
 		setFormOpen( true );
@@ -94,20 +140,14 @@ export default function ApartmentsPage() {
 		closeForm();
 	};
 
-	const handleDelete = async ( apartment ) => {
-		// eslint-disable-next-line no-alert
-		const confirmed = window.confirm(
-			sprintf(
-				/* translators: %s: apartment name. */
-				__( 'Delete "%s"? This cannot be undone.', 'booking-suite' ),
-				apartment.name
-			)
-		);
+	const confirmDelete = async () => {
+		const apartment = pendingDelete;
 
-		if ( ! confirmed ) {
+		if ( ! apartment ) {
 			return;
 		}
 
+		setPendingDelete( null );
 		setBusyId( apartment.id );
 
 		try {
@@ -123,37 +163,88 @@ export default function ApartmentsPage() {
 		}
 	};
 
-	const addButton = (
-		<Button variant="primary" icon={ <PlusIcon /> } onClick={ openCreate }>
-			{ __( 'Add Apartment', 'booking-suite' ) }
-		</Button>
-	);
-
 	const hasApartments = apartments.length > 0;
 
+	const statCards = [
+		{
+			id: 'total',
+			title: __( 'Total Properties', 'booking-suite' ),
+			value: stats.total,
+			unit: __( 'Units Registered', 'booking-suite' ),
+			Icon: Building2,
+			tone: 'brand',
+			badge: sprintf(
+				/* translators: %d: number of apartments */
+				__( '%d total', 'booking-suite' ),
+				stats.total
+			),
+		},
+		{
+			id: 'active',
+			title: __( 'Active Units', 'booking-suite' ),
+			value: stats.active,
+			unit: __( 'Bookable right now', 'booking-suite' ),
+			Icon: CheckCircle2,
+			tone: 'success',
+			badge:
+				stats.active === stats.total
+					? __( 'All bookable', 'booking-suite' )
+					: __( 'Partly offline', 'booking-suite' ),
+		},
+		{
+			id: 'capacity',
+			title: __( 'Total Capacity', 'booking-suite' ),
+			value: stats.capacity,
+			unit: __( 'Max Guest Capacity', 'booking-suite' ),
+			Icon: Users,
+			tone: 'accent',
+			badge: __( 'Combined', 'booking-suite' ),
+		},
+		{
+			id: 'cleaning',
+			title: __( 'Avg Turnaround', 'booking-suite' ),
+			value: `${ stats.cleaning }m`,
+			unit: __( 'Cleaning Duration', 'booking-suite' ),
+			Icon: Clock,
+			tone: 'warning',
+			badge: __( 'Optimized', 'booking-suite' ),
+		},
+	];
+
 	return (
-		<div className="bks-apartments-page">
+		<div className="bks-apartments-page flex flex-col gap-4">
 			{ error && (
-				<Notice
-					tone="error"
-					className="bks-apartments-page__notice"
-					actions={
-						<Button size="sm" onClick={ () => load() }>
+				<Alert variant="destructive">
+					<AlertCircle className="h-4 w-4" />
+					<AlertTitle>
+						{ __( 'Something went wrong', 'booking-suite' ) }
+					</AlertTitle>
+					<AlertDescription className="flex flex-wrap items-center gap-3">
+						<span>{ error }</span>
+						<Button
+							size="sm"
+							variant="outline"
+							onClick={ () => load() }
+						>
 							{ __( 'Retry', 'booking-suite' ) }
 						</Button>
-					}
-				>
-					{ error }
-				</Notice>
+					</AlertDescription>
+				</Alert>
 			) }
 
-			<DashboardStats apartments={ apartments } />
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+				{ statCards.map( ( { id, Icon, ...card } ) => (
+					<StatCard key={ id } icon={ Icon } { ...card } />
+				) ) }
+			</div>
 
 			{ isLoading && ! hasApartments ? (
-				<Card padded={ false }>
-					<EmptyState
-						title={ __( 'Loading apartments…', 'booking-suite' ) }
-					/>
+				<Card>
+					<CardContent className="flex flex-col gap-3 p-5">
+						{ [ 0, 1, 2, 3 ].map( ( key ) => (
+							<Skeleton key={ key } className="h-14 w-full" />
+						) ) }
+					</CardContent>
 				</Card>
 			) : (
 				<>
@@ -177,15 +268,15 @@ export default function ApartmentsPage() {
 						/>
 					) }
 
-					{ hasApartments ? (
-						<Card padded={ false }>
+					<Card className="overflow-hidden">
+						{ hasApartments ? (
 							<ApartmentsTable
 								apartments={ visible }
 								busyId={ busyId }
 								onEdit={ openEdit }
-								onDelete={ handleDelete }
+								onDelete={ setPendingDelete }
 								emptyContent={
-									<EmptyState
+									<EmptyApartments
 										title={ __(
 											'No apartments match your search',
 											'booking-suite'
@@ -197,11 +288,8 @@ export default function ApartmentsPage() {
 									/>
 								}
 							/>
-						</Card>
-					) : (
-						<Card padded={ false }>
-							<EmptyState
-								icon={ <ApartmentIcon /> }
+						) : (
+							<EmptyApartments
 								title={ __(
 									'No apartments yet',
 									'booking-suite'
@@ -210,10 +298,21 @@ export default function ApartmentsPage() {
 									'Add your first apartment to start taking bookings for it.',
 									'booking-suite'
 								) }
-								action={ addButton }
+								action={
+									<Button
+										className="mt-2"
+										onClick={ openCreate }
+									>
+										<Plus className="h-4 w-4" />
+										{ __(
+											'Add Apartment',
+											'booking-suite'
+										) }
+									</Button>
+								}
 							/>
-						</Card>
-					) }
+						) }
+					</Card>
 				</>
 			) }
 
@@ -224,6 +323,58 @@ export default function ApartmentsPage() {
 					onSaved={ handleSaved }
 				/>
 			) }
+
+			<AlertDialog
+				open={ null !== pendingDelete }
+				onOpenChange={ ( open ) => ! open && setPendingDelete( null ) }
+			>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							{ __( 'Delete this apartment?', 'booking-suite' ) }
+						</AlertDialogTitle>
+						<AlertDialogDescription>
+							{ pendingDelete &&
+								sprintf(
+									/* translators: %s: apartment name. */
+									__(
+										'"%s" will be removed. This cannot be undone.',
+										'booking-suite'
+									),
+									pendingDelete.name
+								) }
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>
+							{ __( 'Cancel', 'booking-suite' ) }
+						</AlertDialogCancel>
+						<AlertDialogAction
+							onClick={ confirmDelete }
+							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+						>
+							{ __( 'Delete', 'booking-suite' ) }
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		</div>
+	);
+}
+
+function EmptyApartments( { title, description, action = null } ) {
+	return (
+		<div className="flex flex-col items-center gap-2 px-6 py-14 text-center">
+			<span className="mb-1 flex h-12 w-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
+				<Building2 className="h-6 w-6" />
+			</span>
+			<h2 className="text-base font-semibold text-card-foreground">
+				{ title }
+			</h2>
+			<p className="max-w-sm text-sm text-muted-foreground">
+				{ description }
+			</p>
+			{ action }
 		</div>
 	);
 }

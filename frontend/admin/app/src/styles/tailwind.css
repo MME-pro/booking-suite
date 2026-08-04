@@ -1,0 +1,232 @@
+/**
+ * Tailwind entry + shadcn/ui theme.
+ *
+ * Two things about this file are load-bearing.
+ *
+ * 1. SCOPING. Tailwind's Preflight is switched off in tailwind.config.js
+ *    because it is a *global* element reset — enabling it would strip the
+ *    styling from the WordPress admin menu, toolbar and notices surrounding
+ *    this app. The `.bs-ui` rules below are a stand-in that applies only to
+ *    shadcn markup (the marker class is added by cn() in src/lib/utils.js), so
+ *    neither wp-admin nor the existing CSS-module components in src/components
+ *    are touched.
+ *
+ * 2. SPECIFICITY. Utilities are emitted at (1,1,0) thanks to
+ *    `important: '#booking-suite-admin-root'`. The reset below is deliberately
+ *    written WITHOUT the ID prefix, keeping it at (0,1,x) so that a utility
+ *    always wins over it — the same relationship real Preflight has with
+ *    utilities. Adding the ID prefix here would invert that and, for instance,
+ *    make `border: 0` beat the `border` utility on every component.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * shadcn design tokens, expressed as the HSL triplets its components expect and
+ * sourced from the Booking Suite palette in tokens.css so the two systems stay
+ * in step. Scoped to the root rather than :root so nothing leaks into wp-admin.
+ */
+#booking-suite-admin-root {
+	--background: 0 0% 100%;
+	--foreground: 215.3 25% 26.7%;
+
+	--card: 0 0% 100%;
+	--card-foreground: 222.2 47.4% 11.2%;
+
+	--popover: 0 0% 100%;
+	--popover-foreground: 222.2 47.4% 11.2%;
+
+	/* Sapphire brand, matching --bks-color-brand. */
+	--primary: 221.2 83.2% 53.3%;
+	--primary-foreground: 0 0% 100%;
+
+	--secondary: 210 40% 96.1%;
+	--secondary-foreground: 222.2 47.4% 11.2%;
+
+	--muted: 210 40% 96.1%;
+	--muted-foreground: 215.4 16.3% 46.9%;
+
+	--accent: 213.8 100% 96.9%;
+	--accent-foreground: 224.4 64.3% 32.9%;
+
+	--destructive: 0 72.2% 50.6%;
+	--destructive-foreground: 0 0% 100%;
+
+	--success: 142.1 76.2% 36.3%;
+	--success-foreground: 0 0% 100%;
+
+	--warning: 32.1 94.6% 43.7%;
+	--warning-foreground: 0 0% 100%;
+
+	--border: 214.3 31.8% 91.4%;
+	--input: 214.3 31.8% 91.4%;
+	--ring: 221.2 83.2% 53.3%;
+
+	/* 10px — the same corner radius as --bks-radius-md. */
+	--radius: 0.625rem;
+
+	/*
+	 * Sidebar tokens, added by `shadcn add sidebar`. The CLI writes these to a
+	 * global :root; kept here instead so they cannot bleed into wp-admin, and
+	 * recoloured off the Booking Suite palette rather than shadcn's stock zinc.
+	 */
+	--sidebar-background: 210 40% 98%;
+	--sidebar-foreground: 215.3 25% 26.7%;
+	--sidebar-primary: 221.2 83.2% 53.3%;
+	--sidebar-primary-foreground: 0 0% 100%;
+	--sidebar-accent: 213.8 100% 96.9%;
+	--sidebar-accent-foreground: 224.4 64.3% 32.9%;
+	--sidebar-border: 214.3 31.8% 91.4%;
+	--sidebar-ring: 221.2 83.2% 53.3%;
+}
+
+#booking-suite-admin-root.dark {
+	--background: 222.2 47.4% 11.2%;
+	--foreground: 210 40% 98%;
+	--card: 217.2 32.6% 17.5%;
+	--card-foreground: 210 40% 98%;
+	--popover: 217.2 32.6% 17.5%;
+	--popover-foreground: 210 40% 98%;
+	--primary: 217.2 91.2% 59.8%;
+	--primary-foreground: 222.2 47.4% 11.2%;
+	--secondary: 217.2 32.6% 17.5%;
+	--secondary-foreground: 210 40% 98%;
+	--muted: 217.2 32.6% 17.5%;
+	--muted-foreground: 215 20.2% 65.1%;
+	--accent: 217.2 32.6% 17.5%;
+	--accent-foreground: 210 40% 98%;
+	--destructive: 0 62.8% 30.6%;
+	--destructive-foreground: 210 40% 98%;
+	--border: 217.2 32.6% 17.5%;
+	--input: 217.2 32.6% 17.5%;
+	--ring: 224.3 76.3% 48%;
+	--sidebar-background: 222.2 47.4% 11.2%;
+	--sidebar-foreground: 210 40% 98%;
+	--sidebar-primary: 217.2 91.2% 59.8%;
+	--sidebar-primary-foreground: 222.2 47.4% 11.2%;
+	--sidebar-accent: 217.2 32.6% 17.5%;
+	--sidebar-accent-foreground: 210 40% 98%;
+	--sidebar-border: 217.2 32.6% 17.5%;
+	--sidebar-ring: 224.3 76.3% 48%;
+}
+
+#booking-suite-admin-root {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-family: var(--bks-font-family);
+}
+
+/* --------------------------------------------------------------------------
+ * Scoped Preflight substitute — applies to shadcn markup only.
+ * -------------------------------------------------------------------------- */
+
+/*
+ * The one rule shadcn genuinely cannot live without: its components all write
+ * `border` with no colour and expect the themed border to apply.
+ */
+.bs-ui,
+.bs-ui::before,
+.bs-ui::after {
+	box-sizing: border-box;
+	border: 0 solid hsl(var(--border));
+}
+
+.bs-ui {
+	margin: 0;
+}
+
+button.bs-ui,
+.bs-ui [type="button"],
+.bs-ui [type="reset"],
+.bs-ui [type="submit"] {
+	-webkit-appearance: button;
+	appearance: button;
+	padding: 0;
+	background-color: transparent;
+	background-image: none;
+	color: inherit;
+	font: inherit;
+	letter-spacing: inherit;
+	text-transform: none;
+	box-shadow: none;
+	cursor: pointer;
+}
+
+button.bs-ui:disabled {
+	cursor: default;
+}
+
+input.bs-ui,
+select.bs-ui,
+textarea.bs-ui {
+	padding: 0;
+	color: inherit;
+	font: inherit;
+	letter-spacing: inherit;
+	background-color: transparent;
+}
+
+input.bs-ui::placeholder,
+textarea.bs-ui::placeholder {
+	color: hsl(var(--muted-foreground));
+	opacity: 1;
+}
+
+ol.bs-ui,
+ul.bs-ui {
+	padding: 0;
+	list-style: none;
+}
+
+table.bs-ui {
+	border-collapse: collapse;
+	border-color: inherit;
+	text-indent: 0;
+}
+
+img.bs-ui,
+svg.bs-ui,
+video.bs-ui,
+canvas.bs-ui {
+	display: block;
+	vertical-align: middle;
+}
+
+img.bs-ui,
+video.bs-ui {
+	max-width: 100%;
+	height: auto;
+}
+
+/*
+ * Radix overlay layers, above the WordPress chrome.
+ *
+ * shadcn ships these at `z-50`, which loses to wp-admin's own stacking — the
+ * admin menu (9990) and admin bar (99100) would paint over an open dialog. The
+ * value matches the one the existing Modal component settled on.
+ *
+ * The selectors catch both portal shapes: dialog/sheet/drawer overlays and
+ * contents are direct children of the portal container (see src/lib/portal.js),
+ * while popovers, selects, dropdowns and tooltips sit inside a Radix popper
+ * wrapper. !important is what it takes to beat the `z-50` utility, which the
+ * `important` selector strategy raises to (1,1,0).
+ */
+#booking-suite-admin-root > [data-state],
+#booking-suite-admin-root > [data-radix-popper-content-wrapper] {
+	z-index: 100000 !important;
+}
+
+/*
+ * Below 782px wp-admin enlarges every form control (min-height: 40px, wider
+ * padding) for touch. shadcn sizes its own controls, so only the properties it
+ * does NOT set are neutralised here. This block is intentionally at (1,1,1) —
+ * above the utilities — so keep it to properties no utility is likely to set.
+ */
+#booking-suite-admin-root input.bs-ui,
+#booking-suite-admin-root select.bs-ui,
+#booking-suite-admin-root textarea.bs-ui,
+#booking-suite-admin-root button.bs-ui {
+	min-height: 0;
+}

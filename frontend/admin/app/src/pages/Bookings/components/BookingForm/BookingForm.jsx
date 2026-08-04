@@ -4,35 +4,55 @@
  * The same shape as the guest flow, in one screen rather than five steps, and
  * with the things only an operator may set: the status, and an agreed total
  * that overrides the calculated one.
+ *
+ * Built on the shadcn/ui Form (react-hook-form + zod). The schema below is the
+ * single source of truth for what a valid booking looks like on this screen —
+ * the checks the old hand-rolled version left to the server (check-out after
+ * check-in, at least one guest, a well-formed email) now fail fast in the UI.
  */
 
 import { useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { AlertCircle } from 'lucide-react';
 
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import {
-	ApartmentIcon,
-	Button,
-	Field,
-	FormSection,
-	Modal,
-	Notice,
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from '@/components/ui/dialog';
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import {
 	Select,
-	TextInput,
-	UsersIcon,
-	LinkIcon,
-	TextIcon,
-} from '../../../../components';
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
+
 import { apartmentService, bookingService } from '../../../../services';
 import './BookingForm.css';
 
 const STATUSES = [ 'pending', 'reserved', 'confirmed', 'completed' ];
 const PAYMENT_STATUSES = [ 'unpaid', 'partial', 'paid', 'refunded' ];
-
-const options = ( values ) =>
-	values.map( ( value ) => ( {
-		value,
-		label: value.replace( /_/g, ' ' ),
-	} ) );
 
 const today = () => new Date().toISOString().slice( 0, 10 );
 
@@ -44,7 +64,85 @@ const addDays = ( date, days ) => {
 	return result.toISOString().slice( 0, 10 );
 };
 
-// A stored booking back into form fields.
+const schema = z
+	.object( {
+		apartmentId: z
+			.string()
+			.min( 1, __( 'Choose an apartment.', 'booking-suite' ) ),
+		mode: z.enum( [ 'overnight', 'hourly' ] ),
+		guests: z.coerce
+			.number()
+			.int()
+			.min( 1, __( 'At least one guest.', 'booking-suite' ) ),
+		checkIn: z.string(),
+		checkOut: z.string(),
+		date: z.string(),
+		startTime: z.string(),
+		hours: z.coerce
+			.number()
+			.int()
+			.min( 1, __( 'At least one hour.', 'booking-suite' ) ),
+		status: z.enum( STATUSES ),
+		paymentStatus: z.enum( PAYMENT_STATUSES ),
+		total: z.string().optional(),
+		notes: z.string().optional(),
+		firstName: z.string().optional(),
+		lastName: z.string().optional(),
+		email: z
+			.string()
+			.email( __( 'Enter a valid email address.', 'booking-suite' ) )
+			.or( z.literal( '' ) )
+			.optional(),
+		phone: z.string().optional(),
+	} )
+	.superRefine( ( values, ctx ) => {
+		// Only the fields belonging to the chosen mode are worth checking.
+		if ( 'overnight' === values.mode ) {
+			if ( ! values.checkIn ) {
+				ctx.addIssue( {
+					code: z.ZodIssueCode.custom,
+					path: [ 'checkIn' ],
+					message: __( 'Pick a check-in date.', 'booking-suite' ),
+				} );
+			}
+
+			if ( values.checkOut <= values.checkIn ) {
+				ctx.addIssue( {
+					code: z.ZodIssueCode.custom,
+					path: [ 'checkOut' ],
+					message: __(
+						'Check-out must be after check-in.',
+						'booking-suite'
+					),
+				} );
+			}
+
+			return;
+		}
+
+		if ( ! values.date ) {
+			ctx.addIssue( {
+				code: z.ZodIssueCode.custom,
+				path: [ 'date' ],
+				message: __( 'Pick a date.', 'booking-suite' ),
+			} );
+		}
+
+		if ( ! values.startTime ) {
+			ctx.addIssue( {
+				code: z.ZodIssueCode.custom,
+				path: [ 'startTime' ],
+				message: __( 'Pick a start time.', 'booking-suite' ),
+			} );
+		}
+	} );
+
+/**
+ * A stored booking back into form fields.
+ *
+ * @param {Object} booking The booking as returned by bookingService.
+ * @return {Object} Form values.
+ */
 const fromBooking = ( booking ) => {
 	const startsAt = booking.startsAt ?? '';
 	const endsAt = booking.endsAt ?? '';
@@ -73,7 +171,7 @@ const fromBooking = ( booking ) => {
 		hours: isOvernight ? 3 : hours,
 		checkIn: startDate || today(),
 		checkOut: endDate || addDays( today(), 1 ),
-		guests: String( booking.guests ?? 1 ),
+		guests: booking.guests ?? 1,
 		status: booking.status ?? 'confirmed',
 		paymentStatus: booking.paymentStatus ?? 'unpaid',
 		total: booking.total ? String( booking.total ) : '',
@@ -96,7 +194,7 @@ const blank = () => ( {
 	hours: 3,
 	checkIn: today(),
 	checkOut: addDays( today(), 1 ),
-	guests: '1',
+	guests: 1,
 	status: 'confirmed',
 	paymentStatus: 'unpaid',
 	total: '',
@@ -107,15 +205,18 @@ const blank = () => ( {
 	phone: '',
 } );
 
+const label = ( value ) => String( value ).replace( /_/g, ' ' );
+
 export default function BookingForm( { booking = null, onClose, onSaved } ) {
 	const isEdit = null !== booking;
 
-	const [ values, setValues ] = useState( () =>
-		isEdit ? fromBooking( booking ) : blank()
-	);
 	const [ apartments, setApartments ] = useState( [] );
-	const [ isSaving, setSaving ] = useState( false );
 	const [ error, setError ] = useState( null );
+
+	const form = useForm( {
+		resolver: zodResolver( schema ),
+		defaultValues: isEdit ? fromBooking( booking ) : blank(),
+	} );
 
 	useEffect( () => {
 		const controller = new AbortController();
@@ -128,21 +229,16 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 		return () => controller.abort();
 	}, [] );
 
-	const set = ( key ) => ( value ) =>
-		setValues( ( current ) => ( { ...current, [ key ]: value } ) );
+	const isOvernight = 'overnight' === form.watch( 'mode' );
+	const isSaving = form.formState.isSubmitting;
 
-	const setInput = ( key ) => ( event ) => set( key )( event.target.value );
-
-	const isOvernight = 'overnight' === values.mode;
-
-	const save = async () => {
-		setSaving( true );
+	const save = async ( values ) => {
 		setError( null );
 
 		const payload = {
 			apartmentId: Number.parseInt( values.apartmentId, 10 ),
 			mode: values.mode,
-			guests: Number.parseInt( values.guests, 10 ) || 1,
+			guests: values.guests,
 			status: values.status,
 			payment_status: values.paymentStatus,
 			total: values.total,
@@ -151,12 +247,12 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 			lastName: values.lastName,
 			email: values.email,
 			phone: values.phone,
-			...( isOvernight
+			...( 'overnight' === values.mode
 				? { checkIn: values.checkIn, checkOut: values.checkOut }
 				: {
 						date: values.date,
 						startTime: values.startTime,
-						hours: Number.parseInt( values.hours, 10 ) || 1,
+						hours: values.hours,
 				  } ),
 		};
 
@@ -168,296 +264,476 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 			onSaved( saved );
 		} catch ( cause ) {
 			setError( cause.message );
-			setSaving( false );
 		}
 	};
 
 	return (
-		<Modal
-			icon={ <ApartmentIcon /> }
-			title={
-				isEdit
-					? __( 'Edit booking', 'booking-suite' )
-					: __( 'Add booking', 'booking-suite' )
-			}
-			description={ __(
-				'Taken by phone, email or at the door.',
-				'booking-suite'
-			) }
-			onClose={ onClose }
-			footer={
-				<>
-					<Button onClick={ onClose } disabled={ isSaving }>
+		<Dialog
+			open
+			onOpenChange={ ( next ) => {
+				if ( ! next && ! isSaving ) {
+					onClose();
+				}
+			} }
+		>
+			<DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
+				<DialogHeader>
+					<DialogTitle>
+						{ isEdit
+							? __( 'Edit booking', 'booking-suite' )
+							: __( 'Add booking', 'booking-suite' ) }
+					</DialogTitle>
+					<DialogDescription>
+						{ __(
+							'Taken by phone, email or at the door.',
+							'booking-suite'
+						) }
+					</DialogDescription>
+				</DialogHeader>
+
+				<Form { ...form }>
+					<form
+						id="bks-booking-form"
+						onSubmit={ form.handleSubmit( save ) }
+						className="flex flex-col gap-6"
+					>
+						{ error && (
+							<Alert variant="destructive">
+								<AlertCircle className="h-4 w-4" />
+								<AlertDescription>{ error }</AlertDescription>
+							</Alert>
+						) }
+
+						<Section title={ __( 'Stay', 'booking-suite' ) }>
+							<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+								<FormField
+									control={ form.control }
+									name="apartmentId"
+									render={ ( { field } ) => (
+										<FormItem>
+											<FormLabel>
+												{ __(
+													'Apartment',
+													'booking-suite'
+												) }
+											</FormLabel>
+											<Select
+												value={ field.value }
+												onValueChange={ field.onChange }
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue
+															placeholder={ __(
+																'Choose…',
+																'booking-suite'
+															) }
+														/>
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													{ apartments.map(
+														( apartment ) => (
+															<SelectItem
+																key={
+																	apartment.id
+																}
+																value={ String(
+																	apartment.id
+																) }
+															>
+																{
+																	apartment.name
+																}
+															</SelectItem>
+														)
+													) }
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									) }
+								/>
+
+								<FormField
+									control={ form.control }
+									name="mode"
+									render={ ( { field } ) => (
+										<FormItem>
+											<FormLabel>
+												{ __(
+													'Type',
+													'booking-suite'
+												) }
+											</FormLabel>
+											<Select
+												value={ field.value }
+												onValueChange={ field.onChange }
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													<SelectItem value="overnight">
+														{ __(
+															'Overnight',
+															'booking-suite'
+														) }
+													</SelectItem>
+													<SelectItem value="hourly">
+														{ __(
+															'By the hour',
+															'booking-suite'
+														) }
+													</SelectItem>
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									) }
+								/>
+
+								<FormField
+									control={ form.control }
+									name="guests"
+									render={ ( { field } ) => (
+										<FormItem>
+											<FormLabel>
+												{ __(
+													'Guests',
+													'booking-suite'
+												) }
+											</FormLabel>
+											<FormControl>
+												<Input
+													type="number"
+													min="1"
+													{ ...field }
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									) }
+								/>
+							</div>
+
+							{ isOvernight ? (
+								<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+									<FormField
+										control={ form.control }
+										name="checkIn"
+										render={ ( { field } ) => (
+											<FormItem>
+												<FormLabel>
+													{ __(
+														'Check-in',
+														'booking-suite'
+													) }
+												</FormLabel>
+												<FormControl>
+													<Input
+														type="date"
+														{ ...field }
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										) }
+									/>
+
+									<FormField
+										control={ form.control }
+										name="checkOut"
+										render={ ( { field } ) => (
+											<FormItem>
+												<FormLabel>
+													{ __(
+														'Check-out',
+														'booking-suite'
+													) }
+												</FormLabel>
+												<FormControl>
+													<Input
+														type="date"
+														{ ...field }
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										) }
+									/>
+								</div>
+							) : (
+								<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+									<FormField
+										control={ form.control }
+										name="date"
+										render={ ( { field } ) => (
+											<FormItem>
+												<FormLabel>
+													{ __(
+														'Date',
+														'booking-suite'
+													) }
+												</FormLabel>
+												<FormControl>
+													<Input
+														type="date"
+														{ ...field }
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										) }
+									/>
+
+									<FormField
+										control={ form.control }
+										name="startTime"
+										render={ ( { field } ) => (
+											<FormItem>
+												<FormLabel>
+													{ __(
+														'Start time',
+														'booking-suite'
+													) }
+												</FormLabel>
+												<FormControl>
+													<Input
+														type="time"
+														{ ...field }
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										) }
+									/>
+
+									<FormField
+										control={ form.control }
+										name="hours"
+										render={ ( { field } ) => (
+											<FormItem>
+												<FormLabel>
+													{ __(
+														'Hours',
+														'booking-suite'
+													) }
+												</FormLabel>
+												<FormControl>
+													<Input
+														type="number"
+														min="1"
+														{ ...field }
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										) }
+									/>
+								</div>
+							) }
+						</Section>
+
+						<Separator />
+
+						<Section title={ __( 'Guest', 'booking-suite' ) }>
+							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+								<TextField
+									form={ form }
+									name="firstName"
+									label={ __(
+										'First name',
+										'booking-suite'
+									) }
+								/>
+								<TextField
+									form={ form }
+									name="lastName"
+									label={ __( 'Last name', 'booking-suite' ) }
+								/>
+								<TextField
+									form={ form }
+									name="email"
+									type="email"
+									label={ __( 'Email', 'booking-suite' ) }
+								/>
+								<TextField
+									form={ form }
+									name="phone"
+									type="tel"
+									label={ __( 'Phone', 'booking-suite' ) }
+								/>
+							</div>
+						</Section>
+
+						<Separator />
+
+						<Section
+							title={ __( 'Status & price', 'booking-suite' ) }
+						>
+							<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+								<StatusField
+									form={ form }
+									name="status"
+									label={ __(
+										'Booking status',
+										'booking-suite'
+									) }
+									values={ STATUSES }
+								/>
+								<StatusField
+									form={ form }
+									name="paymentStatus"
+									label={ __(
+										'Payment status',
+										'booking-suite'
+									) }
+									values={ PAYMENT_STATUSES }
+								/>
+
+								<FormField
+									control={ form.control }
+									name="total"
+									render={ ( { field } ) => (
+										<FormItem>
+											<FormLabel>
+												{ __(
+													'Total override',
+													'booking-suite'
+												) }
+											</FormLabel>
+											<FormControl>
+												<Input
+													type="number"
+													min="0"
+													step="0.01"
+													placeholder={ __(
+														'Calculated',
+														'booking-suite'
+													) }
+													{ ...field }
+												/>
+											</FormControl>
+											<FormDescription>
+												{ __(
+													'Leave empty to use the calculated rate.',
+													'booking-suite'
+												) }
+											</FormDescription>
+											<FormMessage />
+										</FormItem>
+									) }
+								/>
+							</div>
+						</Section>
+
+						<Separator />
+
+						<Section title={ __( 'Notes', 'booking-suite' ) }>
+							<FormField
+								control={ form.control }
+								name="notes"
+								render={ ( { field } ) => (
+									<FormItem>
+										<FormControl>
+											<Textarea rows={ 4 } { ...field } />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								) }
+							/>
+						</Section>
+					</form>
+				</Form>
+
+				<DialogFooter>
+					<Button
+						type="button"
+						variant="outline"
+						onClick={ onClose }
+						disabled={ isSaving }
+					>
 						{ __( 'Cancel', 'booking-suite' ) }
 					</Button>
 					<Button
-						variant="primary"
-						disabled={ isSaving || ! values.apartmentId }
-						onClick={ save }
+						type="submit"
+						form="bks-booking-form"
+						disabled={ isSaving }
 					>
 						{ isSaving
 							? __( 'Saving…', 'booking-suite' )
 							: __( 'Save booking', 'booking-suite' ) }
 					</Button>
-				</>
-			}
-		>
-			<form
-				className="bks-booking-form"
-				onSubmit={ ( event ) => event.preventDefault() }
-			>
-				{ error && <Notice tone="error">{ error }</Notice> }
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
+	);
+}
 
-				<FormSection
-					icon={ <ApartmentIcon /> }
-					title={ __( 'Stay', 'booking-suite' ) }
-				>
-					<div className="bks-booking-form__row">
-						<Field
-							label={ __( 'Apartment', 'booking-suite' ) }
-							htmlFor="bks-booking-apartment"
-							required
-						>
-							<Select
-								id="bks-booking-apartment"
-								placeholder={ __( 'Choose…', 'booking-suite' ) }
-								options={ apartments.map( ( apartment ) => ( {
-									value: String( apartment.id ),
-									label: apartment.name,
-								} ) ) }
-								value={ values.apartmentId }
-								onChange={ setInput( 'apartmentId' ) }
-							/>
-						</Field>
+function Section( { title, children } ) {
+	return (
+		<section className="flex flex-col gap-4">
+			<h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+				{ title }
+			</h3>
+			{ children }
+		</section>
+	);
+}
 
-						<Field
-							label={ __( 'Type', 'booking-suite' ) }
-							htmlFor="bks-booking-mode"
-						>
-							<Select
-								id="bks-booking-mode"
-								options={ [
-									{
-										value: 'overnight',
-										label: __(
-											'Overnight',
-											'booking-suite'
-										),
-									},
-									{
-										value: 'hourly',
-										label: __(
-											'By the hour',
-											'booking-suite'
-										),
-									},
-								] }
-								value={ values.mode }
-								onChange={ setInput( 'mode' ) }
-							/>
-						</Field>
+function TextField( { form, name, label: fieldLabel, type = 'text' } ) {
+	return (
+		<FormField
+			control={ form.control }
+			name={ name }
+			render={ ( { field } ) => (
+				<FormItem>
+					<FormLabel>{ fieldLabel }</FormLabel>
+					<FormControl>
+						<Input type={ type } { ...field } />
+					</FormControl>
+					<FormMessage />
+				</FormItem>
+			) }
+		/>
+	);
+}
 
-						<Field
-							label={ __( 'Guests', 'booking-suite' ) }
-							htmlFor="bks-booking-guests"
-						>
-							<TextInput
-								id="bks-booking-guests"
-								type="number"
-								min="1"
-								value={ values.guests }
-								onChange={ setInput( 'guests' ) }
-							/>
-						</Field>
-					</div>
-
-					{ isOvernight ? (
-						<div className="bks-booking-form__row">
-							<Field
-								label={ __( 'Check-in', 'booking-suite' ) }
-								htmlFor="bks-booking-checkin"
-							>
-								<TextInput
-									id="bks-booking-checkin"
-									type="date"
-									value={ values.checkIn }
-									onChange={ setInput( 'checkIn' ) }
-								/>
-							</Field>
-
-							<Field
-								label={ __( 'Check-out', 'booking-suite' ) }
-								htmlFor="bks-booking-checkout"
-							>
-								<TextInput
-									id="bks-booking-checkout"
-									type="date"
-									value={ values.checkOut }
-									onChange={ setInput( 'checkOut' ) }
-								/>
-							</Field>
-						</div>
-					) : (
-						<div className="bks-booking-form__row">
-							<Field
-								label={ __( 'Date', 'booking-suite' ) }
-								htmlFor="bks-booking-date"
-							>
-								<TextInput
-									id="bks-booking-date"
-									type="date"
-									value={ values.date }
-									onChange={ setInput( 'date' ) }
-								/>
-							</Field>
-
-							<Field
-								label={ __( 'Start time', 'booking-suite' ) }
-								htmlFor="bks-booking-start"
-							>
-								<TextInput
-									id="bks-booking-start"
-									type="time"
-									value={ values.startTime }
-									onChange={ setInput( 'startTime' ) }
-								/>
-							</Field>
-
-							<Field
-								label={ __( 'Hours', 'booking-suite' ) }
-								htmlFor="bks-booking-hours"
-							>
-								<TextInput
-									id="bks-booking-hours"
-									type="number"
-									min="1"
-									value={ values.hours }
-									onChange={ setInput( 'hours' ) }
-								/>
-							</Field>
-						</div>
-					) }
-				</FormSection>
-
-				<FormSection
-					icon={ <UsersIcon /> }
-					title={ __( 'Guest', 'booking-suite' ) }
-				>
-					<div className="bks-booking-form__row">
-						<Field
-							label={ __( 'First name', 'booking-suite' ) }
-							htmlFor="bks-booking-first"
-						>
-							<TextInput
-								id="bks-booking-first"
-								value={ values.firstName }
-								onChange={ setInput( 'firstName' ) }
-							/>
-						</Field>
-
-						<Field
-							label={ __( 'Last name', 'booking-suite' ) }
-							htmlFor="bks-booking-last"
-						>
-							<TextInput
-								id="bks-booking-last"
-								value={ values.lastName }
-								onChange={ setInput( 'lastName' ) }
-							/>
-						</Field>
-					</div>
-
-					<div className="bks-booking-form__row">
-						<Field
-							label={ __( 'Email', 'booking-suite' ) }
-							htmlFor="bks-booking-email"
-						>
-							<TextInput
-								id="bks-booking-email"
-								type="email"
-								value={ values.email }
-								onChange={ setInput( 'email' ) }
-							/>
-						</Field>
-
-						<Field
-							label={ __( 'Phone', 'booking-suite' ) }
-							htmlFor="bks-booking-phone"
-						>
-							<TextInput
-								id="bks-booking-phone"
-								type="tel"
-								value={ values.phone }
-								onChange={ setInput( 'phone' ) }
-							/>
-						</Field>
-					</div>
-				</FormSection>
-
-				<FormSection
-					icon={ <LinkIcon /> }
-					title={ __( 'Status & price', 'booking-suite' ) }
-				>
-					<div className="bks-booking-form__row">
-						<Field
-							label={ __( 'Booking status', 'booking-suite' ) }
-							htmlFor="bks-booking-status"
-						>
-							<Select
-								id="bks-booking-status"
-								options={ options( STATUSES ) }
-								value={ values.status }
-								onChange={ setInput( 'status' ) }
-							/>
-						</Field>
-
-						<Field
-							label={ __( 'Payment status', 'booking-suite' ) }
-							htmlFor="bks-booking-payment"
-						>
-							<Select
-								id="bks-booking-payment"
-								options={ options( PAYMENT_STATUSES ) }
-								value={ values.paymentStatus }
-								onChange={ setInput( 'paymentStatus' ) }
-							/>
-						</Field>
-
-						<Field
-							label={ __( 'Total override', 'booking-suite' ) }
-							htmlFor="bks-booking-total"
-						>
-							<TextInput
-								id="bks-booking-total"
-								type="number"
-								min="0"
-								step="0.01"
-								placeholder={ __(
-									'Calculated',
-									'booking-suite'
-								) }
-								value={ values.total }
-								onChange={ setInput( 'total' ) }
-							/>
-						</Field>
-					</div>
-				</FormSection>
-
-				<FormSection
-					icon={ <TextIcon /> }
-					title={ __( 'Notes', 'booking-suite' ) }
-				>
-					<Field htmlFor="bks-booking-notes">
-						<TextInput
-							id="bks-booking-notes"
-							multiline
-							rows={ 4 }
-							value={ values.notes }
-							onChange={ setInput( 'notes' ) }
-						/>
-					</Field>
-				</FormSection>
-			</form>
-		</Modal>
+function StatusField( { form, name, label: fieldLabel, values } ) {
+	return (
+		<FormField
+			control={ form.control }
+			name={ name }
+			render={ ( { field } ) => (
+				<FormItem>
+					<FormLabel>{ fieldLabel }</FormLabel>
+					<Select
+						value={ field.value }
+						onValueChange={ field.onChange }
+					>
+						<FormControl>
+							<SelectTrigger>
+								<SelectValue />
+							</SelectTrigger>
+						</FormControl>
+						<SelectContent>
+							{ values.map( ( value ) => (
+								<SelectItem
+									key={ value }
+									value={ value }
+									className="capitalize"
+								>
+									{ label( value ) }
+								</SelectItem>
+							) ) }
+						</SelectContent>
+					</Select>
+					<FormMessage />
+				</FormItem>
+			) }
+		/>
 	);
 }

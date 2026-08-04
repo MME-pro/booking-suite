@@ -1,8 +1,4 @@
-.bks-booking-detail {
-	display: flex !important;
-	flex-direction: column !important;
-	gap: var(--bks-space-5) !important;
-}
+/* Layout moved to Tailwind utilities on the element (`flex flex-col gap-4`). */
 
 .bks-booking-detail__bar {
 	display: flex !important;

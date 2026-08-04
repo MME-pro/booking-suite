@@ -1,24 +1,31 @@
 /**
- * BookingsPage — modern, classy admin interface for guest booking management.
+ * BookingsPage — the guest booking management screen.
+ *
+ * Built on shadcn/ui: Tabs for the status filter, Table for the list, Alert for
+ * failures, Card for the surfaces. Filtering stays client-side and instant.
  */
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { __, sprintf, _n } from '@wordpress/i18n';
+import {
+	AlertCircle,
+	CheckCircle2,
+	Clock,
+	Plus,
+	RefreshCw,
+	Search,
+	TrendingUp,
+} from 'lucide-react';
 
-import {
-	Button,
-	Card,
-	EmptyState,
-	Notice,
-	SearchField,
-} from '../../components';
-import {
-	ClockIcon,
-	CheckCircleIcon,
-	TrendingUpIcon,
-	RefreshIcon,
-	PlusIcon,
-} from '../../components/icons';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+import { StatCard } from '../../components/StatCard';
 import { bookingService } from '../../services';
 import { BookingsTable } from './components/BookingsTable';
 import { BookingDetail } from './components/BookingDetail';
@@ -66,27 +73,21 @@ export default function BookingsPage() {
 		return () => controller.abort();
 	}, [ load ] );
 
-	// Calculate overall KPI summary metrics
 	const metrics = useMemo( () => {
-		const pendingCount = counts.pending ?? 0;
-		const confirmedCount = counts.confirmed ?? 0;
-		const totalCount = bookings.length;
 		const totalRevenue = bookings.reduce(
 			( sum, item ) => sum + ( Number( item.total ) || 0 ),
 			0
 		);
-		const currency = bookings[ 0 ]?.currency ?? 'EUR';
 
 		return {
-			totalCount,
-			pendingCount,
-			confirmedCount,
+			pendingCount: counts.pending ?? 0,
+			confirmedCount: counts.confirmed ?? 0,
 			totalRevenue,
-			currency,
+			currency: bookings[ 0 ]?.currency ?? 'EUR',
 		};
 	}, [ bookings, counts ] );
 
-	// Instant client-side filtering
+	// Instant client-side filtering.
 	const visible = useMemo( () => {
 		const term = search.trim().toLowerCase();
 
@@ -157,141 +158,146 @@ export default function BookingsPage() {
 		);
 	}
 
+	// Same StatCard as the Dashboard, so the two screens read as one product.
+	const stats = [
+		{
+			id: 'value',
+			title: __( 'Total Value', 'booking-suite' ),
+			value: formatMoney( metrics.totalRevenue, metrics.currency ),
+			unit: __( 'Across every booking listed', 'booking-suite' ),
+			Icon: TrendingUp,
+			tone: 'brand',
+			badge: __( 'Gross', 'booking-suite' ),
+		},
+		{
+			id: 'pending',
+			title: __( 'Pending Requests', 'booking-suite' ),
+			value: metrics.pendingCount,
+			unit: __( 'Waiting on confirmation', 'booking-suite' ),
+			Icon: Clock,
+			tone: 'warning',
+			badge: metrics.pendingCount
+				? __( 'Needs action', 'booking-suite' )
+				: __( 'All clear', 'booking-suite' ),
+		},
+		{
+			id: 'confirmed',
+			title: __( 'Confirmed Stays', 'booking-suite' ),
+			value: metrics.confirmedCount,
+			unit: __( 'Locked in and ready', 'booking-suite' ),
+			Icon: CheckCircle2,
+			tone: 'success',
+			badge: __( 'Confirmed', 'booking-suite' ),
+		},
+	];
+
 	return (
-		<div className="bks-bookings-page">
+		<div className="bks-bookings-page flex flex-col gap-4">
 			{ error && (
-				<Notice
-					tone="error"
-					className="bks-bookings-page__notice"
-					actions={
-						<Button size="sm" onClick={ () => load() }>
+				<Alert variant="destructive">
+					<AlertCircle className="h-4 w-4" />
+					<AlertTitle>
+						{ __( 'Could not load bookings', 'booking-suite' ) }
+					</AlertTitle>
+					<AlertDescription className="flex flex-wrap items-center gap-3">
+						<span>{ error }</span>
+						<Button
+							size="sm"
+							variant="outline"
+							onClick={ () => load() }
+						>
 							{ __( 'Retry', 'booking-suite' ) }
 						</Button>
-					}
-				>
-					{ error }
-				</Notice>
+					</AlertDescription>
+				</Alert>
 			) }
 
-			{ /* Top KPI Metrics Cards Header */ }
-			<div className="bks-bookings-stats">
-				<div className="bks-stat-card">
-					<div className="bks-stat-card__icon bks-stat-card__icon--brand">
-						<TrendingUpIcon width="20" height="20" />
-					</div>
-					<div className="bks-stat-card__content">
-						<span className="bks-stat-card__label">
-							{ __( 'Total Value', 'booking-suite' ) }
-						</span>
-						<strong className="bks-stat-card__value">
-							{ formatMoney(
-								metrics.totalRevenue,
-								metrics.currency
-							) }
-						</strong>
-					</div>
-				</div>
-
-				<div className="bks-stat-card">
-					<div className="bks-stat-card__icon bks-stat-card__icon--warning">
-						<ClockIcon width="20" height="20" />
-					</div>
-					<div className="bks-stat-card__content">
-						<span className="bks-stat-card__label">
-							{ __( 'Pending Requests', 'booking-suite' ) }
-						</span>
-						<strong className="bks-stat-card__value">
-							{ metrics.pendingCount }
-						</strong>
-					</div>
-				</div>
-
-				<div className="bks-stat-card">
-					<div className="bks-stat-card__icon bks-stat-card__icon--success">
-						<CheckCircleIcon width="20" height="20" />
-					</div>
-					<div className="bks-stat-card__content">
-						<span className="bks-stat-card__label">
-							{ __( 'Confirmed Stays', 'booking-suite' ) }
-						</span>
-						<strong className="bks-stat-card__value">
-							{ metrics.confirmedCount }
-						</strong>
-					</div>
-				</div>
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+				{ stats.map( ( { id, Icon, ...card } ) => (
+					<StatCard key={ id } icon={ Icon } { ...card } />
+				) ) }
 			</div>
 
 			{ isLoading && ! bookings.length ? (
-				<Card padded={ false }>
-					<EmptyState
-						title={ __( 'Loading bookings…', 'booking-suite' ) }
-					/>
+				<Card>
+					<CardContent className="flex flex-col gap-3 p-5">
+						{ [ 0, 1, 2, 3, 4 ].map( ( key ) => (
+							<Skeleton key={ key } className="h-12 w-full" />
+						) ) }
+					</CardContent>
 				</Card>
 			) : (
 				<>
-					{ /* Classy Toolbar */ }
-					<div className="bks-bookings-toolbar">
-						<div className="bks-bookings-toolbar__filters">
-							{ tabs.map( ( value ) => (
-								<button
-									key={ value }
-									type="button"
-									className={ `bks-bookings-filter${
-										status === value ? ' is-active' : ''
-									}` }
-									onClick={ () => setStatus( value ) }
-								>
-									{ value.replace( /_/g, ' ' ) }
-									<span>
-										{ counts[ value ] ??
-											( 'all' === value
-												? bookings.length
-												: 0 ) }
-									</span>
-								</button>
-							) ) }
-						</div>
+					<div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+						<Tabs value={ status } onValueChange={ setStatus }>
+							<TabsList className="flex-wrap">
+								{ tabs.map( ( value ) => (
+									<TabsTrigger
+										key={ value }
+										value={ value }
+										className="gap-2 capitalize"
+									>
+										{ value.replace( /_/g, ' ' ) }
+										<Badge
+											variant="secondary"
+											className="px-1.5 py-0 text-[11px] font-normal tabular-nums"
+										>
+											{ counts[ value ] ??
+												( 'all' === value
+													? bookings.length
+													: 0 ) }
+										</Badge>
+									</TabsTrigger>
+								) ) }
+							</TabsList>
+						</Tabs>
 
-						<div className="bks-bookings-toolbar__right">
-							<SearchField
-								id="bks-bookings-search"
-								value={ search }
-								onChange={ setSearch }
-								label={ __(
-									'Search bookings',
-									'booking-suite'
-								) }
-								placeholder={ __(
-									'Reference, guest, email…',
-									'booking-suite'
-								) }
-							/>
+						<div className="flex flex-wrap items-center gap-2">
+							<div className="relative">
+								<Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+								<Input
+									type="search"
+									value={ search }
+									onChange={ ( event ) =>
+										setSearch( event.target.value )
+									}
+									aria-label={ __(
+										'Search bookings',
+										'booking-suite'
+									) }
+									placeholder={ __(
+										'Reference, guest, email…',
+										'booking-suite'
+									) }
+									className="w-full pl-8 sm:w-64"
+								/>
+							</div>
 
-							<button
-								type="button"
-								className="bks-bookings-refresh"
+							<Button
+								size="icon"
+								variant="outline"
 								onClick={ () => load() }
 								title={ __(
 									'Refresh bookings list',
 									'booking-suite'
 								) }
 							>
-								<RefreshIcon
-									width="16"
-									height="16"
-									className={ isLoading ? 'bks-spin' : '' }
+								<RefreshCw
+									className={ `h-4 w-4 ${
+										isLoading ? 'animate-spin' : ''
+									}` }
 								/>
-							</button>
+								<span className="sr-only">
+									{ __( 'Refresh', 'booking-suite' ) }
+								</span>
+							</Button>
 
-							<Button
-								variant="primary"
-								icon={ <PlusIcon /> }
-								onClick={ () => setEditing( 'new' ) }
-							>
+							<Button onClick={ () => setEditing( 'new' ) }>
+								<Plus className="h-4 w-4" />
 								{ __( 'Add Booking', 'booking-suite' ) }
 							</Button>
 
-							<span className="bks-bookings-toolbar__count">
+							<span className="text-xs text-muted-foreground">
 								{ sprintf(
 									/* translators: %d: number of bookings shown. */
 									_n(
@@ -306,14 +312,13 @@ export default function BookingsPage() {
 						</div>
 					</div>
 
-					{ /* Classy Table Container */ }
-					<Card padded={ false } className="bks-bookings-card">
+					<Card className="overflow-hidden">
 						{ bookings.length > 0 ? (
 							<BookingsTable
 								bookings={ visible }
 								onSelectBooking={ setSelectedBooking }
 								emptyContent={
-									<EmptyState
+									<EmptyBookings
 										title={ __(
 											'No bookings match your filter',
 											'booking-suite'
@@ -326,7 +331,7 @@ export default function BookingsPage() {
 								}
 							/>
 						) : (
-							<EmptyState
+							<EmptyBookings
 								title={ __(
 									'No booking requests yet',
 									'booking-suite'
@@ -351,6 +356,19 @@ export default function BookingsPage() {
 					} }
 				/>
 			) }
+		</div>
+	);
+}
+
+function EmptyBookings( { title, description } ) {
+	return (
+		<div className="flex flex-col items-center gap-2 px-6 py-14 text-center">
+			<h2 className="text-base font-semibold text-card-foreground">
+				{ title }
+			</h2>
+			<p className="max-w-sm text-sm text-muted-foreground">
+				{ description }
+			</p>
 		</div>
 	);
 }

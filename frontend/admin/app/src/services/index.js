@@ -8,3 +8,4 @@ export {
 } from './http';
 export { apartmentService, toApartment, toPayload } from './apartmentService';
 export { bookingService } from './bookingService';
+export { settingsService } from './settingsService';

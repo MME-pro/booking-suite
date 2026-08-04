@@ -3,28 +3,47 @@
  *
  * The row handed in from the list is shown immediately; the full record, with
  * its extras, is fetched behind that so the page never opens empty.
+ *
+ * Built on shadcn/ui. "Release dates" confirms through an AlertDialog rather
+ * than window.confirm(), matching the delete flow on the Apartments screen.
  */
 
 import { useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
+import { ArrowLeft, Mail, Phone, Pencil } from 'lucide-react';
 
-import { Badge, Button, Card, Notice } from '../../../../components';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+
 import { bookingService } from '../../../../services';
 import { formatDateTime, formatMoney } from '../../data/format';
 import './BookingDetail.css';
 
-const STATUS_TONES = {
-	pending: 'warning',
-	reserved: 'brand',
-	confirmed: 'success',
-	completed: 'neutral',
+const STATUS_CLASSES = {
+	pending: 'bg-warning/10 text-warning hover:bg-warning/10',
+	reserved: 'bg-primary/10 text-primary hover:bg-primary/10',
+	confirmed: 'bg-success/10 text-success hover:bg-success/10',
+	completed: 'bg-muted text-muted-foreground hover:bg-muted',
 };
 
-const PAYMENT_TONES = {
-	unpaid: 'warning',
-	partial: 'brand',
-	paid: 'success',
-	refunded: 'neutral',
+const PAYMENT_CLASSES = {
+	unpaid: 'bg-warning/10 text-warning hover:bg-warning/10',
+	partial: 'bg-primary/10 text-primary hover:bg-primary/10',
+	paid: 'bg-success/10 text-success hover:bg-success/10',
+	refunded: 'bg-muted text-muted-foreground hover:bg-muted',
 };
 
 const label = ( value ) => String( value || '' ).replace( /_/g, ' ' );
@@ -39,6 +58,7 @@ const nextActions = ( booking ) => {
 		actions.push( {
 			key: 'reserve',
 			label: __( 'Reserve', 'booking-suite' ),
+			variant: 'outline',
 			changes: { status: 'reserved' },
 		} );
 	}
@@ -47,7 +67,7 @@ const nextActions = ( booking ) => {
 		actions.push( {
 			key: 'approve',
 			label: __( 'Approve', 'booking-suite' ),
-			variant: 'primary',
+			variant: 'default',
 			changes: { status: 'confirmed' },
 		} );
 	}
@@ -56,6 +76,7 @@ const nextActions = ( booking ) => {
 		actions.push( {
 			key: 'complete',
 			label: __( 'Mark completed', 'booking-suite' ),
+			variant: 'outline',
 			changes: { status: 'completed' },
 		} );
 	}
@@ -64,7 +85,7 @@ const nextActions = ( booking ) => {
 		actions.push( {
 			key: 'paid',
 			label: __( 'Mark as paid', 'booking-suite' ),
-			variant: 'confirmed' === status ? 'secondary' : 'primary',
+			variant: 'confirmed' === status ? 'outline' : 'default',
 			changes: { payment_status: 'paid' },
 		} );
 	}
@@ -75,7 +96,7 @@ const nextActions = ( booking ) => {
 		actions.push( {
 			key: 'release',
 			label: __( 'Release dates', 'booking-suite' ),
-			variant: 'danger',
+			variant: 'destructive',
 			confirm: __(
 				'Send this booking back to pending? The dates become bookable again.',
 				'booking-suite'
@@ -96,6 +117,9 @@ export default function BookingDetail( {
 	const [ booking, setBooking ] = useState( initial );
 	const [ error, setError ] = useState( null );
 	const [ busyAction, setBusyAction ] = useState( '' );
+
+	/** The action awaiting confirmation, if it asks for one. */
+	const [ pendingAction, setPendingAction ] = useState( null );
 
 	useEffect( () => {
 		const controller = new AbortController();
@@ -132,11 +156,6 @@ export default function BookingDetail( {
 		.slice( 0, 2 );
 
 	const runAction = async ( action ) => {
-		// eslint-disable-next-line no-alert
-		if ( action.confirm && ! window.confirm( action.confirm ) ) {
-			return;
-		}
-
 		setBusyAction( action.key );
 		setError( null );
 
@@ -157,181 +176,251 @@ export default function BookingDetail( {
 		}
 	};
 
-	const fact = ( term, value ) => (
-		<div className="bks-booking-detail__fact">
-			<dt>{ term }</dt>
-			<dd>{ value || '—' }</dd>
-		</div>
-	);
+	const isBusy = '' !== busyAction;
 
 	return (
-		<div className="bks-booking-detail">
-			<div className="bks-booking-detail__bar">
-				<Button onClick={ onBack }>
-					{ __( '← Back to bookings', 'booking-suite' ) }
+		<div className="bks-booking-detail flex flex-col gap-4">
+			<div className="flex flex-wrap items-center justify-between gap-3">
+				<Button variant="ghost" onClick={ onBack }>
+					<ArrowLeft className="h-4 w-4" />
+					{ __( 'Back to bookings', 'booking-suite' ) }
 				</Button>
 
-				<div className="bks-booking-detail__badges">
-					<Badge tone={ STATUS_TONES[ booking.status ] ?? 'neutral' }>
+				<div className="flex items-center gap-2">
+					<Badge
+						variant="secondary"
+						className={ `capitalize ${
+							STATUS_CLASSES[ booking.status ] ?? ''
+						}` }
+					>
 						{ label( booking.status ) }
 					</Badge>
 					<Badge
-						tone={
-							PAYMENT_TONES[ booking.paymentStatus ] ?? 'neutral'
-						}
+						variant="secondary"
+						className={ `capitalize ${
+							PAYMENT_CLASSES[ booking.paymentStatus ] ?? ''
+						}` }
 					>
 						{ label( booking.paymentStatus ) }
 					</Badge>
 				</div>
 			</div>
 
-			{ error && <Notice tone="error">{ error }</Notice> }
+			{ error && (
+				<Alert variant="destructive">
+					<AlertDescription>{ error }</AlertDescription>
+				</Alert>
+			) }
 
-			<div className="bks-booking-detail__actions">
-				{ onEdit && (
-					<Button onClick={ onEdit } disabled={ '' !== busyAction }>
-						{ __( 'Edit booking', 'booking-suite' ) }
-					</Button>
-				) }
+			<Card>
+				<CardContent className="flex flex-col gap-5 p-5">
+					<div className="flex flex-wrap items-start justify-between gap-4">
+						<div className="flex flex-col gap-0.5">
+							<span className="text-xs uppercase tracking-wide text-muted-foreground">
+								{ __( 'Booking reference', 'booking-suite' ) }
+							</span>
+							<h2 className="text-2xl font-semibold tracking-tight text-card-foreground">
+								{ booking.reference || `#${ booking.id }` }
+							</h2>
+							<span className="text-xs text-muted-foreground">
+								{ __( 'Received', 'booking-suite' ) }{ ' ' }
+								{ formatDateTime( booking.createdAt ) }
+							</span>
+						</div>
 
-				{ nextActions( booking ).map( ( action ) => (
-					<Button
-						key={ action.key }
-						variant={ action.variant ?? 'secondary' }
-						disabled={ '' !== busyAction }
-						onClick={ () => runAction( action ) }
-					>
-						{ busyAction === action.key
-							? __( 'Saving…', 'booking-suite' )
-							: action.label }
-					</Button>
-				) ) }
-			</div>
-
-			<header className="bks-booking-detail__head">
-				<div>
-					<p className="bks-booking-detail__eyebrow">
-						{ __( 'Booking reference', 'booking-suite' ) }
-					</p>
-					<h2 className="bks-booking-detail__reference">
-						{ booking.reference || `#${ booking.id }` }
-					</h2>
-					<p className="bks-booking-detail__received">
-						{ __( 'Received', 'booking-suite' ) }{ ' ' }
-						{ formatDateTime( booking.createdAt ) }
-					</p>
-				</div>
-
-				<div className="bks-booking-detail__amount">
-					<span>{ __( 'Total', 'booking-suite' ) }</span>
-					<strong>
-						{ formatMoney( booking.total, booking.currency ) }
-					</strong>
-				</div>
-			</header>
-
-			<div className="bks-booking-detail__grid">
-				<Card title={ __( 'Guest', 'booking-suite' ) }>
-					<div className="bks-booking-detail__guest">
-						<span className="bks-booking-detail__avatar">
-							{ initials }
-						</span>
-						<div>
-							<strong>
-								{ booking.customerName ||
-									__( 'No name given', 'booking-suite' ) }
+						<div className="flex flex-col items-end">
+							<span className="text-xs uppercase tracking-wide text-muted-foreground">
+								{ __( 'Total', 'booking-suite' ) }
+							</span>
+							<strong className="text-2xl font-semibold tabular-nums text-card-foreground">
+								{ formatMoney(
+									booking.total,
+									booking.currency
+								) }
 							</strong>
-							{ booking.customerEmail && (
-								<a href={ `mailto:${ booking.customerEmail }` }>
-									{ booking.customerEmail }
-								</a>
-							) }
-							{ booking.customerPhone && (
-								<a href={ `tel:${ booking.customerPhone }` }>
-									{ booking.customerPhone }
-								</a>
-							) }
 						</div>
 					</div>
+
+					<Separator />
+
+					<div className="flex flex-wrap gap-2">
+						{ onEdit && (
+							<Button
+								variant="outline"
+								onClick={ onEdit }
+								disabled={ isBusy }
+							>
+								<Pencil className="h-4 w-4" />
+								{ __( 'Edit booking', 'booking-suite' ) }
+							</Button>
+						) }
+
+						{ nextActions( booking ).map( ( action ) => (
+							<Button
+								key={ action.key }
+								variant={ action.variant ?? 'outline' }
+								disabled={ isBusy }
+								onClick={ () =>
+									action.confirm
+										? setPendingAction( action )
+										: runAction( action )
+								}
+							>
+								{ busyAction === action.key
+									? __( 'Saving…', 'booking-suite' )
+									: action.label }
+							</Button>
+						) ) }
+					</div>
+				</CardContent>
+			</Card>
+
+			<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+				<Card>
+					<CardHeader className="pb-3">
+						<CardTitle className="text-base">
+							{ __( 'Guest', 'booking-suite' ) }
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<div className="flex items-center gap-3">
+							<span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+								{ initials }
+							</span>
+							<div className="flex min-w-0 flex-col gap-0.5">
+								<strong className="truncate text-card-foreground">
+									{ booking.customerName ||
+										__( 'No name given', 'booking-suite' ) }
+								</strong>
+								{ booking.customerEmail && (
+									<a
+										href={ `mailto:${ booking.customerEmail }` }
+										className="flex items-center gap-1.5 truncate text-sm text-muted-foreground hover:text-primary hover:underline"
+									>
+										<Mail className="h-3.5 w-3.5 shrink-0" />
+										{ booking.customerEmail }
+									</a>
+								) }
+								{ booking.customerPhone && (
+									<a
+										href={ `tel:${ booking.customerPhone }` }
+										className="flex items-center gap-1.5 truncate text-sm text-muted-foreground hover:text-primary hover:underline"
+									>
+										<Phone className="h-3.5 w-3.5 shrink-0" />
+										{ booking.customerPhone }
+									</a>
+								) }
+							</div>
+						</div>
+					</CardContent>
 				</Card>
 
-				<Card title={ __( 'Stay', 'booking-suite' ) }>
-					<dl className="bks-booking-detail__facts">
-						{ fact(
-							__( 'Apartment', 'booking-suite' ),
-							booking.apartmentName
-						) }
-						{ fact(
-							__( 'Arrival', 'booking-suite' ),
-							formatDateTime( booking.startsAt )
-						) }
-						{ fact(
-							__( 'Departure', 'booking-suite' ),
-							formatDateTime( booking.endsAt )
-						) }
-						{ fact(
-							__( 'Guests', 'booking-suite' ),
-							String( booking.guests )
-						) }
-						{ fact(
-							__( 'Source', 'booking-suite' ),
-							booking.source
-						) }
-					</dl>
+				<Card>
+					<CardHeader className="pb-3">
+						<CardTitle className="text-base">
+							{ __( 'Stay', 'booking-suite' ) }
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<dl className="flex flex-col gap-2 text-sm">
+							<Fact
+								term={ __( 'Apartment', 'booking-suite' ) }
+								value={ booking.apartmentName }
+							/>
+							<Fact
+								term={ __( 'Arrival', 'booking-suite' ) }
+								value={ formatDateTime( booking.startsAt ) }
+							/>
+							<Fact
+								term={ __( 'Departure', 'booking-suite' ) }
+								value={ formatDateTime( booking.endsAt ) }
+							/>
+							<Fact
+								term={ __( 'Guests', 'booking-suite' ) }
+								value={ String( booking.guests ) }
+							/>
+							<Fact
+								term={ __( 'Source', 'booking-suite' ) }
+								value={ booking.source }
+							/>
+						</dl>
+					</CardContent>
 				</Card>
 			</div>
 
-			<Card title={ __( 'Charges', 'booking-suite' ) }>
-				<ul className="bks-booking-detail__lines">
+			<Card>
+				<CardHeader className="pb-3">
+					<CardTitle className="text-base">
+						{ __( 'Charges', 'booking-suite' ) }
+					</CardTitle>
+				</CardHeader>
+				<CardContent className="flex flex-col gap-2 text-sm">
 					{ extras.map( ( extra, index ) => (
-						<li key={ `${ extra.name }-${ index }` }>
-							<span>
+						<div
+							key={ `${ extra.name }-${ index }` }
+							className="flex items-center justify-between gap-4"
+						>
+							<span className="text-muted-foreground">
 								{ extra.name } × { extra.quantity }
 							</span>
-							<span>
+							<span className="tabular-nums">
 								{ formatMoney(
 									extra.price * extra.quantity,
 									booking.currency
 								) }
 							</span>
-						</li>
+						</div>
 					) ) }
 
 					{ extras.length > 0 && (
-						<li className="bks-booking-detail__subtotal">
-							<span>{ __( 'Extras', 'booking-suite' ) }</span>
-							<span>
-								{ formatMoney( extrasTotal, booking.currency ) }
-							</span>
-						</li>
+						<>
+							<div className="flex items-center justify-between gap-4">
+								<span className="text-muted-foreground">
+									{ __( 'Extras', 'booking-suite' ) }
+								</span>
+								<span className="tabular-nums">
+									{ formatMoney(
+										extrasTotal,
+										booking.currency
+									) }
+								</span>
+							</div>
+							<Separator />
+						</>
 					) }
 
-					<li className="bks-booking-detail__total">
+					<div className="flex items-center justify-between gap-4 font-semibold text-card-foreground">
 						<span>{ __( 'Total', 'booking-suite' ) }</span>
-						<span>
+						<span className="tabular-nums">
 							{ formatMoney( booking.total, booking.currency ) }
 						</span>
-					</li>
-				</ul>
+					</div>
 
-				{ ! extras.length && (
-					<p className="bks-booking-detail__muted">
-						{ __(
-							'No extras were booked. The total is accommodation and any guest charge.',
-							'booking-suite'
-						) }
-					</p>
-				) }
+					{ ! extras.length && (
+						<p className="text-xs text-muted-foreground">
+							{ __(
+								'No extras were booked. The total is accommodation and any guest charge.',
+								'booking-suite'
+							) }
+						</p>
+					) }
+				</CardContent>
 			</Card>
 
 			{ proof && (
-				<Card title={ __( 'Payment proof', 'booking-suite' ) }>
-					<div className="bks-booking-detail__proof">
+				<Card>
+					<CardHeader className="pb-3">
+						<CardTitle className="text-base">
+							{ __( 'Payment proof', 'booking-suite' ) }
+						</CardTitle>
+					</CardHeader>
+					<CardContent className="flex flex-col gap-3">
 						{ proof.mime?.startsWith( 'image/' ) ? (
 							<a
 								href={ proof.url }
 								target="_blank"
 								rel="noreferrer"
+								className="block w-fit overflow-hidden rounded-lg border"
 							>
 								<img
 									src={ proof.url }
@@ -339,39 +428,91 @@ export default function BookingDetail( {
 										'Payment receipt uploaded by the guest',
 										'booking-suite'
 									) }
+									className="max-h-72 w-auto"
 								/>
 							</a>
 						) : (
-							<a
-								className="bks-booking-detail__proof-file"
-								href={ proof.url }
-								target="_blank"
-								rel="noreferrer"
-							>
-								{ __(
-									'Open uploaded receipt',
-									'booking-suite'
-								) }
-							</a>
+							<Button asChild variant="outline" className="w-fit">
+								<a
+									href={ proof.url }
+									target="_blank"
+									rel="noreferrer"
+								>
+									{ __(
+										'Open uploaded receipt',
+										'booking-suite'
+									) }
+								</a>
+							</Button>
 						) }
 
 						{ payment?.paidAt && (
-							<p className="bks-booking-detail__muted">
+							<p className="text-xs text-muted-foreground">
 								{ __( 'Guest paid on', 'booking-suite' ) }{ ' ' }
 								{ formatDateTime( payment.paidAt ) }
 							</p>
 						) }
-					</div>
+					</CardContent>
 				</Card>
 			) }
 
 			{ booking.notes && (
-				<Card title={ __( 'Guest notes', 'booking-suite' ) }>
-					<p className="bks-booking-detail__notes">
-						{ booking.notes }
-					</p>
+				<Card>
+					<CardHeader className="pb-3">
+						<CardTitle className="text-base">
+							{ __( 'Guest notes', 'booking-suite' ) }
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<p className="whitespace-pre-line text-sm text-muted-foreground">
+							{ booking.notes }
+						</p>
+					</CardContent>
 				</Card>
 			) }
+
+			<AlertDialog
+				open={ null !== pendingAction }
+				onOpenChange={ ( open ) => ! open && setPendingAction( null ) }
+			>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							{ pendingAction?.label }
+						</AlertDialogTitle>
+						<AlertDialogDescription>
+							{ pendingAction?.confirm }
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>
+							{ __( 'Cancel', 'booking-suite' ) }
+						</AlertDialogCancel>
+						<AlertDialogAction
+							onClick={ () => {
+								const action = pendingAction;
+
+								setPendingAction( null );
+								runAction( action );
+							} }
+							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+						>
+							{ __( 'Confirm', 'booking-suite' ) }
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		</div>
+	);
+}
+
+function Fact( { term, value } ) {
+	return (
+		<div className="flex items-baseline justify-between gap-4">
+			<dt className="text-muted-foreground">{ term }</dt>
+			<dd className="text-right font-medium capitalize text-card-foreground">
+				{ value || '—' }
+			</dd>
 		</div>
 	);
 }

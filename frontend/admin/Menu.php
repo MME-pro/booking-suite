@@ -31,6 +31,8 @@ final class Menu {
 
 	public const SLUG_BOOKINGS = 'booking-suite-bookings';
 
+	public const SLUG_SETTINGS = 'booking-suite-settings';
+
 	public const CAPABILITY = 'manage_options';
 
 	/**
@@ -43,6 +45,7 @@ final class Menu {
 			self::SLUG_DASHBOARD  => 'dashboard',
 			self::SLUG_APARTMENTS => 'apartments',
 			self::SLUG_BOOKINGS   => 'bookings',
+			self::SLUG_SETTINGS   => 'settings',
 		);
 	}
 
@@ -94,11 +97,27 @@ final class Menu {
 		// this is the way through to Elementor.
 		add_submenu_page(
 			self::SLUG_DASHBOARD,
-			__( 'Apartment Pages', 'booking-suite' ),
-			__( 'Apartment Pages', 'booking-suite' ),
+			__( 'Apartments', 'booking-suite' ),
+			__( 'Apartments', 'booking-suite' ),
 			self::CAPABILITY,
 			'edit.php?post_type=' . ApartmentPostType::POST_TYPE
 		);
+
+		add_submenu_page(
+			self::SLUG_DASHBOARD,
+			__( 'Settings', 'booking-suite' ),
+			__( 'Settings', 'booking-suite' ),
+			self::CAPABILITY,
+			self::SLUG_SETTINGS,
+			array( self::class, 'render_root' )
+		);
+
+		// Only one Apartments entry belongs in the menu, and that is the post
+		// list above. The React apartments screen is registered earlier and then
+		// hidden rather than dropped: it stays reachable by URL, so the
+		// Dashboard's "Manage apartments" button and existing bookmarks keep
+		// working.
+		remove_submenu_page( self::SLUG_DASHBOARD, self::SLUG_APARTMENTS );
 	}
 
 	/**

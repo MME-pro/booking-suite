@@ -2,11 +2,11 @@
    Bookings Page (Classy & Modern Admin Design)
    ═══════════════════════════════════════════════ */
 
-.bks-bookings-page {
-	display: flex !important;
-	flex-direction: column !important;
-	gap: var(--bks-space-5, 20px) !important;
-}
+/*
+ * The page root's layout now comes from Tailwind utilities on the element
+ * itself (`flex flex-col gap-4`); the old !important block here would have
+ * overridden the gap and left this screen spaced differently to the Dashboard.
+ */
 
 .bks-bookings-page__notice {
 	margin-bottom: var(--bks-space-4) !important;
