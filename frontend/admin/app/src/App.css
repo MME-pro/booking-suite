@@ -1,0 +1,15 @@
+.bks-app {
+	display: flex !important;
+	flex-direction: column !important;
+	min-height: inherit !important;
+	background: var(--bks-color-canvas) !important;
+}
+
+.bks-app__body {
+	max-width: var(--bks-app-max-width) !important;
+	padding: var(--bks-space-6) !important;
+}
+
+.bks-app__body--unknown {
+	color: var(--bks-color-text-muted) !important;
+}

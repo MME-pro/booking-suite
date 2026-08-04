@@ -1,0 +1,49 @@
+.bks-select {
+	position: relative !important;
+	display: flex !important;
+	align-items: center !important;
+	width: 100% !important;
+}
+
+.bks-select__control {
+	width: 100% !important;
+	min-height: calc(var(--bks-field-height) - 2px) !important;
+	padding: 0 var(--bks-space-8) 0 var(--bks-space-4) !important;
+	border: 0 !important;
+	border-radius: inherit !important;
+	background: transparent !important;
+
+	/* wp-admin paints its own arrow here; ours is the only one that shows. */
+	background-image: none !important;
+	color: var(--bks-color-text-strong) !important;
+	font-family: inherit !important;
+	font-size: var(--bks-font-size-md) !important;
+	font-weight: var(--bks-font-weight-medium) !important;
+	appearance: none !important;
+	cursor: pointer !important;
+}
+
+.bks-select__control:focus {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+.bks-select__chevron {
+	position: absolute !important;
+	right: var(--bks-space-3) !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 24px !important;
+	height: 24px !important;
+	border-radius: var(--bks-radius-sm) !important;
+	background: var(--bks-color-surface-muted) !important;
+	color: var(--bks-color-text-muted) !important;
+	pointer-events: none !important;
+}
+
+.bks-select__chevron svg {
+	width: 16px !important;
+	height: 16px !important;
+	fill: currentcolor !important;
+}

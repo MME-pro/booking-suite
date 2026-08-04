@@ -1,0 +1,76 @@
+/* ═══════════════════════════════════════════════
+   DataTable — Clean, Fresh, Modern Admin Table
+   ═══════════════════════════════════════════════ */
+
+.bks-data-table {
+	width: 100% !important;
+	overflow-x: auto !important;
+}
+
+.bks-data-table__table {
+	width: 100% !important;
+	border-collapse: separate !important;
+	border-spacing: 0 !important;
+	font-size: var(--bks-font-size-md, 14px) !important;
+	font-family: var(--bks-font-family, 'Inter', sans-serif) !important;
+}
+
+.bks-data-table__table thead th {
+	position: sticky !important;
+	top: 0 !important;
+	background: var(--bks-color-surface-muted, #f8fafc) !important;
+	border-bottom: 1.5px solid var(--bks-color-border, #e2e8f0) !important;
+	color: var(--bks-color-text-muted, #64748b) !important;
+	font-size: 11px !important;
+	font-weight: 700 !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.05em !important;
+	padding: 14px 20px !important;
+	white-space: nowrap !important;
+}
+
+.bks-data-table__table tbody tr {
+	background: #ffffff !important;
+	transition: background-color 100ms ease !important;
+	transform: none !important;
+}
+
+.bks-data-table__table tbody tr:hover {
+	background: var(--bks-color-surface-muted, #f8fafc) !important;
+	transform: none !important;
+}
+
+.bks-data-table__row--clickable {
+	cursor: pointer !important;
+}
+
+.bks-data-table__row--clickable:focus-visible {
+	outline: 2px solid var(--bks-color-brand, #2563eb) !important;
+	outline-offset: -2px !important;
+}
+
+.bks-data-table__cell {
+	padding: 16px 20px !important;
+	text-align: left !important;
+	vertical-align: middle !important;
+	color: var(--bks-color-text-strong, #0f172a) !important;
+	border-bottom: 1px solid var(--bks-color-border-soft, #f1f5f9) !important;
+	font-size: 14px !important;
+}
+
+.bks-data-table__table tbody tr:last-child .bks-data-table__cell {
+	border-bottom: 0 !important;
+}
+
+.bks-data-table__cell--center {
+	text-align: center !important;
+}
+
+.bks-data-table__cell--end {
+	text-align: right !important;
+}
+
+.bks-data-table__empty {
+	padding: 40px 20px !important;
+	text-align: center !important;
+}

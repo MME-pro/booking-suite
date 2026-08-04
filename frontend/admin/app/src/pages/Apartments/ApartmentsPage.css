@@ -1,0 +1,8 @@
+.bks-apartments-page {
+	display: flex !important;
+	flex-direction: column !important;
+}
+
+.bks-apartments-page__notice {
+	margin-bottom: var(--bks-space-5) !important;
+}

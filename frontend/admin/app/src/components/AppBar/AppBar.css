@@ -1,0 +1,76 @@
+/* ═══════════════════════════════════════════════
+   AppBar — Sleek Premium Management Header
+   ═══════════════════════════════════════════════ */
+
+.bks-app-bar {
+	position: sticky !important;
+	top: 32px !important;
+	z-index: 20 !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: space-between !important;
+	gap: var(--bks-space-4, 16px) !important;
+	padding: 16px 28px !important;
+	background: #ffffff !important;
+	border-bottom: 1px solid var(--bks-color-border, #e2e8f0) !important;
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+	transform: none !important;
+}
+
+.bks-app-bar__brand-wrap {
+	display: flex !important;
+	align-items: center !important;
+	gap: 14px !important;
+}
+
+.bks-app-bar__brand {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 42px !important;
+	height: 42px !important;
+	border-radius: 12px !important;
+	background: var(--bks-color-brand, #2563eb) !important;
+	color: #ffffff !important;
+	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25) !important;
+	transform: none !important;
+}
+
+.bks-app-bar__brand:hover {
+	transform: none !important;
+}
+
+.bks-app-bar__brand svg {
+	display: block !important;
+	width: 22px !important;
+	height: 22px !important;
+	fill: currentcolor !important;
+}
+
+.bks-app-bar__title-group {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 1px !important;
+}
+
+.bks-app-bar__title {
+	color: var(--bks-color-text-strong, #0f172a) !important;
+	font-size: 20px !important;
+	font-weight: 700 !important;
+	letter-spacing: -0.01em !important;
+	line-height: 1.2 !important;
+}
+
+.bks-app-bar__subtitle {
+	color: var(--bks-color-text-muted, #64748b) !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0.01em !important;
+}
+
+.bks-app-bar__actions {
+	display: flex !important;
+	align-items: center !important;
+	gap: var(--bks-space-3, 12px) !important;
+	margin-left: auto !important;
+}

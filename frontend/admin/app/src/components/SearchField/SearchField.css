@@ -1,0 +1,77 @@
+.bks-search-field {
+	position: relative !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	min-width: 300px !important;
+}
+
+.bks-search-field__icon {
+	position: absolute !important;
+	left: var(--bks-space-4) !important;
+	display: inline-flex !important;
+	color: var(--bks-color-text-subtle) !important;
+	pointer-events: none !important;
+}
+
+.bks-search-field__icon svg {
+	width: 16px !important;
+	height: 16px !important;
+	fill: currentcolor !important;
+}
+
+.bks-search-field__input {
+	width: 100% !important;
+	height: var(--bks-control-height) !important;
+	padding: 0 var(--bks-space-8) 0 var(--bks-space-7) !important;
+
+	/* Permanent brand border, matching Field. */
+	border: 1px solid var(--bks-color-brand) !important;
+	border-radius: var(--bks-radius-md) !important;
+	background: var(--bks-color-surface) !important;
+	box-shadow: var(--bks-shadow-xs) !important;
+	color: var(--bks-color-text-strong) !important;
+	font-family: inherit !important;
+	font-size: var(--bks-font-size-md) !important;
+	transition: box-shadow var(--bks-transition) !important;
+}
+
+.bks-search-field__input::placeholder {
+	color: var(--bks-color-text-subtle) !important;
+	opacity: 1 !important;
+}
+
+.bks-search-field__input::-webkit-search-cancel-button {
+	display: none !important;
+}
+
+.bks-search-field__input:focus {
+	outline: none !important;
+	box-shadow: var(--bks-shadow-focus) !important;
+}
+
+.bks-search-field__clear {
+	position: absolute !important;
+	right: var(--bks-space-2) !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 26px !important;
+	height: 26px !important;
+	padding: 0 !important;
+	border: 0 !important;
+	border-radius: var(--bks-radius-pill) !important;
+	background: transparent !important;
+	color: var(--bks-color-text-muted) !important;
+	cursor: pointer !important;
+}
+
+.bks-search-field__clear:hover {
+	background: var(--bks-color-surface-hover) !important;
+	color: var(--bks-color-text-strong) !important;
+}
+
+.bks-search-field__clear svg {
+	width: 13px !important;
+	height: 13px !important;
+	fill: currentcolor !important;
+}

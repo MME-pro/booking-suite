@@ -1,0 +1,72 @@
+.bks-toggle {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: var(--bks-space-2) !important;
+}
+
+.bks-toggle__input {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	opacity: 0 !important;
+}
+
+.bks-toggle__label {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: var(--bks-space-3) !important;
+	cursor: pointer !important;
+}
+
+.bks-toggle__track {
+	position: relative !important;
+	display: inline-block !important;
+	width: 44px !important;
+	height: 24px !important;
+	border-radius: var(--bks-radius-pill) !important;
+	background: var(--bks-color-border-strong) !important;
+	box-shadow: var(--bks-ring-inset) !important;
+	transition: background var(--bks-transition) !important;
+}
+
+.bks-toggle__thumb {
+	position: absolute !important;
+	top: 3px !important;
+	left: 3px !important;
+	width: 18px !important;
+	height: 18px !important;
+	border-radius: var(--bks-radius-pill) !important;
+	background: var(--bks-color-surface) !important;
+	box-shadow: 0 1px 3px rgb(28 28 60 / 24%) !important;
+	transition: transform var(--bks-transition) !important;
+}
+
+.bks-toggle__input:checked + .bks-toggle__label .bks-toggle__track {
+	background: var(--bks-gradient-brand) !important;
+}
+
+.bks-toggle__input:checked + .bks-toggle__label .bks-toggle__thumb {
+	transform: translateX(20px) !important;
+}
+
+.bks-toggle__input:focus-visible + .bks-toggle__label .bks-toggle__track {
+	box-shadow: var(--bks-shadow-focus) !important;
+}
+
+.bks-toggle__text {
+	color: var(--bks-color-text-strong) !important;
+	font-size: var(--bks-font-size-md) !important;
+	font-weight: var(--bks-font-weight-semibold) !important;
+}
+
+.bks-toggle__help {
+	display: inline-flex !important;
+	color: var(--bks-color-text-subtle) !important;
+	cursor: help !important;
+}
+
+.bks-toggle__help svg {
+	width: 16px !important;
+	height: 16px !important;
+	fill: currentcolor !important;
+}

@@ -1,0 +1,56 @@
+.bks-color-field {
+	display: flex !important;
+	align-items: center !important;
+	gap: var(--bks-space-2) !important;
+	width: 100% !important;
+	padding-right: var(--bks-space-3) !important;
+}
+
+.bks-color-field__text {
+	width: 100% !important;
+	min-height: calc(var(--bks-field-height) - 2px) !important;
+	padding: 0 var(--bks-space-4) !important;
+	border: 0 !important;
+	background: transparent !important;
+	color: var(--bks-color-text-strong) !important;
+	font-family: inherit !important;
+	font-size: var(--bks-font-size-md) !important;
+	font-weight: var(--bks-font-weight-medium) !important;
+	text-transform: uppercase !important;
+}
+
+.bks-color-field__text:focus {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+.bks-color-field__swatch {
+	position: relative !important;
+	display: inline-flex !important;
+	flex-shrink: 0 !important;
+	width: 32px !important;
+	height: 32px !important;
+	border-radius: var(--bks-radius-sm) !important;
+	background: var(--bks-color-surface-muted) !important;
+	padding: 5px !important;
+}
+
+/* The real picker sits invisibly over the dot so the dot stays the target. */
+.bks-color-field__picker {
+	position: absolute !important;
+	inset: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	padding: 0 !important;
+	border: 0 !important;
+	opacity: 0 !important;
+	cursor: pointer !important;
+}
+
+.bks-color-field__dot {
+	width: 100% !important;
+	height: 100% !important;
+	border-radius: var(--bks-radius-pill) !important;
+	box-shadow: inset 0 0 0 1px rgb(28 28 60 / 12%), 0 1px 2px rgb(28 28 60 / 20%) !important;
+	pointer-events: none !important;
+}

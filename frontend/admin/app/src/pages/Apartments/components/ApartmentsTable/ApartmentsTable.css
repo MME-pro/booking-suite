@@ -1,0 +1,33 @@
+.bks-apartments-table__name {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: var(--bks-space-3) !important;
+	color: var(--bks-color-text-strong) !important;
+	font-weight: var(--bks-font-weight-semibold) !important;
+}
+
+/* Colour chip carries the apartment's calendar colour. */
+.bks-apartments-table__swatch {
+	width: 32px !important;
+	height: 32px !important;
+	border-radius: var(--bks-radius-sm) !important;
+	box-shadow: inset 0 0 0 1px rgb(28 28 60 / 12%), var(--bks-shadow-xs) !important;
+	flex-shrink: 0 !important;
+}
+
+/* Cover photo, ringed in the apartment's calendar colour. */
+.bks-apartments-table__thumb {
+	width: 40px !important;
+	height: 40px !important;
+	border: 2px solid transparent !important;
+	border-radius: var(--bks-radius-sm) !important;
+	object-fit: cover !important;
+	flex-shrink: 0 !important;
+}
+
+.bks-apartments-table__actions {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: flex-end !important;
+	gap: var(--bks-space-2) !important;
+}

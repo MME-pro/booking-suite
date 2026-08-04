@@ -1,0 +1,128 @@
+.bks-button {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: var(--bks-space-2) !important;
+	height: var(--bks-control-height) !important;
+	padding: 0 var(--bks-space-5) !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--bks-radius-md) !important;
+	background: transparent !important;
+	color: var(--bks-color-text) !important;
+	font-family: inherit !important;
+	font-size: var(--bks-font-size-md) !important;
+	font-weight: var(--bks-font-weight-semibold) !important;
+	line-height: 1 !important;
+	white-space: nowrap !important;
+	text-decoration: none !important;
+	cursor: pointer !important;
+
+	/* Hover moves background and elevation only — never the border. */
+	transition: background var(--bks-transition), box-shadow var(--bks-transition), color var(--bks-transition), transform var(--bks-transition) !important;
+}
+
+.bks-button:disabled {
+	opacity: 0.45 !important;
+	cursor: not-allowed !important;
+	box-shadow: none !important;
+	transform: none !important;
+}
+
+.bks-button:focus-visible {
+	box-shadow: var(--bks-shadow-focus) !important;
+}
+
+.bks-button--sm {
+	height: var(--bks-control-height-sm) !important;
+	padding: 0 var(--bks-space-3) !important;
+	font-size: var(--bks-font-size-sm) !important;
+}
+
+.bks-button--icon-only {
+	width: var(--bks-control-height) !important;
+	padding: 0 !important;
+}
+
+.bks-button--sm.bks-button--icon-only {
+	width: var(--bks-control-height-sm) !important;
+}
+
+.bks-button__icon {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+.bks-button__icon svg {
+	display: block !important;
+	width: 16px !important;
+	height: 16px !important;
+	fill: currentcolor !important;
+}
+
+/* Variants */
+
+.bks-button--primary {
+	background: var(--bks-gradient-brand) !important;
+	border-color: transparent !important;
+	color: var(--bks-color-text-inverse) !important;
+	box-shadow: var(--bks-shadow-brand) !important;
+}
+
+.bks-button--primary:hover:not(:disabled) {
+	background: var(--bks-gradient-brand-hover) !important;
+	box-shadow: 0 6px 16px rgb(79 70 229 / 32%) !important;
+	transform: translateY(-1px) !important;
+}
+
+.bks-button--primary:active:not(:disabled) {
+	background: var(--bks-color-brand-active) !important;
+	box-shadow: var(--bks-shadow-xs) !important;
+	transform: translateY(0) !important;
+}
+
+.bks-button--secondary {
+	background: var(--bks-color-surface) !important;
+	border-color: var(--bks-color-border) !important;
+	color: var(--bks-color-text) !important;
+	box-shadow: var(--bks-shadow-xs) !important;
+}
+
+.bks-button--secondary:hover:not(:disabled) {
+	background: var(--bks-color-surface-hover) !important;
+	box-shadow: var(--bks-shadow-sm) !important;
+}
+
+.bks-button--tertiary {
+	color: var(--bks-color-text-muted) !important;
+}
+
+.bks-button--tertiary:hover:not(:disabled) {
+	background: var(--bks-color-surface-hover) !important;
+	color: var(--bks-color-text) !important;
+}
+
+.bks-button--danger {
+	color: var(--bks-color-danger) !important;
+}
+
+.bks-button--danger:hover:not(:disabled) {
+	background: var(--bks-color-danger-soft) !important;
+}
+
+/*
+ * Promotional emphasis only — the reference design uses this gradient once,
+ * for a single "New Update" pill. Routine actions use --primary.
+ */
+.bks-button--accent {
+	background: var(--bks-gradient-accent) !important;
+	border-color: transparent !important;
+	border-radius: var(--bks-radius-pill) !important;
+	color: var(--bks-color-text-inverse) !important;
+	box-shadow: 0 4px 12px rgb(236 72 153 / 28%) !important;
+}
+
+.bks-button--accent:hover:not(:disabled) {
+	filter: brightness(1.05) !important;
+	transform: translateY(-1px) !important;
+}

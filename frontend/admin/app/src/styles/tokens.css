@@ -1,0 +1,109 @@
+/**
+ * Premium Admin Design Tokens.
+ *
+ * Modern luxury hospitality console theme: crisp slate typography,
+ * sapphire brand accents, subtle borders, and zero-motion friction.
+ */
+
+.bks-root,
+:root {
+
+	/* Brand — Soothing modern sapphire blue */
+	--bks-color-brand: #2563eb;
+	--bks-color-brand-hover: #1d4ed8;
+	--bks-color-brand-active: #1e40af;
+	--bks-color-brand-soft: #eff6ff;
+	--bks-color-brand-softer: #f8fafc;
+	--bks-color-brand-border: #bfdbfe;
+	--bks-gradient-brand: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+	--bks-gradient-brand-hover: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+
+	/* Accent */
+	--bks-color-accent: #0284c7;
+	--bks-gradient-accent: linear-gradient(90deg, #0284c7 0%, #2563eb 100%);
+
+	/* Status */
+	--bks-color-success: #16a34a;
+	--bks-color-success-soft: #f0fdf4;
+	--bks-color-success-border: #bbf7d0;
+	--bks-color-warning: #d97706;
+	--bks-color-warning-soft: #fffbeb;
+	--bks-color-warning-border: #fde68a;
+	--bks-color-danger: #dc2626;
+	--bks-color-danger-soft: #fef2f2;
+	--bks-color-danger-border: #fecaca;
+
+	/* Surfaces */
+	--bks-color-canvas: #f8fafc;
+	--bks-color-surface: #ffffff;
+	--bks-color-surface-sunken: #f8fafc;
+	--bks-color-surface-muted: #f1f5f9;
+	--bks-color-surface-hover: #f8fafc;
+	--bks-gradient-surface: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+	--bks-gradient-header: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+
+	/* Text — Crisp slate typography */
+	--bks-color-text: #334155;
+	--bks-color-text-strong: #0f172a;
+	--bks-color-text-muted: #64748b;
+	--bks-color-text-subtle: #94a3b8;
+	--bks-color-text-inverse: #ffffff;
+
+	/* Lines */
+	--bks-color-border: #e2e8f0;
+	--bks-color-border-soft: #f1f5f9;
+	--bks-color-border-strong: #cbd5e1;
+	--bks-color-focus: #2563eb;
+
+	/* Spacing scale */
+	--bks-space-1: 4px;
+	--bks-space-2: 8px;
+	--bks-space-3: 12px;
+	--bks-space-4: 16px;
+	--bks-space-5: 20px;
+	--bks-space-6: 24px;
+	--bks-space-7: 32px;
+	--bks-space-8: 48px;
+
+	/* Radius */
+	--bks-radius-sm: 8px;
+	--bks-radius-md: 10px;
+	--bks-radius-lg: 14px;
+	--bks-radius-xl: 18px;
+	--bks-radius-pill: 999px;
+
+	/* Typography */
+	--bks-font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	--bks-font-size-xs: 11px;
+	--bks-font-size-sm: 12px;
+	--bks-font-size-md: 14px;
+	--bks-font-size-lg: 16px;
+	--bks-font-size-xl: 20px;
+	--bks-font-size-display: 28px;
+	--bks-font-weight-regular: 400;
+	--bks-font-weight-medium: 500;
+	--bks-font-weight-semibold: 600;
+	--bks-font-weight-bold: 700;
+	--bks-line-height-tight: 1.25;
+	--bks-line-height-base: 1.5;
+	--bks-letter-spacing-caps: 0.05em;
+	--bks-letter-spacing-tight: -0.01em;
+
+	/* Elevation */
+	--bks-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+	--bks-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+	--bks-shadow-md: 0 4px 14px rgba(15, 23, 42, 0.06);
+	--bks-shadow-lg: 0 20px 48px rgba(15, 23, 42, 0.16);
+	--bks-shadow-brand: 0 4px 12px rgba(37, 99, 235, 0.18);
+	--bks-shadow-focus: 0 0 0 3.5px rgba(37, 99, 235, 0.15);
+
+	/* Motion */
+	--bks-transition: 100ms ease;
+
+	/* Layout */
+	--bks-app-max-width: none;
+	--bks-control-height: 40px;
+	--bks-control-height-sm: 34px;
+	--bks-field-height: 44px;
+	--bks-admin-gutter: 20px;
+}

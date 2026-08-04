@@ -1,0 +1,83 @@
+.bks-checkbox-row {
+	display: flex !important;
+	align-items: center !important;
+	gap: var(--bks-space-2) !important;
+	padding: var(--bks-space-4) var(--bks-space-5) !important;
+	border: 1px solid var(--bks-color-border) !important;
+	border-radius: var(--bks-radius-md) !important;
+	background: var(--bks-color-surface-sunken) !important;
+	transition: background var(--bks-transition) !important;
+}
+
+.bks-checkbox-row:hover {
+	background: var(--bks-color-surface-hover) !important;
+}
+
+.bks-checkbox-row__input {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	opacity: 0 !important;
+}
+
+.bks-checkbox-row__label {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: var(--bks-space-3) !important;
+	cursor: pointer !important;
+}
+
+.bks-checkbox-row__box {
+	position: relative !important;
+	display: inline-block !important;
+	width: 20px !important;
+	height: 20px !important;
+	border: 1px solid var(--bks-color-border-strong) !important;
+	border-radius: var(--bks-radius-sm) !important;
+	background: var(--bks-color-surface) !important;
+	box-shadow: var(--bks-shadow-xs) !important;
+	transition: background var(--bks-transition), border-color var(--bks-transition) !important;
+}
+
+/* Inner square rather than a tick, matching the reference design. */
+.bks-checkbox-row__box::after {
+	content: "" !important;
+	position: absolute !important;
+	inset: 4px !important;
+	border-radius: 2px !important;
+	background: var(--bks-color-surface) !important;
+	opacity: 0 !important;
+	transition: opacity var(--bks-transition) !important;
+}
+
+.bks-checkbox-row__input:checked + .bks-checkbox-row__label .bks-checkbox-row__box {
+	border-color: transparent !important;
+	background: var(--bks-gradient-brand) !important;
+	box-shadow: var(--bks-shadow-brand) !important;
+}
+
+.bks-checkbox-row__input:checked + .bks-checkbox-row__label .bks-checkbox-row__box::after {
+	opacity: 1 !important;
+}
+
+.bks-checkbox-row__input:focus-visible + .bks-checkbox-row__label .bks-checkbox-row__box {
+	box-shadow: var(--bks-shadow-focus) !important;
+}
+
+.bks-checkbox-row__text {
+	color: var(--bks-color-text-strong) !important;
+	font-size: var(--bks-font-size-md) !important;
+	font-weight: var(--bks-font-weight-semibold) !important;
+}
+
+.bks-checkbox-row__help {
+	display: inline-flex !important;
+	color: var(--bks-color-text-subtle) !important;
+	cursor: help !important;
+}
+
+.bks-checkbox-row__help svg {
+	width: 16px !important;
+	height: 16px !important;
+	fill: currentcolor !important;
+}

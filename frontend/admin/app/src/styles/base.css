@@ -1,0 +1,92 @@
+/**
+ * Admin Base styles and input control resets.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.bks-root,
+:root {
+	box-sizing: border-box;
+	color: var(--bks-color-text, #334155);
+	font-family: var(--bks-font-family, 'Inter', sans-serif);
+	font-size: var(--bks-font-size-md, 14px);
+	line-height: var(--bks-line-height-base, 1.5);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.bks-root *,
+.bks-root *::before,
+.bks-root *::after {
+	box-sizing: inherit;
+}
+
+/* Global Form Control Overrides for Premium Aesthetic */
+.bks-root input[type="text"],
+.bks-root input[type="number"],
+.bks-root input[type="email"],
+.bks-root input[type="tel"],
+.bks-root input[type="date"],
+.bks-root select,
+.bks-root textarea {
+	height: var(--bks-field-height, 44px) !important;
+	padding: 10px 14px !important;
+	border: 1.5px solid var(--bks-color-border, #e2e8f0) !important;
+	border-radius: var(--bks-radius-xs, 8px) !important;
+	background-color: var(--bks-color-surface-muted, #f8fafc) !important;
+	color: var(--bks-color-text-strong, #0f172a) !important;
+	font-family: var(--bks-font-family, 'Inter', sans-serif) !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+	line-height: 1.4 !important;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03) !important;
+	transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease !important;
+}
+
+.bks-root textarea {
+	height: auto !important;
+	min-height: 90px !important;
+	padding: 12px 14px !important;
+}
+
+.bks-root input:hover:not(:disabled),
+.bks-root select:hover:not(:disabled),
+.bks-root textarea:hover:not(:disabled) {
+	border-color: var(--bks-color-border-strong, #cbd5e1) !important;
+	background-color: #ffffff !important;
+}
+
+.bks-root input:focus,
+.bks-root select:focus,
+.bks-root textarea:focus {
+	border-color: var(--bks-color-brand, #2563eb) !important;
+	background-color: #ffffff !important;
+	outline: none !important;
+	box-shadow: 0 0 0 3.5px var(--bks-shadow-focus, rgba(37, 99, 235, 0.15)) !important;
+}
+
+/* Heading Resets */
+.bks-root h1,
+.bks-root h2,
+.bks-root h3,
+.bks-root h4,
+.bks-root p {
+	margin: 0;
+}
+
+.bks-root img {
+	max-width: 100%;
+	display: block;
+}
+
+.bks-sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}

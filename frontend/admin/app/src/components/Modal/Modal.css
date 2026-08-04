@@ -1,0 +1,125 @@
+/* Above wp-admin's admin bar (z-index 99100) and its menu. */
+.bks-modal__overlay {
+	position: fixed !important;
+	inset: 0 !important;
+	z-index: 100000 !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	padding: var(--bks-space-6) !important;
+	background: rgb(18 18 43 / 55%) !important;
+	backdrop-filter: blur(3px) !important;
+}
+
+.bks-modal {
+	display: flex !important;
+	flex-direction: column !important;
+	width: 100% !important;
+	max-width: 1120px !important;
+	max-height: 100% !important;
+	border-radius: var(--bks-radius-xl) !important;
+	background: var(--bks-color-canvas) !important;
+	box-shadow: var(--bks-shadow-lg) !important;
+	overflow: hidden !important;
+}
+
+.bks-modal__header {
+	position: relative !important;
+	display: flex !important;
+	align-items: center !important;
+	gap: var(--bks-space-4) !important;
+	flex-shrink: 0 !important;
+
+	/* Right padding keeps the heading clear of the pinned close button. */
+	padding: var(--bks-space-5) var(--bks-space-8) var(--bks-space-5) var(--bks-space-6) !important;
+	background: var(--bks-gradient-header) !important;
+	border-bottom: 1px solid var(--bks-color-border) !important;
+}
+
+.bks-modal__icon {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	flex-shrink: 0 !important;
+	width: 44px !important;
+	height: 44px !important;
+	border-radius: var(--bks-radius-md) !important;
+	background: var(--bks-gradient-brand) !important;
+	color: var(--bks-color-text-inverse) !important;
+	box-shadow: var(--bks-shadow-brand) !important;
+}
+
+.bks-modal__icon svg {
+	width: 22px !important;
+	height: 22px !important;
+	fill: currentcolor !important;
+}
+
+.bks-modal__heading {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 2px !important;
+	min-width: 0 !important;
+}
+
+.bks-modal__title {
+	color: var(--bks-color-text-strong) !important;
+	font-size: var(--bks-font-size-xl) !important;
+	font-weight: var(--bks-font-weight-bold) !important;
+	letter-spacing: var(--bks-letter-spacing-tight) !important;
+	line-height: var(--bks-line-height-tight) !important;
+}
+
+.bks-modal__description {
+	color: var(--bks-color-text-muted) !important;
+	font-size: var(--bks-font-size-md) !important;
+}
+
+/* Pinned to the sheet's top-right corner, not floated in the header row. */
+.bks-modal__close {
+	position: absolute !important;
+	top: var(--bks-space-3) !important;
+	right: var(--bks-space-3) !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	flex-shrink: 0 !important;
+	width: 36px !important;
+	height: 36px !important;
+	padding: 0 !important;
+	border: 1px solid var(--bks-color-border) !important;
+	border-radius: var(--bks-radius-pill) !important;
+	background: var(--bks-color-surface) !important;
+	color: var(--bks-color-text-muted) !important;
+	cursor: pointer !important;
+	transition: background var(--bks-transition), color var(--bks-transition) !important;
+}
+
+.bks-modal__close:hover {
+	background: var(--bks-color-surface-hover) !important;
+	color: var(--bks-color-text-strong) !important;
+}
+
+.bks-modal__close svg {
+	width: 14px !important;
+	height: 14px !important;
+	fill: currentcolor !important;
+}
+
+.bks-modal__body {
+	flex: 1 !important;
+	padding: var(--bks-space-6) !important;
+	overflow-y: auto !important;
+}
+
+.bks-modal__footer {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: flex-end !important;
+	gap: var(--bks-space-3) !important;
+	flex-shrink: 0 !important;
+	padding: var(--bks-space-4) var(--bks-space-6) !important;
+	background: var(--bks-color-surface) !important;
+	border-top: 1px solid var(--bks-color-border) !important;
+	box-shadow: 0 -4px 12px rgb(28 28 60 / 4%) !important;
+}

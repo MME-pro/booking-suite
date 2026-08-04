@@ -1,0 +1,127 @@
+/**
+ * Apartment meta box. Deliberately close to core admin styling — this sits
+ * inside the post editor, not inside the Booking Suite app.
+ */
+
+.bks-meta__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 16px;
+	margin-bottom: 8px;
+}
+
+.bks-meta__field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin: 0;
+}
+
+.bks-meta__field label,
+.bks-meta__label {
+	font-weight: 600;
+}
+
+.bks-meta__field--wide {
+	margin-bottom: 16px;
+}
+
+.bks-meta__field--wide input[type="text"] {
+	width: 100%;
+	max-width: 520px;
+	font-size: 15px;
+}
+
+.bks-meta__field input[type="text"],
+.bks-meta__field input[type="number"],
+.bks-meta__field select {
+	width: 100%;
+	max-width: none;
+}
+
+.bks-meta__field input[type="color"] {
+	width: 60px;
+	height: 32px;
+	padding: 2px;
+}
+
+.bks-meta__rates {
+	padding: 14px 16px;
+	margin-bottom: 12px;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	background: #f6f7f7;
+}
+
+.bks-meta__grid--rates {
+	margin-bottom: 4px;
+}
+
+.bks-meta__toggles {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	padding: 12px 0;
+	border-top: 1px solid #e0e0e0;
+	border-bottom: 1px solid #e0e0e0;
+	margin-bottom: 12px;
+}
+
+.bks-meta__gallery {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+}
+
+.bks-meta__thumbs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.bks-meta__thumbs li {
+	position: relative;
+	width: 72px;
+	height: 72px;
+	margin: 0;
+}
+
+.bks-meta__thumbs img {
+	width: 100%;
+	height: 100%;
+	border-radius: 4px;
+	object-fit: cover;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+/* The first photo doubles as the featured image. */
+.bks-meta__thumbs li:first-child img {
+	box-shadow: 0 0 0 2px #3858e9;
+}
+
+.bks-meta__remove {
+	position: absolute;
+	top: -7px;
+	right: -7px;
+	width: 20px;
+	height: 20px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: #1d2327;
+	color: #fff;
+	font-size: 14px;
+	line-height: 18px;
+	cursor: pointer;
+}
+
+@media (max-width: 782px) {
+
+	.bks-meta__grid {
+		grid-template-columns: 1fr;
+	}
+}

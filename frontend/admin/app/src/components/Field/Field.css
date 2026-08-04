@@ -1,0 +1,60 @@
+.bks-field {
+	position: relative !important;
+	display: block !important;
+
+	/*
+	 * The brand border is permanent, not a focus-only state. Focus adds the
+	 * ring instead, so focus is still distinguishable. Hover changes nothing.
+	 */
+	border: 1px solid var(--bks-color-brand) !important;
+	border-radius: var(--bks-radius-md) !important;
+	background: var(--bks-color-surface) !important;
+	box-shadow: var(--bks-shadow-xs) !important;
+	transition: box-shadow var(--bks-transition) !important;
+}
+
+.bks-field:focus-within {
+	box-shadow: var(--bks-shadow-focus) !important;
+}
+
+/* Both corner slots mask the border so they read as notches cut into it. */
+.bks-field__label,
+.bks-field__adornment {
+	position: absolute !important;
+	top: 0 !important;
+	z-index: 1 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 3px !important;
+	max-width: calc(100% - var(--bks-space-7)) !important;
+	padding: 0 var(--bks-space-2) !important;
+	background: var(--bks-color-surface) !important;
+	color: var(--bks-color-text-muted) !important;
+	font-size: var(--bks-font-size-xs) !important;
+	font-weight: var(--bks-font-weight-semibold) !important;
+	letter-spacing: 0.01em !important;
+	line-height: 1 !important;
+	white-space: nowrap !important;
+	transform: translateY(-50%) !important;
+}
+
+.bks-field__label {
+	left: var(--bks-space-4) !important;
+	color: var(--bks-color-brand) !important;
+}
+
+.bks-field__adornment {
+	right: var(--bks-space-4) !important;
+}
+
+.bks-field__required {
+	color: var(--bks-color-danger) !important;
+	font-size: var(--bks-font-size-md) !important;
+	line-height: 1 !important;
+}
+
+.bks-field__control {
+	display: flex !important;
+	align-items: center !important;
+	min-height: var(--bks-field-height) !important;
+}

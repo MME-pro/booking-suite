@@ -1,0 +1,41 @@
+.bks-text-input {
+	width: 100% !important;
+	min-height: calc(var(--bks-field-height) - 2px) !important;
+	padding: 0 var(--bks-space-4) !important;
+	border: 0 !important;
+	border-radius: inherit !important;
+	background: transparent !important;
+	color: var(--bks-color-text-strong) !important;
+	font-family: inherit !important;
+	font-size: var(--bks-font-size-md) !important;
+	font-weight: var(--bks-font-weight-medium) !important;
+}
+
+.bks-text-input:focus {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+.bks-text-input::placeholder {
+	color: var(--bks-color-text-subtle) !important;
+	font-weight: var(--bks-font-weight-regular) !important;
+	opacity: 1 !important;
+}
+
+.bks-text-input--multiline {
+	min-height: 180px !important;
+	padding: var(--bks-space-4) !important;
+	line-height: var(--bks-line-height-base) !important;
+	resize: vertical !important;
+}
+
+/* The spinner competes with the notched border on short numeric fields. */
+.bks-text-input[type="number"]::-webkit-outer-spin-button,
+.bks-text-input[type="number"]::-webkit-inner-spin-button {
+	margin: 0 !important;
+	appearance: none !important;
+}
+
+.bks-text-input[type="number"] {
+	appearance: textfield !important;
+}

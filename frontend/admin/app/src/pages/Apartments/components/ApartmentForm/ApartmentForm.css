@@ -1,0 +1,68 @@
+.bks-apartment-form {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: var(--bks-space-5) !important;
+}
+
+.bks-apartment-form__identity {
+	display: flex !important;
+	align-items: center !important;
+	gap: var(--bks-space-7) !important;
+	flex-wrap: wrap !important;
+}
+
+.bks-apartment-form__identity-fields {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: var(--bks-space-6) !important;
+	flex: 1 !important;
+	min-width: 320px !important;
+}
+
+.bks-apartment-form__row {
+	display: flex !important;
+	gap: var(--bks-space-5) !important;
+	flex-wrap: wrap !important;
+}
+
+.bks-apartment-form__row > * {
+	flex: 1 !important;
+	min-width: 220px !important;
+}
+
+/* The colour value is short; the name should take the rest of the row. */
+.bks-apartment-form__row--name .bks-apartment-form__colour {
+	flex: 0 0 210px !important;
+}
+
+.bks-apartment-form__toggle-row {
+	display: flex !important;
+	align-items: center !important;
+	padding: var(--bks-space-3) var(--bks-space-4) !important;
+	border: 1px solid var(--bks-color-border) !important;
+	border-radius: var(--bks-radius-md) !important;
+	background: var(--bks-color-surface-sunken) !important;
+}
+
+.bks-apartment-form__description {
+	width: 100% !important;
+}
+
+.bks-apartment-form__help {
+	display: inline-flex !important;
+	color: var(--bks-color-text-subtle) !important;
+	cursor: help !important;
+}
+
+.bks-apartment-form__help svg {
+	width: 14px !important;
+	height: 14px !important;
+	fill: currentcolor !important;
+}
+
+/* Pushes the footer buttons to the far edge. */
+.bks-apartment-form__footnote {
+	margin-right: auto !important;
+	color: var(--bks-color-text-subtle) !important;
+	font-size: var(--bks-font-size-sm) !important;
+}

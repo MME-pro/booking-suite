@@ -1,0 +1,129 @@
+.bks-image-upload {
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: center !important;
+	gap: var(--bks-space-2) !important;
+}
+
+.bks-image-upload__zone {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 168px !important;
+	height: 168px !important;
+	padding: var(--bks-space-4) !important;
+	border: 2px dashed var(--bks-color-brand-border) !important;
+	border-radius: var(--bks-radius-pill) !important;
+	background: radial-gradient(circle at 50% 35%, #fff 0%, var(--bks-color-brand-soft) 100%) !important;
+	box-shadow: var(--bks-shadow-xs) !important;
+	font-family: inherit !important;
+	cursor: pointer !important;
+	overflow: hidden !important;
+	transition: box-shadow var(--bks-transition), transform var(--bks-transition) !important;
+}
+
+.bks-image-upload__zone:hover {
+	box-shadow: var(--bks-shadow-md) !important;
+	transform: translateY(-2px) !important;
+}
+
+.bks-image-upload__zone:focus-visible {
+	outline: 2px solid var(--bks-color-focus) !important;
+	outline-offset: 3px !important;
+}
+
+.bks-image-upload__placeholder {
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: center !important;
+	gap: var(--bks-space-1) !important;
+	color: var(--bks-color-brand) !important;
+	text-align: center !important;
+}
+
+.bks-image-upload__placeholder svg {
+	width: 26px !important;
+	height: 26px !important;
+	margin-bottom: var(--bks-space-2) !important;
+	fill: currentcolor !important;
+}
+
+.bks-image-upload__label {
+	font-size: var(--bks-font-size-md) !important;
+	font-weight: var(--bks-font-weight-bold) !important;
+}
+
+.bks-image-upload__hint {
+	color: var(--bks-color-text-muted) !important;
+	font-size: var(--bks-font-size-xs) !important;
+	letter-spacing: var(--bks-letter-spacing-caps) !important;
+}
+
+.bks-image-upload__preview {
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover !important;
+	border-radius: var(--bks-radius-pill) !important;
+}
+
+.bks-image-upload--filled .bks-image-upload__zone {
+	padding: 0 !important;
+	border-style: solid !important;
+	border-color: var(--bks-color-surface) !important;
+	box-shadow: var(--bks-shadow-md) !important;
+}
+
+.bks-image-upload__count {
+	color: var(--bks-color-text-muted) !important;
+	font-size: var(--bks-font-size-xs) !important;
+	font-weight: var(--bks-font-weight-medium) !important;
+}
+
+/* Every photo after the cover, as a removable strip. */
+.bks-image-upload__thumbs {
+	display: flex !important;
+	flex-wrap: wrap !important;
+	justify-content: center !important;
+	gap: var(--bks-space-2) !important;
+	max-width: 180px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	list-style: none !important;
+}
+
+.bks-image-upload__thumb {
+	position: relative !important;
+	width: 48px !important;
+	height: 48px !important;
+}
+
+.bks-image-upload__thumb img {
+	width: 100% !important;
+	height: 100% !important;
+	border-radius: var(--bks-radius-sm) !important;
+	object-fit: cover !important;
+	box-shadow: var(--bks-ring-inset) !important;
+}
+
+.bks-image-upload__remove {
+	position: absolute !important;
+	top: -6px !important;
+	right: -6px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 20px !important;
+	height: 20px !important;
+	padding: 0 !important;
+	border: 0 !important;
+	border-radius: var(--bks-radius-pill) !important;
+	background: var(--bks-color-text-strong) !important;
+	color: var(--bks-color-text-inverse) !important;
+	cursor: pointer !important;
+}
+
+.bks-image-upload__remove svg {
+	width: 9px !important;
+	height: 9px !important;
+	fill: currentcolor !important;
+}

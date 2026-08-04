@@ -1,0 +1,52 @@
+.bks-badge {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: var(--bks-space-2) !important;
+	padding: 4px var(--bks-space-3) !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--bks-radius-pill) !important;
+	font-size: var(--bks-font-size-xs) !important;
+	font-weight: var(--bks-font-weight-bold) !important;
+	letter-spacing: var(--bks-letter-spacing-caps) !important;
+	text-transform: uppercase !important;
+	white-space: nowrap !important;
+}
+
+/* Status dot, so the state reads without relying on colour alone. */
+.bks-badge::before {
+	content: "" !important;
+	width: 6px !important;
+	height: 6px !important;
+	border-radius: var(--bks-radius-pill) !important;
+	background: currentcolor !important;
+}
+
+.bks-badge--neutral {
+	background: var(--bks-color-surface-muted) !important;
+	border-color: var(--bks-color-border) !important;
+	color: var(--bks-color-text-muted) !important;
+}
+
+.bks-badge--success {
+	background: var(--bks-color-success-soft) !important;
+	border-color: var(--bks-color-success-border) !important;
+	color: var(--bks-color-success) !important;
+}
+
+.bks-badge--warning {
+	background: var(--bks-color-warning-soft) !important;
+	border-color: var(--bks-color-warning-border) !important;
+	color: var(--bks-color-warning) !important;
+}
+
+.bks-badge--danger {
+	background: var(--bks-color-danger-soft) !important;
+	border-color: var(--bks-color-danger-border) !important;
+	color: var(--bks-color-danger) !important;
+}
+
+.bks-badge--brand {
+	background: var(--bks-color-brand-soft) !important;
+	border-color: var(--bks-color-brand-border) !important;
+	color: var(--bks-color-brand) !important;
+}

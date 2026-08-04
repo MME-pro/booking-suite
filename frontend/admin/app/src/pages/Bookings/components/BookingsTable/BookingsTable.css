@@ -1,0 +1,123 @@
+/* ═══════════════════════════════════════════════
+   Bookings Table Styling (Classy Admin Aesthetics)
+   ═══════════════════════════════════════════════ */
+
+.bks-bookings-table-wrapper {
+	width: 100% !important;
+}
+
+.bks-bookings-table__reference {
+	font-family: ui-monospace, sfmono-regular, menlo, monospace !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	color: var(--bks-color-brand, #2563eb) !important;
+	padding: 4px 8px !important;
+	background: var(--bks-color-brand-soft, #eff6ff) !important;
+	border-radius: 6px !important;
+	display: inline-block !important;
+}
+
+.bks-bookings-table__guest-cell {
+	display: flex !important;
+	align-items: center !important;
+	gap: 10px !important;
+}
+
+.bks-bookings-table__avatar {
+	width: 34px !important;
+	height: 34px !important;
+	border-radius: 50% !important;
+	background: var(--bks-color-brand, #2563eb) !important;
+	color: #fff !important;
+	font-size: 12px !important;
+	font-weight: 700 !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	flex-shrink: 0 !important;
+}
+
+.bks-bookings-table__guest {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 1px !important;
+}
+
+.bks-bookings-table__guest strong {
+	color: var(--bks-color-text-strong, #0f172a) !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+}
+
+.bks-bookings-table__guest a {
+	color: var(--bks-color-text-muted, #64748b) !important;
+	font-size: 12px !important;
+	text-decoration: none !important;
+}
+
+.bks-bookings-table__guest a:hover {
+	color: var(--bks-color-brand, #2563eb) !important;
+	text-decoration: underline !important;
+}
+
+.bks-bookings-table__apartment {
+	font-size: 14px !important;
+	font-weight: 600 !important;
+	color: var(--bks-color-text-strong, #0f172a) !important;
+}
+
+.bks-bookings-table__stay {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 2px !important;
+	font-size: 13px !important;
+}
+
+.bks-bookings-table__stay-end {
+	color: var(--bks-color-text-muted, #64748b) !important;
+	font-size: 12px !important;
+}
+
+.bks-bookings-table__guests-count {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 26px !important;
+	height: 26px !important;
+	border-radius: 50% !important;
+	background: var(--bks-color-surface-muted, #f1f5f9) !important;
+	color: var(--bks-color-text-strong, #0f172a) !important;
+	font-size: 12px !important;
+	font-weight: 700 !important;
+}
+
+.bks-bookings-table__total {
+	font-size: 14px !important;
+	font-weight: 700 !important;
+	color: var(--bks-color-text-strong, #0f172a) !important;
+}
+
+.bks-bookings-table__payment-cell {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 4px !important;
+}
+
+.bks-bookings-table__proof-badge {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 4px !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	color: #16a34a !important;
+	background: #f0fdf4 !important;
+	border: 1px solid rgba(22, 163, 74, 0.2) !important;
+	padding: 2px 6px !important;
+	border-radius: 4px !important;
+	width: fit-content !important;
+}
+
+.bks-bookings-table__missing {
+	color: var(--bks-color-text-subtle, #94a3b8) !important;
+	font-style: italic !important;
+}

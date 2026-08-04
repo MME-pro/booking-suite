@@ -1,0 +1,34 @@
+.bks-segmented {
+	display: inline-flex !important;
+	gap: var(--bks-space-1) !important;
+	padding: var(--bks-space-1) !important;
+	border: 1px solid var(--bks-color-border) !important;
+	border-radius: var(--bks-radius-md) !important;
+	background: var(--bks-color-surface-muted) !important;
+	box-shadow: var(--bks-ring-inset) !important;
+}
+
+.bks-segmented__option {
+	min-width: 92px !important;
+	height: var(--bks-control-height-sm) !important;
+	padding: 0 var(--bks-space-4) !important;
+	border: 0 !important;
+	border-radius: var(--bks-radius-sm) !important;
+	background: transparent !important;
+	color: var(--bks-color-text-muted) !important;
+	font-family: inherit !important;
+	font-size: var(--bks-font-size-md) !important;
+	font-weight: var(--bks-font-weight-semibold) !important;
+	cursor: pointer !important;
+	transition: background var(--bks-transition), color var(--bks-transition) !important;
+}
+
+.bks-segmented__option:hover:not(.is-selected) {
+	color: var(--bks-color-text-strong) !important;
+}
+
+.bks-segmented__option.is-selected {
+	background: var(--bks-color-surface) !important;
+	color: var(--bks-color-brand) !important;
+	box-shadow: var(--bks-shadow-sm) !important;
+}

@@ -1,0 +1,8 @@
+.bks-dashboard-page {
+	display: flex !important;
+	flex-direction: column !important;
+}
+
+.bks-dashboard-page__notice {
+	margin-bottom: var(--bks-space-5) !important;
+}

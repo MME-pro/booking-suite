@@ -1,0 +1,19 @@
+{
+  "name": "booking-suite-admin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Booking Suite admin interface (React).",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "start": "wp-scripts start",
+    "build": "wp-scripts build",
+    "lint:js": "wp-scripts lint-js src",
+    "lint:css": "wp-scripts lint-style \"src/**/*.css\""
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^30.7.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.9.3"
+  }
+}
