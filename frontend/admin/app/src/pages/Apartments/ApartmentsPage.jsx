@@ -46,7 +46,16 @@ export default function ApartmentsPage() {
 	const [ search, setSearch ] = useState( '' );
 	const [ statusFilter, setStatusFilter ] = useState( 'all' );
 	const [ editing, setEditing ] = useState( null );
-	const [ isFormOpen, setFormOpen ] = useState( false );
+
+	/*
+	 * Opens straight away when the Dashboard's "Add Apartment" sent us here
+	 * with `action=new`, so that action lands on the form rather than the list.
+	 */
+	const [ isFormOpen, setFormOpen ] = useState(
+		() =>
+			'new' ===
+			new URLSearchParams( window.location.search ).get( 'action' )
+	);
 	const [ busyId, setBusyId ] = useState( null );
 
 	/** The apartment awaiting delete confirmation, if any. */

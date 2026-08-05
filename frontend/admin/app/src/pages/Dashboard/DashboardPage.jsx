@@ -23,9 +23,12 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
+import { ApartmentsStatus } from './components/ApartmentsStatus';
 import { BookingsChart } from './components/BookingsChart';
+import { QuickActions } from './components/QuickActions';
 import { RevenueChart } from './components/RevenueChart';
 import { StatGrid } from './components/StatGrid';
+import { SystemStatus } from './components/SystemStatus';
 import { dailySeries, summarise } from './data/metrics';
 import { apartmentService, bookingService } from '../../services';
 import { settings } from '../../settings';
@@ -142,6 +145,13 @@ export default function DashboardPage() {
 				</Card>
 			) : (
 				<>
+					{ /*
+					 * Actions first: "Add Booking" is what an owner opens this
+					 * screen to do, so it sits above the numbers rather than
+					 * under two charts.
+					 */ }
+					<QuickActions />
+
 					<StatGrid metrics={ metrics } />
 
 					{ /* One control row above both charts, so they always show the same window. */ }
@@ -209,6 +219,15 @@ export default function DashboardPage() {
 							</CardContent>
 						</Card>
 					</div>
+
+					{ /* Scanned daily, so it gets the full width to spread across. */ }
+					<ApartmentsStatus
+						apartments={ apartments }
+						bookings={ bookings }
+					/>
+
+					{ /* Last, and quiet: needed the day it breaks, ignored otherwise. */ }
+					<SystemStatus />
 				</>
 			) }
 		</div>

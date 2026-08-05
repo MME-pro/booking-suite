@@ -181,12 +181,18 @@ export default function BookingDetail( {
 	return (
 		<div className="bks-booking-detail flex flex-col gap-4">
 			<div className="flex flex-wrap items-center justify-between gap-3">
-				<Button variant="ghost" onClick={ onBack }>
-					<ArrowLeft className="h-4 w-4" />
-					{ __( 'Back to bookings', 'booking-suite' ) }
-				</Button>
+				{ /*
+				 * Optional: the Calendar screen shows this inside a dialog,
+				 * which has its own close control and nothing to go back to.
+				 */ }
+				{ onBack && (
+					<Button variant="ghost" onClick={ onBack }>
+						<ArrowLeft className="h-4 w-4" />
+						{ __( 'Back to bookings', 'booking-suite' ) }
+					</Button>
+				) }
 
-				<div className="flex items-center gap-2">
+				<div className="ml-auto flex items-center gap-2">
 					<Badge
 						variant="secondary"
 						className={ `capitalize ${

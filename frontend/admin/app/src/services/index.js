@@ -8,4 +8,11 @@ export {
 } from './http';
 export { apartmentService, toApartment, toPayload } from './apartmentService';
 export { bookingService } from './bookingService';
+export { customerService } from './customerService';
+export { emailTemplateService } from './emailTemplateService';
+export { extraService, toExtra } from './extraService';
+export { guideService } from './guideService';
+export { paymentService } from './paymentService';
+export { reportService } from './reportService';
 export { settingsService } from './settingsService';
+export { systemService } from './systemService';

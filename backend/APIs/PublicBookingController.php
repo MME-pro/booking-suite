@@ -19,7 +19,9 @@ namespace BookingSuite\Backend\APIs;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Repositories\CustomersRepository;
+use BookingSuite\Backend\Repositories\EmailTemplatesRepository;
 use BookingSuite\Backend\Repositories\ExtrasRepository;
+use BookingSuite\Backend\Support\BookingEmails;
 use BookingSuite\Backend\Pricing\RateCalculator;
 use BookingSuite\Backend\Pricing\SlotGenerator;
 use BookingSuite\Backend\Repositories\PriceRulesRepository;
@@ -206,6 +208,30 @@ final class PublicBookingController {
 			return self::error( 'booking_suite_unavailable', __( 'Those dates have just been taken. Please choose another window.', 'booking-suite' ), 409, 'checkIn' );
 		}
 
+		/*
+		 * The quote capped anything oversubscribed rather than failing, which
+		 * is right while the guest is still choosing. At the point of booking
+		 * it has to be an error instead: charging for fewer than were asked for
+		 * without saying so would be the worse outcome.
+		 */
+		if ( $quote['extrasShortfall'] ) {
+			$first_short = $quote['extrasShortfall'][0];
+
+			return self::error(
+				'booking_suite_extra_unavailable',
+				sprintf(
+					/* translators: %s: name of the extra. */
+					__(
+						'%s is no longer available for these dates. Please adjust it and try again.',
+						'booking-suite'
+					),
+					$first_short['name']
+				),
+				409,
+				'extras'
+			);
+		}
+
 		$customer_id = CustomersRepository::find_or_create(
 			array(
 				'first_name' => $first,
@@ -244,6 +270,13 @@ final class PublicBookingController {
 		if ( $customer_id ) {
 			CustomersRepository::record_booking( $customer_id, $quote['total'], $parsed['starts_at'] );
 		}
+
+		/*
+		 * Last, and deliberately not checked: the booking is already saved, and
+		 * an unreachable mail server must not turn a taken booking into an
+		 * error for the guest.
+		 */
+		BookingEmails::send( EmailTemplatesRepository::BOOKING_REQUEST, $booking_id );
 
 		return new WP_REST_Response(
 			array(
@@ -388,6 +421,17 @@ final class PublicBookingController {
 
 		$extra_sum = 0.0;
 		$lines     = array();
+		$shortfall = array();
+
+		/*
+		 * What is free for THIS window, rather than a running total: an extra
+		 * held by an overlapping booking is unavailable now and free again once
+		 * that stay ends.
+		 */
+		$availability = ExtrasRepository::availability(
+			$parsed['starts_at'],
+			$parsed['ends_at']
+		);
 
 		foreach ( $parsed['extras'] as $chosen ) {
 			$extra_id = absint( $chosen['id'] ?? 0 );
@@ -399,8 +443,18 @@ final class PublicBookingController {
 				continue;
 			}
 
-			if ( null !== $extra['stock'] && $quantity > $extra['stock'] ) {
-				$quantity = $extra['stock'];
+			$free = $availability[ $extra_id ] ?? null;
+
+			// null is unlimited; anything else caps what can be taken.
+			if ( null !== $free && $quantity > $free ) {
+				$shortfall[] = array(
+					'id'        => $extra['id'],
+					'name'      => $extra['name'],
+					'requested' => $quantity,
+					'available' => $free,
+				);
+
+				$quantity = $free;
 			}
 
 			if ( $quantity < 1 ) {
@@ -428,6 +482,9 @@ final class PublicBookingController {
 			'accommodation'  => $stay['accommodation'],
 			'guestCharge'    => $stay['guestCharge'],
 			'extraLines'     => $lines,
+			// What the modal needs to grey out the extras it cannot offer.
+			'extrasAvailable' => (object) $availability,
+			'extrasShortfall' => $shortfall,
 			'extrasTotal'    => round( $extra_sum, 2 ),
 			'total'          => round( $stay['subtotal'] + $extra_sum, 2 ),
 			'currency'       => SettingsRepository::currency(),

@@ -5,10 +5,11 @@
  * formatting. Kept separate from the components so the numbers can be reasoned
  * about (and corrected) in one place.
  *
- * Booking timestamps arrive as 'Y-m-d H:i:s' in UTC, matching the convention in
- * pages/Bookings/data/format.js. They are bucketed by LOCAL day so the chart
- * agrees with the dates shown elsewhere in the admin.
+ * Day bucketing lives in src/lib/dates.js, shared with the Calendar screen so
+ * both agree on which local day a booking belongs to.
  */
+
+import { dayKey, dayOffset, toDate } from '../../../lib/dates';
 
 /** Booking statuses, in the order they progress. */
 export const STATUS_ORDER = [ 'pending', 'reserved', 'confirmed', 'completed' ];
@@ -16,48 +17,7 @@ export const STATUS_ORDER = [ 'pending', 'reserved', 'confirmed', 'completed' ];
 /** Payment states that count as money not yet in the bank. */
 const OUTSTANDING_PAYMENTS = [ 'unpaid', 'partial' ];
 
-/**
- * @param {string} value A 'Y-m-d H:i:s' UTC timestamp.
- * @return {Date|null} The parsed date, or null when unparseable.
- */
-export function toDate( value ) {
-	if ( ! value ) {
-		return null;
-	}
-
-	const date = new Date( String( value ).replace( ' ', 'T' ) + 'Z' );
-
-	return Number.isNaN( date.getTime() ) ? null : date;
-}
-
-/**
- * Local 'YYYY-MM-DD' key for a Date.
- *
- * @param {Date} date The date to key.
- * @return {string} The day key.
- */
-export function dayKey( date ) {
-	const year = date.getFullYear();
-	const month = String( date.getMonth() + 1 ).padStart( 2, '0' );
-	const day = String( date.getDate() ).padStart( 2, '0' );
-
-	return `${ year }-${ month }-${ day }`;
-}
-
-/**
- * Midnight local, `offset` days from today.
- *
- * @param {number} offset Days from today; negative reaches into the past.
- * @return {Date} Midnight on that day.
- */
-function dayOffset( offset ) {
-	const date = new Date();
-
-	date.setHours( 0, 0, 0, 0 );
-	date.setDate( date.getDate() + offset );
-
-	return date;
-}
+export { dayKey, toDate };
 
 /**
  * Headline numbers for the KPI row.

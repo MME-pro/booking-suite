@@ -15,7 +15,14 @@ import { __ } from '@wordpress/i18n';
 import { AppBar } from './components';
 import { ApartmentsPage } from './pages/Apartments';
 import { BookingsPage } from './pages/Bookings';
+import { CalendarPage } from './pages/Calendar';
 import { DashboardPage } from './pages/Dashboard';
+import { CustomersPage } from './pages/Customers';
+import { EmailTemplatesPage } from './pages/EmailTemplates';
+import { ExtrasPage } from './pages/Extras';
+import { GuidePage } from './pages/Guide';
+import { PaymentsPage } from './pages/Payments';
+import { ReportsPage } from './pages/Reports';
 import { SettingsPage } from './pages/Settings';
 import { settings } from './settings';
 import './App.css';
@@ -33,9 +40,37 @@ const VIEWS = {
 		title: __( 'Bookings', 'booking-suite' ),
 		Component: BookingsPage,
 	},
+	payments: {
+		title: __( 'Payments', 'booking-suite' ),
+		Component: PaymentsPage,
+	},
+	customers: {
+		title: __( 'Customers', 'booking-suite' ),
+		Component: CustomersPage,
+	},
+	reports: {
+		title: __( 'Reports & Analytics', 'booking-suite' ),
+		Component: ReportsPage,
+	},
+	calendar: {
+		title: __( 'Calendar', 'booking-suite' ),
+		Component: CalendarPage,
+	},
+	extras: {
+		title: __( 'Extras', 'booking-suite' ),
+		Component: ExtrasPage,
+	},
+	emailTemplates: {
+		title: __( 'Email Templates', 'booking-suite' ),
+		Component: EmailTemplatesPage,
+	},
 	settings: {
 		title: __( 'Settings', 'booking-suite' ),
 		Component: SettingsPage,
+	},
+	guide: {
+		title: __( 'User Guide', 'booking-suite' ),
+		Component: GuidePage,
 	},
 };
 

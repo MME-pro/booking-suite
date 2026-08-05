@@ -9,6 +9,8 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Frontend\Admin;
 
+use BookingSuite\Backend\PostTypes\ApartmentPostType;
+
 use const BookingSuite\PLUGIN_DIR;
 use const BookingSuite\PLUGIN_URL;
 use const BookingSuite\VERSION;
@@ -80,7 +82,23 @@ final class Assets {
 				'version'    => VERSION,
 				'adminUrl'   => admin_url(),
 				'menuSlug'      => Menu::SLUG_DASHBOARD,
+				/*
+				 * Screen URLs are built here rather than in JavaScript, so the
+				 * page slugs live in exactly one place. `action=new` is read by
+				 * the destination screen to open its form straight away, which
+				 * is what makes the dashboard's quick actions quick.
+				 */
 				'apartmentsUrl' => admin_url( 'admin.php?page=' . Menu::SLUG_APARTMENTS ),
+				/*
+				 * Straight to the post editor, not the React apartments form:
+				 * apartments are posts, and that is where they are designed.
+				 * It is also the only Apartments entry left in the menu, so
+				 * "Add Apartment" lands where the rest of the flow lives.
+				 */
+				'newApartmentUrl' => admin_url( 'post-new.php?post_type=' . ApartmentPostType::POST_TYPE ),
+				'bookingsUrl'   => admin_url( 'admin.php?page=' . Menu::SLUG_BOOKINGS ),
+				'newBookingUrl' => admin_url( 'admin.php?page=' . Menu::SLUG_BOOKINGS . '&action=new' ),
+				'calendarUrl'   => admin_url( 'admin.php?page=' . Menu::SLUG_CALENDAR ),
 				'restUrl'    => esc_url_raw( rest_url( 'booking-suite/v1/' ) ),
 				'nonce'      => wp_create_nonce( 'wp_rest' ),
 				'locale'     => get_user_locale(),

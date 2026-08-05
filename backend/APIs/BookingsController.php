@@ -19,7 +19,9 @@ use BookingSuite\Backend\Pricing\RateCalculator;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Repositories\CustomersRepository;
+use BookingSuite\Backend\Repositories\EmailTemplatesRepository;
 use BookingSuite\Backend\Repositories\PaymentsRepository;
+use BookingSuite\Backend\Support\BookingEmails;
 use BookingSuite\Backend\Repositories\SettingsRepository;
 use BookingSuite\Backend\Schemas\BookingsTable;
 use DateTimeImmutable;
@@ -272,6 +274,18 @@ final class BookingsController {
 				__( 'The booking could not be updated.', 'booking-suite' ),
 				array( 'status' => 500 )
 			);
+		}
+
+		/*
+		 * Guest mail follows the transition, not the value: re-saving a booking
+		 * that was already confirmed must not send a second confirmation.
+		 */
+		if ( 'confirmed' === $status && 'confirmed' !== $booking['status'] ) {
+			BookingEmails::send( EmailTemplatesRepository::BOOKING_APPROVED, $id );
+		}
+
+		if ( 'paid' === $payment && 'paid' !== $booking['paymentStatus'] ) {
+			BookingEmails::send( EmailTemplatesRepository::PAYMENT_RECEIVED, $id );
 		}
 
 		$booking             = BookingsRepository::find( $id );

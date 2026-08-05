@@ -37,8 +37,15 @@ const DialogContent = React.forwardRef(({ className, children, ...props }, ref) 
       )}
       {...props}>
       {children}
+      {/*
+        * Diverges from upstream shadcn: the stock close button is a bare 16px
+        * glyph at 70% opacity with no hit area, which reads as an afterthought
+        * next to the dialog's own buttons and is a poor tap target. This is a
+        * proper 36px circular control instead. Re-running `shadcn add dialog`
+        * will revert it.
+        */}
       <DialogPrimitive.Close
-        className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
@@ -52,7 +59,8 @@ const DialogHeader = ({
   ...props
 }) => (
   <div
-    className={cn("flex flex-col space-y-1.5 text-center sm:text-left", className)}
+    // pr-12 keeps a long title clear of the close button sitting over it.
+    className={cn("flex flex-col space-y-1.5 pr-12 text-center sm:text-left", className)}
     {...props} />
 )
 DialogHeader.displayName = "DialogHeader"

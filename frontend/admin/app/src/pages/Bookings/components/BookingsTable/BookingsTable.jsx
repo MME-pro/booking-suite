@@ -5,8 +5,8 @@
  * horizontal scroll for the columns that matter (reference, guest, status).
  */
 
-import { __ } from '@wordpress/i18n';
-import { Eye, Receipt } from 'lucide-react';
+import { __, sprintf } from '@wordpress/i18n';
+import { BadgeEuro, Check, CreditCard, Eye, Receipt } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -52,9 +52,22 @@ const initialsOf = ( name ) =>
 		.toUpperCase()
 		.slice( 0, 2 );
 
+/**
+ * A booking is approvable while it is still waiting on the owner.
+ *
+ * @param {Object} booking The booking row.
+ * @return {boolean} Whether Approve applies.
+ */
+const canApprove = ( booking ) =>
+	[ 'pending', 'reserved' ].includes( booking.status );
+
 export default function BookingsTable( {
 	bookings,
 	onSelectBooking,
+	onApprove,
+	onMarkPaid,
+	onViewPayment,
+	busyId = null,
 	emptyContent = null,
 } ) {
 	if ( ! bookings.length && emptyContent ) {
@@ -90,10 +103,8 @@ export default function BookingsTable( {
 						<TableHead className="hidden md:table-cell">
 							{ __( 'Payment', 'booking-suite' ) }
 						</TableHead>
-						<TableHead className="w-[110px] text-right">
-							<span className="sr-only">
-								{ __( 'Actions', 'booking-suite' ) }
-							</span>
+						<TableHead className="w-[190px] text-right">
+							{ __( 'Actions', 'booking-suite' ) }
 						</TableHead>
 					</TableRow>
 				</TableHeader>
@@ -221,17 +232,123 @@ export default function BookingsTable( {
 								</TableCell>
 
 								<TableCell className="text-right">
-									<Button
-										size="sm"
-										variant="ghost"
-										onClick={ ( event ) => {
-											event.stopPropagation();
-											onSelectBooking( booking );
-										} }
+									{ /*
+									 * Icon buttons: four actions in a row need
+									 * to stay narrow, and every one repeats on
+									 * every row — the label lives in the
+									 * tooltip and the accessible name.
+									 */ }
+									<div
+										className="flex items-center justify-end gap-1"
+										onClick={ ( event ) =>
+											event.stopPropagation()
+										}
+										role="presentation"
 									>
-										<Eye className="h-4 w-4" />
-										{ __( 'Details', 'booking-suite' ) }
-									</Button>
+										{ canApprove( booking ) && (
+											<Button
+												size="icon"
+												variant="outline"
+												className="h-8 w-8 text-success hover:text-success"
+												disabled={
+													busyId === booking.id
+												}
+												onClick={ () =>
+													onApprove( booking )
+												}
+												title={ __(
+													'Approve booking',
+													'booking-suite'
+												) }
+											>
+												<Check className="h-4 w-4" />
+												<span className="sr-only">
+													{ sprintf(
+														/* translators: %s: booking reference. */
+														__(
+															'Approve %s',
+															'booking-suite'
+														),
+														booking.reference ||
+															booking.id
+													) }
+												</span>
+											</Button>
+										) }
+
+										{ 'paid' !== booking.paymentStatus && (
+											<Button
+												size="icon"
+												variant="outline"
+												className="h-8 w-8"
+												disabled={
+													busyId === booking.id
+												}
+												onClick={ () =>
+													onMarkPaid( booking )
+												}
+												title={ __(
+													'Mark as paid',
+													'booking-suite'
+												) }
+											>
+												<BadgeEuro className="h-4 w-4" />
+												<span className="sr-only">
+													{ sprintf(
+														/* translators: %s: booking reference. */
+														__(
+															'Mark %s as paid',
+															'booking-suite'
+														),
+														booking.reference ||
+															booking.id
+													) }
+												</span>
+											</Button>
+										) }
+
+										<Button
+											size="icon"
+											variant="outline"
+											className="h-8 w-8"
+											onClick={ () =>
+												onViewPayment( booking )
+											}
+											title={ __(
+												'View payment',
+												'booking-suite'
+											) }
+										>
+											<CreditCard className="h-4 w-4" />
+											<span className="sr-only">
+												{ __(
+													'View payment',
+													'booking-suite'
+												) }
+											</span>
+										</Button>
+
+										<Button
+											size="icon"
+											variant="ghost"
+											className="h-8 w-8"
+											onClick={ () =>
+												onSelectBooking( booking )
+											}
+											title={ __(
+												'Booking details',
+												'booking-suite'
+											) }
+										>
+											<Eye className="h-4 w-4" />
+											<span className="sr-only">
+												{ __(
+													'Details',
+													'booking-suite'
+												) }
+											</span>
+										</Button>
+									</div>
 								</TableCell>
 							</TableRow>
 						);

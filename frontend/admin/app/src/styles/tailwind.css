@@ -174,6 +174,34 @@ textarea.bs-ui::placeholder {
 	opacity: 1;
 }
 
+/*
+ * react-day-picker renders its own table markup and is styled by handing it
+ * plain class strings, so none of those elements pass through cn() and none of
+ * them carry the .bs-ui marker — which means the reset above skips them, and a
+ * `border-r` utility on a grid cell sets a border WIDTH with no border STYLE
+ * and draws nothing at all.
+ *
+ * Extending the reset across the calendar subtree is what makes the grid lines
+ * appear. Kept at (0,1,0) like the rest of the reset so utilities still win.
+ */
+[data-slot='calendar'],
+[data-slot='calendar'] *,
+[data-slot='calendar'] *::before,
+[data-slot='calendar'] *::after {
+	box-sizing: border-box;
+	border: 0 solid hsl(var(--border));
+}
+
+/*
+ * wp-admin underlines every anchor. shadcn decides its own link styling — and
+ * a Button rendered `asChild` as an <a> should look like a button, not a link.
+ * Kept at (0,1,1) so an `underline` or `hover:underline` utility still wins
+ * where one is wanted, such as the Button's own link variant.
+ */
+a.bs-ui {
+	text-decoration: none;
+}
+
 ol.bs-ui,
 ul.bs-ui {
 	padding: 0;
@@ -216,6 +244,44 @@ video.bs-ui {
 #booking-suite-admin-root > [data-state],
 #booking-suite-admin-root > [data-radix-popper-content-wrapper] {
 	z-index: 100000 !important;
+}
+
+/*
+ * Print — used by the report's Print / Download PDF buttons, which both go
+ * through the browser's print pipeline ("Save as PDF" in the dialog).
+ *
+ * wp-admin has no print styles worth the name, so without this a printed
+ * report carries the admin menu, the toolbar and the screen's own controls.
+ */
+@media print {
+	#adminmenumain,
+	#wpadminbar,
+	#wpfooter,
+	.bks-no-print,
+	.notice {
+		display: none !important;
+	}
+
+	#wpcontent,
+	#wpbody-content {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	#booking-suite-admin-root {
+		width: 100% !important;
+	}
+
+	/* Ink, not screen: flat surfaces and hairlines read better on paper. */
+	#booking-suite-admin-root .bs-ui {
+		box-shadow: none !important;
+	}
+
+	/* Keep a card, a chart or a table from being split across two pages. */
+	.break-inside-avoid {
+		break-inside: avoid;
+		page-break-inside: avoid;
+	}
 }
 
 /*

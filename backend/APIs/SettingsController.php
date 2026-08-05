@@ -5,8 +5,10 @@
  * GET /booking-suite/v1/settings   read
  * PUT /booking-suite/v1/settings   update
  *
- * Settings live in a single option rather than one option per key, so adding a
- * setting later needs no migration.
+ * Values are read and written through SettingsRepository (the `mmebk_settings`
+ * table), which is the same store the pricing engine and PaymentsRepository
+ * read from — so changing the currency here actually changes what guests are
+ * charged in.
  *
  * @package BookingSuite
  */
@@ -15,11 +17,10 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Repositories\SettingsRepository;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
-
-use const BookingSuite\PREFIX;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -32,18 +33,16 @@ final class SettingsController {
 	/** Matches Menu::CAPABILITY. */
 	private const CAPABILITY = 'manage_options';
 
-	/** The single option every setting is stored under. */
-	private const OPTION = PREFIX . 'settings';
-
 	/** Currencies the booking flow can price in. */
 	public const CURRENCIES = array( 'EUR', 'USD', 'GBP', 'CHF' );
 
 	/** Languages the guest-facing flow is offered in. */
 	public const LANGUAGES = array( 'en', 'de' );
 
-	private const DEFAULTS = array(
-		'currency' => 'EUR',
-		'language' => 'de',
+	/** Setting key → the repository key it is stored under. */
+	private const KEYS = array(
+		'currency' => SettingsRepository::CURRENCY,
+		'language' => SettingsRepository::LANGUAGE,
 	);
 
 	public static function register(): void {
@@ -91,24 +90,18 @@ final class SettingsController {
 	 * @return array<string, string>
 	 */
 	public static function all(): array {
-		$stored = get_option( self::OPTION, array() );
-
-		if ( ! is_array( $stored ) ) {
-			$stored = array();
-		}
-
-		$settings = array_merge( self::DEFAULTS, $stored );
+		$currency = SettingsRepository::currency();
+		$language = SettingsRepository::get( SettingsRepository::LANGUAGE );
 
 		// A value that is no longer offered falls back rather than sticking.
-		if ( ! in_array( $settings['currency'], self::CURRENCIES, true ) ) {
-			$settings['currency'] = self::DEFAULTS['currency'];
-		}
-
-		if ( ! in_array( $settings['language'], self::LANGUAGES, true ) ) {
-			$settings['language'] = self::DEFAULTS['language'];
-		}
-
-		return array_intersect_key( $settings, self::DEFAULTS );
+		return array(
+			'currency' => in_array( $currency, self::CURRENCIES, true )
+				? $currency
+				: 'EUR',
+			'language' => in_array( $language, self::LANGUAGES, true )
+				? $language
+				: 'de',
+		);
 	}
 
 	public static function show(): WP_REST_Response {
@@ -116,17 +109,13 @@ final class SettingsController {
 	}
 
 	public static function update( WP_REST_Request $request ): WP_REST_Response {
-		$settings = self::all();
-
-		foreach ( array_keys( self::DEFAULTS ) as $key ) {
+		foreach ( self::KEYS as $key => $stored_key ) {
 			$value = $request->get_param( $key );
 
 			if ( null !== $value ) {
-				$settings[ $key ] = (string) $value;
+				SettingsRepository::set( $stored_key, (string) $value );
 			}
 		}
-
-		update_option( self::OPTION, $settings );
 
 		return new WP_REST_Response( self::payload(), 200 );
 	}

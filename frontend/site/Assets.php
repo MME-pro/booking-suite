@@ -9,6 +9,8 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Frontend\Site;
 
+use BookingSuite\Backend\PostTypes\ApartmentPostType;
+
 use const BookingSuite\PLUGIN_DIR;
 use const BookingSuite\PLUGIN_URL;
 
@@ -30,7 +32,7 @@ final class Assets {
 
 	/**
 	 * Register the bundle, and enqueue it up front when the page being shown
-	 * already contains the shortcode.
+	 * already contains one of the shortcodes.
 	 *
 	 * Block themes render post content at a point where enqueuing from inside
 	 * the shortcode can be too late for the footer, so the common case is
@@ -39,20 +41,64 @@ final class Assets {
 	public static function on_enqueue_scripts(): void {
 		self::register_app();
 
+		if ( self::current_page_uses_shortcode() ) {
+			self::enqueue_app();
+		}
+	}
+
+	/**
+	 * Whether the page being rendered uses one of the guest shortcodes.
+	 *
+	 * post_content alone is not enough. A page built in Elementor keeps its
+	 * layout in post meta, so a shortcode placed in an Elementor widget never
+	 * appears in post_content — and apartment pages are designed in Elementor
+	 * by default. Both places are checked here; anything further out (a theme
+	 * template calling do_shortcode(), a sidebar widget) still works through
+	 * the enqueue call inside the shortcode itself.
+	 */
+	private static function current_page_uses_shortcode(): bool {
+		/*
+		 * Every apartment page gets the booking button appended to it (see
+		 * Shortcodes::append_book_now), and that runs while the content is
+		 * rendered — too late for the stylesheet to make it into wp_head. So
+		 * the page is claimed here instead, and the CSS arrives with the page
+		 * rather than after it.
+		 */
+		if ( is_singular( ApartmentPostType::POST_TYPE ) ) {
+			return true;
+		}
+
 		$post = get_post();
 
 		if ( ! $post instanceof \WP_Post ) {
-			return;
+			return false;
 		}
 
-		$content = (string) $post->post_content;
+		$haystacks = array( (string) $post->post_content );
 
-		foreach ( array( Shortcodes::APARTMENTS, Shortcodes::BOOK_NOW ) as $shortcode ) {
-			if ( has_shortcode( $content, $shortcode ) ) {
-				self::enqueue_app();
-				return;
+		$elementor = get_post_meta( $post->ID, '_elementor_data', true );
+
+		if ( is_string( $elementor ) && '' !== $elementor ) {
+			$haystacks[] = $elementor;
+		}
+
+		foreach ( $haystacks as $content ) {
+			foreach ( array( Shortcodes::APARTMENTS, Shortcodes::BOOK_NOW ) as $shortcode ) {
+				/*
+				 * has_shortcode() parses, which is right for post_content but
+				 * gives nothing on Elementor's JSON — hence the plain search
+				 * for the opening tag alongside it.
+				 */
+				if (
+					has_shortcode( $content, $shortcode )
+					|| false !== strpos( $content, '[' . $shortcode )
+				) {
+					return true;
+				}
 			}
 		}
+
+		return false;
 	}
 
 	/**

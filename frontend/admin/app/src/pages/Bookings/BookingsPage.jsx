@@ -30,6 +30,7 @@ import { bookingService } from '../../services';
 import { BookingsTable } from './components/BookingsTable';
 import { BookingDetail } from './components/BookingDetail';
 import { BookingForm } from './components/BookingForm';
+import { PaymentDialog } from './components/PaymentDialog';
 import { formatMoney } from './data/format';
 import './BookingsPage.css';
 
@@ -43,8 +44,23 @@ export default function BookingsPage() {
 	const [ error, setError ] = useState( null );
 	const [ selectedBooking, setSelectedBooking ] = useState( null );
 
-	/** null when closed; a booking when editing; 'new' when adding. */
-	const [ editing, setEditing ] = useState( null );
+	/**
+	 * null when closed; a booking when editing; 'new' when adding.
+	 *
+	 * Opens straight away when the Dashboard's "Add Booking" sent us here with
+	 * `action=new`, so that action lands on the form rather than the list.
+	 */
+	const [ editing, setEditing ] = useState( () =>
+		'new' === new URLSearchParams( window.location.search ).get( 'action' )
+			? 'new'
+			: null
+	);
+
+	/** The booking whose payment is being viewed, if any. */
+	const [ payingBooking, setPayingBooking ] = useState( null );
+
+	/** The row a quick action is currently working on. */
+	const [ busyId, setBusyId ] = useState( null );
 
 	const load = useCallback( async ( signal ) => {
 		setLoading( true );
@@ -115,6 +131,26 @@ export default function BookingsPage() {
 	}, [ bookings, search, status ] );
 
 	const tabs = [ 'all', ...statuses ];
+
+	/*
+	 * Quick actions from the list. Each is the same call the detail screen
+	 * makes, so the two stay in step; the row is swapped in from the response
+	 * rather than guessed at locally.
+	 */
+	const runQuickAction = async ( booking, changes ) => {
+		setBusyId( booking.id );
+
+		try {
+			const updated = await bookingService.update( booking.id, changes );
+
+			applyUpdate( updated );
+			setError( null );
+		} catch ( cause ) {
+			setError( cause.message );
+		} finally {
+			setBusyId( null );
+		}
+	};
 
 	// A booking changed: refresh the row in place, then reload so the status
 	// tab counts follow.
@@ -317,6 +353,18 @@ export default function BookingsPage() {
 							<BookingsTable
 								bookings={ visible }
 								onSelectBooking={ setSelectedBooking }
+								busyId={ busyId }
+								onApprove={ ( booking ) =>
+									runQuickAction( booking, {
+										status: 'confirmed',
+									} )
+								}
+								onMarkPaid={ ( booking ) =>
+									runQuickAction( booking, {
+										payment_status: 'paid',
+									} )
+								}
+								onViewPayment={ setPayingBooking }
 								emptyContent={
 									<EmptyBookings
 										title={ __(
@@ -353,6 +401,17 @@ export default function BookingsPage() {
 					onSaved={ () => {
 						setEditing( null );
 						load();
+					} }
+				/>
+			) }
+
+			{ payingBooking && (
+				<PaymentDialog
+					booking={ payingBooking }
+					onClose={ () => setPayingBooking( null ) }
+					onMarkPaid={ ( booking ) => {
+						setPayingBooking( null );
+						runQuickAction( booking, { payment_status: 'paid' } );
 					} }
 				/>
 			) }

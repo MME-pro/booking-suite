@@ -11,6 +11,11 @@ namespace BookingSuite;
 
 use BookingSuite\Backend\APIs\ApartmentsController;
 use BookingSuite\Backend\APIs\BookingsController;
+use BookingSuite\Backend\APIs\CustomersController;
+use BookingSuite\Backend\APIs\EmailTemplatesController;
+use BookingSuite\Backend\APIs\ExtrasController;
+use BookingSuite\Backend\APIs\GuideController;
+use BookingSuite\Backend\APIs\PaymentsController;
 use BookingSuite\Backend\Installer;
 use BookingSuite\Backend\Migrations\MetaToTableMigration;
 use BookingSuite\Backend\Migrations\RoomsToPostsMigration;
@@ -21,7 +26,9 @@ use BookingSuite\Frontend\Admin\Assets as AdminAssets;
 use BookingSuite\Frontend\Admin\Menu as AdminMenu;
 use BookingSuite\Backend\APIs\PublicApartmentsController;
 use BookingSuite\Backend\APIs\PublicBookingController;
+use BookingSuite\Backend\APIs\ReportsController;
 use BookingSuite\Backend\APIs\SettingsController;
+use BookingSuite\Backend\APIs\SystemController;
 use BookingSuite\Frontend\Site\Assets as SiteAssets;
 use BookingSuite\Frontend\Site\Shortcodes as SiteShortcodes;
 
@@ -68,7 +75,14 @@ final class Plugin {
 
 		ApartmentsController::register();
 		BookingsController::register();
+		CustomersController::register();
+		EmailTemplatesController::register();
+		ExtrasController::register();
+		GuideController::register();
+		PaymentsController::register();
+		ReportsController::register();
 		SettingsController::register();
+		SystemController::register();
 		PublicApartmentsController::register();
 		PublicBookingController::register();
 

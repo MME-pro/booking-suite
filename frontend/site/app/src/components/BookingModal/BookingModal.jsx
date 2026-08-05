@@ -345,13 +345,17 @@ export default function BookingModal( { apartmentId, onClose } ) {
 
 							{ 'extras' === step && (
 								<StepOptions
-									stay={ stay }
-									onChange={ setStay }
-									capacity={ apartment.capacity }
 									extras={ context.extras }
 									chosen={ extras }
 									onExtrasChange={ setExtras }
 									currency={ currency }
+									/*
+									 * How many of each are free for the dates
+									 * chosen in the previous step — an extra
+									 * held by an overlapping booking is offered
+									 * again once that stay ends.
+									 */
+									available={ quote?.extrasAvailable ?? null }
 								/>
 							) }
 

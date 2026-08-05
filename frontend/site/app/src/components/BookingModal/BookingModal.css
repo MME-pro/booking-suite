@@ -682,11 +682,24 @@
 	border-color: var(--bks-site-border-focus);
 }
 
+/* Optional per-extra image, set in the admin. */
+.bks-extras__image {
+	flex: 0 0 auto;
+	width: 56px;
+	height: 56px;
+	border-radius: var(--bks-site-radius-xs);
+	object-fit: cover;
+}
+
 .bks-extras__text {
 	display: flex;
 	flex-direction: column;
 	gap: 3px;
 	font-size: 15px;
+
+	/* Takes the room left beside the image and the stepper. */
+	flex: 1 1 auto;
+	min-width: 0;
 }
 
 .bks-extras__text span {
@@ -697,6 +710,17 @@
 .bks-extras__price {
 	font-weight: 600;
 	color: var(--bks-site-brand);
+}
+
+/* Availability for the chosen dates, not a running stock total. */
+.bks-extras__stock {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--bks-site-text-muted);
+}
+
+.bks-extras__stock--out {
+	color: var(--bks-site-danger, #dc2626);
 }
 
 .bks-extras__stepper {

@@ -9,6 +9,8 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\Repositories;
 
+use BookingSuite\Backend\Schemas\BookingsTable;
+use BookingSuite\Backend\Schemas\CustomersTable;
 use BookingSuite\Backend\Schemas\PaymentsTable;
 
 defined( 'ABSPATH' ) || exit;
@@ -49,6 +51,149 @@ final class PaymentsRepository {
 	}
 
 	/**
+	 * Every payment, newest first, with the booking and guest it belongs to.
+	 *
+	 * @param string $status Restrict to one payment status, or '' for all.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	public static function all( string $status = '' ): array {
+		global $wpdb;
+
+		$payments  = PaymentsTable::table();
+		$bookings  = BookingsTable::table();
+		$customers = CustomersTable::table();
+
+		$sql = "SELECT p.*,
+				b.reference AS booking_reference,
+				b.payment_status AS booking_payment_status,
+				b.total_amount AS booking_total,
+				c.first_name, c.last_name, c.email
+			FROM $payments p
+			LEFT JOIN $bookings b ON b.id = p.booking_id
+			LEFT JOIN $customers c ON c.id = b.customer_id";
+
+		if ( '' !== $status && in_array( $status, PaymentsTable::STATUSES, true ) ) {
+			$sql .= $wpdb->prepare( ' WHERE p.status = %s', $status );
+		}
+
+		$sql .= ' ORDER BY p.created_at DESC';
+
+		$rows = $wpdb->get_results( $sql, ARRAY_A ) ?: array();
+
+		return array_map( array( self::class, 'cast_with_booking' ), $rows );
+	}
+
+	/**
+	 * @return array<string, mixed>|null
+	 */
+	public static function find( int $id ): ?array {
+		global $wpdb;
+
+		$payments  = PaymentsTable::table();
+		$bookings  = BookingsTable::table();
+		$customers = CustomersTable::table();
+
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT p.*,
+					b.reference AS booking_reference,
+					b.payment_status AS booking_payment_status,
+					b.total_amount AS booking_total,
+					c.first_name, c.last_name, c.email
+				FROM $payments p
+				LEFT JOIN $bookings b ON b.id = p.booking_id
+				LEFT JOIN $customers c ON c.id = b.customer_id
+				WHERE p.id = %d",
+				$id
+			),
+			ARRAY_A
+		);
+
+		return $row ? self::cast_with_booking( $row ) : null;
+	}
+
+	/**
+	 * Moves a payment along.
+	 *
+	 * Settling one stamps `paid_at` if it was not already set, so the date the
+	 * money landed is recorded without asking the operator for it.
+	 *
+	 * @param int    $id
+	 * @param string $status One of PaymentsTable::STATUSES.
+	 *
+	 * @return array<string, mixed>|null The stored payment, or null when missing.
+	 */
+	public static function set_status( int $id, string $status ): ?array {
+		global $wpdb;
+
+		$existing = self::find( $id );
+
+		if ( null === $existing ) {
+			return null;
+		}
+
+		$data = array(
+			'status'     => $status,
+			'updated_at' => current_time( 'mysql', true ),
+		);
+
+		if ( 'paid' === $status && '' === $existing['paidAt'] ) {
+			$data['paid_at'] = current_time( 'mysql', true );
+		}
+
+		$wpdb->update( PaymentsTable::table(), $data, array( 'id' => $id ) );
+
+		return self::find( $id );
+	}
+
+	/**
+	 * Headline figures for the payments screen.
+	 *
+	 * Refunds are stored as negative amounts, so summing settled rows nets
+	 * them off rather than counting them as income.
+	 *
+	 * @return array<string, float|int>
+	 */
+	public static function stats(): array {
+		global $wpdb;
+
+		$table = PaymentsTable::table();
+
+		$rows = $wpdb->get_results(
+			"SELECT status, COUNT(*) AS count, SUM(amount) AS total
+			FROM $table GROUP BY status",
+			ARRAY_A
+		) ?: array();
+
+		$stats = array(
+			'total'    => 0,
+			'settled'  => 0.0,
+			'awaiting' => 0.0,
+			'counts'   => array(),
+		);
+
+		foreach ( $rows as $row ) {
+			$status = (string) $row['status'];
+			$count  = (int) $row['count'];
+			$amount = (float) $row['total'];
+
+			$stats['total']            += $count;
+			$stats['counts'][ $status ] = $count;
+
+			if ( 'paid' === $status || 'refunded' === $status ) {
+				$stats['settled'] += $amount;
+			}
+
+			if ( 'pending' === $status ) {
+				$stats['awaiting'] += $amount;
+			}
+		}
+
+		return $stats;
+	}
+
+	/**
 	 * Payments recorded against a booking, newest first.
 	 *
 	 * @return array<int, array<string, mixed>>
@@ -74,6 +219,29 @@ final class PaymentsRepository {
 	 *
 	 * @return array<string, mixed>
 	 */
+	/**
+	 * A payment plus the booking and guest it belongs to, for the list screen.
+	 *
+	 * @param array<string, mixed> $row
+	 *
+	 * @return array<string, mixed>
+	 */
+	private static function cast_with_booking( array $row ): array {
+		$name = trim(
+			(string) ( $row['first_name'] ?? '' ) . ' ' . (string) ( $row['last_name'] ?? '' )
+		);
+
+		return self::cast( $row ) + array(
+			'bookingId'            => (int) $row['booking_id'],
+			'bookingReference'     => (string) ( $row['booking_reference'] ?? '' ),
+			'bookingPaymentStatus' => (string) ( $row['booking_payment_status'] ?? '' ),
+			'bookingTotal'         => (float) ( $row['booking_total'] ?? 0 ),
+			'customerName'         => $name,
+			'customerEmail'        => (string) ( $row['email'] ?? '' ),
+			'invoiceNo'            => (string) ( $row['invoice_no'] ?? '' ),
+		);
+	}
+
 	private static function cast( array $row ): array {
 		$attachment_id = (int) ( $row['proof_attachment_id'] ?? 0 );
 

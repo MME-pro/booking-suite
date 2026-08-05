@@ -1,7 +1,37 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep -rn \"from '\\\\.\\\\./\\\\.\\\\./components'\\\\|from '\\\\.\\\\./\\\\.\\\\./\\\\.\\\\./\\\\.\\\\./components'\\\\|from './components'\" --include=*.jsx .)"
+      "Bash(grep -rn \"from '\\\\.\\\\./\\\\.\\\\./components'\\\\|from '\\\\.\\\\./\\\\.\\\\./\\\\.\\\\./\\\\.\\\\./components'\\\\|from './components'\" --include=*.jsx .)",
+      "Bash(node -p \"require\\('./node_modules/react-day-picker/package.json'\\).version\")",
+      "Bash(node -e ' *)",
+      "Bash(printf \"export { default as MonthGrid } from './MonthGrid';\\\\n\")",
+      "Bash(printf \"export { default as BookingChip, chipStyle } from './BookingChip';\\\\n\")",
+      "Bash(node -p \"require\\('./node_modules/date-fns/package.json'\\).version\")",
+      "Bash(node -e \"const l=require\\('date-fns/locale'\\); console.log\\('de:', typeof l.de, 'enUS:', typeof l.enUS, 'weekStartsOn de:', l.de.options.weekStartsOn\\);\")",
+      "Bash(grep -o \"data-slot=[^ ]\\\\{0,30\\\\}\" build/index.css)",
+      "Bash(printf \"export { default as ExtrasPage } from './ExtrasPage';\\\\n\")",
+      "Bash(printf \"export { default as ExtraForm } from './ExtraForm';\\\\n\")",
+      "Bash(printf \"export { default as ExtrasTable } from './ExtrasTable';\\\\n\")",
+      "Bash(git -C ../../.. stash list)",
+      "Bash(git -C ../../.. diff --stat -- frontend/site/app/src/components/BookingModal/BookingModal.css)",
+      "Bash(awk '{print $5}')",
+      "Bash(printf \"export { default as PaymentsPage } from './PaymentsPage';\\\\n\")",
+      "Bash(printf \"export { default as PaymentsTable } from './PaymentsTable';\\\\n\")",
+      "Bash(printf \"export { default as PaymentViewDialog } from './PaymentViewDialog';\\\\n\")",
+      "Bash(printf \"export { default as PaymentsFilters, ANY, EMPTY_FILTERS } from './PaymentsFilters';\\\\n\")",
+      "Bash(printf \"export { default as CustomersPage } from './CustomersPage';\\\\n\")",
+      "Bash(printf \"export { default as CustomersTable } from './CustomersTable';\\\\n\")",
+      "Bash(printf \"export { default as CustomerHistoryDialog } from './CustomerHistoryDialog';\\\\n\")",
+      "Bash(grep -n '$booking = BookingsRepository::find\\\\|public static function update' -A 8 backend/APIs/BookingsController.php)",
+      "Bash(printf \"export { default as EmailTemplatesPage } from './EmailTemplatesPage';\\\\n\")",
+      "Bash(printf \"export { emailTemplateService } from './emailTemplateService';\\\\n\")",
+      "Bash(grep -v \"//\")",
+      "Bash(ls \"/c/Program Files/Google/Chrome/Application/chrome.exe\" \"/c/Program Files \\(x86\\)/Microsoft/Edge/Application/msedge.exe\" \"/c/Program Files/Microsoft/Edge/Application/msedge.exe\" 2>/dev/null | head -3; echo \"---\"; ls \"c:/Users/desktop/Local Sites/bookingsuite/app/public/wp-content/plugins/booking_suite/frontend/admin/app/node_modules/puppeteer-core/package.json\" >/dev/null 2>&1 && echo \"puppeteer-core present\")",
+      "Read(//c/Program Files \\\\\\(x86\\\\\\)/Microsoft/Edge/Application/**)",
+      "Bash(node -p \"require\\('./node_modules/typescript/package.json'\\).version\")",
+      "Bash(npx --no-install tsc --noEmit -p jsconfig.json)",
+      "Bash(printf \"export { default as ReportsPage } from './ReportsPage';\\\\n\")",
+      "Bash(printf \"export { default as ReportCharts, STATUS_COLOURS } from './ReportCharts';\\\\n\")"
     ]
   }
 }
