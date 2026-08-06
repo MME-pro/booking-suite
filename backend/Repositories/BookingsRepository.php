@@ -67,11 +67,18 @@ final class BookingsRepository {
 
 		$blocks = BlocksTable::table();
 
-		// A block with no room_id is a central block covering everything.
+		/*
+		 * A block with no room_id is a central block covering every apartment.
+		 *
+		 * `extra_id IS NULL` is what keeps this to apartment locks: an extra's
+		 * lock also carries no room_id, and without this guard locking a single
+		 * projector would close the whole property to bookings.
+		 */
 		$blocked = $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT id FROM $blocks
-				WHERE (room_id = %d OR room_id IS NULL)
+				WHERE extra_id IS NULL
+				  AND (room_id = %d OR room_id IS NULL)
 				  AND starts_at < %s
 				  AND ends_at > %s
 				LIMIT 1",

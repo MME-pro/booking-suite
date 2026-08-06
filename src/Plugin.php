@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace BookingSuite;
 
 use BookingSuite\Backend\APIs\ApartmentsController;
+use BookingSuite\Backend\APIs\BlocksController;
 use BookingSuite\Backend\APIs\BookingsController;
 use BookingSuite\Backend\APIs\CustomersController;
 use BookingSuite\Backend\APIs\EmailTemplatesController;
@@ -74,6 +75,7 @@ final class Plugin {
 		add_action( 'admin_init', array( MetaToTableMigration::class, 'run' ), 21 );
 
 		ApartmentsController::register();
+		BlocksController::register();
 		BookingsController::register();
 		CustomersController::register();
 		EmailTemplatesController::register();

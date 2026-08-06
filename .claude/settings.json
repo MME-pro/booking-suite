@@ -31,7 +31,12 @@
       "Bash(node -p \"require\\('./node_modules/typescript/package.json'\\).version\")",
       "Bash(npx --no-install tsc --noEmit -p jsconfig.json)",
       "Bash(printf \"export { default as ReportsPage } from './ReportsPage';\\\\n\")",
-      "Bash(printf \"export { default as ReportCharts, STATUS_COLOURS } from './ReportCharts';\\\\n\")"
+      "Bash(printf \"export { default as ReportCharts, STATUS_COLOURS } from './ReportCharts';\\\\n\")",
+      "Bash(printf \"export { default as AvailabilityPage } from './AvailabilityPage';\\\\n\")",
+      "Bash(printf \"export { default as LockDialog } from './LockDialog';\\\\n\")",
+      "Bash(printf \"export { blockService } from './blockService';\\\\n\")",
+      "Bash(sed -i 's/^\\\\t}, \\\\[ blocks \\\\] \\);$/\\\\t}, [ visibleBlocks ] \\);/' src/pages/Availability/AvailabilityPage.jsx)",
+      "Bash(sed -i '400,450 s/blocks\\\\.length/visibleBlocks.length/g; 400,450 s/blocks\\\\.map\\(/visibleBlocks.map\\(/g' src/pages/Availability/AvailabilityPage.jsx)"
     ]
   }
 }

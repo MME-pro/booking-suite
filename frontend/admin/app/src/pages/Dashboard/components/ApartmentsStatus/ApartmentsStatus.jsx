@@ -28,10 +28,30 @@ import { formatDateTime } from '../../../Bookings/data/format';
 /** Statuses that actually hold the dates; a completed stay is over. */
 const OCCUPYING = [ 'pending', 'reserved', 'confirmed' ];
 
-export default function ApartmentsStatus( { apartments, bookings } ) {
+export default function ApartmentsStatus( {
+	apartments,
+	bookings,
+	blocks = [],
+} ) {
 	const now = new Date();
 
 	const rows = apartments.map( ( apartment ) => {
+		/*
+		 * A lock is a third state, independent of the other two: an apartment
+		 * can be locked and occupied at once, because locking stops NEW
+		 * bookings rather than cancelling the stay already in it.
+		 */
+		const lock = blocks.find( ( block ) => {
+			if ( ! block.isMaster && block.apartmentId !== apartment.id ) {
+				return false;
+			}
+
+			const starts = toDate( block.startsAt );
+			const ends = toDate( block.endsAt );
+
+			return starts && ends && starts <= now && ends > now;
+		} );
+
 		const stays = bookings.filter(
 			( booking ) =>
 				booking.apartmentId === apartment.id &&
@@ -56,7 +76,7 @@ export default function ApartmentsStatus( { apartments, bookings } ) {
 				( a, b ) => toDate( a.startsAt ) - toDate( b.startsAt )
 			)[ 0 ];
 
-		return { apartment, current, next };
+		return { apartment, current, next, lock };
 	} );
 
 	const occupied = rows.filter( ( row ) => row.current ).length;
@@ -102,7 +122,7 @@ export default function ApartmentsStatus( { apartments, bookings } ) {
 
 				{ /* Tiles, so a long estate spreads across the page. */ }
 				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-					{ rows.map( ( { apartment, current, next } ) => (
+					{ rows.map( ( { apartment, current, next, lock } ) => (
 						<div
 							key={ apartment.id }
 							className="flex items-center gap-3 rounded-lg border p-3"
@@ -118,20 +138,33 @@ export default function ApartmentsStatus( { apartments, bookings } ) {
 									{ apartment.name }
 								</span>
 								<span className="truncate text-xs text-muted-foreground">
-									{ current &&
+									{ /* The lock is the more urgent fact, so it leads. */ }
+									{ lock &&
+										sprintf(
+											/* translators: %s: when the lock lifts. */
+											__(
+												'Locked until %s',
+												'booking-suite'
+											),
+											formatDateTime( lock.endsAt )
+										) }
+									{ ! lock &&
+										current &&
 										sprintf(
 											/* translators: %s: checkout date and time. */
 											__( 'Until %s', 'booking-suite' ),
 											formatDateTime( current.endsAt )
 										) }
-									{ ! current &&
+									{ ! lock &&
+										! current &&
 										next &&
 										sprintf(
 											/* translators: %s: arrival date and time. */
 											__( 'Next %s', 'booking-suite' ),
 											formatDateTime( next.startsAt )
 										) }
-									{ ! current &&
+									{ ! lock &&
+										! current &&
 										! next &&
 										__(
 											'Nothing booked ahead',
@@ -141,6 +174,25 @@ export default function ApartmentsStatus( { apartments, bookings } ) {
 							</div>
 
 							<div className="flex shrink-0 flex-col items-end gap-1">
+								{ /*
+								 * Locked leads when it applies: "Free" beside a
+								 * locked apartment would read as bookable, which
+								 * is the one thing it is not.
+								 */ }
+								{ lock && (
+									<Badge
+										variant="secondary"
+										className="bg-destructive/10 text-destructive hover:bg-destructive/10"
+									>
+										{ lock.isMaster
+											? __(
+													'Master locked',
+													'booking-suite'
+											  )
+											: __( 'Locked', 'booking-suite' ) }
+									</Badge>
+								) }
+
 								<Badge
 									variant="secondary"
 									className={

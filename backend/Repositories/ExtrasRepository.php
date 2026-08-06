@@ -227,10 +227,24 @@ final class ExtrasRepository {
 			$held[ (int) $row['extra_id'] ] = (int) $row['held'];
 		}
 
+		/*
+		 * A locked extra is not "low on stock", it is off the board — out for
+		 * repair, lent out, whatever the reason says. So a lock overrides the
+		 * count entirely, including for extras with unlimited stock, which no
+		 * amount of arithmetic would otherwise take out of circulation.
+		 */
+		$locked = BlocksRepository::locked_extras( $starts_at, $ends_at );
+
 		$available = array();
 
 		foreach ( self::all() as $extra ) {
 			$id = (int) $extra['id'];
+
+			if ( isset( $locked[ $id ] ) ) {
+				$available[ $id ] = 0;
+
+				continue;
+			}
 
 			$available[ $id ] = null === $extra['stock']
 				? null

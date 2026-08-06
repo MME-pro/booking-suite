@@ -14,7 +14,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { __, sprintf, _n } from '@wordpress/i18n';
+import { sprintf, _n } from '@wordpress/i18n';
 
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
@@ -22,8 +22,11 @@ import { cn } from '@/lib/utils';
 import { BookingChip } from '../BookingChip';
 import { entriesForDay } from '../../data/occupancy';
 
-/** Chips a cell shows before the rest collapse into a count. */
-const MAX_CHIPS = 3;
+/*
+ * Every booking on a day is shown, however many there are. A "+N more" hid
+ * exactly the thing a busy day needs read, so the cell grows to fit its
+ * content and the week's row grows with it.
+ */
 
 /*
  * Every cell carries a right and bottom border; the panel around the grid
@@ -66,6 +69,14 @@ export default function MonthGrid( {
 	visibleIds,
 	apartmentsById,
 	locale,
+	/** Opens one booking straight from its chip, without picking the day first. */
+	onSelectBooking = null,
+	/*
+	 * Lets another screen put its own content in the cells while keeping this
+	 * grid's month maths, keyboard handling and selection. The Availability
+	 * screen shows locks here; without it the cells show booking chips.
+	 */
+	renderDayContent = null,
 } ) {
 	const DayCell = ( { day, modifiers, className, children, ...props } ) => {
 		const ref = useRef( null );
@@ -76,9 +87,11 @@ export default function MonthGrid( {
 			}
 		}, [ modifiers.focused ] );
 
-		const entries = entriesForDay( occupancy, day.date, visibleIds );
-		const shown = entries.slice( 0, MAX_CHIPS );
-		const overflow = entries.length - shown.length;
+		const custom = renderDayContent ? renderDayContent( day.date ) : null;
+
+		const entries = renderDayContent
+			? []
+			: entriesForDay( occupancy, day.date, visibleIds );
 
 		return (
 			<button
@@ -86,7 +99,13 @@ export default function MonthGrid( {
 				type="button"
 				data-selected={ modifiers.selected || undefined }
 				className={ cn(
-					'flex h-full min-h-[6rem] w-full flex-col items-stretch gap-1 p-2 text-left transition-colors md:min-h-[7.5rem]',
+					/*
+					 * min-h, never a fixed height: a day with six bookings
+					 * grows its cell and its week row rather than clipping
+					 * them. relative lets a screen lay an overlay over the
+					 * cell, which is how Availability strikes a locked day out.
+					 */
+					'relative flex h-full min-h-[7rem] w-full flex-col items-stretch gap-1 p-2 text-left transition-colors md:min-h-[8.5rem]',
 					'hover:bg-muted/40 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
 					'data-[selected=true]:bg-primary/5 data-[selected=true]:ring-1 data-[selected=true]:ring-inset data-[selected=true]:ring-primary',
 					className
@@ -117,9 +136,11 @@ export default function MonthGrid( {
 					) }
 				</span>
 
+				{ custom }
+
 				{ /* Full chips where there is room; colour bars alone on phones. */ }
 				<span className="hidden flex-col gap-0.5 sm:flex">
-					{ shown.map( ( { booking, role } ) => (
+					{ entries.map( ( { booking, role } ) => (
 						<BookingChip
 							key={ `${ booking.id }-${ role }` }
 							booking={ booking }
@@ -128,18 +149,9 @@ export default function MonthGrid( {
 								apartmentsById.get( booking.apartmentId )
 									?.colour ?? '#64748b'
 							}
+							onSelect={ onSelectBooking }
 						/>
 					) ) }
-
-					{ overflow > 0 && (
-						<span className="pl-1.5 text-[10px] font-medium text-muted-foreground">
-							{ sprintf(
-								/* translators: %d: number of further bookings. */
-								__( '+%d more', 'booking-suite' ),
-								overflow
-							) }
-						</span>
-					) }
 				</span>
 
 				<span className="flex flex-wrap gap-0.5 sm:hidden">

@@ -30,7 +30,7 @@ import { RevenueChart } from './components/RevenueChart';
 import { StatGrid } from './components/StatGrid';
 import { SystemStatus } from './components/SystemStatus';
 import { dailySeries, summarise } from './data/metrics';
-import { apartmentService, bookingService } from '../../services';
+import { apartmentService, blockService, bookingService } from '../../services';
 import { settings } from '../../settings';
 import './DashboardPage.css';
 
@@ -45,6 +45,9 @@ export default function DashboardPage() {
 	const [ apartments, setApartments ] = useState( [] );
 	const [ bookings, setBookings ] = useState( [] );
 	const [ counts, setCounts ] = useState( {} );
+
+	/** Availability locks, so the estate list can say what is closed. */
+	const [ blocks, setBlocks ] = useState( [] );
 	const [ isLoading, setLoading ] = useState( true );
 	const [ error, setError ] = useState( null );
 	const [ range, setRange ] = useState( '30' );
@@ -54,14 +57,17 @@ export default function DashboardPage() {
 
 		try {
 			// Independent endpoints — no reason to wait for one before the other.
-			const [ apartmentList, bookingPayload ] = await Promise.all( [
-				apartmentService.list( {}, signal ),
-				bookingService.list( {}, signal ),
-			] );
+			const [ apartmentList, bookingPayload, blockPayload ] =
+				await Promise.all( [
+					apartmentService.list( {}, signal ),
+					bookingService.list( {}, signal ),
+					blockService.list( {}, signal ),
+				] );
 
 			setApartments( apartmentList );
 			setBookings( bookingPayload.bookings );
 			setCounts( bookingPayload.counts );
+			setBlocks( blockPayload.blocks );
 			setError( null );
 		} catch ( cause ) {
 			if ( 'AbortError' !== cause.name ) {
@@ -224,6 +230,7 @@ export default function DashboardPage() {
 					<ApartmentsStatus
 						apartments={ apartments }
 						bookings={ bookings }
+						blocks={ blocks }
 					/>
 
 					{ /* Last, and quiet: needed the day it breaks, ignored otherwise. */ }

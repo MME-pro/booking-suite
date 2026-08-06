@@ -37,6 +37,8 @@ final class Menu {
 
 	public const SLUG_REPORTS = 'booking-suite-reports';
 
+	public const SLUG_AVAILABILITY = 'booking-suite-availability';
+
 	public const SLUG_CALENDAR = 'booking-suite-calendar';
 
 	public const SLUG_EXTRAS = 'booking-suite-extras';
@@ -65,6 +67,7 @@ final class Menu {
 			self::SLUG_EMAILS     => 'emailTemplates',
 			self::SLUG_GUIDE      => 'guide',
 			self::SLUG_CALENDAR   => 'calendar',
+			self::SLUG_AVAILABILITY => 'availability',
 			self::SLUG_EXTRAS     => 'extras',
 			self::SLUG_SETTINGS   => 'settings',
 		);
@@ -160,6 +163,16 @@ final class Menu {
 			__( 'Calendar', 'booking-suite' ),
 			self::CAPABILITY,
 			self::SLUG_CALENDAR,
+			array( self::class, 'render_root' )
+		);
+
+		// Next to the calendar: the same month, from the other direction.
+		add_submenu_page(
+			self::SLUG_DASHBOARD,
+			__( 'Availability', 'booking-suite' ),
+			__( 'Availability', 'booking-suite' ),
+			self::CAPABILITY,
+			self::SLUG_AVAILABILITY,
 			array( self::class, 'render_root' )
 		);
 

@@ -8,6 +8,7 @@ export {
 } from './http';
 export { apartmentService, toApartment, toPayload } from './apartmentService';
 export { bookingService } from './bookingService';
+export { blockService } from './blockService';
 export { customerService } from './customerService';
 export { emailTemplateService } from './emailTemplateService';
 export { extraService, toExtra } from './extraService';

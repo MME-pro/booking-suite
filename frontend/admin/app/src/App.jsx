@@ -15,6 +15,7 @@ import { __ } from '@wordpress/i18n';
 import { AppBar } from './components';
 import { ApartmentsPage } from './pages/Apartments';
 import { BookingsPage } from './pages/Bookings';
+import { AvailabilityPage } from './pages/Availability';
 import { CalendarPage } from './pages/Calendar';
 import { DashboardPage } from './pages/Dashboard';
 import { CustomersPage } from './pages/Customers';
@@ -55,6 +56,10 @@ const VIEWS = {
 	calendar: {
 		title: __( 'Calendar', 'booking-suite' ),
 		Component: CalendarPage,
+	},
+	availability: {
+		title: __( 'Availability', 'booking-suite' ),
+		Component: AvailabilityPage,
 	},
 	extras: {
 		title: __( 'Extras', 'booking-suite' ),
