@@ -1,31 +1,39 @@
 /**
  * Guest-facing design tokens.
  *
- * Clean, calm, modern light theme tokens for the "Book now" button and Booking Modal.
- * Scoped to :root, .bks-site-root, and .bks-book-now so they apply universally.
+ * One place where the look is decided. Every component below reads from here,
+ * so a rebrand is an edit to this file rather than a sweep through the styles.
+ *
+ * Scoped to :root as well as the app roots because two surfaces consume these:
+ * the React app, and the PHP-rendered showcase, whose stylesheet is not part of
+ * this bundle. Keeping the tokens global is what lets the two look identical.
  */
 
 :root,
 .bks-site-root,
 .bks-book-now {
 
-	/* Brand — Soothing modern sapphire blue */
+	/* Brand — a calm sapphire, dark enough to carry white text at AA. */
 	--bks-site-brand: #2563eb;
 	--bks-site-brand-hover: #1d4ed8;
+	--bks-site-brand-active: #1e40af;
 	--bks-site-brand-soft: #eff6ff;
 	--bks-site-brand-glow: rgba(37, 99, 235, 0.16);
 
-	/* Surfaces — Airy, crisp light theme */
+	/* Surfaces */
 	--bks-site-surface: #ffffff;
 	--bks-site-surface-muted: #f8fafc;
+	--bks-site-surface-sunken: #f1f5f9;
 	--bks-site-surface-raised: #ffffff;
 	--bks-site-border: #e2e8f0;
+	--bks-site-border-strong: #cbd5e1;
 	--bks-site-border-focus: #cbd5e1;
 
-	/* Text — Deep readable slate typography */
+	/* Text — a four-step ramp; anything flatter loses the hierarchy. */
 	--bks-site-text: #0f172a;
 	--bks-site-text-muted: #475569;
 	--bks-site-text-faint: #94a3b8;
+	--bks-site-text-inverse: #ffffff;
 
 	/* Feedback */
 	--bks-site-success: #16a34a;
@@ -33,29 +41,72 @@
 	--bks-site-error: #dc2626;
 	--bks-site-error-soft: #fef2f2;
 
-	/* Typography & Shapes */
+	/* Typography */
 	--bks-site-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+	/*
+	 * A type scale rather than ad-hoc pixel values. Three weights only —
+	 * 400 for prose, 500/600 for labels and names, 700 reserved for price,
+	 * which is the one number on a card that has to win.
+	 */
+	--bks-site-text-xs: 0.75rem;
+	--bks-site-text-sm: 0.8125rem;
+	--bks-site-text-base: 0.875rem;
+	--bks-site-text-md: 0.9375rem;
+	--bks-site-text-lg: 1.0625rem;
+	--bks-site-text-xl: 1.375rem;
+	--bks-site-text-2xl: clamp(1.5rem, 1.2rem + 1.2vw, 2.125rem);
+
+	/* Shapes */
 	--bks-site-radius: 18px;
 	--bks-site-radius-sm: 12px;
 	--bks-site-radius-xs: 8px;
+	--bks-site-radius-pill: 999px;
 
-	/* Depth & Elevation */
+	/*
+	 * Elevation ramp. Each level is two shadows: a tight one for the contact
+	 * edge and a wide diffuse one for the cast. One shadow alone reads as a
+	 * grey halo, which is what makes a card look cheap.
+	 */
+	--bks-site-shadow-xs:
+		0 1px 2px rgba(15, 23, 42, 0.04);
 	--bks-site-shadow:
 		0 1px 3px rgba(15, 23, 42, 0.04),
 		0 4px 14px rgba(15, 23, 42, 0.03);
 	--bks-site-shadow-lifted:
 		0 12px 32px -4px rgba(15, 23, 42, 0.1),
 		0 4px 12px -2px rgba(15, 23, 42, 0.04);
+	--bks-site-shadow-popover:
+		0 0 0 1px rgba(15, 23, 42, 0.05),
+		0 16px 40px -8px rgba(15, 23, 42, 0.16),
+		0 4px 12px -2px rgba(15, 23, 42, 0.06);
 	--bks-site-shadow-modal:
 		0 0 0 1px rgba(15, 23, 42, 0.05),
 		0 24px 64px -12px rgba(15, 23, 42, 0.18),
 		0 8px 24px -4px rgba(15, 23, 42, 0.08);
 
-	/* Transitions */
+	/*
+	 * Two speeds. The fast one is for things that respond to the pointer and
+	 * must feel instant; the standard one is for things that move a distance.
+	 * The easing overshoots slightly, which is what stops it feeling mechanical.
+	 */
 	--bks-site-transition: 200ms cubic-bezier(0.16, 1, 0.3, 1);
 	--bks-site-transition-fast: 120ms cubic-bezier(0.16, 1, 0.3, 1);
+
+	/* Spacing — a 4px rhythm, named by role rather than size. */
+	--bks-site-space-1: 4px;
+	--bks-site-space-2: 8px;
+	--bks-site-space-3: 12px;
+	--bks-site-space-4: 16px;
+	--bks-site-space-5: 20px;
+	--bks-site-space-6: 24px;
+	--bks-site-space-8: 32px;
+	--bks-site-space-10: 40px;
 
 	/* Layout */
 	--bks-site-gap: 24px;
 	--bks-site-columns: 3;
+
+	/* The narrowest a card may get before the grid drops a column. */
+	--bks-site-card-min: 17rem;
 }

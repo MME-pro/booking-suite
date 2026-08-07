@@ -1,0 +1,139 @@
+/**
+ * DateField — the modal's date control.
+ *
+ * Deliberately shaped like the modal's own text fields (.bks-field input), so
+ * that swapping a native date input for a button changed the formatting and
+ * nothing else about how the form reads.
+ */
+
+.bks-datefield {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+/*
+ * Label and trigger mirror .bks-field > label and .bks-field input exactly —
+ * same size, weight, tracking, height, padding and border width. This control
+ * sits in a row beside real inputs, and anything that differs shows up as one
+ * field standing a few pixels off from its neighbours.
+ */
+.bks-datefield__label {
+	color: var(--bks-site-text-muted, #475569);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+
+	/*
+	 * Matching the <label> elements beside it, which inherit line-height 1 from
+	 * the modal. Left at `normal` this span is 17px tall against their 11px, and
+	 * the whole control sits six pixels lower than its neighbours.
+	 */
+	line-height: 1;
+}
+
+.bks-datefield__trigger {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	min-width: 0;
+	height: 44px;
+	padding: 10px 14px;
+	border: 1.5px solid var(--bks-site-border, #e2e8f0);
+	border-radius: var(--bks-site-radius-xs, 10px);
+	background-color: var(--bks-site-surface-muted, #f8fafc);
+	font-family: var(--bks-site-font, 'Inter', sans-serif);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.4;
+	color: var(--bks-site-text, #0f172a);
+	text-align: left;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+	transition:
+		border-color 150ms ease,
+		background-color 150ms ease,
+		box-shadow 150ms ease;
+}
+
+.bks-datefield__trigger:hover {
+	border-color: var(--bks-site-border-strong, #cbd5e1);
+}
+
+.bks-datefield__trigger:focus-visible,
+.bks-datefield__trigger[aria-expanded='true'] {
+	outline: none;
+	border-color: var(--bks-site-brand, #2563eb);
+	box-shadow: 0 0 0 3px var(--bks-site-brand-glow, rgba(37, 99, 235, 0.16));
+}
+
+.bks-datefield__icon {
+	flex-shrink: 0;
+	color: var(--bks-site-text-faint, #94a3b8);
+}
+
+.bks-datefield__value {
+	flex: 1;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.bks-datefield__value.is-placeholder {
+	color: var(--bks-site-text-faint, #94a3b8);
+	font-weight: 400;
+}
+
+/*
+ * Above the modal's own stacking context but below its overlay, and anchored to
+ * the field rather than the viewport — the modal body scrolls, and a popover
+ * pinned to the viewport would drift away from the control that opened it.
+ */
+.bks-datefield__popover {
+	position: absolute;
+	z-index: 20;
+	top: calc(100% + 8px);
+	left: 0;
+	min-width: 19rem;
+	padding: 16px;
+	border: 1px solid var(--bks-site-border, #e2e8f0);
+	border-radius: var(--bks-site-radius-sm, 12px);
+	background: var(--bks-site-surface, #fff);
+	box-shadow: var(--bks-site-shadow-popover, 0 16px 40px -8px rgba(15, 23, 42, 0.16));
+	animation: bks-datefield-in 140ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Near the right edge of a narrow modal, hang the panel from the right. */
+@media (max-width: 34rem) {
+
+	.bks-datefield__popover {
+		right: 0;
+		left: auto;
+		min-width: 0;
+		width: 100%;
+	}
+}
+
+@keyframes bks-datefield-in {
+
+	from {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.bks-datefield__popover {
+		animation: none;
+	}
+}

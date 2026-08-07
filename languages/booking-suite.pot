@@ -1,0 +1,3161 @@
+# Copyright (C) Booking Suite
+# This file is distributed under the same licence as the Booking Suite plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Booking Suite\n"
+"Report-Msgid-Bugs-To: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: \n"
+"X-Domain: booking-suite\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. translators: %s: extra name.
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:405
+msgid "\"%s\" will be removed and detached from any booking it was added to. Those bookings keep the total they were taken at. This cannot be undone."
+msgstr ""
+
+#. translators: %s: apartment name.
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:349
+msgid "\"%s\" will be removed. This cannot be undone."
+msgstr ""
+
+#. translators: 1: number of extra guests, 2: price per guest.
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:154
+msgid "%1$d extra guests × %2$s"
+msgstr ""
+
+#. translators: 1: extra hours, 2: price per hour.
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:123
+msgid "%1$d extra hours × %2$s"
+msgstr ""
+
+#. translators: 1: occupied count, 2: total apartments.
+#: frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:103
+msgid "%1$d of %2$d occupied"
+msgstr ""
+
+#. translators: 1: enabled templates, 2: total templates.
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:84
+msgid "%1$d of %2$d templates on"
+msgstr ""
+
+#. translators: 1: date, 2: start time, 3: number of hours.
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:33
+msgid "%1$s from %2$s · %3$s"
+msgstr ""
+
+#. translators: 1: check-in date, 2: check-out date, 3: the overnight window.
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:49
+msgid "%1$s → %2$s · %3$s"
+msgstr ""
+
+#. translators: 1: guest count, 2: infant count.
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:50
+msgid "%1$s, %2$s"
+msgstr ""
+
+#. translators: %d: a file size in bytes.
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:33
+msgid "%d B"
+msgstr ""
+
+#. translators: %d: a file size in kilobytes.
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:41
+msgid "%d KB"
+msgstr ""
+
+#. translators: %d: number of active apartments
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:97
+msgid "%d active"
+msgstr ""
+
+#. translators: %d: total number of bookings
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:46
+msgid "%d all time"
+msgstr ""
+
+#. translators: %d: number of apartments shown.
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:269
+msgid "%d apartment"
+msgid_plural "%d apartments"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of apartments found.
+#: frontend/site/app/src/components/ApartmentGrid/ApartmentGrid.jsx:119
+msgid "%d apartment found"
+msgid_plural "%d apartments found"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of arrivals.
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:344
+msgid "%d arriving"
+msgstr ""
+
+#. translators: %d: number of bookings shown.
+#. translators: %d: number of bookings on this day.
+#. translators: %d: number of bookings.
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:339 frontend/admin/app/src/pages/Calendar/components/MonthGrid/MonthGrid.jsx:177 frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:170
+msgid "%d booking"
+msgid_plural "%d bookings"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of bookings on the selected day.
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:325
+msgid "%d booking on this day"
+msgid_plural "%d bookings on this day"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of customers shown.
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:201
+msgid "%d customer"
+msgid_plural "%d customers"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of departures.
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:361
+msgid "%d departing"
+msgstr ""
+
+#. translators: %d: number of endpoints.
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:189
+msgid "%d endpoints"
+msgstr ""
+
+#. translators: %d: number of extras shown.
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:324
+msgid "%d extra"
+msgid_plural "%d extras"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of failed payments.
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:216
+msgid "%d failed"
+msgstr ""
+
+#. translators: %d: number of guests.
+#. translators: %d: maximum number of guests.
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:193 frontend/site/Shortcodes.php:1658 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:34
+msgid "%d guest"
+msgid_plural "%d guests"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of hours.
+#: frontend/site/Shortcodes.php:1096 frontend/site/Shortcodes.php:1585 frontend/site/app/src/components/BookingModal/BookingModal.jsx:415 frontend/site/app/src/components/BookingModal/StepReview.jsx:38
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:217 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:26
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of guests in house.
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:351
+msgid "%d in house"
+msgstr ""
+
+#. translators: %d: number of infants.
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:44
+msgid "%d infant"
+msgid_plural "%d infants"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: quantity in stock.
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:133
+msgid "%d left"
+msgstr ""
+
+#. translators: %d: number of locks.
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:448
+msgid "%d lock in place"
+msgid_plural "%d locks in place"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: turnaround time in minutes.
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:98
+msgid "%d min"
+msgstr ""
+
+#. translators: %d: cleaning turnaround in minutes.
+#: frontend/admin/app/src/pages/Apartments/data/apartment.schema.js:28
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: cleaning turnaround in minutes.
+#: backend/Integrations/Elementor/Tags.php:148 backend/PostTypes/ApartmentMetaBox.php:131
+msgid "%d minutes"
+msgstr ""
+
+#. translators: %d: number of nights.
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:152 frontend/site/app/src/components/BookingModal/BookingModal.jsx:427 frontend/site/app/src/components/BookingModal/StepWhen.jsx:192
+msgid "%d night"
+msgid_plural "%d nights"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: locks on the selected day.
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:463
+msgid "%d on the selected day"
+msgstr ""
+
+#. translators: %d: number of settled payments.
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:181
+msgid "%d paid"
+msgstr ""
+
+#. translators: %d: number of payments shown.
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:274
+msgid "%d payment"
+msgid_plural "%d payments"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of pending payments.
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:194
+msgid "%d pending"
+msgstr ""
+
+#. translators: %d: number of photos selected.
+#: frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:138
+msgid "%d photo"
+msgid_plural "%d photos"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of stays.
+#: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:153
+msgid "%d stay"
+msgid_plural "%d stays"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of missing database tables.
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:52
+msgid "%d tables missing"
+msgstr ""
+
+#. translators: %d: number of database tables.
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:68
+msgid "%d tables, up to date"
+msgstr ""
+
+#. translators: %d: number of apartments
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:187
+msgid "%d total"
+msgstr ""
+
+#. translators: %d: active percentage
+#: frontend/admin/app/src/components/DashboardStats/DashboardStats.jsx:59
+msgid "%d%% operational"
+msgstr ""
+
+#. translators: %d: percentage of guests who return.
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:109
+msgid "%d%% return"
+msgstr ""
+
+#. translators: %d: number of nights, compact form.
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:147
+msgid "%dN"
+msgstr ""
+
+#. translators: %s: a file size in megabytes, to one decimal.
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:48
+msgid "%s MB"
+msgstr ""
+
+#. translators: %s: number of hours.
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:168
+msgid "%s hours"
+msgstr ""
+
+#. translators: %s: name of the extra.
+#: backend/APIs/PublicBookingController.php:224
+msgid "%s is no longer available for these dates. Please adjust it and try again."
+msgstr ""
+
+#. translators: %s: total spent.
+#: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:111
+msgid "%s lifetime"
+msgstr ""
+
+#. translators: %s: total booked value across all guests.
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:134
+msgid "%s total"
+msgstr ""
+
+#. translators: %s: number of hours, compact form.
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:163
+msgid "%sh"
+msgstr ""
+
+#. translators: %s: a duration such as "3 hours".
+#: frontend/site/Shortcodes.php:1596
+msgid "/ %s"
+msgstr ""
+
+#: frontend/site/app/src/components/ApartmentCard/ApartmentCard.jsx:172
+msgid "/ night"
+msgstr ""
+
+#. translators: %d: active percentage
+#: frontend/admin/app/src/components/DashboardStats/DashboardStats.jsx:66
+msgid "100% Ready"
+msgstr ""
+
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:82
+msgid "13 or older"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:40
+msgid "30 days"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:39
+msgid "7 days"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:41
+msgid "90 days"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:48
+msgid "A button that opens the booking modal. Added to every apartment page automatically, so you only need this to place it somewhere specific instead."
+msgstr ""
+
+#: backend/APIs/ApartmentsController.php:271
+msgid "A name is required."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:170
+msgid "A photo grid of the apartments with a \"Book now\" button on each card, for the homepage. Rendered by the server, so it is visible to search engines and needs no search bar. Use the apartment list instead when guests should filter by date first."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:315
+msgid "A screenshot or receipt of your transfer is required before you can continue."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:314
+msgid "A star marks a required parameter. Hover any parameter for its type, or its allowed values where it has a fixed set."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:134
+msgid "API endpoints"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:207
+msgid "Access"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:225
+msgid "Across every booking"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:203
+msgid "Across every booking listed"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:49 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:107 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:88 frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:62
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:59 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:65
+msgid "Actions"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:214
+msgid "Activate"
+msgstr ""
+
+#. translators: %s: extra name.
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:196
+msgid "Activate %s"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:300 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:113 frontend/admin/app/src/pages/Apartments/components/ApartmentsToolbar/ApartmentsToolbar.jsx:14 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:211
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:44 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:161
+msgid "Active"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:466
+msgid "Active (visible to customers)"
+msgstr ""
+
+#. translators: %d: number of apartments
+#: frontend/admin/app/src/components/DashboardStats/DashboardStats.jsx:55 frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:193
+msgid "Active Units"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:172
+msgid "Active — guests can book this apartment"
+msgstr ""
+
+#: backend/PostTypes/ApartmentPostType.php:86 frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:316 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:192 frontend/admin/app/src/pages/Apartments/components/ApartmentsToolbar/ApartmentsToolbar.jsx:68
+#: frontend/admin/app/src/pages/Dashboard/components/QuickActions/QuickActions.jsx:31
+msgid "Add Apartment"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:333 frontend/admin/app/src/pages/Dashboard/components/QuickActions/QuickActions.jsx:24
+msgid "Add Booking"
+msgstr ""
+
+#. translators: %d: number of extras shown.
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:335 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:375 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:495
+msgid "Add Extra"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:210
+msgid "Add New Extra"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:365
+msgid "Add an extra — a breakfast, a parking space, a projector — and guests can add it while booking."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:284
+msgid "Add booking"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepOptions.jsx:140
+msgid "Add one"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:198
+msgid "Add photos"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:136
+msgid "Add your first apartment and its numbers will show up here."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:306
+msgid "Add your first apartment to start taking bookings for it."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepDetails.jsx:103
+msgid "Address"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:265
+msgid "Admin"
+msgstr ""
+
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:81
+msgid "Adults"
+msgstr ""
+
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:87
+msgid "Ages 2 to 12"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsToolbar/ApartmentsToolbar.jsx:13 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:43
+msgid "All"
+msgstr ""
+
+#: backend/PostTypes/ApartmentPostType.php:92
+msgid "All Apartments"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:107
+msgid "All Methods"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:73
+msgid "All Statuses"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:240
+msgid "All available"
+msgstr ""
+
+#. translators: %d: number of apartments
+#. translators: %d: number of active apartments
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:200 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:104
+msgid "All bookable"
+msgstr ""
+
+#. translators: %d: total number of bookings
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:217 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:59
+msgid "All clear"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:218
+msgid "All live"
+msgstr ""
+
+#. translators: %d: number of database tables.
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:79
+msgid "All templates off"
+msgstr ""
+
+#. translators: %d: number of pending payments.
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:97 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:228 frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:205
+msgid "All time"
+msgstr ""
+
+#. translators: %s: end time.
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:294 frontend/site/app/src/components/BookingModal/StepWhen.jsx:343
+msgid "Already booked"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:70 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:59
+msgid "Amount"
+msgstr ""
+
+#: backend/APIs/BookingsController.php:446
+msgid "Another booking already holds those dates."
+msgstr ""
+
+#: backend/APIs/BookingsController.php:218
+msgid "Another booking already holds those dates. Cancel that one first."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:1062
+msgid "Any"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:1146 frontend/site/Shortcodes.php:1178 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:54
+msgid "Any date"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:1283
+msgid "Any time"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepDetails.jsx:118
+msgid "Anything we should know?"
+msgstr ""
+
+#. translators: 1: check-in date, 2: check-out date, 3: the overnight window.
+#: backend/PostTypes/ApartmentPostType.php:85 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:36 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:333 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:315
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:89 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:66 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:174 frontend/site/app/src/components/BookingModal/StepReview.jsx:59
+msgid "Apartment"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:124
+msgid "Apartment list"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:105 backend/Repositories/EmailTemplatesRepository.php:58
+msgid "Apartment name"
+msgstr ""
+
+#: backend/APIs/ApartmentsController.php:408
+msgid "Apartment not found."
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:79 frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:42
+msgid "Apartment photos"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:169
+msgid "Apartment showcase"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:57
+msgid "Apartment to book. Defaults to the apartment being rendered, which is what makes it work unchanged inside an Elementor loop."
+msgstr ""
+
+#: backend/Integrations/Elementor/Tags.php:210
+msgid "Apartment: Booking link"
+msgstr ""
+
+#: backend/Integrations/Elementor/Tags.php:136
+msgid "Apartment: Cleaning time"
+msgstr ""
+
+#: backend/Integrations/Elementor/Tags.php:161
+msgid "Apartment: Colour"
+msgstr ""
+
+#: backend/Integrations/Elementor/Tags.php:98
+msgid "Apartment: Description"
+msgstr ""
+
+#: backend/Integrations/Elementor/Tags.php:119
+msgid "Apartment: Guests"
+msgstr ""
+
+#: backend/Integrations/Elementor/Tags.php:78
+msgid "Apartment: Name"
+msgstr ""
+
+#: backend/Integrations/Elementor/Tags.php:182
+msgid "Apartment: Price from"
+msgstr ""
+
+#: backend/PostTypes/ApartmentPostType.php:84 frontend/admin/Menu.php:154 frontend/admin/Menu.php:155 frontend/admin/Menu.php:252
+#: frontend/admin/Menu.php:253 frontend/admin/app/src/App.jsx:37 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:329 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:261
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:93
+msgid "Apartments"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:89
+msgid "Apartments Status"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:314
+msgid "Apply Filter"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:69
+msgid "Approve"
+msgstr ""
+
+#. translators: %s: booking reference.
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:268
+msgid "Approve %s"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:259
+msgid "Approve booking"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:337 frontend/site/Shortcodes.php:1172
+msgid "Arrival"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:59
+msgid "Arrival date and time"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:40
+msgid "Arrives"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:86
+msgid "Arriving in the next 7 days"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:76
+msgid "At least one guest."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:84
+msgid "At least one hour."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:338
+msgid "Attributes"
+msgstr ""
+
+#: frontend/admin/Menu.php:172 frontend/admin/Menu.php:173 frontend/admin/app/src/App.jsx:61
+msgid "Availability"
+msgstr ""
+
+#. translators: %s: the overnight window.
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:273
+msgid "Available start times"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:333 frontend/site/app/src/components/BookingModal/StepWhen.jsx:366
+msgid "Available — you can continue."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:527
+msgid "Average Booking Duration"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:513
+msgid "Average Booking Value"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:127
+msgid "Average Value"
+msgstr ""
+
+#: frontend/admin/app/src/components/DashboardStats/DashboardStats.jsx:80 frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:214
+msgid "Avg Turnaround"
+msgstr ""
+
+#. translators: %d: number of settled payments.
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:187
+msgid "Awaiting Payment"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:391 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:225 frontend/site/app/src/components/BookingModal/BookingModal.jsx:462
+msgid "Back"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:191
+msgid "Back to bookings"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:151
+msgid "Base URL"
+msgstr ""
+
+#. translators: %d: hours the base rate covers.
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:109
+msgid "Base — first %d hours"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:239 frontend/site/Shortcodes.php:426 frontend/site/Shortcodes.php:64 frontend/site/app/src/components/ApartmentCard/ApartmentCard.jsx:229
+msgid "Book now"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:47
+msgid "Book now button"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:278
+msgid "Book this apartment"
+msgstr ""
+
+#. translators: %d: number of apartments
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:195
+msgid "Bookable right now"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:123 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:49 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:160
+msgid "Booked"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:103
+msgid "Booked more than once"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:211 frontend/admin/app/src/pages/Dashboard/components/RevenueChart/RevenueChart.jsx:24
+msgid "Booked value"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:65
+msgid "Booked value, refunds excluded"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:410 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:47
+msgid "Booking"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:243
+msgid "Booking Status Distribution"
+msgstr ""
+
+#: backend/Integrations/ElementorTags.php:45 backend/PostTypes/ApartmentMetaBox.php:39 frontend/admin/Menu.php:113 frontend/admin/Menu.php:114
+#: frontend/admin/app/src/App.jsx:88
+msgid "Booking Suite"
+msgstr ""
+
+#. translators: %s: plugin version.
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:128
+msgid "Booking Suite %s"
+msgstr ""
+
+#: frontend/admin/Assets.php:155
+msgid "Booking Suite: the admin interface has not been built yet."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:166
+msgid "Booking activity"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:100
+msgid "Booking confirmed"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:338 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:207
+msgid "Booking details"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:82
+msgid "Booking history, newest first."
+msgstr ""
+
+#: backend/APIs/BookingsController.php:457
+msgid "Booking not found."
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:57 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:226
+msgid "Booking reference"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:78
+msgid "Booking request received"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:146 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:496
+msgid "Booking short link"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:63 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:581
+msgid "Booking status"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:76
+msgid "Booking total"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:62
+msgid "Booking total, with currency"
+msgstr ""
+
+#: frontend/admin/Menu.php:143 frontend/admin/Menu.php:144 frontend/admin/app/src/App.jsx:41 frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:53
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:194 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:373 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:465 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:82
+msgid "Bookings"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:73
+msgid "Bookings Trend"
+msgstr ""
+
+#. translators: %d: percentage of guests who return.
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:120
+msgid "Bookings across all customers"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:194
+msgid "Bookings are priced and invoiced in this currency."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:74
+msgid "Bookings taken in each period."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:39
+msgid "Bookings today"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:77
+msgid "Button size."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:65
+msgid "Button text."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:386 frontend/site/app/src/components/BookingModal/StepStay.jsx:83
+msgid "By the hour"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:613
+msgid "Calculated"
+msgstr ""
+
+#: frontend/admin/Menu.php:162 frontend/admin/Menu.php:163 frontend/admin/app/src/App.jsx:57
+msgid "Calendar"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:119
+msgid "Calendar colour"
+msgstr ""
+
+#. translators: %s: apartment name.
+#. translators: %s: extra name.
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:359 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:580 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:376 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:495
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:659 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:415 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:484
+msgid "Cancel"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:537
+msgid "Cancellation Rate"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:331
+msgid "Capacity & turnaround"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:207
+msgid "Catalogue"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:360
+msgid "Charges"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:430 frontend/site/app/src/components/BookingModal/StepStay.jsx:107
+msgid "Check-in"
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:397
+msgid "Check-in cannot be in the past."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:84
+msgid "Check-ins this week"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:452 frontend/site/app/src/components/BookingModal/StepStay.jsx:122
+msgid "Check-out"
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:380 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:113
+msgid "Check-out must be after check-in."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:259 frontend/site/app/src/components/BookingModal/StepWhen.jsx:287
+msgid "Checking availability…"
+msgstr ""
+
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:86
+msgid "Children"
+msgstr ""
+
+#: frontend/site/app/src/components/DateField/DateField.jsx:39 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:89
+msgid "Choose a date"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:278
+msgid "Choose a date to see what is free."
+msgstr ""
+
+#: backend/APIs/BookingsController.php:326 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:71
+msgid "Choose an apartment."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:150
+msgid "Choose an image"
+msgstr ""
+
+#: backend/APIs/BlocksController.php:227
+msgid "Choose at least one apartment to lock."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:106
+msgid "Choose at least one apartment."
+msgstr ""
+
+#: backend/APIs/BlocksController.php:226
+msgid "Choose at least one extra to lock."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:446
+msgid "Choose when you are coming"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:327
+msgid "Choose…"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:50 frontend/site/app/src/components/BookingModal/StepDetails.jsx:50
+msgid "City"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:42
+msgid "Cleaning"
+msgstr ""
+
+#: frontend/admin/app/src/components/DashboardStats/DashboardStats.jsx:82 frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:216
+msgid "Cleaning Duration"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:124 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:373
+msgid "Cleaning time"
+msgstr ""
+
+#. translators: %s: comma-separated list of allowed minutes.
+#: backend/APIs/ApartmentsController.php:310
+msgid "Cleaning time must be one of: %s."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:180
+msgid "Clear"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:402
+msgid "Clear Image"
+msgstr ""
+
+#: frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:112
+msgid "Clear date"
+msgstr ""
+
+#: frontend/admin/app/src/components/SearchField/SearchField.jsx:43
+msgid "Clear search"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:265
+msgid "Click or drop your payment screenshot here"
+msgstr ""
+
+#: frontend/admin/app/src/components/Modal/Modal.jsx:77 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:579 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:183 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:267
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:197 frontend/site/app/src/components/BookingModal/BookingModal.jsx:291
+msgid "Close"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:185
+msgid "Closes every apartment for the window, including any added later."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:197
+msgid "Closes the apartments you choose for the window."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:274
+msgid "Color"
+msgstr ""
+
+#: frontend/admin/app/src/components/DashboardStats/DashboardStats.jsx:76 frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:210
+msgid "Combined"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:179
+msgid "Comma-separated apartment IDs to show, in the order given. Defaults to every active apartment."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:86 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:28 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:53
+msgid "Completed"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:199
+msgid "Comprehensive analytics and reports for your room booking business."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:506
+msgid "Confirm"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:226 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:85 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:27 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:52
+msgid "Confirmed"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:221
+msgid "Confirmed Stays"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:47
+msgid "Contact"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:487
+msgid "Continue"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:435
+msgid "Copy"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:443
+msgid "Copy to clipboard"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:223
+msgid "Could not build the report"
+msgstr ""
+
+#. translators: %d: number of database tables.
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:46 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:75
+msgid "Could not check"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:236
+msgid "Could not load bookings"
+msgstr ""
+
+#. translators: %s: total booked value across all guests.
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:146
+msgid "Could not load customers"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:294
+msgid "Could not load the available times."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:205
+msgid "Could not load the calendar"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:120
+msgid "Could not load the guide"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:111
+msgid "Could not load the overview"
+msgstr ""
+
+#: frontend/admin/app/src/services/http.js:163
+msgid "Could not reach the server."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:121
+msgid "Could not save settings"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepDetails.jsx:56
+msgid "Country"
+msgstr ""
+
+#. translators: 1: start date, 2: end date.
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:322
+msgid "Covering %1$s to %2$s."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:161
+msgid "Currency"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:63
+msgid "Custom Range"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:79 frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:44 frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:82
+msgid "Customer"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:504
+msgid "Customer Analytics"
+msgstr ""
+
+#: frontend/admin/Menu.php:181 frontend/admin/Menu.php:182 frontend/admin/app/src/App.jsx:49 frontend/admin/app/src/pages/Customers/CustomersPage.jsx:92
+msgid "Customers"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:253
+msgid "Customers appear here as soon as their first booking is taken."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:301
+msgid "Daily"
+msgstr ""
+
+#: frontend/admin/Menu.php:134 frontend/admin/Menu.php:135 frontend/admin/app/src/App.jsx:33
+msgid "Dashboard"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:106
+msgid "Database"
+msgstr ""
+
+#. translators: %s: amount saved at this length.
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:476 frontend/site/app/src/components/BookingModal/StepStay.jsx:156 frontend/site/app/src/components/BookingModal/StepWhen.jsx:148 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59
+msgid "Date"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:241
+msgid "Date Range"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:84
+msgid "Daytime"
+msgstr ""
+
+#. translators: %s: extra name.
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:210
+msgid "Deactivate"
+msgstr ""
+
+#. translators: %s: extra name.
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:188
+msgid "Deactivate %s"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:349
+msgid "Default"
+msgstr ""
+
+#. translators: %s: apartment name.
+#. translators: %s: extra name.
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:365 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:164 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:421 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:256
+msgid "Delete"
+msgstr ""
+
+#. translators: %s: apartment name.
+#. translators: %s: extra name.
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:151 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:243
+msgid "Delete %s"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:343
+msgid "Delete this apartment?"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:399
+msgid "Delete this extra?"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:159
+msgid "Deleted apartment"
+msgstr ""
+
+#. translators: %s: apartment name.
+#. translators: %s: extra name.
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:160 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:252
+msgid "Deleting…"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:44
+msgid "Departs"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:341
+msgid "Departure"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:60
+msgid "Departure date and time"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:549
+msgid "Describe the apartment…"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:509 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:265
+msgid "Description"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:217 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:345 frontend/site/app/src/components/BookingModal/BookingModal.jsx:259
+msgid "Details"
+msgstr ""
+
+#. translators: %s: booking reference.
+#: frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:216
+msgid "Details for %s"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:139
+msgid "Discount"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:184
+msgid "Distinct guests booking"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:375
+msgid "Done"
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:354
+msgid "Drop any of these into a subject or message and the booking fills them in. Anything unrecognised is left alone."
+msgstr ""
+
+#. translators: %d: number of hours.
+#: frontend/site/Shortcodes.php:1103 frontend/site/app/src/components/BookingModal/StepWhen.jsx:156 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:33
+msgid "Duration"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:284
+msgid "Duration the search bar starts on, in hours. Defaults to the shortest bookable length from Settings, and is limited to the range between the shortest and longest booking."
+msgstr ""
+
+#. translators: %s: apartment name.
+#. translators: %s: extra name.
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:140 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:234
+msgid "Edit"
+msgstr ""
+
+#. translators: %s: apartment name.
+#. translators: %s: extra name.
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:132 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:226
+msgid "Edit %s"
+msgstr ""
+
+#: backend/PostTypes/ApartmentPostType.php:87 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:191
+msgid "Edit Apartment"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:209
+msgid "Edit Extra"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:260 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:283
+msgid "Edit booking"
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:180
+msgid "Edited"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:561 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:114 frontend/site/app/src/components/BookingModal/StepDetails.jsx:25 frontend/site/app/src/components/BookingModal/StepReview.jsx:77
+msgid "Email"
+msgstr ""
+
+#: frontend/admin/Menu.php:217 frontend/admin/Menu.php:218 frontend/admin/app/src/App.jsx:69
+msgid "Email Templates"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:317
+msgid "Enable stock management for this extra"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:64
+msgid "Enter a name."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:69
+msgid "Enter a price of 0 or more."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:117 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:121
+msgid "Enter a rate of 0 or more."
+msgstr ""
+
+#: backend/APIs/EmailTemplatesController.php:181 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:93
+msgid "Enter a valid email address."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:111
+msgid "Enter how many guests fit."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:93
+msgid "Enter the available quantity."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:249
+msgid "Enter the name of the extra item."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:51
+msgid "Euro (€)"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:480
+msgid "Every apartment is open for booking. Lock one for maintenance, or lock everything for a closure."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:154
+msgid "Every path below hangs off this. Admin routes need a logged-in user with manage_options and the wp_rest nonce; public ones do not."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:94
+msgid "Everyone who has booked"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:397
+msgid "Example"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:40
+msgid "Extra"
+msgstr ""
+
+#: frontend/admin/Menu.php:190 frontend/admin/Menu.php:191 frontend/admin/app/src/App.jsx:65 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:333
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:257 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:385 frontend/site/app/src/components/BookingModal/BookingModal.jsx:258 frontend/site/app/src/components/BookingModal/StepOptions.jsx:44
+msgid "Extras"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:213
+msgid "Extras are offered to guests during booking."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:567
+msgid "Fields marked * are required."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:177
+msgid "Filter"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:178
+msgid "Filter by path or method…"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:547 frontend/site/app/src/components/BookingModal/StepDetails.jsx:11
+msgid "First name"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:176 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:432
+msgid "Follow Hesse public holidays"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:206
+msgid "Free"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:332 frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:127 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:264
+msgid "From"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:139
+msgid "General"
+msgstr ""
+
+#: backend/APIs/BookingsController.php:344
+msgid "Give a date, a start time and a length."
+msgstr ""
+
+#: backend/APIs/BlocksController.php:177
+msgid "Give a start and an end for the lock."
+msgstr ""
+
+#: backend/APIs/BookingsController.php:361
+msgid "Give an arrival and a departure date."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:99
+msgid "Give the apartment a name."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:206 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:68 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:169
+msgid "Gross"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:287
+msgid "Group by"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:288 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:542 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:136 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:86
+#: frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:74 frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:263 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:129 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:69
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:54 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:50 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:99
+msgid "Guest"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:469
+msgid "Guest notes"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:457 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:105
+msgid "Guest paid on"
+msgstr ""
+
+#. translators: %d: number of nights.
+#: backend/PostTypes/ApartmentMetaBox.php:114 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:347 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:39 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:345
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:404 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:95 frontend/site/Shortcodes.php:1058 frontend/site/app/src/components/BookingModal/StepReview.jsx:67
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:137 frontend/site/app/src/components/BookingModal/StepStay.jsx:175 frontend/site/app/src/components/BookingModal/StepWhen.jsx:208 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107
+msgid "Guests"
+msgstr ""
+
+#: backend/APIs/ApartmentsController.php:282
+msgid "Guests must be between 1 and 65535."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:72
+msgid "HTML"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:107
+msgid "Hello {{guest_first_name}},\n\nGood news — your booking is confirmed and the dates are yours.\n\nReference: {{reference}}\nApartment: {{apartment}}\nArrival: {{check_in}}\nDeparture: {{check_out}}\nGuests: {{guests}}\nTotal: {{total}}\n\nPlease transfer the total using the reference above. We will confirm as soon as it arrives.\n\nWe look forward to having you.\n\n{{site_name}}\n{{site_url}}"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:85
+msgid "Hello {{guest_first_name}},\n\nThank you for your request. We have it, and we will confirm it shortly.\n\nReference: {{reference}}\nApartment: {{apartment}}\nArrival: {{check_in}}\nDeparture: {{check_out}}\nGuests: {{guests}}\nTotal: {{total}}\n\nNothing is due yet — we will send payment details once the booking is confirmed.\n\n{{site_name}}\n{{site_url}}"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:130
+msgid "Hello {{guest_first_name}},\n\nWe have received your payment of {{total}}. Your stay is fully settled.\n\nReference: {{reference}}\nApartment: {{apartment}}\nArrival: {{check_in}}\nDeparture: {{check_out}}\n\nSafe travels, and see you soon.\n\n{{site_name}}\n{{site_url}}"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:438
+msgid "Hesse public holidays are treated as blocked days for this apartment."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:520
+msgid "Hours"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:193
+msgid "How long?"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:335
+msgid "How many guests fit, and how long the apartment is blocked between stays."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:142
+msgid "How prices and the guest-facing booking flow are presented."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:213
+msgid "How the apartments are sorted."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:244
+msgid "How the window splits across the booking lifecycle."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:218
+msgid "How this apartment is identified across the calendar and the website."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:372
+msgid "Image URL"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:47
+msgid "In house"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:114 frontend/admin/app/src/pages/Apartments/components/ApartmentsToolbar/ApartmentsToolbar.jsx:15 frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:212 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:45
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:162
+msgid "Inactive"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:306
+msgid "Inactive apartments stay in the list but cannot be booked."
+msgstr ""
+
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:91
+msgid "Infants"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:141 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:487
+msgid "Internal short link"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:92
+msgid "Invoice"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:204
+msgid "Items offered at booking"
+msgstr ""
+
+#. translators: %s: the largest allowed file size.
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:274
+msgid "JPG, PNG, WEBP or PDF · up to %s"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:354
+msgid "Kept for your own reference — maintenance, a private stay, a deep clean."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:61
+msgid "Last 30 Days"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:60
+msgid "Last 7 Days"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:59
+msgid "Last Month"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:555 frontend/site/app/src/components/BookingModal/StepDetails.jsx:18
+msgid "Last name"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:56
+msgid "Last stay"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:621
+msgid "Leave empty to use the calculated rate."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:129
+msgid "Lifetime spend per customer"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:59
+msgid "Lifetime value"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:267
+msgid "Link the apartment name to its own page."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:284 frontend/site/app/src/components/BookingModal/BookingModal.jsx:334
+msgid "Loading…"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:388
+msgid "Lock"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:413 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:174
+msgid "Lock Apartment"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:412 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:173
+msgid "Lock Extra"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:208
+msgid "Lock saved"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:305 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:518 frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:192
+msgid "Locked"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:223
+msgid "Locked in and ready"
+msgstr ""
+
+#. translators: %s: when the lock lifts.
+#: frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:145
+msgid "Locked until %s"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:387
+msgid "Locking…"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:443
+msgid "Locks"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:444
+msgid "Lower numbers appear first. Leave 0 for automatic ordering."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:148
+msgid "Manage apartments"
+msgstr ""
+
+#. translators: %s: booking reference.
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:299
+msgid "Mark %s as paid"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:87 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:290 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:190 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:231
+#: frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:172
+msgid "Mark as paid"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:78
+msgid "Mark completed"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:221
+msgid "Mark failed"
+msgstr ""
+
+#. translators: %s: booking reference.
+#: frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:181
+msgid "Mark payment for %s as paid"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:207
+msgid "Mark refunded"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:421 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:170
+msgid "Master Lock"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:291
+msgid "Master lock"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:511
+msgid "Master lock — every apartment"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:188
+msgid "Master locked"
+msgstr ""
+
+#: frontend/admin/app/src/components/DashboardStats/DashboardStats.jsx:73 frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:207
+msgid "Max Guest Capacity"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:196
+msgid "Maximum number of apartments to show. 0 shows them all."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:541
+msgid "Measured on refunded bookings — this system has no cancelled status."
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:233
+msgid "Message"
+msgstr ""
+
+#. translators: %d: number of endpoints.
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:201 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:85 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:53
+msgid "Method"
+msgstr ""
+
+#. translators: %d: shortest bookable length in hours.
+#: frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:78
+msgid "Minimum %d hour"
+msgid_plural "Minimum %d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:307
+msgid "Monthly"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:245 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:239 frontend/admin/app/src/pages/Guide/GuidePage.jsx:346 frontend/site/app/src/components/BookingModal/StepReview.jsx:71
+msgid "Name"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:190
+msgid "Name, email, phone or city…"
+msgstr ""
+
+#. translators: %d: total number of bookings
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:216 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:58
+msgid "Needs action"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:239
+msgid "Needs restock"
+msgstr ""
+
+#: backend/PostTypes/ApartmentPostType.php:88
+msgid "New Apartment"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:403 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:237
+msgid "Next"
+msgstr ""
+
+#. translators: %s: arrival date and time.
+#: frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:163
+msgid "Next %s"
+msgstr ""
+
+#: frontend/site/app/src/components/Calendar/Calendar.jsx:178
+msgid "Next month"
+msgstr ""
+
+#: frontend/site/app/src/components/ApartmentCard/ApartmentCard.jsx:138
+msgid "Next photo"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:179
+msgid "Nights"
+msgstr ""
+
+#. translators: %d: number of guests searched for.
+#: frontend/site/Shortcodes.php:633
+msgid "No apartment sleeps %d guest. Try a smaller party."
+msgid_plural "No apartment sleeps %d guests. Try a smaller party."
+msgstr[0] ""
+msgstr[1] ""
+
+#: frontend/site/Shortcodes.php:641
+msgid "No apartments are available just now."
+msgstr ""
+
+#: backend/PostTypes/ApartmentPostType.php:91
+msgid "No apartments found."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:289
+msgid "No apartments match your search"
+msgstr ""
+
+#: frontend/site/app/src/components/ApartmentGrid/ApartmentGrid.jsx:99
+msgid "No apartments match your search."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:302
+msgid "No apartments yet"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:314 frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:118
+msgid "No apartments yet."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:383
+msgid "No booking requests yet"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:385
+msgid "No booking touches this date for the apartments currently shown."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:447 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:251
+msgid "No bookings in this window."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:370
+msgid "No bookings match your filter"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:244
+msgid "No customers match your search"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:245
+msgid "No customers yet"
+msgstr ""
+
+#. translators: %d: percentage of guests who return.
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:114
+msgid "No data yet"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepOptions.jsx:49
+msgid "No extras are offered with this apartment."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:351
+msgid "No extras match your search"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:407
+msgid "No extras were booked. The total is accommodation and any guest charge."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:364
+msgid "No extras yet"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:310
+msgid "No extras yet."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:299
+msgid "No name given"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:320
+msgid "No payments match your filters"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:321
+msgid "No payments yet"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepOptions.jsx:93
+msgid "Not available for these dates"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:109
+msgid "Not yet"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:635 frontend/admin/app/src/pages/Guide/GuidePage.jsx:352
+msgid "Notes"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:382
+msgid "Nothing booked"
+msgstr ""
+
+#. translators: %s: arrival date and time.
+#: frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:169
+msgid "Nothing booked ahead"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:268 frontend/site/app/src/components/BookingModal/StepWhen.jsx:306
+msgid "Nothing free that day for this length. Try another date or a shorter booking."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:477
+msgid "Nothing locked"
+msgstr ""
+
+#: backend/APIs/BookingsController.php:230
+msgid "Nothing to change."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:133
+msgid "Nothing to report yet"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:61
+msgid "Number of guests"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:385
+msgid "Occupancy"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:173
+msgid "Occupancy Rate"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:205
+msgid "Occupied"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:175
+msgid "Of the hours available"
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:207
+msgid "Off"
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:206
+msgid "On"
+msgstr ""
+
+#. translators: %s: Adults, Children or Infants.
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:162
+msgid "One fewer: %s"
+msgstr ""
+
+#: frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:53
+msgid "One hour less"
+msgstr ""
+
+#: frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:63
+msgid "One hour more"
+msgstr ""
+
+#. translators: %s: Adults, Children or Infants.
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:194
+msgid "One more: %s"
+msgstr ""
+
+#. translators: %d: how many are left.
+#: frontend/site/app/src/components/BookingModal/StepOptions.jsx:104
+msgid "Only %d left for these dates"
+msgid_plural "Only %d left for these dates"
+msgstr[0] ""
+msgstr[1] ""
+
+#: frontend/site/Shortcodes.php:204
+msgid "Only show apartments that sleep at least this many guests."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:175 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:184
+msgid "Open in a new tab"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:99
+msgid "Open the booking window on an hourly visit of this length. Takes precedence over nights."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:107
+msgid "Open the booking window on an overnight stay of this many nights."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:91
+msgid "Open the booking window on this date, as YYYY-MM-DD, instead of on today."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:447 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:159 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:168
+msgid "Open uploaded receipt"
+msgstr ""
+
+#: frontend/admin/app/src/components/DashboardStats/DashboardStats.jsx:85 frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:219
+msgid "Optimized"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:271
+msgid "Optional description of the extra item."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:224
+msgid "Optional heading rendered above the grid."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:160
+msgid "Optional heading rendered above the list."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:418
+msgid "Optional image for this extra item."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:232
+msgid "Optional line of text below the heading."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:478
+msgid "Optional shortcuts to this apartment. Each must be unique across all apartments."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:356
+msgid "Ordered by revenue in this window."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:232
+msgid "Out of Stock"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:127
+msgid "Out of stock"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:72
+msgid "Outstanding"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:380 frontend/site/app/src/components/BookingModal/StepStay.jsx:78
+msgid "Overnight"
+msgstr ""
+
+#. translators: %s: the overnight window, e.g. 16:00 – 11:00.
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:253
+msgid "Overnight stay (%s)"
+msgstr ""
+
+#. translators: %s: the overnight window.
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:263
+msgid "Overnight stays run %s and always take priority over hourly bookings."
+msgstr ""
+
+#: frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:27
+msgid "PNG, JPG, JPEG"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:176
+msgid "Paid, net of refunds"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:210
+msgid "Parameters"
+msgstr ""
+
+#. translators: %d: number of apartments
+#. translators: %d: number of active apartments
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:201 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:105
+msgid "Partly offline"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:204
+msgid "Path"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:104 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:69 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:81 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:186
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:47 frontend/site/app/src/components/BookingModal/BookingModal.jsx:260
+msgid "Payment"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:139
+msgid "Payment Date"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:93
+msgid "Payment method"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:420 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:117 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:130
+msgid "Payment proof"
+msgstr ""
+
+#. translators: %s: booking reference.
+#: backend/Support/ProofUpload.php:85
+msgid "Payment proof for %s"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:184
+msgid "Payment receipt"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:218
+msgid "Payment receipt screenshot uploaded"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:114
+msgid "Payment receipt uploaded"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:433 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:142 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:151
+msgid "Payment receipt uploaded by the guest"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:123
+msgid "Payment received"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:129
+msgid "Payment received — {{reference}}"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:64 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:590
+msgid "Payment status"
+msgstr ""
+
+#: frontend/admin/Menu.php:199 frontend/admin/Menu.php:200 frontend/admin/app/src/App.jsx:45
+msgid "Payments"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:329
+msgid "Payments appear here as bookings are taken through the site."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:432
+msgid "Peak Booking Hours"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:83 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:25 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:50
+msgid "Pending"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:210
+msgid "Pending Requests"
+msgstr ""
+
+#. translators: %d: total number of bookings
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:52
+msgid "Pending bookings"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:187
+msgid "People"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:471
+msgid "Percentage"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:567 frontend/site/app/src/components/BookingModal/StepDetails.jsx:33
+msgid "Phone"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:181
+msgid "Photo gallery"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:105
+msgid "Pick a check-in date."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:105
+msgid "Pick a colour."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:127
+msgid "Pick a date."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:49
+msgid "Pick a start date."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:135
+msgid "Pick a start time."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:51
+msgid "Pick an end date."
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:351
+msgid "Placeholders"
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:149 backend/APIs/PublicBookingController.php:531
+msgid "Please choose a date."
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:537
+msgid "Please choose a start time."
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:374
+msgid "Please choose both dates."
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:547
+msgid "Please choose how long you need."
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:202
+msgid "Please give a valid email address."
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:198
+msgid "Please give your first and last name."
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:245
+msgid "Please upload a screenshot or receipt of your payment to complete the booking."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepDetails.jsx:43
+msgid "Postcode"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:53
+msgid "Pound Sterling (£)"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:143
+msgid "Pre-fill the guest filter with a party size."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:115
+msgid "Pre-fill the party size in the booking window."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:135 frontend/site/Shortcodes.php:188
+msgid "Preferred column count on wide screens."
+msgstr ""
+
+#: frontend/site/app/src/components/Calendar/Calendar.jsx:164
+msgid "Previous month"
+msgstr ""
+
+#: frontend/site/app/src/components/ApartmentCard/ApartmentCard.jsx:126
+msgid "Previous photo"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:287 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:43
+msgid "Price"
+msgstr ""
+
+#: backend/Integrations/Elementor/Tags.php:196 frontend/site/Shortcodes.php:1541 frontend/site/app/src/components/ApartmentCard/ApartmentCard.jsx:160
+msgid "Price on request"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:214
+msgid "Print Report"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:261
+msgid "Public"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:452
+msgid "Rates"
+msgstr ""
+
+#: backend/APIs/ApartmentsController.php:328
+msgid "Rates cannot be negative."
+msgstr ""
+
+#. translators: %s: a file size such as "420 KB".
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:207
+msgid "Ready"
+msgstr ""
+
+#. translators: %s: a file size such as "420 KB".
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:204
+msgid "Ready · %s"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:348
+msgid "Reason"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:225 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:121
+msgid "Receipt"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:232 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:105 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:56
+msgid "Received"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:113
+msgid "Recorded"
+msgstr ""
+
+#. translators: %d: number of pending payments.
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:202
+msgid "Recorded all time"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:101
+msgid "Recurring Customers"
+msgstr ""
+
+#. translators: %d: number of stays.
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:83 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:168 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:100 frontend/site/app/src/components/BookingModal/StepDone.jsx:29
+msgid "Reference"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:304
+msgid "Reference, guest, email…"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:327
+msgid "Refresh"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:316
+msgid "Refresh bookings list"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:209
+msgid "Refunded"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:166
+msgid "Refunds excluded"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:537 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:583
+msgid "Release"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:98
+msgid "Release dates"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:569
+msgid "Release this lock?"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:224
+msgid "Remove"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepOptions.jsx:123
+msgid "Remove one"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:191 backend/PostTypes/ApartmentMetaBox.php:81 frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:122
+msgid "Remove photo"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:520
+msgid "Repeat Customer Rate"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:217
+msgid "Replace"
+msgstr ""
+
+#: frontend/admin/Menu.php:208 frontend/admin/Menu.php:209 frontend/admin/app/src/App.jsx:53 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:196
+msgid "Reports & Analytics"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:475
+msgid "Request booking"
+msgstr ""
+
+#: frontend/admin/app/src/services/http.js:73 frontend/admin/app/src/services/http.js:83
+msgid "Request failed."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepDone.jsx:22
+msgid "Request received"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:387
+msgid "Requests made through the booking form on your site will appear here."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:60
+msgid "Reserve"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:84 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:26 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:51
+msgid "Reserved"
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:292 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:214
+msgid "Reset"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:238 frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:245 frontend/admin/app/src/pages/Customers/CustomersPage.jsx:155 frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:120
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:259 frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:237
+msgid "Retry"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:379 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:123 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:195
+msgid "Revenue"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:114
+msgid "Revenue Analysis"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:187
+msgid "Revenue per apartment across the window."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:261
+msgid "Review"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:367
+msgid "Room"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:186
+msgid "Room Performance"
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:324
+msgid "Save"
+msgstr ""
+
+#. translators: %s: amount saved at this length.
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:138
+msgid "Save %s at this length"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:588
+msgid "Save Apartment"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:494
+msgid "Save Extra"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:668
+msgid "Save booking"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:208
+msgid "Save settings"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:587 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:276 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:667 frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:320
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:491 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:207
+msgid "Saving…"
+msgstr ""
+
+#. translators: 1: stored schema version, 2: expected version.
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:60
+msgid "Schema v%1$d, expected v%2$d"
+msgstr ""
+
+#: frontend/admin/app/src/components/SearchField/SearchField.jsx:13 frontend/site/Shortcodes.php:1064 frontend/site/app/src/components/SearchFilterBar/SearchFilterBar.jsx:99
+msgid "Search"
+msgstr ""
+
+#: backend/PostTypes/ApartmentPostType.php:90
+msgid "Search Apartments"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsToolbar/ApartmentsToolbar.jsx:37
+msgid "Search apartments"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:300
+msgid "Search bookings"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsToolbar/ApartmentsToolbar.jsx:41 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:295
+msgid "Search by name…"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:186
+msgid "Search customers"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:174
+msgid "Search endpoints"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:291
+msgid "Search extras"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:158
+msgid "Search transactions"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:167
+msgid "Search transactions…"
+msgstr ""
+
+#: frontend/site/app/src/components/ApartmentGrid/ApartmentGrid.jsx:51
+msgid "Searching for apartments…"
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:401
+msgid "Send a test to"
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:411
+msgid "Send test"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:100
+msgid "Send this booking back to pending? The dates become bookable again."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:474
+msgid "Sending…"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:211
+msgid "Sent back to guests"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:79
+msgid "Sent to the guest the moment they submit a booking request."
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:124
+msgid "Sent when a payment is marked as paid, in the admin or on the payments screen."
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:101
+msgid "Sent when a request is approved and the dates are held."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:195
+msgid "Set up the apartment guests will see and book."
+msgstr ""
+
+#: frontend/admin/Menu.php:226 frontend/admin/Menu.php:227 frontend/admin/app/src/App.jsx:73
+msgid "Settings"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:131
+msgid "Settings saved."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:80 frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:174
+msgid "Settled"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:477
+msgid "Short links"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:130
+msgid "Shortcodes"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:258
+msgid "Show a two-line description under the name."
+msgstr ""
+
+#: frontend/site/app/src/ApartmentsApp.jsx:142
+msgid "Show all apartments"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:152
+msgid "Show the date and guest search bar."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:249
+msgid "Show the nightly \"from\" price."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:276
+msgid "Show the search bar: arrival date, duration and guests. Searching filters the grid by party size and opens the booking modal on the dates chosen."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:510
+msgid "Shown to guests on the website."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:219
+msgid "Some hidden"
+msgstr ""
+
+#. translators: %d: number of failed payments.
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:229 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:342 frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:140 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:250
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:228
+msgid "Something went wrong"
+msgstr ""
+
+#: frontend/site/app/src/components/ApartmentGrid/ApartmentGrid.jsx:76
+msgid "Something went wrong at our end. Please try again."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:52
+msgid "Sort"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:434
+msgid "Sort Order"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:219
+msgid "Sort direction."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:349
+msgid "Source"
+msgstr ""
+
+#. translators: %s: amount saved.
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:498 frontend/site/app/src/components/BookingModal/StepStay.jsx:254
+msgid "Start time"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:45 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:101 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:81 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:78
+#: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:183 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:55 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:59 frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:59
+#: frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:62
+msgid "Status"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:575
+msgid "Status & price"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:327 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:307 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:75 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:180
+msgid "Stay"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:92
+msgid "Stay dates"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:178
+msgid "Stays"
+msgstr ""
+
+#. translators: %d: maximum number of nights.
+#: backend/APIs/PublicBookingController.php:388
+msgid "Stays are limited to %d nights."
+msgstr ""
+
+#. translators: %d: number of settled payments.
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:189
+msgid "Still to collect"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:46
+msgid "Stock"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:340
+msgid "Stock Quantity"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:234
+msgid "Stock-managed and empty"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:83
+msgid "Stretch to the width of its container."
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:218
+msgid "Subject"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:54
+msgid "Swiss Franc (CHF)"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:101
+msgid "System"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:287
+msgid "Taken by phone, email or at the door."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:41
+msgid "Taken in the last 24 hours"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:157
+msgid "Taken in this window"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:197
+msgid "Taken per day, split by status."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:179
+msgid "Takes every extra off the board for the window. Extras added later are not covered."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:191
+msgid "Takes the extras you choose off the board for the window."
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:284
+msgid "Template restored to the original text."
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:312
+msgid "Template saved."
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:262
+msgid "Test email sent."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:71
+msgid "Text"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:240
+msgid "Text of the booking button on each card."
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:308
+msgid "Thank you — your booking request has been received. We will confirm it by email with payment details."
+msgstr ""
+
+#: backend/APIs/EmailTemplatesController.php:234
+msgid "That email template does not exist."
+msgstr ""
+
+#: backend/APIs/ExtrasController.php:287
+msgid "That extra no longer exists."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:102
+msgid "That file could not be read."
+msgstr ""
+
+#. translators: %s: the largest allowed file size.
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:78
+msgid "That file is too large. The most we can take is %s."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:66
+msgid "That file type is not supported. Use a JPG, PNG, WEBP or PDF."
+msgstr ""
+
+#: backend/APIs/CustomersController.php:132
+msgid "That guest no longer exists."
+msgstr ""
+
+#: backend/APIs/BlocksController.php:288
+msgid "That lock no longer exists."
+msgstr ""
+
+#: backend/APIs/PaymentsController.php:209
+msgid "That payment no longer exists."
+msgstr ""
+
+#: backend/APIs/ApartmentsController.php:382
+msgid "That short link is already used by another apartment."
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:557
+msgid "That time has already passed."
+msgstr ""
+
+#: backend/APIs/ApartmentsController.php:246
+msgid "The apartment could not be deleted."
+msgstr ""
+
+#: backend/APIs/ApartmentsController.php:192
+msgid "The apartment could not be saved."
+msgstr ""
+
+#: backend/APIs/ApartmentsController.php:225
+msgid "The apartment could not be updated."
+msgstr ""
+
+#: frontend/site/app/src/components/ApartmentGrid/ApartmentGrid.jsx:70
+msgid "The apartments could not be loaded."
+msgstr ""
+
+#: backend/APIs/BookingsController.php:178 backend/APIs/PublicBookingController.php:280
+msgid "The booking could not be saved."
+msgstr ""
+
+#: backend/APIs/BookingsController.php:274
+msgid "The booking could not be updated."
+msgstr ""
+
+#: backend/APIs/ApartmentsController.php:295
+msgid "The colour must be a hex value such as #3858e9."
+msgstr ""
+
+#: backend/APIs/ExtrasController.php:172
+msgid "The extra could not be saved."
+msgstr ""
+
+#: backend/APIs/ExtrasController.php:227
+msgid "The extra needs a name."
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:202
+msgid "The first photo is also used as the featured image."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:126 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:135
+msgid "The guest has not uploaded a receipt."
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:55
+msgid "The guest's full name"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:125
+msgid "The guest-facing apartment grid, with an optional date and guest search bar above it."
+msgstr ""
+
+#: backend/APIs/BlocksController.php:251
+msgid "The lock could not be saved."
+msgstr ""
+
+#: backend/APIs/BlocksController.php:184 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:63
+msgid "The lock must end after it starts."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:166
+msgid "The payment receipt you uploaded"
+msgstr ""
+
+#: backend/APIs/ExtrasController.php:244
+msgid "The price cannot be negative."
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:108
+msgid "The same value as the post title — changing it here renames the apartment everywhere."
+msgstr ""
+
+#: backend/APIs/ExtrasController.php:266
+msgid "The stock quantity cannot be negative."
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:56
+msgid "Their first name only"
+msgstr ""
+
+#: backend/APIs/EmailTemplatesController.php:195
+msgid "There are no bookings yet, so there is nothing to fill the placeholders with."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:212
+msgid "These bookings already sit inside it. The lock stops new bookings; it has not touched them."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:58
+msgid "This Month"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:62
+msgid "This Year"
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:108 backend/APIs/PublicBookingController.php:143 backend/APIs/PublicBookingController.php:359
+msgid "This apartment cannot be booked."
+msgstr ""
+
+#. translators: %d: maximum number of guests.
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:313
+msgid "This apartment sleeps up to %d guest."
+msgid_plural "This apartment sleeps up to %d guests."
+msgstr[0] ""
+msgstr[1] ""
+
+#: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:140
+msgid "This customer has no bookings yet."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:334 frontend/site/app/src/components/BookingModal/StepWhen.jsx:367
+msgid "Those dates are already taken. Please try another window."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:572
+msgid "Those dates go back on the board and can be booked again."
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:208
+msgid "Those dates have just been taken. Please choose another window."
+msgstr ""
+
+#: frontend/site/Shortcodes.php:1287
+msgid "Time"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:459
+msgid "Time Slot"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:338 frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:145 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:274
+msgid "To"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:79
+msgid "To collect"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:246 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:72
+msgid "Today"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:350
+msgid "Top Performing Rooms"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:239 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:399 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:98 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:95
+#: frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:84 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:189 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:124 frontend/site/app/src/components/BookingModal/StepDone.jsx:33
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:175
+msgid "Total"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:155
+msgid "Total Bookings"
+msgstr ""
+
+#. translators: %d: active percentage
+#: frontend/admin/app/src/components/DashboardStats/DashboardStats.jsx:71 frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:205
+msgid "Total Capacity"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:202
+msgid "Total Extras"
+msgstr ""
+
+#: frontend/admin/app/src/components/DashboardStats/DashboardStats.jsx:46 frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:180
+msgid "Total Properties"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:164
+msgid "Total Revenue"
+msgstr ""
+
+#. translators: %d: percentage of guests who return.
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:118
+msgid "Total Stays"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:201
+msgid "Total Value"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:63
+msgid "Total amount"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:355
+msgid "Total available quantity for this extra (e.g. 3 for 3 projectors)."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:603
+msgid "Total override"
+msgstr ""
+
+#. translators: %d: number of pending payments.
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:200
+msgid "Transactions"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:249
+msgid "Try a different name, email or city."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:293
+msgid "Try a different name, or clear the search to see all apartments."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:355
+msgid "Try a different name, or clear the search to see all extras."
+msgstr ""
+
+#: frontend/site/app/src/components/ApartmentGrid/ApartmentGrid.jsx:105
+msgid "Try a smaller party size, or different dates."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:325
+msgid "Try a wider date range, or clear the filters to see everything."
+msgstr ""
+
+#: frontend/site/app/src/components/ApartmentGrid/ApartmentGrid.jsx:88
+msgid "Try again"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:374
+msgid "Try another status, or clear the search to see all requests."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:379
+msgid "Turnaround blocked after each stay."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:364
+msgid "Type"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:52
+msgid "US Dollar ($)"
+msgstr ""
+
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:92
+msgid "Under 2, not counted towards occupancy"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:182
+msgid "Unique Customers"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:223
+msgid "Units Booked"
+msgstr ""
+
+#: frontend/admin/app/src/components/DashboardStats/DashboardStats.jsx:48 frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:182
+msgid "Units Registered"
+msgstr ""
+
+#: frontend/admin/app/src/App.jsx:91
+msgid "Unknown Booking Suite screen."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:112
+msgid "Unlimited"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:74
+msgid "Unpaid and part-paid bookings"
+msgstr ""
+
+#. translators: %s: checkout date and time.
+#: frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:155
+msgid "Until %s"
+msgstr ""
+
+#. translators: %d: maximum number of guests.
+#: frontend/site/app/src/components/ApartmentCard/ApartmentCard.jsx:49
+msgid "Up to %d guest"
+msgid_plural "Up to %d guests"
+msgstr[0] ""
+msgstr[1] ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:89
+msgid "Upcoming"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:386
+msgid "Upload Image"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:148
+msgid "Upload Payment Screenshot / Receipt"
+msgstr ""
+
+#: frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:103
+msgid "Upload image"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:244
+msgid "Upload payment proof"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:80 frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:43
+msgid "Use these photos"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:153
+msgid "Use this image"
+msgstr ""
+
+#: frontend/admin/Menu.php:236 frontend/admin/Menu.php:237 frontend/admin/app/src/App.jsx:77
+msgid "User Guide"
+msgstr ""
+
+#. translators: %d: the apartment's usual capacity.
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:230
+msgid "Usually sleeps %d — we will confirm the extra beds with you."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:214
+msgid "Value of the bookings taken each day."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:115
+msgid "Value of the bookings taken, refunds excluded."
+msgstr ""
+
+#: backend/PostTypes/ApartmentPostType.php:89
+msgid "View Apartment"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/QuickActions/QuickActions.jsx:38
+msgid "View Calendar"
+msgstr ""
+
+#. translators: %s: guest name.
+#: frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:160
+msgid "View all bookings for %s"
+msgstr ""
+
+#: frontend/site/app/src/components/ApartmentCard/ApartmentCard.jsx:217
+msgid "View details"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:317 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:324 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:197 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:204
+msgid "View payment"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:213
+msgid "Visible to customers"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:71
+msgid "Visual weight of the button."
+msgstr ""
+
+#. translators: %d: total number of bookings
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:212 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:54
+msgid "Waiting on confirmation"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:84
+msgid "We have your request — {{reference}}"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepDetails.jsx:129
+msgid "We will email you a confirmation with the bank transfer details. Nothing is charged online."
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:155 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:457
+msgid "Weekday rate (Sun–Thu)"
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:162 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:465
+msgid "Weekend rate (Fri/Sat)"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:304
+msgid "Weekly"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:257 frontend/site/app/src/components/BookingModal/StepReview.jsx:63
+msgid "When"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:323
+msgid "When enabled, you can set a limited quantity. When disabled, unlimited quantity is available."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:438
+msgid "When stays start, busiest first."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:92
+msgid "Where each one stands right now."
+msgstr ""
+
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:135
+msgid "Who is coming"
+msgstr ""
+
+#: backend/APIs/EmailTemplatesController.php:220
+msgid "WordPress could not send the email. Check the template is switched on and that the site can send mail."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:21
+msgid "Working out the price…"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:106
+msgid "Your booking is confirmed — {{reference}}"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:311
+msgid "Your booking will be verified once your payment proof is confirmed."
+msgstr ""
+
+#: frontend/admin/app/src/services/http.js:109
+msgid "Your session expired. Reload the page and try again."
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:66
+msgid "Your site address"
+msgstr ""
+
+#: backend/Repositories/EmailTemplatesRepository.php:65
+msgid "Your site name"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:256
+msgid "e.g. Studio Rheinblick"
+msgstr ""
+
+#: frontend/site/Shortcodes.php:1547 frontend/site/Shortcodes.php:1591
+msgid "from"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:90
+msgid "holiday"
+msgstr ""
+
+#. translators: 1: enabled templates, 2: total templates.
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:95
+msgid "no SMTP plugin"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:154
+msgid "required"
+msgstr ""
+
+#. translators: %s: amount saved.
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:237
+msgid "save %s"
+msgstr ""
+
+#. translators: %s: end time.
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:337
+msgid "until %s"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:95
+msgid "weekend"
+msgstr ""
+
+#: frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:400
+msgid "you@example.com"
+msgstr ""
+
+#. translators: %s: apartment name.
+#: frontend/site/app/src/components/ApartmentCard/ApartmentCard.jsx:233
+msgid "— %s"
+msgstr ""

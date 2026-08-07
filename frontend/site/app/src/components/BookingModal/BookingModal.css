@@ -843,19 +843,32 @@
 }
 
 /* Dropzone Screenshot Uploader */
+/* The required marker beside a field label. */
+.bks-field__required {
+	margin-left: 3px;
+	color: var(--bks-site-error, #dc2626);
+	font-weight: 600;
+}
 
+/* Payment proof — dropzone and uploaded state */
+
+/*
+ * The dropzone is a real drop target, not just a styled button: the copy
+ * invites a drop, so the dashed border, the lift on hover and the filled state
+ * while dragging all have to mean something.
+ */
 .bks-payment__dropzone {
-	display: block;
-	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	padding: 28px 20px;
-	border: 2px dashed var(--bks-site-border-focus, #cbd5e1);
-	border-radius: var(--bks-site-radius-xs, 12px);
+	border: 1.5px dashed var(--bks-site-border-strong, #cbd5e1);
+	border-radius: var(--bks-site-radius, 18px);
 	background: var(--bks-site-surface-muted, #f8fafc);
 	cursor: pointer;
-	text-align: center;
 	transition:
-		border-color 150ms ease,
-		background-color 150ms ease;
+		border-color var(--bks-site-transition-fast, 120ms ease),
+		background-color var(--bks-site-transition-fast, 120ms ease);
 }
 
 .bks-payment__dropzone:hover {
@@ -863,106 +876,161 @@
 	background: var(--bks-site-brand-soft, #eff6ff);
 }
 
+/* Held over the target: solid, tinted, unmistakably armed. */
+.bks-payment__dropzone.is-dragging {
+	border-style: solid;
+	border-color: var(--bks-site-brand, #2563eb);
+	background: var(--bks-site-brand-soft, #eff6ff);
+}
+
+.bks-payment__dropzone:focus-within {
+	outline: 2px solid var(--bks-site-brand, #2563eb);
+	outline-offset: 2px;
+}
+
 .bks-payment__dropzone-content {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 6px;
-	color: var(--bks-site-text-muted, #475569);
+	text-align: center;
 }
 
 .bks-payment__dropzone-content svg {
 	color: var(--bks-site-brand, #2563eb);
-	margin-bottom: 2px;
 }
 
 .bks-payment__dropzone-content strong {
 	font-size: 14px;
 	font-weight: 600;
+	line-height: 1.4;
 	color: var(--bks-site-text, #0f172a);
 }
 
-.bks-payment__dropzone-content span {
+.bks-payment__dropzone-hint {
 	font-size: 12px;
-	color: var(--bks-site-text-muted, #64748b);
+	line-height: 1.4;
+	color: var(--bks-site-text-muted, #475569);
 }
 
-/* Uploaded Screenshot Thumbnail & Preview */
-
-.bks-payment__upload-preview {
+/*
+ * The uploaded state. A real thumbnail rather than a filename on its own — the
+ * guest is confirming they picked the right screenshot, and only the picture
+ * answers that.
+ */
+.bks-payment__proof {
 	display: flex;
 	align-items: center;
 	gap: 14px;
-	padding: 14px 18px;
-	border: 1.5px solid var(--bks-site-border, #e2e8f0);
-	border-radius: var(--bks-site-radius-xs, 12px);
-	background: var(--bks-site-surface, #ffffff);
-	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-}
-
-.bks-payment__thumbnail {
-	width: 52px;
-	height: 52px;
-	border-radius: 8px;
-	object-fit: cover;
+	padding: 12px;
 	border: 1px solid var(--bks-site-border, #e2e8f0);
-	flex-shrink: 0;
+	border-radius: var(--bks-site-radius, 18px);
+	background: var(--bks-site-surface, #fff);
 }
 
-.bks-payment__file-icon {
+.bks-payment__proof-preview {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 52px;
-	height: 52px;
-	border-radius: 8px;
-	background: var(--bks-site-surface-muted, #f1f5f9);
-	font-size: 24px;
 	flex-shrink: 0;
+	overflow: hidden;
+	width: 64px;
+	height: 64px;
+	border-radius: var(--bks-site-radius-sm, 12px);
+	background: var(--bks-site-surface-sunken, #f1f5f9);
 }
 
-.bks-payment__file-info {
+.bks-payment__proof-preview img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.bks-payment__proof-file {
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	color: var(--bks-site-text-muted, #475569);
+}
+
+.bks-payment__proof-meta {
 	display: flex;
-	flex-direction: column;
-	gap: 2px;
-	min-width: 0;
 	flex: 1;
+	min-width: 0;
+	flex-direction: column;
+	gap: 3px;
 }
 
-.bks-payment__file-name {
+/* Truncated: a phone screenshot's filename is long and tells you nothing. */
+.bks-payment__proof-name {
+	overflow: hidden;
 	font-size: 14px;
 	font-weight: 600;
-	color: var(--bks-site-text, #0f172a);
 	white-space: nowrap;
-	overflow: hidden;
 	text-overflow: ellipsis;
+	color: var(--bks-site-text, #0f172a);
 }
 
-.bks-payment__file-status {
+.bks-payment__proof-status {
+	display: flex;
+	align-items: center;
+	gap: 5px;
 	font-size: 12px;
-	color: var(--bks-site-success, #16a34a);
 	font-weight: 500;
+	color: var(--bks-site-success, #16a34a);
 }
 
-.bks-payment__remove-file {
-	padding: 7px 14px !important;
-	border: 1px solid #fee2e2 !important;
-	border-radius: 8px !important;
-	background: #fef2f2 !important;
-	color: #dc2626 !important;
-	-webkit-text-fill-color: #dc2626 !important;
-	font-size: 13px !important;
-	font-weight: 600 !important;
-	cursor: pointer !important;
-	transition: background-color 150ms ease !important;
-	flex-shrink: 0 !important;
-	transform: none !important;
+.bks-payment__proof-actions {
+	display: flex;
+	flex-shrink: 0;
+	gap: 6px;
 }
 
-.bks-payment__remove-file:hover {
-	background: #fee2e2 !important;
-	border-color: #fca5a5 !important;
-	transform: none !important;
+.bks-payment__proof-action {
+	padding: 7px 12px;
+	border: 1px solid var(--bks-site-border, #e2e8f0);
+	border-radius: var(--bks-site-radius-xs, 8px);
+	background: transparent;
+	font-family: inherit;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--bks-site-text-muted, #475569);
+	cursor: pointer;
+	transition:
+		border-color var(--bks-site-transition-fast, 120ms ease),
+		color var(--bks-site-transition-fast, 120ms ease);
+}
+
+.bks-payment__proof-action:hover {
+	border-color: var(--bks-site-brand, #2563eb);
+	color: var(--bks-site-brand, #2563eb);
+}
+
+.bks-payment__proof-action--remove:hover {
+	border-color: var(--bks-site-error, #dc2626);
+	color: var(--bks-site-error, #dc2626);
+}
+
+.bks-payment__error {
+	margin: 8px 0 0;
+	font-size: 13px;
+	line-height: 1.4;
+	color: var(--bks-site-error, #dc2626);
+}
+
+@media (max-width: 30rem) {
+
+	.bks-payment__proof {
+		flex-wrap: wrap;
+	}
+
+	.bks-payment__proof-actions {
+		width: 100%;
+	}
+
+	.bks-payment__proof-action {
+		flex: 1;
+	}
 }
 
 /* ═══════════════════════════════════════════════
@@ -1274,4 +1342,265 @@
 	.bks-booking__button {
 		flex: 1;
 	}
+}
+
+/* ═══════════════════════════════════════════════
+   Override armour
+   ═══════════════════════════════════════════════
+
+   The modal is rendered into a container appended to <body>, which keeps it
+   clear of Elementor's own widget selectors. What still reaches it is every
+   rule a theme writes against bare elements — `button:hover`, `input:focus`,
+   `a` — and those are routinely marked !important, which no amount of
+   specificity on our side can outrank.
+
+   The active theme here paints `button:hover` with its own accent, which is
+   why the Extras "+" turned pink the moment it was used. Restating our values
+   with the same weight is the only thing that holds.
+
+   Everything below is a restatement, not a new design: each rule repeats what
+   the component already declares above. Adding a colour here without changing
+   it there would put the modal's appearance in two places.
+
+   Kept last in the file on purpose — later rules win ties. */
+
+/* Native control accents: checkboxes, radios, the text caret and selection all
+   take the theme's colour unless told otherwise, and none of them is reachable
+   through an ordinary class rule. */
+.bks-booking,
+.bks-booking * {
+	accent-color: var(--bks-site-brand, #2563eb) !important;
+	caret-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+.bks-booking ::selection {
+	background: var(--bks-site-brand-soft, #eff6ff);
+	color: var(--bks-site-text, #0f172a);
+}
+
+/*
+ * Every button in the modal starts colourless.
+ *
+ * This inverts the usual arrangement, and deliberately. Listing components one
+ * by one meant each new control arrived unprotected — the date field shipped as
+ * a solid pink button for exactly that reason. Here the theme is denied the
+ * whole surface up front, and the components below opt back in to the fill they
+ * actually want. A control added tomorrow is safe by default.
+ *
+ * Every rule that follows carries !important for the same reason this one does:
+ * the theme's are !important too, and specificity alone cannot outrank them.
+ */
+.bks-booking button {
+	background-color: transparent !important;
+	background-image: none !important;
+	color: inherit !important;
+	-webkit-text-fill-color: currentcolor !important;
+	text-transform: none !important;
+	letter-spacing: normal !important;
+	text-shadow: none !important;
+}
+
+/* Extras steppers — the control that showed the problem. */
+.bks-booking .bks-extras__stepper button {
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+	background-color: var(--bks-site-surface, #fff) !important;
+}
+
+.bks-booking .bks-extras__stepper button:hover:not(:disabled),
+.bks-booking .bks-extras__stepper button:focus:not(:disabled),
+.bks-booking .bks-extras__stepper button:active:not(:disabled) {
+	border-color: var(--bks-site-border-focus, #cbd5e1) !important;
+	background-color: var(--bks-site-surface-muted, #f8fafc) !important;
+	color: var(--bks-site-text, #0f172a) !important;
+}
+
+/* Primary and ghost actions. */
+.bks-booking .bks-booking__button {
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+	border-color: transparent !important;
+}
+
+.bks-booking .bks-booking__button:hover:not(:disabled),
+.bks-booking .bks-booking__button:focus:not(:disabled) {
+	background-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+}
+
+.bks-booking .bks-booking__button--ghost {
+	background-color: transparent !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+}
+
+.bks-booking .bks-booking__button--ghost:hover:not(:disabled),
+.bks-booking .bks-booking__button--ghost:focus:not(:disabled) {
+	background-color: var(--bks-site-surface-muted, #f8fafc) !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+	border-color: var(--bks-site-border-focus, #cbd5e1) !important;
+}
+
+/*
+ * The close button already declares itself with !important throughout, and its
+ * hover is deliberately red — "this discards what you were doing". Only the
+ * text-fill is restated here; overriding the hover would flatten an intended
+ * signal into a grey one.
+ */
+/*
+ * The close button. Its own rules are already !important but sit at lower
+ * specificity than the blanket `.bks-booking button` above, so the surface has
+ * to be restated here — its hover stays red, which is intended: that button
+ * discards what you were doing.
+ */
+.bks-booking .bks-booking__close {
+	background-color: var(--bks-site-surface-muted, #f1f5f9) !important;
+	color: var(--bks-site-text-muted, #475569) !important;
+	-webkit-text-fill-color: var(--bks-site-text-muted, #475569) !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+}
+
+.bks-booking .bks-booking__close:hover {
+	background-color: #fee2e2 !important;
+	color: #dc2626 !important;
+	-webkit-text-fill-color: #dc2626 !important;
+	border-color: #fca5a5 !important;
+}
+
+/* The date field: styled to match the modal's inputs, so it opts into their
+   surface rather than the transparent default above. */
+.bks-booking .bks-datefield__trigger,
+.bks-booking .bks-datefield__trigger:hover {
+	background-color: var(--bks-site-surface-muted, #f8fafc) !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+}
+
+.bks-booking .bks-datefield__trigger:hover {
+	border-color: var(--bks-site-border-strong, #cbd5e1) !important;
+}
+
+.bks-booking .bks-datefield__trigger[aria-expanded='true'] {
+	border-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+.bks-booking .bks-cal__nav,
+.bks-booking .bks-cal__day {
+	background-color: transparent !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+	border-color: transparent !important;
+}
+
+.bks-booking .bks-cal__nav:hover:not(:disabled),
+.bks-booking .bks-cal__day:hover:not(:disabled) {
+	background-color: var(--bks-site-brand-soft, #eff6ff) !important;
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+.bks-booking .bks-cal__day.is-outside {
+	color: var(--bks-site-text-faint, #94a3b8) !important;
+	-webkit-text-fill-color: var(--bks-site-text-faint, #94a3b8) !important;
+}
+
+.bks-booking .bks-cal__day.is-selected,
+.bks-booking .bks-cal__day.is-selected:hover {
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+}
+
+/* Choice controls: slots, durations, modes, payment options. */
+.bks-booking .bks-slots__slot,
+.bks-booking .bks-durations__option,
+.bks-booking .bks-modes__option,
+.bks-booking .bks-payment__option {
+	background-color: var(--bks-site-surface, #fff) !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+}
+
+.bks-booking .bks-slots__slot:hover:not(:disabled),
+.bks-booking .bks-durations__option:hover:not(:disabled),
+.bks-booking .bks-modes__option:hover,
+.bks-booking .bks-payment__option:hover {
+	background-color: var(--bks-site-brand-soft, #eff6ff) !important;
+	border-color: var(--bks-site-brand, #2563eb) !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+}
+
+/* The chosen one keeps the brand fill, whatever the theme prefers. */
+.bks-booking .bks-slots__slot.is-selected,
+.bks-booking .bks-durations__option.is-selected,
+.bks-booking .bks-modes__option.is-selected {
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	border-color: var(--bks-site-brand, #2563eb) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+}
+
+.bks-booking .bks-payment__option.is-selected {
+	border-color: var(--bks-site-brand, #2563eb) !important;
+	background-color: var(--bks-site-brand-soft, #eff6ff) !important;
+}
+
+/* Upload controls. */
+.bks-booking .bks-payment__proof-action,
+.bks-booking .bks-payment__proof-action:hover,
+.bks-booking .bks-payment__dropzone {
+	background-color: transparent !important;
+	-webkit-text-fill-color: currentcolor !important;
+}
+
+.bks-booking .bks-payment__dropzone,
+.bks-booking .bks-payment__dropzone:hover {
+	background-color: var(--bks-site-surface-muted, #f8fafc) !important;
+}
+
+/* Fields: the border and focus ring are ours, not the theme's. */
+.bks-field input,
+.bks-field select,
+.bks-field textarea {
+	background-color: var(--bks-site-surface, #fff) !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+	box-shadow: none !important;
+}
+
+.bks-field input:focus,
+.bks-field select:focus,
+.bks-field textarea:focus {
+	border-color: var(--bks-site-brand, #2563eb) !important;
+	box-shadow: 0 0 0 3px var(--bks-site-brand-glow, rgba(37, 99, 235, 0.16)) !important;
+	outline-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+/*
+ * Checkboxes and radios outside .bks-field — the overnight toggle is one.
+ * Their visible tick comes from accent-color, already set above; these two
+ * properties are what a theme's blanket `input` rule leaves behind.
+ */
+.bks-booking input[type='checkbox'],
+.bks-booking input[type='radio'] {
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+	color: var(--bks-site-text, #0f172a) !important;
+}
+
+/* Any focus ring the browser draws inside the modal is ours. */
+.bks-booking :focus-visible {
+	outline-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+/* Links, which themes colour globally. */
+.bks-booking a:not(.bks-booking__button) {
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
 }

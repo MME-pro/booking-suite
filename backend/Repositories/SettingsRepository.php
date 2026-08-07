@@ -20,8 +20,12 @@ final class SettingsRepository {
 
 	public const CURRENCY = 'currency';
 
-	/** Language the guest-facing booking flow is offered in. */
-	public const LANGUAGE = 'language';
+	/*
+	 * There was a LANGUAGE setting here. It was removed: the plugin follows the
+	 * WordPress site language through its own translation catalogue, and a
+	 * second control could only ever disagree with Settings → General. Any row
+	 * left in the settings table under 'language' is simply ignored.
+	 */
 
 	/** Hours the base rate covers. */
 	public const BASE_HOURS = 'base_hours';
@@ -56,7 +60,6 @@ final class SettingsRepository {
 	/** Used until the Settings screen says otherwise. */
 	private const DEFAULTS = array(
 		self::CURRENCY         => 'EUR',
-		self::LANGUAGE         => 'de',
 		self::BASE_HOURS       => '3',
 		self::HOURLY_SURCHARGE => '20',
 		// The base rate covers two guests; only those beyond it are charged,

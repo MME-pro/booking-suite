@@ -1,55 +1,42 @@
+/**
+ * ApartmentsApp — the shell only. Grid and card styles live with their
+ * components; nothing here reaches into them.
+ */
+
 .bks-apartments {
 	width: 100%;
 }
 
 .bks-apartments__heading {
-	margin-bottom: 16px;
-	font-size: 28px;
-	font-weight: 700;
+	margin: 0 0 var(--bks-site-space-6);
+	font-size: var(--bks-site-text-2xl);
+	font-weight: 600;
 	line-height: 1.2;
+	letter-spacing: -0.02em;
+	color: var(--bks-site-text);
 }
 
-/*
- * auto-fit keeps the grid responsive without media queries: cards never go
- * below 280px, and the column count is capped by the shortcode attribute.
- */
-.bks-apartments__grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
-	gap: var(--bks-site-gap);
-}
-
-@media (min-width: 900px) {
-
-	.bks-apartments__grid {
-		grid-template-columns: repeat(var(--bks-site-columns), 1fr);
-	}
-}
-
-.bks-apartments__skeleton {
-	aspect-ratio: 4 / 5;
-	border-radius: var(--bks-site-radius);
-	background: linear-gradient(100deg, #eef0f6 30%, #f7f8fc 50%, #eef0f6 70%);
-	background-size: 200% 100%;
-	animation: bks-shimmer 1.4s ease-in-out infinite;
-}
-
-@keyframes bks-shimmer {
-
-	from {
-		background-position: 150% 0;
-	}
-
-	to {
-		background-position: -50% 0;
-	}
-}
-
-.bks-apartments__message {
-	padding: 32px 20px;
-	border: 1px dashed var(--bks-site-border);
-	border-radius: var(--bks-site-radius);
-	background: var(--bks-site-surface-muted);
+.bks-apartments__reset {
+	display: block;
+	margin: var(--bks-site-space-6) auto 0;
+	padding: 0;
+	border: 0;
+	background: none;
+	font-family: inherit;
+	font-size: var(--bks-site-text-base);
+	font-weight: 500;
 	color: var(--bks-site-text-muted);
-	text-align: center;
+	text-decoration: underline;
+	cursor: pointer;
+	transition: color var(--bks-site-transition-fast);
+}
+
+.bks-apartments__reset:hover {
+	color: var(--bks-site-brand);
+}
+
+.bks-apartments__reset:focus-visible {
+	outline: 2px solid var(--bks-site-brand);
+	outline-offset: 3px;
+	border-radius: var(--bks-site-radius-xs);
 }

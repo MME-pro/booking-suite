@@ -34,7 +34,7 @@ const emptyGuest = {
 	notes: '',
 };
 
-export default function BookingModal( { apartmentId, onClose } ) {
+export default function BookingModal( { apartmentId, initialStay, onClose } ) {
 	const [ context, setContext ] = useState( null );
 	const [ step, setStep ] = useState( 'when' );
 	const [ isDone, setDone ] = useState( false );
@@ -44,7 +44,12 @@ export default function BookingModal( { apartmentId, onClose } ) {
 	const [ quote, setQuote ] = useState( null );
 	const [ booking, setBooking ] = useState( null );
 
-	// Opening on today means the slot grid has something to show immediately.
+	/*
+	 * Opening on today means the slot grid has something to show immediately.
+	 * A stay the guest has already described — typed into the showcase search
+	 * bar and carried here on the button — overrides that, so the modal opens
+	 * on their dates and they never describe the same trip twice.
+	 */
 	const [ stay, setStay ] = useState( () => {
 		const today = new Date().toISOString().slice( 0, 10 );
 		const tomorrow = new Date( Date.now() + 86400000 )
@@ -60,6 +65,7 @@ export default function BookingModal( { apartmentId, onClose } ) {
 			checkIn: today,
 			checkOut: tomorrow,
 			guests: 1,
+			...( initialStay ?? {} ),
 		};
 	} );
 	const [ extras, setExtras ] = useState( {} );
@@ -222,6 +228,16 @@ export default function BookingModal( { apartmentId, onClose } ) {
 				guest.lastName.trim() &&
 				guest.email.trim()
 			);
+		}
+
+		/*
+		 * Payment is by bank transfer, so the receipt is the only evidence the
+		 * owner ever gets that money moved. Without it a booking is a held date
+		 * with nothing to reconcile, which is why the step cannot be passed
+		 * until one is attached. The server enforces the same rule.
+		 */
+		if ( 'payment' === step ) {
+			return Boolean( payment.proofData ) && Boolean( payment.date );
 		}
 
 		return true;

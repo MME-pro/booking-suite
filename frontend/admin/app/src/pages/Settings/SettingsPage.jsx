@@ -1,10 +1,13 @@
 /**
  * SettingsPage — plugin-wide settings.
  *
- * Two for now: the currency bookings are priced in, and the language the
- * guest-facing flow is offered in. Both are stored in one option server-side
- * (see backend/APIs/SettingsController.php), so adding a third here is a field
- * and an enum entry, nothing more.
+ * One for now: the currency bookings are priced in. Stored server-side (see
+ * backend/APIs/SettingsController.php), so adding a second here is a field and
+ * an enum entry, nothing more.
+ *
+ * There is deliberately no language setting. The plugin follows the WordPress
+ * site language through its own translation catalogue, so a second control
+ * could only ever disagree with Settings → General.
  *
  * Built on the shadcn/ui Form.
  */
@@ -51,23 +54,13 @@ const CURRENCY_LABELS = {
 	CHF: __( 'Swiss Franc (CHF)', 'booking-suite' ),
 };
 
-const LANGUAGE_LABELS = {
-	en: __( 'English (en)', 'booking-suite' ),
-	de: __( 'German (de)', 'booking-suite' ),
-};
-
 export default function SettingsPage() {
-	const [ choices, setChoices ] = useState( {
-		currencies: [],
-		languages: [],
-	} );
+	const [ choices, setChoices ] = useState( { currencies: [] } );
 	const [ isLoading, setLoading ] = useState( true );
 	const [ error, setError ] = useState( null );
 	const [ isSaved, setSaved ] = useState( false );
 
-	const form = useForm( {
-		defaultValues: { currency: 'EUR', language: 'de' },
-	} );
+	const form = useForm( { defaultValues: { currency: 'EUR' } } );
 
 	const { reset } = form;
 
@@ -200,55 +193,6 @@ export default function SettingsPage() {
 										<FormDescription>
 											{ __(
 												'Bookings are priced and invoiced in this currency.',
-												'booking-suite'
-											) }
-										</FormDescription>
-										<FormMessage />
-									</FormItem>
-								) }
-							/>
-
-							<FormField
-								control={ form.control }
-								name="language"
-								render={ ( { field } ) => (
-									<FormItem>
-										<FormLabel>
-											{ __(
-												'Language',
-												'booking-suite'
-											) }
-										</FormLabel>
-										<Select
-											value={ field.value }
-											onValueChange={ ( value ) => {
-												setSaved( false );
-												field.onChange( value );
-											} }
-										>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												{ choices.languages.map(
-													( code ) => (
-														<SelectItem
-															key={ code }
-															value={ code }
-														>
-															{ LANGUAGE_LABELS[
-																code
-															] ?? code }
-														</SelectItem>
-													)
-												) }
-											</SelectContent>
-										</Select>
-										<FormDescription>
-											{ __(
-												'The language the booking flow is shown in.',
 												'booking-suite'
 											) }
 										</FormDescription>

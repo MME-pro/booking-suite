@@ -1,0 +1,484 @@
+/**
+ * Override armour for the guest frontend.
+ *
+ * The plugin renders into someone else's theme. Themes and page builders style
+ * bare elements — `button`, `input`, `a`, `h3`, `ul` — and routinely mark those
+ * rules !important, which no amount of specificity on our side can outrank.
+ * The only thing that holds is our own !important.
+ *
+ * Two rules govern everything below.
+ *
+ *   1. Neutral by default. Every interactive element inside our roots starts
+ *      with no theme paint at all, and components opt back in to the fill they
+ *      want. Listing components one by one was tried first and failed the
+ *      moment a new control was added — it shipped wearing the theme's colour
+ *      because nobody remembered to add it to the list.
+ *
+ *   2. Opt-ins must outrank the default. `.bks-site-root button` is (0,1,1);
+ *      a bare `.bks-card__cta` is (0,1,0) and would lose. Every opt-in below is
+ *      therefore written with the root in front of it.
+ *
+ * Loaded last so it wins ties. Nothing here invents a value: each rule repeats
+ * what its component already declares, so a colour changed in one place and not
+ * the other is a bug — the components remain the source of truth.
+ */
+
+/* Roots ------------------------------------------------------------------ */
+
+/*
+ * Typography and colour inherit from the theme unless stated. A theme that
+ * sets a serif face or a coloured body text drags the whole plugin with it.
+ */
+.bks-site-root,
+.bks-showcase {
+	font-family: var(--bks-site-font, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif) !important;
+	color: var(--bks-site-text, #0f172a);
+	line-height: 1.55;
+	letter-spacing: normal !important;
+	text-transform: none !important;
+}
+
+/* Native control accents — not reachable through ordinary class rules. */
+.bks-site-root,
+.bks-site-root *,
+.bks-showcase,
+.bks-showcase * {
+	accent-color: var(--bks-site-brand, #2563eb) !important;
+	caret-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+.bks-site-root ::selection,
+.bks-showcase ::selection {
+	background: var(--bks-site-brand-soft, #eff6ff);
+	color: var(--bks-site-text, #0f172a);
+}
+
+/* Structural elements themes reset ---------------------------------------- */
+
+.bks-site-root h2,
+.bks-site-root h3,
+.bks-site-root h4,
+.bks-site-root p,
+.bks-showcase h2,
+.bks-showcase h3,
+.bks-showcase p {
+	margin: 0;
+	padding: 0;
+	text-transform: none !important;
+	text-shadow: none !important;
+}
+
+.bks-site-root ul,
+.bks-site-root ol,
+.bks-showcase ul,
+.bks-showcase ol {
+	margin: 0 !important;
+	padding: 0 !important;
+	list-style: none !important;
+}
+
+/*
+ * Only the list marker. An earlier version also cleared `li::before`, which
+ * themes use for custom bullets — and so do we: the connector lines between the
+ * modal's step numbers are drawn that way, and the rule erased them. Removing a
+ * theme's bullet is not worth breaking our own decoration, and `list-style:
+ * none` above already handles the standard case.
+ */
+.bks-site-root li::marker,
+.bks-showcase li::marker {
+	content: none !important;
+}
+
+.bks-site-root img,
+.bks-showcase img {
+	max-width: 100%;
+	height: auto;
+	border: 0 !important;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+/* Media inside a framed container fills it; the frame owns the shape. */
+.bks-card__media img,
+.bks-showcase__media img {
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover !important;
+}
+
+/* Neutral by default ------------------------------------------------------ */
+
+.bks-site-root button,
+.bks-showcase button {
+	background-color: transparent !important;
+	background-image: none !important;
+	color: inherit !important;
+	-webkit-text-fill-color: currentcolor !important;
+	border-color: transparent !important;
+
+	/*
+	 * Radius is deliberately absent. An earlier version set `border-radius:
+	 * inherit` here and, outranking the components, flattened every pill and
+	 * circle in the plugin — the primary CTA came out a rectangle. Shape is the
+	 * component's business; themes rarely force it, and one that does can be
+	 * answered with a specific opt-in rather than a blanket rule.
+	 */
+	text-transform: none !important;
+	letter-spacing: normal !important;
+	text-shadow: none !important;
+	text-decoration: none !important;
+	min-height: 0 !important;
+	transform: none;
+}
+
+.bks-site-root a,
+.bks-showcase a {
+	background-image: none !important;
+	text-decoration: none !important;
+	box-shadow: none !important;
+}
+
+/* Form controls ----------------------------------------------------------- */
+
+/*
+ * A theme's input styling inside a container that already draws a border and a
+ * background reads as a box in a box — the single most common way this plugin
+ * has looked unfinished.
+ */
+.bks-filter__input,
+.bks-showcase__search-control input,
+.bks-showcase__search-control select {
+	height: auto !important;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	background: none !important;
+	background-color: transparent !important;
+	box-shadow: none !important;
+	outline: none !important;
+	font-family: inherit !important;
+	line-height: 1.45 !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+	text-transform: none !important;
+}
+
+/*
+ * "Book now" first. button.css already declares it !important, but at (0,1,0)
+ * against this file's (0,1,1) neutral default — and this file loads later, so
+ * without the root in front the primary call to action would come out
+ * transparent. The one button on the page that must never lose its fill.
+ */
+.bks-site-root .bks-book-now,
+.bks-showcase .bks-book-now,
+.bks-site-root button.bks-book-now,
+.bks-showcase button.bks-book-now {
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+	border-color: transparent !important;
+}
+
+.bks-site-root .bks-book-now:hover,
+.bks-showcase .bks-book-now:hover {
+	background-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+}
+
+.bks-site-root .bks-book-now--outline,
+.bks-showcase .bks-book-now--outline,
+.bks-site-root .bks-book-now--text,
+.bks-showcase .bks-book-now--text {
+	background-color: transparent !important;
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+.bks-site-root .bks-book-now--outline {
+	border-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+/* Opt-ins: the filter bar ------------------------------------------------- */
+
+.bks-site-root .bks-filter,
+.bks-showcase .bks-showcase__search {
+	background-color: var(--bks-site-surface, #fff) !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+}
+
+.bks-site-root .bks-filter__submit,
+.bks-showcase .bks-showcase__search-submit {
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+	border-color: transparent !important;
+}
+
+.bks-site-root .bks-filter__submit:hover,
+.bks-showcase .bks-showcase__search-submit:hover {
+	background-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+}
+
+.bks-site-root .bks-filter__trigger,
+.bks-site-root .bks-filter__value,
+.bks-showcase .bks-showcase__menu-trigger {
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+}
+
+.bks-site-root .bks-filter__value.is-placeholder {
+	color: var(--bks-site-text-faint, #94a3b8) !important;
+	-webkit-text-fill-color: var(--bks-site-text-faint, #94a3b8) !important;
+}
+
+.bks-site-root .bks-stepper__button {
+	background-color: var(--bks-site-surface, #fff) !important;
+	border-color: var(--bks-site-border-strong, #cbd5e1) !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+}
+
+.bks-site-root .bks-stepper__button:hover:not(:disabled) {
+	background-color: var(--bks-site-brand-soft, #eff6ff) !important;
+	border-color: var(--bks-site-brand, #2563eb) !important;
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+/* Opt-ins: dropdown menus and the calendar -------------------------------- */
+
+.bks-site-root .bks-filter__popover,
+.bks-showcase .bks-showcase__menu-panel {
+	background-color: var(--bks-site-surface, #fff) !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+}
+
+.bks-showcase .bks-showcase__option,
+.bks-showcase .bks-showcase__cal-day {
+	background-color: transparent !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+}
+
+.bks-showcase .bks-showcase__option:hover,
+.bks-showcase .bks-showcase__cal-day:hover {
+	background-color: var(--bks-site-surface-muted, #f8fafc) !important;
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+.bks-showcase .bks-showcase__cal-day:has(input:checked) {
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+}
+
+.bks-site-root .bks-cal__day,
+.bks-site-root .bks-cal__nav {
+	background-color: transparent !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+	border-color: transparent !important;
+}
+
+.bks-site-root .bks-cal__day:hover:not(:disabled),
+.bks-site-root .bks-cal__nav:hover:not(:disabled) {
+	background-color: var(--bks-site-brand-soft, #eff6ff) !important;
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+.bks-site-root .bks-cal__day.is-selected,
+.bks-site-root .bks-cal__day.is-selected:hover {
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+}
+
+.bks-site-root .bks-cal__day.is-outside {
+	color: var(--bks-site-text-faint, #94a3b8) !important;
+	-webkit-text-fill-color: var(--bks-site-text-faint, #94a3b8) !important;
+}
+
+/* Opt-ins: apartment cards ------------------------------------------------ */
+
+.bks-site-root .bks-card,
+.bks-showcase .bks-showcase__card {
+	background-color: var(--bks-site-surface, #fff) !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+}
+
+.bks-site-root .bks-card__cta {
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+	border-color: transparent !important;
+}
+
+.bks-site-root .bks-card__cta:hover {
+	background-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+}
+
+.bks-site-root .bks-card__nav {
+	background-color: rgba(255, 255, 255, 0.94) !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+}
+
+.bks-site-root .bks-card__title,
+.bks-showcase .bks-showcase__title {
+	color: var(--bks-site-text, #0f172a) !important;
+}
+
+.bks-site-root .bks-card__title a,
+.bks-showcase .bks-showcase__title a {
+	color: inherit !important;
+	-webkit-text-fill-color: currentcolor !important;
+}
+
+.bks-site-root .bks-card__link,
+.bks-site-root .bks-card__excerpt,
+.bks-showcase .bks-showcase__excerpt {
+	color: var(--bks-site-text-muted, #475569) !important;
+	-webkit-text-fill-color: var(--bks-site-text-muted, #475569) !important;
+}
+
+.bks-site-root .bks-card__badge,
+.bks-showcase .bks-showcase__badge {
+	background-color: rgba(255, 255, 255, 0.94) !important;
+	color: var(--bks-site-text, #0f172a) !important;
+}
+
+.bks-site-root .bks-grid__retry,
+.bks-site-root .bks-apartments__reset {
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+}
+
+/* The skeleton must keep its own greys, or a theme background hides it. */
+.bks-site-root .bks-shimmer {
+	background-color: var(--bks-site-surface-sunken, #f1f5f9) !important;
+}
+
+/* Icons ------------------------------------------------------------------- */
+
+/*
+ * The icons are stroke-drawn SVG sized by width/height attributes, and both
+ * facts are fragile. A theme rule as ordinary as `svg { fill: currentColor }`
+ * turns every one of them into a solid blob, and `img, svg { max-width: 100% }`
+ * squashes them inside a flex row.
+ *
+ * The fill rule is written as an attribute selector so it only claims icons
+ * that already declare fill="none" — a filled icon added later keeps its fill
+ * instead of silently disappearing.
+ */
+.bks-site-root svg,
+.bks-showcase svg {
+	max-width: none !important;
+	max-height: none !important;
+	vertical-align: middle;
+
+	/* Never let a flex parent squeeze an icon out of shape. */
+	flex-shrink: 0;
+}
+
+.bks-site-root svg[fill='none'],
+.bks-showcase svg[fill='none'] {
+	fill: none !important;
+}
+
+.bks-site-root svg[stroke='currentColor'],
+.bks-showcase svg[stroke='currentColor'] {
+	stroke: currentcolor !important;
+}
+
+/* Typography on form controls --------------------------------------------- */
+
+/*
+ * Themes set a face and a size on `button`/`input` directly, which beats the
+ * family inherited from our root. Each control keeps its own size — only the
+ * family and the theme's habitual uppercase are forced back.
+ */
+.bks-site-root button,
+.bks-site-root input,
+.bks-site-root select,
+.bks-site-root textarea,
+.bks-site-root label,
+.bks-showcase button,
+.bks-showcase input,
+.bks-showcase select,
+.bks-showcase label,
+.bks-showcase summary {
+	font-family: inherit !important;
+	text-transform: none !important;
+	letter-spacing: normal !important;
+}
+
+/* Uppercase is ours where we ask for it. */
+.bks-site-root .bks-filter__label,
+.bks-showcase .bks-showcase__search-label,
+.bks-site-root .bks-field > label {
+	text-transform: uppercase !important;
+}
+
+/* Shape ------------------------------------------------------------------- */
+
+/*
+ * The theme applies a 3px radius to every button, which rounds the corners of
+ * controls meant to be pills, circles or square-edged. Shape is restated on the
+ * components that have one rather than blanket-reset, so nothing else moves.
+ */
+.bks-site-root .bks-filter,
+.bks-site-root .bks-filter__submit,
+.bks-site-root .bks-card__cta,
+.bks-showcase .bks-showcase__search,
+.bks-showcase .bks-showcase__search-submit,
+.bks-showcase .bks-showcase__badge {
+	border-radius: var(--bks-site-radius-pill, 999px) !important;
+}
+
+.bks-site-root .bks-card,
+.bks-showcase .bks-showcase__card {
+	border-radius: var(--bks-site-radius, 18px) !important;
+}
+
+.bks-site-root .bks-stepper__button,
+.bks-site-root .bks-cal__day,
+.bks-site-root .bks-cal__nav,
+.bks-site-root .bks-card__nav,
+.bks-showcase .bks-showcase__cal-day {
+	border-radius: 50% !important;
+}
+
+.bks-site-root .bks-filter__trigger,
+.bks-site-root .bks-filter__popover,
+.bks-showcase .bks-showcase__menu-trigger,
+.bks-showcase .bks-showcase__menu-panel {
+	border-radius: var(--bks-site-radius-sm, 12px) !important;
+}
+
+/*
+ * The date trigger takes the input radius, not the menu one: it sits in a row
+ * beside real inputs and has to match them exactly, which is the whole reason
+ * it was built to their measurements.
+ */
+.bks-site-root .bks-datefield__trigger,
+.bks-site-root .bks-field input,
+.bks-site-root .bks-field select,
+.bks-site-root .bks-field textarea {
+	border-radius: var(--bks-site-radius-xs, 8px) !important;
+}
+
+/* A trigger draws no border of its own; the rail around it is the border. */
+.bks-site-root .bks-filter__trigger,
+.bks-showcase .bks-showcase__menu-trigger {
+	border-width: 0 !important;
+	border-style: none !important;
+}

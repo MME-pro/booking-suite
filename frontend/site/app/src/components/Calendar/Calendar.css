@@ -1,0 +1,133 @@
+/**
+ * Calendar — shared by the filter bar and the booking modal.
+ *
+ * Layout and states only. Where the calendar sits and what surrounds it belong
+ * to whoever renders it.
+ */
+
+.bks-cal {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.bks-cal__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.bks-cal__month {
+	font-size: var(--bks-site-text-base, 0.875rem);
+	font-weight: 600;
+	color: var(--bks-site-text, #0f172a);
+	text-transform: capitalize;
+}
+
+.bks-cal__nav {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	color: var(--bks-site-text-muted, #475569);
+	cursor: pointer;
+	transition:
+		background-color var(--bks-site-transition-fast, 120ms ease),
+		color var(--bks-site-transition-fast, 120ms ease);
+}
+
+.bks-cal__nav:hover:not(:disabled) {
+	background: var(--bks-site-surface-muted, #f8fafc);
+	color: var(--bks-site-text, #0f172a);
+}
+
+.bks-cal__nav:focus-visible {
+	outline: 2px solid var(--bks-site-brand, #2563eb);
+	outline-offset: 1px;
+}
+
+.bks-cal__nav:disabled {
+	opacity: 0.3;
+	cursor: not-allowed;
+}
+
+.bks-cal__grid {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.bks-cal__weekdays,
+.bks-cal__week {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 2px;
+}
+
+.bks-cal__weekday {
+	padding-bottom: 4px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	color: var(--bks-site-text-faint, #94a3b8);
+}
+
+.bks-cal__day {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	aspect-ratio: 1;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	font-family: inherit;
+	font-size: var(--bks-site-text-base, 0.875rem);
+	font-weight: 500;
+	font-variant-numeric: tabular-nums;
+	color: var(--bks-site-text, #0f172a);
+	cursor: pointer;
+	transition:
+		background-color var(--bks-site-transition-fast, 120ms ease),
+		color var(--bks-site-transition-fast, 120ms ease);
+}
+
+.bks-cal__day:hover:not(:disabled) {
+	background: var(--bks-site-brand-soft, #eff6ff);
+	color: var(--bks-site-brand, #2563eb);
+}
+
+.bks-cal__day:focus-visible {
+	outline: 2px solid var(--bks-site-brand, #2563eb);
+	outline-offset: -2px;
+}
+
+.bks-cal__day.is-outside {
+	color: var(--bks-site-text-faint, #94a3b8);
+}
+
+/* A ring rather than a fill: today is a landmark, not a selection. */
+.bks-cal__day.is-today:not(.is-selected) {
+	box-shadow: inset 0 0 0 1px var(--bks-site-border-strong, #cbd5e1);
+}
+
+.bks-cal__day.is-selected,
+.bks-cal__day.is-selected:hover {
+	background: var(--bks-site-brand, #2563eb);
+	color: #fff;
+	font-weight: 600;
+}
+
+.bks-cal__day:disabled {
+	opacity: 0.32;
+	cursor: not-allowed;
+}

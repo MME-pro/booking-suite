@@ -15,6 +15,9 @@ import './styles/tokens.css';
 import './styles/base.css';
 import './styles/button.css';
 
+// Last: it must win ties against every component stylesheet above.
+import './styles/armour.css';
+
 const LIST_SELECTOR = '[data-booking-suite-apartments]';
 const MODAL_ROOT_ID = 'booking-suite-modal-root';
 

@@ -1,0 +1,117 @@
+/**
+ * ApartmentCardSkeleton.
+ *
+ * The shimmer is one keyframe shared by every placeholder, so all of them sweep
+ * in step. Independently-timed shimmers read as noise.
+ */
+
+.bks-shimmer {
+	background-color: var(--bks-site-surface-sunken);
+	background-image: linear-gradient(
+		100deg,
+		rgba(255, 255, 255, 0) 20%,
+		rgba(255, 255, 255, 0.7) 50%,
+		rgba(255, 255, 255, 0) 80%
+	);
+	background-size: 220% 100%;
+	background-repeat: no-repeat;
+	animation: bks-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes bks-shimmer {
+
+	from {
+		background-position: 140% 0;
+	}
+
+	to {
+		background-position: -40% 0;
+	}
+}
+
+/*
+ * Motion here is decoration, not information: with it suppressed the skeleton
+ * still reads as "content pending" from its shape alone.
+ */
+@media (prefers-reduced-motion: reduce) {
+
+	.bks-shimmer {
+		background-image: none;
+		animation: none;
+	}
+}
+
+/* Card ------------------------------------------------------------------- */
+
+/* The same box as the real card, so nothing shifts when the data lands. */
+.bks-skeleton-card {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border: 1px solid var(--bks-site-border);
+	border-radius: var(--bks-site-radius);
+	background: var(--bks-site-surface);
+	box-shadow: var(--bks-site-shadow);
+}
+
+.bks-skeleton-card__media {
+	aspect-ratio: 4 / 3;
+}
+
+.bks-skeleton-card__body {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: var(--bks-site-space-3);
+	padding: var(--bks-site-space-5);
+}
+
+.bks-skeleton-card__line {
+	height: 0.75rem;
+	border-radius: var(--bks-site-radius-xs);
+}
+
+.bks-skeleton-card__line--title {
+	height: 1.1rem;
+	width: 65%;
+}
+
+.bks-skeleton-card__line--short {
+	width: 80%;
+}
+
+.bks-skeleton-card__line--link {
+	height: 0.8rem;
+	width: 5.5rem;
+}
+
+.bks-skeleton-card__facts {
+	display: flex;
+	gap: var(--bks-site-space-2);
+}
+
+.bks-skeleton-card__chip {
+	height: 1.5rem;
+	width: 6.5rem;
+	border-radius: var(--bks-site-radius-xs);
+}
+
+.bks-skeleton-card__chip--short {
+	width: 4.5rem;
+}
+
+.bks-skeleton-card__footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--bks-site-space-3);
+	margin-top: auto;
+	padding-top: var(--bks-site-space-4);
+	border-top: 1px solid var(--bks-site-border);
+}
+
+.bks-skeleton-card__cta {
+	height: 2.4rem;
+	width: 7.5rem;
+	border-radius: var(--bks-site-radius-pill);
+}

@@ -1,14 +1,19 @@
 /**
- * Guest apartment list: search bar, responsive card grid, states.
+ * ApartmentsApp — the guest apartment list.
+ *
+ * Composition only: filter state comes from useSearchFilters, data from
+ * useApartments, layout from ApartmentGrid, and the controls from
+ * SearchFilterBar. Nothing here does any of those jobs itself.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 
-import { ApartmentCard } from './components/ApartmentCard';
-import { SearchBar } from './components/SearchBar';
-import { fetchApartments, settings } from './services/apartmentService';
-import { countNights } from './utils/format';
+import { ApartmentGrid } from './components/ApartmentGrid';
+import { SearchFilterBar } from './components/SearchFilterBar';
+import { useApartments } from './hooks/useApartments';
+import { useSearchFilters } from './hooks/useSearchFilters';
+import { settings } from './services/apartmentService';
 import './ApartmentsApp.css';
 
 export default function ApartmentsApp( {
@@ -17,111 +22,126 @@ export default function ApartmentsApp( {
 	showSearch = true,
 	heading = '',
 } ) {
-	const [ apartments, setApartments ] = useState( [] );
-	const [ isLoading, setLoading ] = useState( true );
-	const [ hasError, setError ] = useState( false );
+	const {
+		filters,
+		bounds,
+		occupancy,
+		minDate,
+		setDate,
+		setHours,
+		setGuest,
+		resetGuests,
+	} = useSearchFilters( { guests } );
 
-	const [ query, setQuery ] = useState( {
-		checkIn: '',
-		checkOut: '',
-		guests: guests > 0 ? String( guests ) : '',
-	} );
+	/*
+	 * What the guest last searched for, as opposed to what the controls
+	 * currently show. Separating them is what stops every tap on a stepper
+	 * firing a request.
+	 */
+	const [ applied, setApplied ] = useState( () => ( {
+		date: '',
+		hours: bounds.min,
+		occupancy: guests > 0 ? guests : 1,
+	} ) );
 
-	// Only committed on submit, so typing does not refetch on every keystroke.
-	const [ appliedGuests, setAppliedGuests ] = useState( guests );
-
-	const load = useCallback( async ( guestCount, signal ) => {
-		setLoading( true );
-
-		try {
-			setApartments(
-				await fetchApartments( { guests: guestCount }, signal )
-			);
-			setError( false );
-		} catch ( cause ) {
-			if ( 'AbortError' !== cause.name ) {
-				setError( true );
-			}
-		} finally {
-			setLoading( false );
+	const { apartments, error, isLoading, isRefreshing, retry } = useApartments(
+		{
+			guests: applied.occupancy,
 		}
-	}, [] );
-
-	useEffect( () => {
-		const controller = new AbortController();
-
-		load( appliedGuests, controller.signal );
-
-		return () => controller.abort();
-	}, [ load, appliedGuests ] );
-
-	const nights = useMemo(
-		() => countNights( query.checkIn, query.checkOut ),
-		[ query.checkIn, query.checkOut ]
 	);
 
-	const gridStyle = { '--bks-site-columns': columns };
+	/*
+	 * How many skeletons the next wait should draw. Held in a ref and updated
+	 * only when real results are on screen, so a refresh redraws the grid at
+	 * the height it already had instead of collapsing the page.
+	 */
+	const lastCount = useRef( columns );
+
+	if ( ! isLoading && ! isRefreshing && apartments.length ) {
+		lastCount.current = apartments.length;
+	}
+
+	/*
+	 * The stay carried into the booking modal, and only worth carrying once a
+	 * date is chosen — without one the modal should open on its own defaults
+	 * rather than on half a stay.
+	 */
+	const stay = useMemo(
+		() =>
+			applied.date
+				? {
+						date: applied.date,
+						hours: applied.hours,
+						guests: applied.occupancy,
+				  }
+				: null,
+		[ applied ]
+	);
+
+	const isSearching = isLoading || isRefreshing;
 
 	return (
-		<div className="bks-apartments" style={ gridStyle }>
+		<div className="bks-apartments">
 			{ heading && (
 				<h2 className="bks-apartments__heading">{ heading }</h2>
 			) }
 
 			{ showSearch && (
-				<SearchBar
-					values={ query }
-					onChange={ setQuery }
-					nights={ nights }
+				<SearchFilterBar
+					filters={ filters }
+					bounds={ bounds }
+					occupancy={ occupancy }
+					minDate={ minDate }
+					locale={ settings.locale }
+					onDate={ setDate }
+					onHours={ setHours }
+					onGuest={ setGuest }
+					onReset={ resetGuests }
 					onSubmit={ () =>
-						setAppliedGuests(
-							Number.parseInt( query.guests, 10 ) || 0
-						)
+						setApplied( {
+							date: filters.date,
+							hours: filters.hours,
+							occupancy,
+						} )
 					}
+					isBusy={ isSearching }
 				/>
 			) }
 
-			{ isLoading && (
-				<div className="bks-apartments__grid" aria-hidden="true">
-					{ Array.from( { length: columns }, ( _, index ) => (
-						<div
-							key={ index }
-							className="bks-apartments__skeleton"
-						/>
-					) ) }
-				</div>
-			) }
+			<ApartmentGrid
+				apartments={ apartments }
+				columns={ columns }
+				locale={ settings.locale }
+				stay={ stay }
+				isLoading={ isLoading }
+				isRefreshing={ isRefreshing }
+				error={ error }
+				onRetry={ retry }
+				placeholders={ lastCount.current }
+			/>
 
-			{ ! isLoading && hasError && (
-				<p className="bks-apartments__message" role="alert">
-					{ __(
-						'The apartments could not be loaded. Please try again shortly.',
-						'booking-suite'
-					) }
-				</p>
-			) }
-
-			{ ! isLoading && ! hasError && 0 === apartments.length && (
-				<p className="bks-apartments__message">
-					{ __(
-						'No apartments match your search.',
-						'booking-suite'
-					) }
-				</p>
-			) }
-
-			{ ! isLoading && ! hasError && apartments.length > 0 && (
-				<div className="bks-apartments__grid">
-					{ apartments.map( ( apartment ) => (
-						<ApartmentCard
-							key={ apartment.id }
-							apartment={ apartment }
-							locale={ settings.locale }
-							nights={ nights }
-						/>
-					) ) }
-				</div>
-			) }
+			{ /*
+			 * Only worth offering once a party size is actually narrowing the
+			 * list, so the guest can see why it is shorter than it was.
+			 */ }
+			{ ! isSearching &&
+				! error &&
+				applied.occupancy > 1 &&
+				apartments.length > 0 && (
+					<button
+						type="button"
+						className="bks-apartments__reset"
+						onClick={ () => {
+							resetGuests();
+							setApplied( ( previous ) => ( {
+								...previous,
+								occupancy: 1,
+							} ) );
+						} }
+					>
+						{ __( 'Show all apartments', 'booking-suite' ) }
+					</button>
+				) }
 		</div>
 	);
 }

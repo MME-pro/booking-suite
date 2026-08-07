@@ -13,7 +13,6 @@ const unwrap = ( payload ) => ( {
 	settings: payload?.settings ?? {},
 	choices: {
 		currencies: payload?.choices?.currencies ?? [],
-		languages: payload?.choices?.languages ?? [],
 	},
 } );
 

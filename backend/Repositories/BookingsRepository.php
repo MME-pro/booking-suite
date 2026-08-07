@@ -92,6 +92,93 @@ final class BookingsRepository {
 	}
 
 	/**
+	 * Everything that occupies the given apartments between two moments.
+	 *
+	 * The bulk counterpart to is_available(): two queries for any number of
+	 * apartments and any number of candidate windows, instead of one query per
+	 * apartment per window. Asking "is this apartment free at any point today"
+	 * means testing every start time in the day, and doing that a query at a
+	 * time turns one filtered page into a hundred round trips.
+	 *
+	 * Blocking bookings and apartment locks are merged into one list per
+	 * apartment, because a caller looking for a free gap does not care which of
+	 * the two closed it. Master locks — no room_id — are folded into every
+	 * apartment's list, and `extra_id IS NULL` keeps an extra's lock from
+	 * closing the whole property, exactly as in is_available().
+	 *
+	 * @param int[]  $room_ids
+	 * @param string $from 'Y-m-d H:i:s'.
+	 * @param string $to   'Y-m-d H:i:s'.
+	 *
+	 * @return array<int, array<int, array{0: string, 1: string}>> Windows by apartment id.
+	 */
+	public static function busy_windows( array $room_ids, string $from, string $to ): array {
+		global $wpdb;
+
+		$room_ids = array_values( array_unique( array_map( 'absint', $room_ids ) ) );
+
+		if ( ! $room_ids ) {
+			return array();
+		}
+
+		$busy = array_fill_keys( $room_ids, array() );
+
+		$ids      = implode( ',', array_fill( 0, count( $room_ids ), '%d' ) );
+		$statuses = implode( ',', array_fill( 0, count( self::BLOCKING_STATUSES ), '%s' ) );
+
+		$bookings = BookingsTable::table();
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT room_id, starts_at, ends_at FROM $bookings
+				WHERE room_id IN ($ids)
+				  AND status IN ($statuses)
+				  AND starts_at < %s
+				  AND ends_at > %s",
+				array_merge( $room_ids, self::BLOCKING_STATUSES, array( $to, $from ) )
+			),
+			ARRAY_A
+		) ?: array();
+
+		foreach ( $rows as $row ) {
+			$busy[ (int) $row['room_id'] ][] = array( $row['starts_at'], $row['ends_at'] );
+		}
+
+		$blocks = BlocksTable::table();
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$locks = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT room_id, starts_at, ends_at FROM $blocks
+				WHERE extra_id IS NULL
+				  AND (room_id IN ($ids) OR room_id IS NULL)
+				  AND starts_at < %s
+				  AND ends_at > %s",
+				array_merge( $room_ids, array( $to, $from ) )
+			),
+			ARRAY_A
+		) ?: array();
+
+		foreach ( $locks as $lock ) {
+			$window = array( $lock['starts_at'], $lock['ends_at'] );
+
+			if ( null === $lock['room_id'] ) {
+				// A master lock closes every apartment in the list.
+				foreach ( $room_ids as $id ) {
+					$busy[ $id ][] = $window;
+				}
+
+				continue;
+			}
+
+			$busy[ (int) $lock['room_id'] ][] = $window;
+		}
+
+		return $busy;
+	}
+
+	/**
 	 * @param array<string, mixed> $data
 	 *
 	 * @return int|null Inserted id, or null when the insert failed.

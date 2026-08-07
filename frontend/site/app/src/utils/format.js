@@ -2,8 +2,54 @@
  * Formatting helpers.
  */
 
+import { fromKey, wpFormat } from './date';
+import { settings } from '../services/apartmentService';
+
 // WordPress locales are de_DE; Intl wants de-DE.
 const toBcp47 = ( locale ) => String( locale || 'de_DE' ).replace( '_', '-' );
+
+/**
+ * A 'yyyy-mm-dd' date, written the way Settings → General says.
+ *
+ * Returns the input unchanged when it will not parse, so a malformed value
+ * shows as itself rather than as "Invalid Date" in the middle of a booking
+ * summary.
+ *
+ * @param {string} key A 'yyyy-mm-dd' date.
+ * @return {string} The formatted date.
+ */
+export function formatWpDate( key ) {
+	const date = fromKey( key );
+
+	return date
+		? wpFormat( date, settings.dateFormat || 'j F Y', settings.locale )
+		: String( key ?? '' );
+}
+
+/**
+ * An 'HH:MM' time, written the way Settings → General says.
+ *
+ * @param {string} time An 'HH:MM' time.
+ * @return {string} The formatted time.
+ */
+export function formatWpTime( time ) {
+	const parts = /^([01]?\d|2[0-3]):([0-5]\d)/.exec( String( time ?? '' ) );
+
+	if ( ! parts ) {
+		return String( time ?? '' );
+	}
+
+	// The date carries no meaning here; only the clock parts are formatted.
+	const date = new Date(
+		2000,
+		0,
+		1,
+		Number( parts[ 1 ] ),
+		Number( parts[ 2 ] )
+	);
+
+	return wpFormat( date, settings.timeFormat || 'H:i', settings.locale );
+}
 
 export function formatPrice( amount, currency = 'EUR', locale = 'de_DE' ) {
 	try {
@@ -17,22 +63,4 @@ export function formatPrice( amount, currency = 'EUR', locale = 'de_DE' ) {
 		// An unknown currency or locale should not blank out the price.
 		return `${ amount } ${ currency }`;
 	}
-}
-
-// Whole nights between two yyyy-mm-dd strings; 0 when the range is invalid.
-export function countNights( checkIn, checkOut ) {
-	if ( ! checkIn || ! checkOut ) {
-		return 0;
-	}
-
-	const start = new Date( `${ checkIn }T00:00:00` );
-	const end = new Date( `${ checkOut }T00:00:00` );
-
-	if ( Number.isNaN( start.getTime() ) || Number.isNaN( end.getTime() ) ) {
-		return 0;
-	}
-
-	const nights = Math.round( ( end - start ) / 86400000 );
-
-	return nights > 0 ? nights : 0;
 }

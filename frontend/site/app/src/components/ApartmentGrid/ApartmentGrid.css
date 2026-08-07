@@ -1,0 +1,76 @@
+/**
+ * ApartmentGrid.
+ */
+
+/*
+ * auto-fit with a minimum, rather than a fixed column count: cards reflow on
+ * their own at every width, and the shortcode's `columns` only caps the count
+ * once there is room for it. No breakpoint to keep in step with the theme's.
+ */
+.bks-grid {
+	display: grid;
+	grid-template-columns: repeat(
+		auto-fit,
+		minmax(min(100%, var(--bks-site-card-min, 17rem)), 1fr)
+	);
+	gap: var(--bks-site-gap);
+	align-items: start;
+}
+
+@media (min-width: 62rem) {
+
+	.bks-grid {
+		grid-template-columns: repeat(var(--bks-site-columns, 3), minmax(0, 1fr));
+	}
+}
+
+/* States ----------------------------------------------------------------- */
+
+.bks-grid__state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--bks-site-space-2);
+	padding: var(--bks-site-space-10) var(--bks-site-space-6);
+	border: 1px dashed var(--bks-site-border);
+	border-radius: var(--bks-site-radius);
+	background: var(--bks-site-surface-muted);
+	text-align: center;
+}
+
+.bks-grid__state-title {
+	font-size: var(--bks-site-text-md);
+	font-weight: 600;
+	color: var(--bks-site-text);
+}
+
+.bks-grid__state-text {
+	font-size: var(--bks-site-text-base);
+	color: var(--bks-site-text-muted);
+}
+
+.bks-grid__retry {
+	margin-top: var(--bks-site-space-2);
+	padding: 9px var(--bks-site-space-5);
+	border: 1px solid var(--bks-site-border-strong);
+	border-radius: var(--bks-site-radius-sm);
+	background: var(--bks-site-surface);
+	font-family: inherit;
+	font-size: var(--bks-site-text-base);
+	font-weight: 600;
+	color: var(--bks-site-text);
+	cursor: pointer;
+	transition:
+		border-color var(--bks-site-transition-fast),
+		color var(--bks-site-transition-fast);
+}
+
+.bks-grid__retry:hover {
+	border-color: var(--bks-site-brand);
+	color: var(--bks-site-brand);
+}
+
+.bks-grid__retry:focus-visible {
+	outline: 2px solid var(--bks-site-brand);
+	outline-offset: 2px;
+}

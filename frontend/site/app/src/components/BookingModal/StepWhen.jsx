@@ -11,7 +11,8 @@ import { __, sprintf, _n } from '@wordpress/i18n';
 
 import { bookingService } from '../../services/bookingService';
 import { settings } from '../../services/apartmentService';
-import { formatPrice } from '../../utils/format';
+import { formatPrice, formatWpTime } from '../../utils/format';
+import DateField from '../DateField/DateField';
 
 const today = () => new Date().toISOString().slice( 0, 10 );
 
@@ -142,18 +143,13 @@ export default function StepWhen( {
 	return (
 		<div className="bks-when">
 			<div className="bks-when__row">
-				<div className="bks-field">
-					<label htmlFor="bks-modal-date">
-						{ __( 'Date', 'booking-suite' ) }
-					</label>
-					<input
-						id="bks-modal-date"
-						type="date"
-						min={ today() }
-						value={ stay.date }
-						onChange={ ( event ) => onDate( event.target.value ) }
-					/>
-				</div>
+				<DateField
+					id="bks-modal-date"
+					label={ __( 'Date', 'booking-suite' ) }
+					value={ stay.date }
+					min={ today() }
+					onChange={ onDate }
+				/>
 
 				<div className="bks-field">
 					<label htmlFor="bks-modal-duration">
@@ -342,7 +338,7 @@ export default function StepWhen( {
 													'until %s',
 													'booking-suite'
 												),
-												slot.end
+												formatWpTime( slot.end )
 										  )
 										: __(
 												'Already booked',
@@ -350,7 +346,7 @@ export default function StepWhen( {
 										  )
 								}
 							>
-								{ slot.start }
+								{ formatWpTime( slot.start ) }
 							</button>
 						) ) }
 					</div>

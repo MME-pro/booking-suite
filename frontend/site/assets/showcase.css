@@ -1,0 +1,908 @@
+/**
+ * The apartment showcase — [booking_suite_apartment_showcase].
+ *
+ * Rendered by PHP, not React, so this stylesheet stands on its own rather than
+ * riding in the guest bundle. It borrows the bundle's tokens where they are
+ * available and carries a fallback for every one of them, so a page that loads
+ * the showcase without the bundle still looks finished.
+ *
+ * Deliberately restrained: one border, one radius, one shadow that only appears
+ * on hover. The photographs are the design; the card is the frame.
+ */
+
+.bks-showcase {
+	font-family: var(--bks-site-font, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif);
+	color: var(--bks-site-text, #0f172a);
+}
+
+.bks-showcase *,
+.bks-showcase *::before,
+.bks-showcase *::after {
+	box-sizing: border-box;
+}
+
+/* Heading ---------------------------------------------------------------- */
+
+.bks-showcase__header {
+	margin: 0 0 28px;
+	max-width: 46rem;
+}
+
+.bks-showcase__heading {
+	margin: 0;
+	font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.125rem);
+	font-weight: 600;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+	color: inherit;
+}
+
+.bks-showcase__subheading {
+	margin: 10px 0 0;
+	font-size: 1rem;
+	line-height: 1.6;
+	color: var(--bks-site-text-muted, #475569);
+}
+
+/* Search bar ------------------------------------------------------------- */
+
+/*
+ * The same control as the React filter bar, drawn in CSS instead of JSX: a pill
+ * on desktop, a stacked card on phones. The fields carry no borders of their
+ * own — the rail is the border, and hairlines between the fields do the
+ * dividing, which is what keeps a four-control bar from reading as clutter.
+ *
+ * The stylesheet is enqueued after the theme's (see Assets::register), so plain
+ * selectors win. The !important below is reserved for the properties a theme
+ * reset always claims — border, background, padding and height on form controls
+ * — because those are the ones that turn this back into a row of raw browser
+ * widgets, and Elementor re-asserts some of them per page.
+ */
+.bks-showcase__search {
+	/* Above the grid, so the duration menu opens over the cards. */
+	position: relative;
+	z-index: 2;
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1px;
+	margin: 0 0 var(--bks-site-space-8, 32px);
+	padding: 5px;
+	border: 1px solid var(--bks-site-border, #e2e8f0);
+	border-radius: var(--bks-site-radius, 18px);
+	background: var(--bks-site-surface, #ffffff);
+	box-shadow: var(--bks-site-shadow, 0 1px 3px rgba(15, 23, 42, 0.04));
+	transition: box-shadow var(--bks-site-transition, 200ms ease);
+}
+
+.bks-showcase__search:hover,
+.bks-showcase__search:focus-within {
+	box-shadow: var(--bks-site-shadow-lifted, 0 12px 32px -4px rgba(15, 23, 42, 0.1));
+}
+
+/*
+ * Two columns on a phone. Four stacked fields push the Search button below the
+ * fold on a small screen; paired up, the whole control stays in view — and the
+ * four values are short enough that half a screen is ample for each.
+ */
+@media (min-width: 26rem) and (max-width: 51.99rem) {
+
+	.bks-showcase__search {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	/* The button spans both columns rather than sitting beside one field. */
+	.bks-showcase__search-submit {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (min-width: 52rem) {
+
+	.bks-showcase__search {
+		grid-template-columns: 1.1fr 0.9fr 0.95fr 0.95fr auto;
+		align-items: stretch;
+		border-radius: var(--bks-site-radius-pill, 999px);
+		padding: 5px 5px 5px 6px;
+	}
+}
+
+/* Fields */
+
+.bks-showcase__search-field {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 1px;
+	min-width: 0;
+	padding: 9px 16px;
+	border-radius: var(--bks-site-radius-sm, 12px);
+	transition: background-color var(--bks-site-transition-fast, 120ms ease);
+}
+
+@media (min-width: 52rem) {
+
+	.bks-showcase__search-field {
+		border-radius: var(--bks-site-radius-pill, 999px);
+		padding: 8px 22px;
+	}
+}
+
+.bks-showcase__search-field:hover,
+.bks-showcase__search-field:focus-within {
+	background: var(--bks-site-surface-muted, #f8fafc);
+}
+
+/*
+ * The dividers, as a drawn rule rather than an inset shadow.
+ *
+ * An inset box-shadow follows the element's border-radius, so on a pill-shaped
+ * field it curves — which reads as a stray arc floating in the bar rather than
+ * as a divider. A positioned pseudo-element stays straight, and can be shorter
+ * than the field so it separates without boxing anything in.
+ */
+.bks-showcase__search-field + .bks-showcase__search-field::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 16px;
+	left: 16px;
+	height: 1px;
+	background: var(--bks-site-border, #e2e8f0);
+	transition: opacity var(--bks-site-transition-fast, 120ms ease);
+}
+
+@media (min-width: 52rem) {
+
+	/* Side by side: a short vertical rule, centred on the field. */
+	.bks-showcase__search-field + .bks-showcase__search-field::before {
+		top: 50%;
+		right: auto;
+		left: 0;
+		width: 1px;
+		height: 56%;
+		transform: translateY(-50%);
+	}
+}
+
+/*
+ * A tinted field should not have a rule running down the side of it — the tint
+ * already separates it, and the two together read as a seam.
+ */
+.bks-showcase__search-field:hover::before,
+.bks-showcase__search-field:focus-within::before,
+.bks-showcase__search-field:hover + .bks-showcase__search-field::before,
+.bks-showcase__search-field:focus-within + .bks-showcase__search-field::before {
+	opacity: 0;
+}
+
+.bks-showcase__search-label {
+	display: block;
+	margin: 0 0 1px;
+	padding: 0;
+	font-family: inherit;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.05em;
+	line-height: 1.2;
+	text-transform: uppercase;
+	color: var(--bks-site-text-faint, #94a3b8);
+	cursor: pointer;
+}
+
+.bks-showcase__search-control {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+}
+
+.bks-showcase__icon {
+	flex-shrink: 0;
+	color: var(--bks-site-text-faint, #94a3b8);
+}
+
+/* Duration menu ---------------------------------------------------------- */
+
+.bks-showcase__menu {
+	position: relative;
+}
+
+/*
+ * The trigger. list-style and the WebKit marker both have to go — a <summary>
+ * draws a disclosure triangle by default, and hiding only one of the two leaves
+ * it visible in the other engine.
+ */
+.bks-showcase__menu-trigger {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 1.45;
+	color: var(--bks-site-text, #0f172a);
+	cursor: pointer;
+}
+
+.bks-showcase__menu-trigger::-webkit-details-marker,
+.bks-showcase__menu-trigger::marker {
+	display: none;
+	content: '';
+}
+
+.bks-showcase__menu-trigger:focus-visible {
+	outline: 2px solid var(--bks-site-brand, #2563eb);
+	outline-offset: 4px;
+	border-radius: var(--bks-site-radius-xs, 8px);
+}
+
+/*
+ * Every option label is present in the trigger; CSS reveals whichever radio is
+ * checked, so the value updates on selection with no script.
+ *
+ * The rules are enumerated statically rather than generated per render. An
+ * earlier version built them in PHP and pushed them through
+ * wp_add_inline_style(), which silently did nothing: the shortcode runs during
+ * the_content, by which point wp_head has already printed every stylesheet, so
+ * the rules never reached the page and the trigger showed nothing at all.
+ * Covering 1-24 hours here costs a few lines and cannot miss the render.
+ */
+.bks-showcase__menu-value > span {
+	display: none;
+}
+
+.bks-showcase__menu-value > span.is-current {
+	display: inline;
+}
+
+/*
+ * Scoped to Duration, and it must stay scoped. This rule stands the
+ * server-rendered fallback down so the per-value rules below can take over —
+ * but those rules only exist for hour counts. Applied to the Time menu, whose
+ * values are clock times no static stylesheet can enumerate, it would hide the
+ * only label there was and leave the trigger blank.
+ *
+ * Time relies on .is-current alone: correct on load, and kept in step by
+ * showcase.js when a choice is made.
+ */
+.bks-showcase__search-field--duration
+	.bks-showcase__menu:has(input:checked)
+	.bks-showcase__menu-value
+	> span.is-current {
+	display: none;
+}
+
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="1"]:checked) .bks-showcase__menu-value > span[data-hours="1"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="2"]:checked) .bks-showcase__menu-value > span[data-hours="2"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="3"]:checked) .bks-showcase__menu-value > span[data-hours="3"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="4"]:checked) .bks-showcase__menu-value > span[data-hours="4"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="5"]:checked) .bks-showcase__menu-value > span[data-hours="5"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="6"]:checked) .bks-showcase__menu-value > span[data-hours="6"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="7"]:checked) .bks-showcase__menu-value > span[data-hours="7"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="8"]:checked) .bks-showcase__menu-value > span[data-hours="8"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="9"]:checked) .bks-showcase__menu-value > span[data-hours="9"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="10"]:checked) .bks-showcase__menu-value > span[data-hours="10"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="11"]:checked) .bks-showcase__menu-value > span[data-hours="11"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="12"]:checked) .bks-showcase__menu-value > span[data-hours="12"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="13"]:checked) .bks-showcase__menu-value > span[data-hours="13"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="14"]:checked) .bks-showcase__menu-value > span[data-hours="14"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="15"]:checked) .bks-showcase__menu-value > span[data-hours="15"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="16"]:checked) .bks-showcase__menu-value > span[data-hours="16"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="17"]:checked) .bks-showcase__menu-value > span[data-hours="17"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="18"]:checked) .bks-showcase__menu-value > span[data-hours="18"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="19"]:checked) .bks-showcase__menu-value > span[data-hours="19"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="20"]:checked) .bks-showcase__menu-value > span[data-hours="20"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="21"]:checked) .bks-showcase__menu-value > span[data-hours="21"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="22"]:checked) .bks-showcase__menu-value > span[data-hours="22"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="23"]:checked) .bks-showcase__menu-value > span[data-hours="23"],
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="24"]:checked) .bks-showcase__menu-value > span[data-hours="24"] {
+	display: inline;
+}
+
+.bks-showcase__menu-trigger .bks-showcase__icon--chevron {
+	margin-left: auto;
+	transition: transform var(--bks-site-transition, 200ms ease);
+}
+
+.bks-showcase__menu[open] .bks-showcase__icon--chevron {
+	transform: rotate(180deg);
+	color: var(--bks-site-text, #0f172a);
+}
+
+/* Panel */
+
+.bks-showcase__menu-panel {
+	position: absolute;
+	z-index: 40;
+	top: calc(100% + 14px);
+	left: -10px;
+	min-width: 12.5rem;
+
+	/*
+	 * The time menu can run to thirty starts across the opening hours, so the
+	 * panel scrolls rather than growing down the page. Duration never reaches
+	 * the cap and is unaffected.
+	 */
+	max-height: 17rem;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding: 6px;
+	border: 1px solid var(--bks-site-border, #e2e8f0);
+	border-radius: var(--bks-site-radius-sm, 12px);
+	background: var(--bks-site-surface, #ffffff);
+	box-shadow: var(--bks-site-shadow-lifted, 0 12px 32px -4px rgba(15, 23, 42, 0.1));
+	animation: bks-showcase-menu 140ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes bks-showcase-menu {
+
+	from {
+		opacity: 0;
+		transform: translateY(-6px);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.bks-showcase__menu-panel {
+		animation: none;
+	}
+}
+
+/* Arrival calendar --------------------------------------------------------
+ *
+ * A real month grid rather than a native date input, because that input renders
+ * in the operating system's locale and ignores the site's date format entirely.
+ * Several months are drawn into the scrolling panel, so there is no month
+ * navigation to operate — and therefore nothing here that needs JavaScript.
+ */
+
+.bks-showcase__menu--calendar .bks-showcase__menu-panel {
+	min-width: 17.5rem;
+	max-height: 21rem;
+}
+
+.bks-showcase__cal {
+	padding: 4px 4px 10px;
+}
+
+.bks-showcase__cal-caption {
+	display: block;
+	padding: 8px 4px 6px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--bks-site-text, #0f172a);
+}
+
+.bks-showcase__cal-head,
+.bks-showcase__cal-grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 2px;
+}
+
+.bks-showcase__cal-head abbr {
+	padding-bottom: 4px;
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	color: var(--bks-site-text-faint, #94a3b8);
+}
+
+.bks-showcase__cal-day {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1;
+	color: var(--bks-site-text, #0f172a);
+	cursor: pointer;
+	transition:
+		background-color var(--bks-site-transition-fast, 120ms ease),
+		color var(--bks-site-transition-fast, 120ms ease);
+}
+
+.bks-showcase__cal-day:hover {
+	background: var(--bks-site-brand-soft, #eff6ff);
+	color: var(--bks-site-brand, #2563eb);
+}
+
+/* Drawn, not removed: dropping past days would shift the rest out of column. */
+.bks-showcase__cal-day.is-past {
+	color: var(--bks-site-text-faint, #94a3b8);
+	opacity: 0.45;
+	cursor: default;
+}
+
+.bks-showcase__cal-day.is-past:hover {
+	background: none;
+	color: var(--bks-site-text-faint, #94a3b8);
+}
+
+.bks-showcase__cal-day input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: 0;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.bks-showcase__cal-day:has(input:checked) {
+	background: var(--bks-site-brand, #2563eb);
+	color: #fff;
+	font-weight: 600;
+}
+
+/* Fallback for browsers without :has() — the sibling still marks the day. */
+.bks-showcase__cal-day input:checked ~ span {
+	font-weight: 700;
+	text-decoration: underline;
+}
+
+.bks-showcase__cal-day:has(input:checked) input:checked ~ span {
+	text-decoration: none;
+}
+
+.bks-showcase__cal-day:focus-within {
+	box-shadow: inset 0 0 0 2px var(--bks-site-brand, #2563eb);
+}
+
+.bks-showcase__cal-pad {
+	aspect-ratio: 1;
+}
+
+/* Options */
+
+.bks-showcase__option {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 9px 12px;
+	border-radius: var(--bks-site-radius-xs, 8px);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.3;
+	color: var(--bks-site-text-muted, #475569);
+	cursor: pointer;
+	transition:
+		background-color var(--bks-site-transition-fast, 120ms ease),
+		color var(--bks-site-transition-fast, 120ms ease);
+}
+
+.bks-showcase__option:hover {
+	background: var(--bks-site-surface-muted, #f8fafc);
+	color: var(--bks-site-text, #0f172a);
+}
+
+/*
+ * The radio is hidden but still focusable and still the thing being clicked —
+ * display: none would take it out of the tab order and break arrow-key
+ * navigation through the group.
+ */
+.bks-showcase__option input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.bks-showcase__option-label {
+	flex: 1;
+}
+
+/*
+ * Sibling selectors rather than :has() for the checked row: the input is the
+ * first child, so this works everywhere, and the tick never depends on a
+ * feature the trigger's fallback already accounts for.
+ */
+.bks-showcase__option input:checked ~ .bks-showcase__option-label {
+	font-weight: 600;
+	color: var(--bks-site-brand, #2563eb);
+}
+
+.bks-showcase__option .bks-showcase__icon--check {
+	color: var(--bks-site-brand, #2563eb);
+	opacity: 0;
+	transition: opacity var(--bks-site-transition-fast, 120ms ease);
+}
+
+.bks-showcase__option input:checked ~ .bks-showcase__icon--check {
+	opacity: 1;
+}
+
+/* Keyboard focus lands on the hidden radio, so the row shows the ring. */
+.bks-showcase__option:focus-within {
+	background: var(--bks-site-surface-muted, #f8fafc);
+	box-shadow: inset 0 0 0 2px var(--bks-site-brand, #2563eb);
+}
+
+/*
+ * Hard reset. Themes style form controls with a border, a background and their
+ * own padding; inside a rail that is already all three, that reads as a box in
+ * a box — which is exactly what makes a search bar look unfinished.
+ */
+.bks-showcase__search-control input,
+.bks-showcase__search-control select {
+	flex: 1 1 auto;
+	width: 100%;
+	min-width: 0;
+	height: auto !important;
+	min-height: 0 !important;
+	max-width: none;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	outline: none;
+	background: none !important;
+	background-color: transparent !important;
+	box-shadow: none !important;
+	font-family: inherit !important;
+	font-size: 15px !important;
+	font-weight: 500;
+	line-height: 1.45 !important;
+	letter-spacing: normal;
+	color: var(--bks-site-text, #0f172a);
+	text-transform: none;
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+.bks-showcase__search-control input:focus,
+.bks-showcase__search-control select:focus {
+	border: 0 !important;
+	outline: none !important;
+	box-shadow: none !important;
+	background: none !important;
+}
+
+
+.bks-showcase__search-control input::placeholder {
+	color: var(--bks-site-text-faint, #94a3b8);
+	font-weight: 400;
+	opacity: 1;
+}
+
+/* The number spinners are a 10px target nobody wants; the field is typed. */
+.bks-showcase__search-control input[type="number"] {
+	-moz-appearance: textfield;
+}
+
+.bks-showcase__search-control input[type="number"]::-webkit-outer-spin-button,
+.bks-showcase__search-control input[type="number"]::-webkit-inner-spin-button {
+	margin: 0;
+	-webkit-appearance: none;
+}
+
+/*
+ * The date field. Its own picker button is stretched across the whole control
+ * and made transparent, so the calendar opens from anywhere in the field rather
+ * than from a small glyph at the end of it.
+ */
+.bks-showcase__search-control input[type="date"] {
+	cursor: pointer;
+}
+
+.bks-showcase__search-control input[type="date"]::-webkit-calendar-picker-indicator {
+	position: absolute;
+	inset: 0;
+	width: auto;
+	height: auto;
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+	opacity: 0;
+}
+
+.bks-showcase__search-control input[type="date"]::-webkit-datetime-edit,
+.bks-showcase__search-control input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+	padding: 0;
+}
+
+/* Submit */
+
+/*
+ * Sized to itself and centred, rather than stretched to the rail. A button that
+ * fills the full height of the bar reads as a fourth panel instead of an
+ * action, and at that size it dominates the three fields it belongs to.
+ */
+.bks-showcase__search-submit {
+	display: flex;
+	align-self: center;
+	align-items: center;
+	justify-content: center;
+	gap: 7px;
+	width: auto;
+	height: auto !important;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 12px 22px !important;
+	border: 0 !important;
+	border-radius: var(--bks-site-radius-sm, 12px) !important;
+	background: var(--bks-site-brand, #2563eb) !important;
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	color: #ffffff !important;
+	-webkit-text-fill-color: #ffffff;
+	font-family: inherit !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.01em;
+	line-height: 1.2 !important;
+	text-transform: none;
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+	box-shadow: none;
+	transition:
+		background-color var(--bks-site-transition-fast, 120ms ease),
+		box-shadow var(--bks-site-transition-fast, 120ms ease),
+		transform var(--bks-site-transition-fast, 120ms ease);
+}
+
+@media (min-width: 52rem) {
+
+	.bks-showcase__search-submit {
+		margin-left: 6px !important;
+		padding: 13px 26px !important;
+		border-radius: var(--bks-site-radius-pill, 999px) !important;
+	}
+}
+
+.bks-showcase__search-submit .bks-showcase__icon {
+	color: currentColor;
+}
+
+.bks-showcase__search-submit:hover {
+	background: var(--bks-site-brand-hover, #1d4ed8) !important;
+	background-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	color: #ffffff !important;
+	box-shadow: 0 6px 18px var(--bks-site-brand-glow, rgba(37, 99, 235, 0.16));
+}
+
+/* The press: a small give, then back. Enough to feel, not enough to see. */
+.bks-showcase__search-submit:active {
+	background-color: var(--bks-site-brand-active, #1e40af) !important;
+	box-shadow: none;
+	transform: scale(0.97);
+}
+
+.bks-showcase__search-submit:focus-visible {
+	outline: 2px solid var(--bks-site-brand, #2563eb);
+	outline-offset: 2px;
+}
+
+/* Grid ------------------------------------------------------------------- */
+
+/*
+ * auto-fit with a minimum, rather than a fixed column count: the `columns`
+ * attribute sets the ceiling on wide screens, and the cards reflow on their own
+ * below it — so there is no breakpoint to keep in step with the theme's.
+ */
+.bks-showcase__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--bks-showcase-min, 17rem)), 1fr));
+	gap: var(--bks-site-gap, 24px);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 62rem) {
+	.bks-showcase__grid {
+		grid-template-columns: repeat(var(--bks-showcase-columns, 3), minmax(0, 1fr));
+	}
+}
+
+/* Card ------------------------------------------------------------------- */
+
+.bks-showcase__card {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	margin: 0;
+	border: 1px solid var(--bks-site-border, #e2e8f0);
+	border-radius: var(--bks-site-radius, 18px);
+	background: var(--bks-site-surface, #ffffff);
+	transition:
+		border-color var(--bks-site-transition, 200ms ease),
+		box-shadow var(--bks-site-transition, 200ms ease),
+		transform var(--bks-site-transition, 200ms ease);
+}
+
+.bks-showcase__card:hover {
+	transform: translateY(-2px);
+	border-color: var(--bks-site-border-focus, #cbd5e1);
+	box-shadow: var(--bks-site-shadow-lifted, 0 12px 32px -4px rgba(15, 23, 42, 0.1));
+}
+
+/* Media ------------------------------------------------------------------ */
+
+.bks-showcase__media {
+	position: relative;
+	overflow: hidden;
+	/* A consistent frame regardless of what the owner uploaded. */
+	aspect-ratio: 4 / 3;
+	background: var(--bks-site-surface-muted, #f8fafc);
+}
+
+.bks-showcase__media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bks-showcase__card:hover .bks-showcase__media img {
+	transform: scale(1.04);
+}
+
+/* No photo yet: the apartment's own colour, softened, rather than a grey box. */
+/* No photo yet: the apartment's own colour, softened, behind a picture mark. */
+.bks-showcase__placeholder {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	color: var(--bks-site-text-faint, #94a3b8);
+}
+
+.bks-showcase__placeholder-wash {
+	position: absolute;
+	inset: 0;
+	opacity: 0.14;
+}
+
+.bks-showcase__placeholder .bks-showcase__icon {
+	position: relative;
+	color: inherit;
+}
+
+/* The one flourish: a hairline of the apartment's colour along the top. */
+.bks-showcase__accent {
+	position: absolute;
+	inset: 0 0 auto;
+	height: 3px;
+}
+
+.bks-showcase__badge {
+	position: absolute;
+	inset: auto auto 12px 12px;
+	padding: 5px 10px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.92);
+	backdrop-filter: blur(6px);
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1;
+	color: var(--bks-site-text, #0f172a);
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
+
+/* Body ------------------------------------------------------------------- */
+
+.bks-showcase__body {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 8px;
+	padding: 18px 20px 20px;
+}
+
+.bks-showcase__title {
+	margin: 0;
+	font-size: 1.0625rem;
+	font-weight: 600;
+	line-height: 1.35;
+	letter-spacing: -0.01em;
+	color: inherit;
+}
+
+.bks-showcase__title a {
+	color: inherit;
+	text-decoration: none;
+	background-image: none;
+}
+
+.bks-showcase__title a:hover {
+	color: var(--bks-site-brand, #2563eb);
+}
+
+.bks-showcase__excerpt {
+	margin: 0;
+	font-size: 0.875rem;
+	line-height: 1.6;
+	color: var(--bks-site-text-muted, #475569);
+
+	/* Two lines, so uneven descriptions still line the cards up. */
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* Footer ----------------------------------------------------------------- */
+
+.bks-showcase__footer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+
+	/* Pinned to the bottom so the CTA sits on one line across the row. */
+	margin-top: auto;
+	padding-top: 16px;
+}
+
+.bks-showcase__price {
+	display: flex;
+	align-items: baseline;
+	gap: 4px;
+	font-size: 0.8125rem;
+	color: var(--bks-site-text-muted, #475569);
+}
+
+.bks-showcase__price-value {
+	font-size: 1.125rem;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	color: var(--bks-site-text, #0f172a);
+	font-variant-numeric: tabular-nums;
+}
+
+.bks-showcase__price--request {
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+
+/* Empty state ------------------------------------------------------------ */
+
+.bks-showcase__empty {
+	margin: 0;
+	padding: 40px 24px;
+	border: 1px dashed var(--bks-site-border, #e2e8f0);
+	border-radius: var(--bks-site-radius, 18px);
+	text-align: center;
+	font-size: 0.9375rem;
+	color: var(--bks-site-text-muted, #475569);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.bks-showcase__card,
+	.bks-showcase__media img {
+		transition: none;
+	}
+
+	.bks-showcase__card:hover {
+		transform: none;
+	}
+
+	.bks-showcase__card:hover .bks-showcase__media img {
+		transform: none;
+	}
+}

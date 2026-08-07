@@ -9,6 +9,18 @@ const settings = {
 	restUrl: '',
 	nonce: '',
 	locale: 'de_DE',
+
+	// Mirrors the plugin's own defaults, so the bundle still behaves if the
+	// bootstrap object is missing — a caching plugin stripping inline script,
+	// for instance.
+	minHours: 3,
+	maxHours: 8,
+
+	// WordPress's own defaults for Settings → General.
+	dateFormat: 'F j, Y',
+	timeFormat: 'g:i a',
+	timezone: 'UTC',
+	startOfWeek: 1,
 	...( typeof window !== 'undefined' ? window.bookingSuiteSite ?? {} : {} ),
 };
 

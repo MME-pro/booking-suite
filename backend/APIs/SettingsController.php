@@ -36,13 +36,15 @@ final class SettingsController {
 	/** Currencies the booking flow can price in. */
 	public const CURRENCIES = array( 'EUR', 'USD', 'GBP', 'CHF' );
 
-	/** Languages the guest-facing flow is offered in. */
-	public const LANGUAGES = array( 'en', 'de' );
-
-	/** Setting key → the repository key it is stored under. */
+	/**
+	 * Setting key → the repository key it is stored under.
+	 *
+	 * There is deliberately no language setting. The plugin follows the
+	 * WordPress site language through its own translation catalogue, so a
+	 * control here could only ever disagree with Settings → General.
+	 */
 	private const KEYS = array(
 		'currency' => SettingsRepository::CURRENCY,
-		'language' => SettingsRepository::LANGUAGE,
 	);
 
 	public static function register(): void {
@@ -69,11 +71,6 @@ final class SettingsController {
 							'required' => false,
 							'enum'     => self::CURRENCIES,
 						),
-						'language' => array(
-							'type'     => 'string',
-							'required' => false,
-							'enum'     => self::LANGUAGES,
-						),
 					),
 				),
 			)
@@ -91,16 +88,12 @@ final class SettingsController {
 	 */
 	public static function all(): array {
 		$currency = SettingsRepository::currency();
-		$language = SettingsRepository::get( SettingsRepository::LANGUAGE );
 
 		// A value that is no longer offered falls back rather than sticking.
 		return array(
 			'currency' => in_array( $currency, self::CURRENCIES, true )
 				? $currency
 				: 'EUR',
-			'language' => in_array( $language, self::LANGUAGES, true )
-				? $language
-				: 'de',
 		);
 	}
 
@@ -131,7 +124,6 @@ final class SettingsController {
 			'settings' => self::all(),
 			'choices'  => array(
 				'currencies' => self::CURRENCIES,
-				'languages'  => self::LANGUAGES,
 			),
 		);
 	}

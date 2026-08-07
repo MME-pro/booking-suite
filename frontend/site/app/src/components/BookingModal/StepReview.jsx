@@ -5,7 +5,7 @@
 import { __, sprintf, _n } from '@wordpress/i18n';
 
 import { settings } from '../../services/apartmentService';
-import { formatPrice } from '../../utils/format';
+import { formatPrice, formatWpDate, formatWpTime } from '../../utils/format';
 
 export default function StepReview( {
 	apartment,
@@ -31,8 +31,8 @@ export default function StepReview( {
 			? sprintf(
 					/* translators: 1: date, 2: start time, 3: number of hours. */
 					__( '%1$s from %2$s · %3$s', 'booking-suite' ),
-					stay.date,
-					stay.startTime,
+					formatWpDate( stay.date ),
+					formatWpTime( stay.startTime ),
 					sprintf(
 						/* translators: %d: number of hours. */
 						_n(
@@ -47,8 +47,8 @@ export default function StepReview( {
 			: sprintf(
 					/* translators: 1: check-in date, 2: check-out date, 3: the overnight window. */
 					__( '%1$s → %2$s · %3$s', 'booking-suite' ),
-					stay.checkIn,
-					stay.checkOut,
+					formatWpDate( stay.checkIn ),
+					formatWpDate( stay.checkOut ),
 					overnightWindow
 			  );
 

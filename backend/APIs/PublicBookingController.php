@@ -232,6 +232,25 @@ final class PublicBookingController {
 			);
 		}
 
+		/*
+		 * Proof of payment is required, and required here — before a booking, a
+		 * customer or an extras hold exists. Checked on the server rather than
+		 * trusting the modal's disabled button: the endpoint is public, and a
+		 * request that skips the form would otherwise take the dates off the
+		 * board with nothing to reconcile against.
+		 */
+		if ( '' === trim( (string) $request->get_param( 'paymentProof' ) ) ) {
+			return self::error(
+				'booking_suite_payment_proof_required',
+				__(
+					'Please upload a screenshot or receipt of your payment to complete the booking.',
+					'booking-suite'
+				),
+				400,
+				'payment'
+			);
+		}
+
 		$customer_id = CustomersRepository::find_or_create(
 			array(
 				'first_name' => $first,
@@ -304,8 +323,14 @@ final class PublicBookingController {
 			? null
 			: ProofUpload::save( $proof_data, $reference );
 
-		// Nothing to record: no receipt and no date.
-		if ( null === $attachment_id && null === $paid_on ) {
+		/*
+		 * Nothing at all to record. Proof is required before a booking is
+		 * created, so in practice this only catches an upload that failed to
+		 * save — and in that case the row is still written, with no attachment,
+		 * rather than leaving a booking with no payment against it for the owner
+		 * to chase.
+		 */
+		if ( '' === $proof_data && null === $paid_on ) {
 			return;
 		}
 
