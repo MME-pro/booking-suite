@@ -305,27 +305,67 @@
 	line-height: 1.5;
 }
 
+/*
+ * Notices.
+ *
+ * A message that fills its whole line with red is read as an error even when it
+ * is only information — "nothing free that day" is a fact about the calendar,
+ * not a fault. So the colour is carried by a rail down the leading edge and a
+ * faint tint behind, while the text itself stays in the ordinary reading
+ * colour. It also sets the message apart from the surrounding form without
+ * shouting.
+ */
 .bks-step__available,
-.bks-step__unavailable {
+.bks-step__unavailable,
+.bks-booking__error,
+.bks-payment__error {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	gap: 10px;
-	padding: 14px 18px;
+	margin: 0;
+	padding: 14px 16px;
+	border: 1px solid transparent;
+	border-left-width: 3px;
 	border-radius: var(--bks-site-radius-xs);
 	font-size: 14px;
-	font-weight: 600;
-	line-height: 1.4;
+	font-weight: 500;
+	line-height: 1.5;
+	text-align: left;
 }
 
 .bks-step__available {
 	background: var(--bks-site-success-soft);
-	border: 1px solid rgba(22, 163, 74, 0.15);
+	border-color: rgba(22, 163, 74, 0.18);
+	border-left-color: var(--bks-site-success);
+	color: var(--bks-site-text);
+}
+
+.bks-step__unavailable,
+.bks-booking__error,
+.bks-payment__error {
+	background: var(--bks-site-error-soft);
+	border-color: rgba(220, 38, 38, 0.18);
+	border-left-color: var(--bks-site-error);
+	color: var(--bks-site-text);
+}
+
+/* The dot that carries the colour, so the meaning is not colour alone. */
+.bks-step__available::before,
+.bks-step__unavailable::before {
+	content: '';
+	flex-shrink: 0;
+	width: 8px;
+	height: 8px;
+	margin-top: 6px;
+	border-radius: 50%;
+	background: currentcolor;
+}
+
+.bks-step__available::before {
 	color: var(--bks-site-success);
 }
 
-.bks-step__unavailable {
-	background: var(--bks-site-error-soft);
-	border: 1px solid rgba(220, 38, 38, 0.15);
+.bks-step__unavailable::before {
 	color: var(--bks-site-error);
 }
 
@@ -1471,21 +1511,26 @@
 }
 
 /* The date field: styled to match the modal's inputs, so it opts into their
-   surface rather than the transparent default above. */
+   surface rather than the transparent default above. Same surface and the same
+   absence of a shadow — it stands in a row with them, and a tile a shade darker
+   than its neighbours reads as a different kind of control. */
 .bks-booking .bks-datefield__trigger,
 .bks-booking .bks-datefield__trigger:hover {
-	background-color: var(--bks-site-surface-muted, #f8fafc) !important;
+	background-color: var(--bks-site-surface, #fff) !important;
 	color: var(--bks-site-text, #0f172a) !important;
 	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
 	border-color: var(--bks-site-border, #e2e8f0) !important;
+	box-shadow: none !important;
 }
 
 .bks-booking .bks-datefield__trigger:hover {
 	border-color: var(--bks-site-border-strong, #cbd5e1) !important;
 }
 
+.bks-booking .bks-datefield__trigger:focus-visible,
 .bks-booking .bks-datefield__trigger[aria-expanded='true'] {
 	border-color: var(--bks-site-brand, #2563eb) !important;
+	box-shadow: 0 0 0 3px var(--bks-site-brand-glow, rgba(37, 99, 235, 0.16)) !important;
 }
 
 .bks-booking .bks-cal__nav,

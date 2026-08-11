@@ -98,7 +98,8 @@
 	z-index: 20;
 	top: calc(100% + 8px);
 	left: 0;
-	min-width: 19rem;
+	width: max-content;
+	max-width: min(20rem, calc(100vw - 32px));
 	padding: 16px;
 	border: 1px solid var(--bks-site-border, #e2e8f0);
 	border-radius: var(--bks-site-radius-sm, 12px);

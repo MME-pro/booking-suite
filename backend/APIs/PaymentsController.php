@@ -20,6 +20,7 @@ use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Repositories\EmailTemplatesRepository;
 use BookingSuite\Backend\Repositories\PaymentsRepository;
 use BookingSuite\Backend\Support\BookingEmails;
+use BookingSuite\Backend\Support\Invoice;
 use BookingSuite\Backend\Schemas\BookingsTable;
 use BookingSuite\Backend\Schemas\PaymentsTable;
 use WP_Error;
@@ -146,9 +147,15 @@ final class PaymentsController {
 
 		// On the transition only, so re-saving a settled payment stays quiet.
 		if ( 'paid' === $status && 'paid' !== ( $previous['status'] ?? '' ) ) {
+			$attachment = Invoice::attachment( $id );
+
+			// Re-read so the screen sees the invoice number without reloading.
+			$payment = PaymentsRepository::find( $id ) ?? $payment;
+
 			BookingEmails::send(
 				EmailTemplatesRepository::PAYMENT_RECEIVED,
-				(int) $payment['bookingId']
+				(int) $payment['bookingId'],
+				$attachment
 			);
 		}
 

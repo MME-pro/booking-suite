@@ -18,8 +18,6 @@
  */
 
 return array(
-
-	// Counts and formatted fragments.
 	'"%s" will be removed and detached from any booking it was added to. Those bookings keep the total they were taken at. This cannot be undone.' => '„%s“ wird entfernt und von allen Buchungen gelöst, zu denen es hinzugefügt wurde. Diese Buchungen behalten den Betrag, zu dem sie erfasst wurden. Das kann nicht rückgängig gemacht werden.',
 	'"%s" will be removed. This cannot be undone.' => '„%s“ wird entfernt. Das kann nicht rückgängig gemacht werden.',
 	'%1$d extra guests × %2$s'    => '%1$d zusätzliche Gäste × %2$s',
@@ -33,10 +31,48 @@ return array(
 	'%d all time'                 => '%d insgesamt',
 	'%d B'                        => '%d B',
 	'%d KB'                       => '%d KB',
+	'%dx'                       => '%dx',
+	'%1$s (Extra) — %2$s je Stück' => '%1$s (Extra) — %2$s je Stück',
+	'%s (Extra)'                => '%s (Extra)',
+	'%s gebuchtes Zimmer'       => '%s gebuchtes Zimmer',
 	'%s MB'                       => '%s MB',
+	'%s Std.'                   => '%s Std.',
 	'/ %s'                        => '/ %s',
 	'A screenshot or receipt of your transfer is required before you can continue.' => 'Ein Screenshot oder Beleg Ihrer Überweisung ist erforderlich, bevor Sie fortfahren können.',
+	'Absender:'                 => 'Absender:',
+	'Anzahl der Std.'           => 'Anzahl der Std.',
+	'Beschreibung'              => 'Beschreibung',
+	'Buchungsnummer:'           => 'Buchungsnummer:',
+	'Choose a logo'             => 'Logo auswählen',
+	'Choose logo'               => 'Logo wählen',
+	'Closing line'              => 'Schlusszeile',
+	'Datum'                     => 'Datum',
+	'Datum:'                    => 'Datum:',
+	'Days from the invoice date to the due date.' => 'Tage vom Rechnungsdatum bis zur Fälligkeit.',
+	'E-Mail:'                   => 'E-Mail:',
+	'Fälligkeitsdatum:'        => 'Fälligkeitsdatum:',
+	'Gebuchte Uhrzeit'          => 'Gebuchte Uhrzeit',
+	'Gesamt:'                   => 'Gesamt:',
+	'Gesamtbetrag:'             => 'Gesamtbetrag:',
+	'Hinweis:'                  => 'Hinweis:',
+	'Invoice generator'         => 'Rechnungsgenerator',
+	'Invoice logo'              => 'Rechnungslogo',
+	'Invoice number prefix'     => 'Präfix der Rechnungsnummer',
+	'Kosten'                    => 'Kosten',
+	'Logo'                      => 'Logo',
+	'Netto:'                    => 'Netto:',
+	'Notice'                    => 'Hinweis',
+	'Numbers run PREFIX-YEAR-0001 and restart each year.' => 'Die Nummern lauten PRÄFIX-JAHR-0001 und beginnen jedes Jahr neu.',
+	'Payment term (days)'       => 'Zahlungsziel (Tage)',
 	'Please upload a screenshot or receipt of your payment to complete the booking.' => 'Bitte laden Sie einen Screenshot oder Beleg Ihrer Zahlung hoch, um die Buchung abzuschließen.',
+	'Printed at the top left of the invoice.' => 'Wird oben links auf der Rechnung gedruckt.',
+	'Printed last, after a bold "Hinweis:" label.' => 'Wird zuletzt gedruckt, nach einem fett gesetzten "Hinweis:".',
+	'Printed on the right, one line per line — company, address, telephone, email, VAT number.' => 'Wird rechts gedruckt, eine Zeile je Zeile — Firma, Adresse, Telefon, E-Mail, USt-IdNr.',
+	'RECHNUNG'                  => 'RECHNUNG',
+	'Rechnung'                  => 'Rechnung',
+	'Rechnungsempfänger:'      => 'Rechnungsempfänger:',
+	'Rechnungsnummer:'          => 'Rechnungsnummer:',
+	'Replace logo'              => 'Logo ersetzen',
 	'required'                    => 'erforderlich',
 	'Any time'                    => 'Beliebige Uhrzeit',
 	'Click or drop your payment screenshot here' => 'Zahlungsbeleg hier ablegen oder klicken',
@@ -44,9 +80,14 @@ return array(
 	'Ready'                       => 'Bereit',
 	'Ready · %s'                  => 'Bereit · %s',
 	'Replace'                     => 'Ersetzen',
+	'Sender block'              => 'Absenderblock',
+	'Tel: %s'                   => 'Tel: %s',
+	'Telefon:'                  => 'Telefon:',
+	'Telephone'                 => 'Telefon',
 	'That file could not be read.' => 'Diese Datei konnte nicht gelesen werden.',
 	'That file is too large. The most we can take is %s.' => 'Diese Datei ist zu groß. Höchstens %s sind möglich.',
 	'That file type is not supported. Use a JPG, PNG, WEBP or PDF.' => 'Dieser Dateityp wird nicht unterstützt. Bitte JPG, PNG, WEBP oder PDF verwenden.',
+	'The invoice sent to the guest as a PDF when a payment is marked paid.' => 'Die Rechnung, die dem Gast als PDF gesendet wird, sobald eine Zahlung als bezahlt markiert wird.',
 	'The payment receipt you uploaded' => 'Der von Ihnen hochgeladene Zahlungsbeleg',
 	'Time'                        => 'Uhrzeit',
 	'%d apartment'                => array( '%d Apartment', '%d Apartments' ),
@@ -92,13 +133,13 @@ return array(
 	'30 days'                     => '30 Tage',
 	'7 days'                      => '7 Tage',
 	'90 days'                     => '90 Tage',
-
-	// Shortcode documentation.
 	'A button that opens the booking modal. Added to every apartment page automatically, so you only need this to place it somewhere specific instead.' => 'Eine Schaltfläche, die das Buchungsfenster öffnet. Sie wird automatisch auf jeder Apartment-Seite ergänzt — dieser Shortcode wird nur gebraucht, um sie an einer bestimmten Stelle zu platzieren.',
 	'A name is required.'         => 'Ein Name ist erforderlich.',
 	'A photo grid of the apartments with a "Book now" button on each card, for the homepage. Rendered by the server, so it is visible to search engines and needs no search bar. Use the apartment list instead when guests should filter by date first.' => 'Ein Fotoraster der Apartments mit einer „Jetzt buchen“-Schaltfläche auf jeder Karte, für die Startseite. Es wird auf dem Server erzeugt, ist damit für Suchmaschinen sichtbar und braucht keine Suchleiste. Verwenden Sie die Apartment-Liste, wenn Gäste zuerst nach Datum filtern sollen.',
 	'A star marks a required parameter. Hover any parameter for its type, or its allowed values where it has a fixed set.' => 'Ein Stern kennzeichnet einen Pflichtparameter. Fahren Sie über einen Parameter, um seinen Typ zu sehen — oder die erlaubten Werte, wenn es eine feste Auswahl gibt.',
 	'API endpoints'               => 'API-Endpunkte',
+	'Accent colour'               => 'Akzentfarbe',
+	'Accent colour hex'           => 'Akzentfarbe als Hex-Wert',
 	'Access'                      => 'Zugriff',
 	'Across every booking'        => 'Über alle Buchungen',
 	'Across every booking listed' => 'Über alle aufgeführten Buchungen',
@@ -209,6 +250,7 @@ return array(
 	'Bookings are priced and invoiced in this currency.' => 'Buchungen werden in dieser Währung berechnet und abgerechnet.',
 	'Bookings taken in each period.' => 'Buchungen je Zeitraum.',
 	'Bookings today'              => 'Buchungen heute',
+	'Buttons, selected times and focus rings on the booking flow.' => 'Schaltflächen, ausgewählte Zeiten und Fokusrahmen im Buchungsablauf.',
 	'Button size.'                => 'Größe der Schaltfläche.',
 	'Button text.'                => 'Beschriftung der Schaltfläche.',
 	'By the hour'                 => 'Stundenweise',
@@ -353,98 +395,6 @@ return array(
 	'Guests'                      => 'Gäste',
 	'Guests must be between 1 and 65535.' => 'Die Gästezahl muss zwischen 1 und 65535 liegen.',
 	'HTML'                        => 'HTML',
-
-	// Email templates. The {{tokens}} must not be translated.
-	'Hello {{guest_first_name}},
-
-Good news — your booking is confirmed and the dates are yours.
-
-Reference: {{reference}}
-Apartment: {{apartment}}
-Arrival: {{check_in}}
-Departure: {{check_out}}
-Guests: {{guests}}
-Total: {{total}}
-
-Please transfer the total using the reference above. We will confirm as soon as it arrives.
-
-We look forward to having you.
-
-{{site_name}}
-{{site_url}}' => 'Hallo {{guest_first_name}},
-
-gute Nachrichten — Ihre Buchung ist bestätigt und der Zeitraum gehört Ihnen.
-
-Buchungsnummer: {{reference}}
-Apartment: {{apartment}}
-Anreise: {{check_in}}
-Abreise: {{check_out}}
-Gäste: {{guests}}
-Gesamt: {{total}}
-
-Bitte überweisen Sie den Gesamtbetrag unter Angabe der obigen Buchungsnummer. Wir bestätigen den Eingang, sobald die Zahlung bei uns ist.
-
-Wir freuen uns auf Ihren Besuch.
-
-{{site_name}}
-{{site_url}}',
-
-	'Hello {{guest_first_name}},
-
-Thank you for your request. We have it, and we will confirm it shortly.
-
-Reference: {{reference}}
-Apartment: {{apartment}}
-Arrival: {{check_in}}
-Departure: {{check_out}}
-Guests: {{guests}}
-Total: {{total}}
-
-Nothing is due yet — we will send payment details once the booking is confirmed.
-
-{{site_name}}
-{{site_url}}' => 'Hallo {{guest_first_name}},
-
-vielen Dank für Ihre Anfrage. Sie ist bei uns eingegangen und wir bestätigen sie in Kürze.
-
-Buchungsnummer: {{reference}}
-Apartment: {{apartment}}
-Anreise: {{check_in}}
-Abreise: {{check_out}}
-Gäste: {{guests}}
-Gesamt: {{total}}
-
-Es ist noch nichts fällig — die Zahlungsdaten senden wir Ihnen, sobald die Buchung bestätigt ist.
-
-{{site_name}}
-{{site_url}}',
-
-	'Hello {{guest_first_name}},
-
-We have received your payment of {{total}}. Your stay is fully settled.
-
-Reference: {{reference}}
-Apartment: {{apartment}}
-Arrival: {{check_in}}
-Departure: {{check_out}}
-
-Safe travels, and see you soon.
-
-{{site_name}}
-{{site_url}}' => 'Hallo {{guest_first_name}},
-
-wir haben Ihre Zahlung über {{total}} erhalten. Ihr Aufenthalt ist vollständig bezahlt.
-
-Buchungsnummer: {{reference}}
-Apartment: {{apartment}}
-Anreise: {{check_in}}
-Abreise: {{check_out}}
-
-Gute Reise und bis bald.
-
-{{site_name}}
-{{site_url}}',
-
 	'Hesse public holidays are treated as blocked days for this apartment.' => 'Hessische Feiertage gelten für dieses Apartment als gesperrte Tage.',
 	'Hours'                       => 'Stunden',
 	'How long?'                   => 'Wie lange?',
@@ -602,6 +552,7 @@ Gute Reise und bis bald.
 	'Phone'                       => 'Telefon',
 	'Photo gallery'               => 'Fotogalerie',
 	'Pick a check-in date.'       => 'Wählen Sie ein Anreisedatum.',
+	'Pick a colour'               => 'Farbe wählen',
 	'Pick a colour.'              => 'Wählen Sie eine Farbe.',
 	'Pick a date.'                => 'Wählen Sie ein Datum.',
 	'Pick a start date.'          => 'Wählen Sie ein Startdatum.',
@@ -746,6 +697,7 @@ Gute Reise und bis bald.
 	'The apartment could not be saved.' => 'Das Apartment konnte nicht gespeichert werden.',
 	'The apartment could not be updated.' => 'Das Apartment konnte nicht aktualisiert werden.',
 	'The apartments could not be loaded.' => 'Die Apartments konnten nicht geladen werden.',
+	'The brand colour of the guest booking flow. Hover, pressed and tint shades are worked out from it, so one colour is all that is needed.' => 'Die Markenfarbe des Buchungsablaufs für Gäste. Hover-, Klick- und Tönungsabstufungen werden daraus berechnet — eine Farbe genügt.',
 	'The booking could not be saved.' => 'Die Buchung konnte nicht gespeichert werden.',
 	'The booking could not be updated.' => 'Die Buchung konnte nicht aktualisiert werden.',
 	'The colour must be a hex value such as #3858e9.' => 'Die Farbe muss ein Hex-Wert wie #3858e9 sein.',
@@ -753,7 +705,6 @@ Gute Reise und bis bald.
 	'The extra needs a name.'     => 'Das Extra braucht einen Namen.',
 	'The first photo is also used as the featured image.' => 'Das erste Foto wird auch als Beitragsbild verwendet.',
 	'The guest has not uploaded a receipt.' => 'Der Gast hat keinen Beleg hochgeladen.',
-	"The guest's full name"       => 'Der vollständige Name des Gastes',
 	'The guest-facing apartment grid, with an optional date and guest search bar above it.' => 'Das Apartment-Raster für Gäste, wahlweise mit einer Suchleiste für Datum und Gäste darüber.',
 	'The language the booking flow is shown in.' => 'Die Sprache, in der der Buchungsablauf angezeigt wird.',
 	'The lock could not be saved.' => 'Die Sperre konnte nicht gespeichert werden.',
@@ -817,6 +768,7 @@ Gute Reise und bis bald.
 	'Uploaded successfully'       => 'Erfolgreich hochgeladen',
 	'Use these photos'            => 'Diese Fotos verwenden',
 	'Use this image'              => 'Dieses Bild verwenden',
+	'Use this logo'             => 'Dieses Logo verwenden',
 	'User Guide'                  => 'Anleitung',
 	'Usually sleeps %d — we will confirm the extra beds with you.' => 'Normalerweise Platz für %d — die zusätzlichen Betten stimmen wir mit Ihnen ab.',
 	'Value of the bookings taken each day.' => 'Wert der täglich erfassten Buchungen.',
@@ -854,5 +806,104 @@ Gute Reise und bis bald.
 	'until %s'                    => 'bis %s',
 	'weekend'                     => 'Wochenende',
 	'you@example.com'             => 'sie@beispiel.de',
+	'Zusätzliche Person — %1$s je Person (%2$d im Preis enthalten)' => 'Zusätzliche Person — %1$s je Person (%2$d im Preis enthalten)',
+	'Zusätzliche Person'       => 'Zusätzliche Person',
 	'— %s'                        => '— %s',
+
+	// Counts and formatted fragments.
+
+	// Shortcode documentation.
+
+	// Email templates. The {{tokens}} must not be translated.
+	'Hello {{guest_first_name}},
+
+Good news — your booking is confirmed and the dates are yours.
+
+Reference: {{reference}}
+Apartment: {{apartment}}
+Arrival: {{check_in}}
+Departure: {{check_out}}
+Guests: {{guests}}
+Total: {{total}}
+
+Please transfer the total using the reference above. We will confirm as soon as it arrives.
+
+We look forward to having you.
+
+{{site_name}}
+{{site_url}}' => 'Hallo {{guest_first_name}},
+
+gute Nachrichten — Ihre Buchung ist bestätigt und der Zeitraum gehört Ihnen.
+
+Buchungsnummer: {{reference}}
+Apartment: {{apartment}}
+Anreise: {{check_in}}
+Abreise: {{check_out}}
+Gäste: {{guests}}
+Gesamt: {{total}}
+
+Bitte überweisen Sie den Gesamtbetrag unter Angabe der obigen Buchungsnummer. Wir bestätigen den Eingang, sobald die Zahlung bei uns ist.
+
+Wir freuen uns auf Ihren Besuch.
+
+{{site_name}}
+{{site_url}}',
+
+	'Hello {{guest_first_name}},
+
+Thank you for your request. We have it, and we will confirm it shortly.
+
+Reference: {{reference}}
+Apartment: {{apartment}}
+Arrival: {{check_in}}
+Departure: {{check_out}}
+Guests: {{guests}}
+Total: {{total}}
+
+Nothing is due yet — we will send payment details once the booking is confirmed.
+
+{{site_name}}
+{{site_url}}' => 'Hallo {{guest_first_name}},
+
+vielen Dank für Ihre Anfrage. Sie ist bei uns eingegangen und wir bestätigen sie in Kürze.
+
+Buchungsnummer: {{reference}}
+Apartment: {{apartment}}
+Anreise: {{check_in}}
+Abreise: {{check_out}}
+Gäste: {{guests}}
+Gesamt: {{total}}
+
+Es ist noch nichts fällig — die Zahlungsdaten senden wir Ihnen, sobald die Buchung bestätigt ist.
+
+{{site_name}}
+{{site_url}}',
+
+	'Hello {{guest_first_name}},
+
+We have received your payment of {{total}}. Your stay is fully settled.
+
+Reference: {{reference}}
+Apartment: {{apartment}}
+Arrival: {{check_in}}
+Departure: {{check_out}}
+
+Safe travels, and see you soon.
+
+{{site_name}}
+{{site_url}}' => 'Hallo {{guest_first_name}},
+
+wir haben Ihre Zahlung über {{total}} erhalten. Ihr Aufenthalt ist vollständig bezahlt.
+
+Buchungsnummer: {{reference}}
+Apartment: {{apartment}}
+Anreise: {{check_in}}
+Abreise: {{check_out}}
+
+Gute Reise und bis bald.
+
+{{site_name}}
+{{site_url}}',
+
+	"The guest's full name"       => 'Der vollständige Name des Gastes',
 );

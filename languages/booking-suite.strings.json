@@ -66,6 +66,17 @@
         }
     },
     {
+        "single": "%1$s (Extra) — %2$s je Stück",
+        "line": 391,
+        "comment": "translators: 1: name of the extra, 2: price of one of them.",
+        "refs": [
+            "backend/Support/Invoice.php:391"
+        ],
+        "comments": {
+            "translators: 1: name of the extra, 2: price of one of them.": true
+        }
+    },
+    {
         "single": "%1$s from %2$s · %3$s",
         "line": 33,
         "comment": "translators: 1: date, 2: start time, 3: number of hours.",
@@ -525,6 +536,19 @@
         }
     },
     {
+        "single": "%dx",
+        "line": 399,
+        "comment": "translators: %d: how many were booked.",
+        "refs": [
+            "backend/Support/Invoice.php:399",
+            "backend/Support/Invoice.php:423"
+        ],
+        "comments": {
+            "translators: %d: how many were booked.": true,
+            "translators: %d: number of additional guests.": true
+        }
+    },
+    {
         "single": "%s MB",
         "line": 48,
         "comment": "translators: %s: a file size in megabytes, to one decimal.",
@@ -533,6 +557,28 @@
         ],
         "comments": {
             "translators: %s: a file size in megabytes, to one decimal.": true
+        }
+    },
+    {
+        "single": "%s Std.",
+        "line": 379,
+        "comment": "translators: %s: number of hours, to two decimals.",
+        "refs": [
+            "backend/Support/Invoice.php:379"
+        ],
+        "comments": {
+            "translators: %s: number of hours, to two decimals.": true
+        }
+    },
+    {
+        "single": "%s gebuchtes Zimmer",
+        "line": 370,
+        "comment": "translators: %s: the apartment's name.",
+        "refs": [
+            "backend/Support/Invoice.php:370"
+        ],
+        "comments": {
+            "translators: %s: the apartment's name.": true
         }
     },
     {
@@ -708,6 +754,33 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Guide/GuidePage.jsx:134"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Absender:",
+        "line": 233,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:233"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Accent colour",
+        "line": 243,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:243"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Accent colour hex",
+        "line": 81,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/AccentColourField.jsx:81"
         ],
         "comments": []
     },
@@ -1079,19 +1152,19 @@
     },
     {
         "single": "Another booking already holds those dates.",
-        "line": 446,
+        "line": 453,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:446"
+            "backend/APIs/BookingsController.php:453"
         ],
         "comments": []
     },
     {
         "single": "Another booking already holds those dates. Cancel that one first.",
-        "line": 218,
+        "line": 219,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:218"
+            "backend/APIs/BookingsController.php:219"
         ],
         "comments": []
     },
@@ -1130,6 +1203,15 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepDetails.jsx:118"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Anzahl der Std.",
+        "line": 266,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:266"
         ],
         "comments": []
     },
@@ -1519,10 +1601,20 @@
         }
     },
     {
-        "single": "Book now",
-        "line": 64,
+        "single": "Beschreibung",
+        "line": 263,
         "comment": "",
         "refs": [
+            "backend/Support/Invoice.php:263"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Book now",
+        "line": 114,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/AccentColourField.jsx:114",
             "frontend/site/Shortcodes.php:64",
             "frontend/site/Shortcodes.php:239",
             "frontend/site/Shortcodes.php:426",
@@ -1689,10 +1781,10 @@
     },
     {
         "single": "Booking not found.",
-        "line": 457,
+        "line": 464,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:457"
+            "backend/APIs/BookingsController.php:464"
         ],
         "comments": []
     },
@@ -1791,10 +1883,10 @@
     },
     {
         "single": "Bookings are priced and invoiced in this currency.",
-        "line": 194,
+        "line": 227,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:194"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:227"
         ],
         "comments": []
     },
@@ -1817,6 +1909,15 @@
         "comments": []
     },
     {
+        "single": "Buchungsnummer:",
+        "line": 189,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:189"
+        ],
+        "comments": []
+    },
+    {
         "single": "Button size.",
         "line": 77,
         "comment": "",
@@ -1831,6 +1932,15 @@
         "comment": "",
         "refs": [
             "frontend/site/Shortcodes.php:65"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Buttons, selected times and focus rings on the booking flow.",
+        "line": 134,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/AccentColourField.jsx:134"
         ],
         "comments": []
     },
@@ -2014,11 +2124,20 @@
         "comments": []
     },
     {
-        "single": "Choose an apartment.",
-        "line": 326,
+        "single": "Choose a logo",
+        "line": 30,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:326",
+            "frontend/admin/app/src/pages/Settings/InvoiceLogoField.jsx:30"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Choose an apartment.",
+        "line": 333,
+        "comment": "",
+        "refs": [
+            "backend/APIs/BookingsController.php:333",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:71"
         ],
         "comments": []
@@ -2056,6 +2175,15 @@
         "comment": "",
         "refs": [
             "backend/APIs/BlocksController.php:226"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Choose logo",
+        "line": 70,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/InvoiceLogoField.jsx:70"
         ],
         "comments": []
     },
@@ -2201,6 +2329,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:197"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Closing line",
+        "line": 441,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:441"
         ],
         "comments": []
     },
@@ -2406,10 +2543,10 @@
     },
     {
         "single": "Could not save settings",
-        "line": 121,
+        "line": 149,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:121"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:149"
         ],
         "comments": []
     },
@@ -2435,10 +2572,10 @@
     },
     {
         "single": "Currency",
-        "line": 161,
+        "line": 194,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:161"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:194"
         ],
         "comments": []
     },
@@ -2541,6 +2678,33 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Reports/ReportsPage.jsx:241"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Datum",
+        "line": 264,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:264"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Datum:",
+        "line": 187,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:187"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Days from the invoice date to the due date.",
+        "line": 424,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:424"
         ],
         "comments": []
     },
@@ -2779,6 +2943,15 @@
         "comments": []
     },
     {
+        "single": "E-Mail:",
+        "line": 499,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:499"
+        ],
+        "comments": []
+    },
+    {
         "single": "Edit",
         "line": 140,
         "comment": "translators: %s: apartment name.",
@@ -2849,6 +3022,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:561",
             "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:114",
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:497",
             "frontend/site/app/src/components/BookingModal/StepDetails.jsx:25",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:77"
         ],
@@ -2941,10 +3115,10 @@
     },
     {
         "single": "Euro (€)",
-        "line": 51,
+        "line": 56,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:51"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:56"
         ],
         "comments": []
     },
@@ -3086,20 +3260,56 @@
         "comments": []
     },
     {
-        "single": "General",
-        "line": 139,
+        "single": "Fälligkeitsdatum:",
+        "line": 188,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:139"
+            "backend/Support/Invoice.php:188"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Gebuchte Uhrzeit",
+        "line": 265,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:265"
+        ],
+        "comments": []
+    },
+    {
+        "single": "General",
+        "line": 176,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:176"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Gesamt:",
+        "line": 447,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:447"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Gesamtbetrag:",
+        "line": 466,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:466"
         ],
         "comments": []
     },
     {
         "single": "Give a date, a start time and a length.",
-        "line": 344,
+        "line": 351,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:344"
+            "backend/APIs/BookingsController.php:351"
         ],
         "comments": []
     },
@@ -3114,10 +3324,10 @@
     },
     {
         "single": "Give an arrival and a departure date.",
-        "line": 361,
+        "line": 368,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:361"
+            "backend/APIs/BookingsController.php:368"
         ],
         "comments": []
     },
@@ -3265,6 +3475,15 @@
         "comments": []
     },
     {
+        "single": "Hinweis:",
+        "line": 514,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:514"
+        ],
+        "comments": []
+    },
+    {
         "single": "Hours",
         "line": 520,
         "comment": "",
@@ -3293,10 +3512,10 @@
     },
     {
         "single": "How prices and the guest-facing booking flow are presented.",
-        "line": 142,
+        "line": 179,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:142"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:179"
         ],
         "comments": []
     },
@@ -3396,6 +3615,33 @@
         "comments": []
     },
     {
+        "single": "Invoice generator",
+        "line": 280,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:280"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Invoice logo",
+        "line": 55,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/InvoiceLogoField.jsx:55"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Invoice number prefix",
+        "line": 367,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:367"
+        ],
+        "comments": []
+    },
+    {
         "single": "Items offered at booking",
         "line": 204,
         "comment": "",
@@ -3421,6 +3667,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:354"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Kosten",
+        "line": 267,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:267"
         ],
         "comments": []
     },
@@ -3600,6 +3855,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:443"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Logo",
+        "line": 298,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:298"
         ],
         "comments": []
     },
@@ -3830,6 +4094,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:239"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Netto:",
+        "line": 446,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:446"
         ],
         "comments": []
     },
@@ -4164,10 +4437,10 @@
     },
     {
         "single": "Nothing to change.",
-        "line": 230,
+        "line": 231,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:230"
+            "backend/APIs/BookingsController.php:231"
         ],
         "comments": []
     },
@@ -4181,11 +4454,29 @@
         "comments": []
     },
     {
+        "single": "Notice",
+        "line": 528,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:528"
+        ],
+        "comments": []
+    },
+    {
         "single": "Number of guests",
         "line": 61,
         "comment": "",
         "refs": [
             "backend/Repositories/EmailTemplatesRepository.php:61"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Numbers run PREFIX-YEAR-0001 and restart each year.",
+        "line": 386,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:386"
         ],
         "comments": []
     },
@@ -4654,6 +4945,15 @@
         "comments": []
     },
     {
+        "single": "Payment term (days)",
+        "line": 402,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:402"
+        ],
+        "comments": []
+    },
+    {
         "single": "Payments",
         "line": 199,
         "comment": "",
@@ -4756,6 +5056,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:105"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Pick a colour",
+        "line": 72,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/AccentColourField.jsx:72"
         ],
         "comments": []
     },
@@ -4888,10 +5197,10 @@
     },
     {
         "single": "Pound Sterling (£)",
-        "line": 53,
+        "line": 58,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:53"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:58"
         ],
         "comments": []
     },
@@ -4972,11 +5281,47 @@
         "comments": []
     },
     {
+        "single": "Printed at the top left of the invoice.",
+        "line": 318,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:318"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Printed last, after a bold \"Hinweis:\" label.",
+        "line": 544,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:544"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Printed on the right, one line per line — company, address, telephone, email, VAT number.",
+        "line": 350,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:350"
+        ],
+        "comments": []
+    },
+    {
         "single": "Public",
         "line": 261,
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Guide/GuidePage.jsx:261"
+        ],
+        "comments": []
+    },
+    {
+        "single": "RECHNUNG",
+        "line": 182,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:182"
         ],
         "comments": []
     },
@@ -5047,6 +5392,33 @@
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:232",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:105",
             "frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:56"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Rechnung",
+        "line": 123,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:123"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Rechnungsempfänger:",
+        "line": 234,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:234"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Rechnungsnummer:",
+        "line": 186,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:186"
         ],
         "comments": []
     },
@@ -5168,9 +5540,10 @@
     },
     {
         "single": "Remove",
-        "line": 224,
+        "line": 80,
         "comment": "",
         "refs": [
+            "frontend/admin/app/src/pages/Settings/InvoiceLogoField.jsx:80",
             "frontend/site/app/src/components/BookingModal/StepPayment.jsx:224"
         ],
         "comments": []
@@ -5210,6 +5583,15 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepPayment.jsx:217"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Replace logo",
+        "line": 69,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/InvoiceLogoField.jsx:69"
         ],
         "comments": []
     },
@@ -5411,10 +5793,10 @@
     },
     {
         "single": "Save settings",
-        "line": 208,
+        "line": 561,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:208"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:561"
         ],
         "comments": []
     },
@@ -5428,7 +5810,7 @@
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:667",
             "frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:320",
             "frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:491",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:207"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:560"
         ],
         "comments": []
     },
@@ -5573,6 +5955,15 @@
         "comments": []
     },
     {
+        "single": "Sender block",
+        "line": 334,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:334"
+        ],
+        "comments": []
+    },
+    {
         "single": "Sending…",
         "line": 474,
         "comment": "",
@@ -5639,10 +6030,10 @@
     },
     {
         "single": "Settings saved.",
-        "line": 131,
+        "line": 159,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:131"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:159"
         ],
         "comments": []
     },
@@ -5934,10 +6325,10 @@
     },
     {
         "single": "Swiss Franc (CHF)",
-        "line": 54,
+        "line": 59,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:54"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:59"
         ],
         "comments": []
     },
@@ -6001,6 +6392,35 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:191"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Tel: %s",
+        "line": 227,
+        "comment": "translators: %s: the guest's telephone number.",
+        "refs": [
+            "backend/Support/Invoice.php:227"
+        ],
+        "comments": {
+            "translators: %s: the guest's telephone number.": true
+        }
+    },
+    {
+        "single": "Telefon:",
+        "line": 498,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:498"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Telephone",
+        "line": 468,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:468"
         ],
         "comments": []
     },
@@ -6125,10 +6545,10 @@
     },
     {
         "single": "That payment no longer exists.",
-        "line": 209,
+        "line": 216,
         "comment": "",
         "refs": [
-            "backend/APIs/PaymentsController.php:209"
+            "backend/APIs/PaymentsController.php:216"
         ],
         "comments": []
     },
@@ -6188,20 +6608,29 @@
     },
     {
         "single": "The booking could not be saved.",
-        "line": 178,
+        "line": 179,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:178",
+            "backend/APIs/BookingsController.php:179",
             "backend/APIs/PublicBookingController.php:280"
         ],
         "comments": []
     },
     {
         "single": "The booking could not be updated.",
-        "line": 274,
+        "line": 275,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:274"
+            "backend/APIs/BookingsController.php:275"
+        ],
+        "comments": []
+    },
+    {
+        "single": "The brand colour of the guest booking flow. Hover, pressed and tint shades are worked out from it, so one colour is all that is needed.",
+        "line": 259,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:259"
         ],
         "comments": []
     },
@@ -6266,6 +6695,15 @@
         "comment": "",
         "refs": [
             "frontend/site/Shortcodes.php:125"
+        ],
+        "comments": []
+    },
+    {
+        "single": "The invoice sent to the guest as a PDF when a payment is marked paid.",
+        "line": 283,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:283"
         ],
         "comments": []
     },
@@ -6693,10 +7131,10 @@
     },
     {
         "single": "US Dollar ($)",
-        "line": 52,
+        "line": 57,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:52"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:57"
         ],
         "comments": []
     },
@@ -6848,6 +7286,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:153"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Use this logo",
+        "line": 33,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/InvoiceLogoField.jsx:33"
         ],
         "comments": []
     },
@@ -7126,6 +7573,17 @@
             "backend/Repositories/EmailTemplatesRepository.php:65"
         ],
         "comments": []
+    },
+    {
+        "single": "Zusätzliche Person — %1$s je Person (%2$d im Preis enthalten)",
+        "line": 415,
+        "comment": "translators: 1: price per additional guest, 2: guests included in the rate.",
+        "refs": [
+            "backend/Support/Invoice.php:415"
+        ],
+        "comments": {
+            "translators: 1: price per additional guest, 2: guests included in the rate.": true
+        }
     },
     {
         "single": "e.g. Studio Rheinblick",

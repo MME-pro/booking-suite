@@ -13,7 +13,10 @@ const unwrap = ( payload ) => ( {
 	settings: payload?.settings ?? {},
 	choices: {
 		currencies: payload?.choices?.currencies ?? [],
+		accents: payload?.choices?.accents ?? [],
 	},
+	palette: payload?.palette ?? {},
+	logo: payload?.logo ?? null,
 } );
 
 export const settingsService = {

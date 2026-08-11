@@ -428,6 +428,39 @@
 	text-transform: uppercase !important;
 }
 
+/*
+ * Field labels are the one place where a theme rule silently knocks a row out
+ * of line. Most themes give `label` a line-height and a bottom margin; some of
+ * our labels are <label> and some are <span> (the Date control and the search
+ * pill), so only half the row grows and the controls beside each other end up
+ * on different lines — the Date trigger sitting some sixteen pixels above the
+ * Duration input next to it.
+ *
+ * Every label in a row is pinned to the same box, whatever element it happens
+ * to be, so the controls below them start at the same height.
+ */
+.bks-site-root .bks-field > label,
+.bks-site-root .bks-datefield__label,
+.bks-site-root .bks-filter__label,
+.bks-showcase .bks-showcase__search-label {
+	display: block !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	line-height: 1 !important;
+	float: none !important;
+}
+
+/*
+ * Same reasoning one row down: a theme margin on the control itself reopens the
+ * gap the labels just closed. Spacing inside a field is the flex gap's job.
+ */
+.bks-site-root .bks-field input,
+.bks-site-root .bks-field select,
+.bks-site-root .bks-field textarea,
+.bks-site-root .bks-datefield__trigger {
+	margin: 0 !important;
+}
+
 /* Shape ------------------------------------------------------------------- */
 
 /*
@@ -479,6 +512,338 @@
 /* A trigger draws no border of its own; the rail around it is the border. */
 .bks-site-root .bks-filter__trigger,
 .bks-showcase .bks-showcase__menu-trigger {
+	border-width: 0 !important;
+	border-style: none !important;
+}
+
+/* Borders ----------------------------------------------------------------- */
+
+/*
+ * Every control that is supposed to be outlined, restored in full.
+ *
+ * Two separate failures made this necessary. The neutral button default above
+ * sets border-color: transparent, so any bordered control that was not
+ * explicitly opted back in lost its outline — that is what emptied the Replace
+ * and Remove buttons. And a theme writing `border: none !important` zeroes the
+ * width and the style as well, which no amount of border-colour can undo.
+ *
+ * So all three properties are restated together. Colour alone is not a border.
+ */
+.bks-site-root .bks-datefield__trigger,
+.bks-site-root .bks-field input,
+.bks-site-root .bks-field select,
+.bks-site-root .bks-field textarea,
+.bks-site-root .bks-slots__slot,
+.bks-site-root .bks-durations__option,
+.bks-site-root .bks-modes__option,
+.bks-site-root .bks-payment__option,
+.bks-site-root .bks-payment__proof,
+.bks-site-root .bks-payment__proof-action,
+.bks-site-root .bks-extras__item,
+.bks-site-root .bks-extras__stepper button,
+.bks-site-root .bks-stepper__button,
+.bks-site-root .bks-grid__retry,
+.bks-site-root .bks-card,
+.bks-site-root .bks-filter,
+.bks-site-root .bks-filter__popover,
+.bks-showcase .bks-showcase__card,
+.bks-showcase .bks-showcase__search,
+.bks-showcase .bks-showcase__menu-panel {
+	border-style: solid !important;
+	border-width: 1px !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+}
+
+/* Controls the modal draws at a heavier weight. */
+.bks-site-root .bks-field input,
+.bks-site-root .bks-field select,
+.bks-site-root .bks-field textarea,
+.bks-site-root .bks-datefield__trigger {
+	border-width: 1.5px !important;
+}
+
+.bks-site-root .bks-stepper__button,
+.bks-site-root .bks-extras__stepper button {
+	border-color: var(--bks-site-border-strong, #cbd5e1) !important;
+}
+
+/* Selected and focused states keep the brand edge. */
+.bks-site-root .bks-slots__slot.is-selected,
+.bks-site-root .bks-durations__option.is-selected,
+.bks-site-root .bks-modes__option.is-selected,
+.bks-site-root .bks-payment__option.is-selected,
+.bks-site-root .bks-datefield__trigger[aria-expanded='true'],
+.bks-site-root .bks-field input:focus,
+.bks-site-root .bks-field select:focus,
+.bks-site-root .bks-field textarea:focus {
+	border-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+/*
+ * Notices. The colour is carried by the left rail, so losing the border loses
+ * the meaning — a red-bordered warning becomes a grey paragraph.
+ */
+.bks-site-root .bks-step__available,
+.bks-site-root .bks-step__unavailable,
+.bks-site-root .bks-booking__error,
+.bks-site-root .bks-payment__error {
+	border-style: solid !important;
+	border-width: 1px !important;
+	border-left-width: 3px !important;
+}
+
+.bks-site-root .bks-step__available {
+	border-color: rgba(22, 163, 74, 0.18) !important;
+	border-left-color: var(--bks-site-success, #16a34a) !important;
+}
+
+.bks-site-root .bks-step__unavailable,
+.bks-site-root .bks-booking__error,
+.bks-site-root .bks-payment__error {
+	border-color: rgba(220, 38, 38, 0.18) !important;
+	border-left-color: var(--bks-site-error, #dc2626) !important;
+}
+
+/* Dashed by design — the upload target and the empty states. */
+.bks-site-root .bks-payment__dropzone,
+.bks-site-root .bks-grid__state,
+.bks-showcase .bks-showcase__empty {
+	border-style: dashed !important;
+	border-width: 1.5px !important;
+	border-color: var(--bks-site-border-strong, #cbd5e1) !important;
+}
+
+.bks-site-root .bks-payment__dropzone.is-dragging {
+	border-style: solid !important;
+	border-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+/* The dialog itself. */
+.bks-site-root .bks-booking {
+	border-style: solid !important;
+	border-width: 1px !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+}
+
+/*
+ * Radius on the same controls. A theme that flattens corners with
+ * `border-radius: 0 !important` squares off every slot, option and action —
+ * the booking times end up as a bare grid of text.
+ */
+.bks-site-root .bks-slots__slot,
+.bks-site-root .bks-durations__option,
+.bks-site-root .bks-modes__option,
+.bks-site-root .bks-payment__option,
+.bks-site-root .bks-payment__proof-action,
+.bks-site-root .bks-booking__button,
+.bks-site-root .bks-grid__retry,
+.bks-site-root .bks-extras__item {
+	border-radius: var(--bks-site-radius-xs, 10px) !important;
+}
+
+.bks-site-root .bks-payment__proof,
+.bks-site-root .bks-payment__dropzone,
+.bks-site-root .bks-grid__state,
+.bks-showcase .bks-showcase__empty {
+	border-radius: var(--bks-site-radius, 18px) !important;
+}
+
+.bks-site-root .bks-booking {
+	border-radius: 24px !important;
+}
+
+/* Round things that are not buttons and so miss the rules above. */
+.bks-site-root .bks-booking__step-no {
+	border-radius: 50% !important;
+}
+
+/* The notice dot — a pseudo-element, so `*::before { border-radius: 0 }` squares it. */
+.bks-site-root .bks-step__available::before,
+.bks-site-root .bks-step__unavailable::before {
+	width: 8px !important;
+	height: 8px !important;
+	margin-top: 6px !important;
+	border-radius: 50% !important;
+	flex-shrink: 0 !important;
+}
+
+.bks-site-root .bks-overnight {
+	padding: 14px 20px !important;
+	margin: 0 !important;
+	border-style: solid !important;
+	border-width: 1.5px !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+}
+
+.bks-site-root .bks-overnight,
+.bks-site-root .bks-step__available,
+.bks-site-root .bks-step__unavailable,
+.bks-site-root .bks-booking__error,
+.bks-site-root .bks-booking__loading,
+.bks-site-root .bks-payment__proof-preview,
+.bks-site-root .bks-extras__image,
+.bks-site-root .bks-card__fact {
+	border-radius: var(--bks-site-radius-xs, 10px) !important;
+}
+
+.bks-site-root .bks-card__badge,
+.bks-showcase .bks-showcase__badge {
+	border-radius: var(--bks-site-radius-pill, 999px) !important;
+}
+
+/*
+ * Elevation. A theme clearing box-shadow flattens the dialog and, worse, the
+ * floating panels — a dropdown with no shadow reads as part of the page behind
+ * it, which is the one place depth is doing real work.
+ */
+.bks-site-root .bks-booking {
+	box-shadow: var(--bks-site-shadow-modal, 0 24px 64px -12px rgba(15, 23, 42, 0.18)) !important;
+}
+
+.bks-site-root .bks-filter__popover,
+.bks-site-root .bks-datefield__popover,
+.bks-showcase .bks-showcase__menu-panel {
+	box-shadow: var(--bks-site-shadow-popover, 0 16px 40px -8px rgba(15, 23, 42, 0.16)) !important;
+}
+
+.bks-site-root .bks-card,
+.bks-site-root .bks-filter,
+.bks-showcase .bks-showcase__card,
+.bks-showcase .bks-showcase__search {
+	box-shadow: var(--bks-site-shadow, 0 1px 3px rgba(15, 23, 42, 0.04)) !important;
+}
+
+/* Padding ----------------------------------------------------------------- */
+
+/*
+ * Themes reset padding on `p`, `div` and `button` wholesale, and a notice with
+ * no padding puts its text hard against its own border — which is exactly how
+ * the "nothing free that day" message looked on the live site. Padding is
+ * structure here, not decoration, so it is restated for anything that draws a
+ * box around its text.
+ */
+.bks-site-root .bks-step__available,
+.bks-site-root .bks-step__unavailable,
+.bks-site-root .bks-booking__error,
+.bks-site-root .bks-payment__error {
+	padding: 14px 16px !important;
+}
+
+.bks-site-root .bks-booking__loading {
+	padding: 16px 20px !important;
+}
+
+.bks-site-root .bks-slots__slot,
+.bks-site-root .bks-durations__option {
+	padding: 10px 12px !important;
+}
+
+.bks-site-root .bks-payment__proof-action {
+	padding: 7px 12px !important;
+}
+
+.bks-site-root .bks-payment__proof {
+	padding: 12px !important;
+}
+
+.bks-site-root .bks-payment__dropzone {
+	padding: 28px 20px !important;
+}
+
+.bks-site-root .bks-datefield__popover,
+.bks-site-root .bks-filter__popover {
+	padding: 16px !important;
+}
+
+.bks-site-root .bks-booking__body {
+	padding: 32px !important;
+}
+
+/*
+ * The step rail. Its breathing room is padding on the header and the list, both
+ * of which a theme resets — leaving the numbers jammed against the header's
+ * bottom border. The connector length is restated too, or the line between two
+ * steps collapses and the rail reads as five loose numbers.
+ */
+.bks-site-root .bks-booking__header {
+	padding: 24px 32px 0 !important;
+}
+
+.bks-site-root .bks-booking__steps {
+	margin: 0 !important;
+	padding: 20px 0 22px !important;
+	list-style: none !important;
+}
+
+.bks-site-root .bks-booking__step {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.bks-site-root .bks-booking__step + .bks-booking__step::before {
+	width: 48px !important;
+	height: 2px !important;
+	margin: 0 12px !important;
+	flex-shrink: 0 !important;
+}
+
+.bks-site-root .bks-booking__step-no {
+	width: 32px !important;
+	height: 32px !important;
+	padding: 0 !important;
+	flex-shrink: 0 !important;
+}
+
+.bks-site-root .bks-booking__footer {
+	padding: 20px 32px !important;
+}
+
+.bks-site-root .bks-field input,
+.bks-site-root .bks-field select {
+	padding: 10px 14px !important;
+}
+
+.bks-site-root .bks-datefield__trigger {
+	padding: 10px 14px !important;
+}
+
+.bks-showcase .bks-showcase__empty,
+.bks-site-root .bks-grid__state {
+	padding: 40px 24px !important;
+}
+
+/*
+ * The calendar keeps its own size wherever it is dropped. Without this a theme
+ * that pads buttons turns each day cell into a large tile and the picker grows
+ * to fill whatever field opened it.
+ */
+.bks-site-root .bks-cal {
+	width: 17rem !important;
+	max-width: 100% !important;
+}
+
+.bks-site-root .bks-cal__day {
+	padding: 0 !important;
+	font-size: 13px !important;
+}
+
+.bks-site-root .bks-cal__nav {
+	width: 28px !important;
+	height: 28px !important;
+	padding: 0 !important;
+}
+
+/* Controls that are deliberately borderless stay that way. */
+.bks-site-root .bks-cal__day,
+.bks-site-root .bks-cal__nav,
+.bks-site-root .bks-card__nav,
+.bks-site-root .bks-card__cta,
+.bks-site-root .bks-filter__submit,
+.bks-site-root .bks-booking__button,
+.bks-site-root .bks-book-now,
+.bks-showcase .bks-showcase__search-submit,
+.bks-showcase .bks-showcase__option,
+.bks-showcase .bks-showcase__cal-day {
 	border-width: 0 !important;
 	border-style: none !important;
 }

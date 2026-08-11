@@ -22,6 +22,7 @@ use BookingSuite\Backend\Repositories\CustomersRepository;
 use BookingSuite\Backend\Repositories\EmailTemplatesRepository;
 use BookingSuite\Backend\Repositories\PaymentsRepository;
 use BookingSuite\Backend\Support\BookingEmails;
+use BookingSuite\Backend\Support\Invoice;
 use BookingSuite\Backend\Repositories\SettingsRepository;
 use BookingSuite\Backend\Schemas\BookingsTable;
 use DateTimeImmutable;
@@ -284,8 +285,14 @@ final class BookingsController {
 			BookingEmails::send( EmailTemplatesRepository::BOOKING_APPROVED, $id );
 		}
 
+		// Settling from here carries the invoice too, exactly as settling an
+		// individual payment on the Payments screen does.
 		if ( 'paid' === $payment && 'paid' !== $booking['paymentStatus'] ) {
-			BookingEmails::send( EmailTemplatesRepository::PAYMENT_RECEIVED, $id );
+			BookingEmails::send(
+				EmailTemplatesRepository::PAYMENT_RECEIVED,
+				$id,
+				Invoice::attachment_for_booking( $id )
+			);
 		}
 
 		$booking             = BookingsRepository::find( $id );

@@ -5,10 +5,19 @@
  * to whoever renders it.
  */
 
+/*
+ * Sized in one place. The grid is seven `1fr` columns of square cells, so the
+ * calendar is exactly as wide as its container lets it be — drop it in a
+ * full-width field and it grows to match, which is how it ended up sprawling
+ * across the payment step. Capping the width here keeps a date picker the size
+ * of a date picker wherever it is used.
+ */
 .bks-cal {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 8px;
+	width: 17rem;
+	max-width: 100%;
 }
 
 .bks-cal__header {
@@ -19,7 +28,7 @@
 }
 
 .bks-cal__month {
-	font-size: var(--bks-site-text-base, 0.875rem);
+	font-size: 13px;
 	font-weight: 600;
 	color: var(--bks-site-text, #0f172a);
 	text-transform: capitalize;
@@ -29,8 +38,8 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 32px;
-	height: 32px;
+	width: 28px;
+	height: 28px;
 	padding: 0;
 	border: 0;
 	border-radius: 50%;
@@ -71,8 +80,8 @@
 }
 
 .bks-cal__weekday {
-	padding-bottom: 4px;
-	font-size: 11px;
+	padding-bottom: 2px;
+	font-size: 10px;
 	font-weight: 600;
 	letter-spacing: 0.03em;
 	text-align: center;
@@ -91,7 +100,7 @@
 	border-radius: 50%;
 	background: transparent;
 	font-family: inherit;
-	font-size: var(--bks-site-text-base, 0.875rem);
+	font-size: 13px;
 	font-weight: 500;
 	font-variant-numeric: tabular-nums;
 	color: var(--bks-site-text, #0f172a);

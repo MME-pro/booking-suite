@@ -148,6 +148,62 @@ final class PaymentsRepository {
 	}
 
 	/**
+	 * Give a payment its invoice number, or return the one it already has.
+	 *
+	 * Numbers run PREFIX-YYYY-NNNN and restart each calendar year, which is
+	 * what German bookkeeping expects. The sequence is read from the highest
+	 * number already issued this year rather than from a counter, so it cannot
+	 * drift out of step with what has actually been sent to guests.
+	 *
+	 * Assigning is a one-way step: an invoice that has been issued keeps its
+	 * number for good, however many times the PDF is regenerated.
+	 */
+	public static function assign_invoice_number( int $id ): string {
+		global $wpdb;
+
+		$existing = self::find( $id );
+
+		if ( null === $existing ) {
+			return '';
+		}
+
+		if ( '' !== $existing['invoiceNo'] ) {
+			return $existing['invoiceNo'];
+		}
+
+		$prefix = SettingsRepository::get( SettingsRepository::INVOICE_PREFIX );
+		$prefix = '' !== trim( $prefix ) ? trim( $prefix ) : 'INV';
+		$year   = ( new \DateTimeImmutable( 'now', wp_timezone() ) )->format( 'Y' );
+		$stem   = $prefix . '-' . $year . '-';
+
+		$table = PaymentsTable::table();
+
+		$highest = (string) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT invoice_no FROM $table WHERE invoice_no LIKE %s ORDER BY invoice_no DESC LIMIT 1",
+				$wpdb->esc_like( $stem ) . '%'
+			)
+		);
+
+		$next = '' === $highest
+			? 1
+			: (int) substr( $highest, strlen( $stem ) ) + 1;
+
+		$number = $stem . str_pad( (string) $next, 4, '0', STR_PAD_LEFT );
+
+		$wpdb->update(
+			$table,
+			array(
+				'invoice_no' => $number,
+				'updated_at' => current_time( 'mysql', true ),
+			),
+			array( 'id' => $id )
+		);
+
+		return $number;
+	}
+
+	/**
 	 * Headline figures for the payments screen.
 	 *
 	 * Refunds are stored as negative amounts, so summing settled rows nets

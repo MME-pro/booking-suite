@@ -184,6 +184,8 @@ final class Assets {
 			wp_style_add_data( self::HANDLE, 'rtl', 'replace' );
 		}
 
+		self::add_accent_palette( self::HANDLE );
+
 		/*
 		 * Hands the bundle its own translations. Without this the PHP half of
 		 * the plugin speaks German and the booking flow — every label a guest
@@ -251,6 +253,50 @@ final class Assets {
 	}
 
 	/**
+	 * Paint the guest frontend in the owner's accent colour.
+	 *
+	 * The whole design already reads its brand from custom properties, so one
+	 * redefinition reaches every button, focus ring, selected day and price —
+	 * including the armour, which resolves the same variables. Nothing needs a
+	 * second rule per component.
+	 *
+	 * Attached to the stylesheet rather than printed loose in wp_head so it
+	 * inherits that stylesheet's position in the cascade: after the bundle that
+	 * declares the defaults, and after the theme.
+	 *
+	 * The selector list mirrors tokens.css. `.bks-book-now` is in there because
+	 * the button can be placed on a page that renders nothing else of ours.
+	 */
+	private static function add_accent_palette( string $handle ): void {
+		$palette = SettingsRepository::accent_palette();
+
+		// The default needs no override, and skipping it keeps the common case
+		// free of an extra rule.
+		if ( '#2563eb' === $palette['brand'] ) {
+			return;
+		}
+
+		$css = sprintf(
+			':root,.bks-site-root,.bks-showcase,.bks-book-now{' .
+				'--bks-site-brand:%1$s;' .
+				'--bks-site-brand-hover:%2$s;' .
+				'--bks-site-brand-active:%3$s;' .
+				'--bks-site-brand-soft:%4$s;' .
+				'--bks-site-brand-glow:%5$s;' .
+			'}',
+			$palette['brand'],
+			$palette['hover'],
+			$palette['active'],
+			$palette['soft'],
+			$palette['glow']
+		);
+
+		if ( wp_style_is( $handle, 'registered' ) ) {
+			wp_add_inline_style( $handle, $css );
+		}
+	}
+
+	/**
 	 * Register — but do not enqueue — the showcase stylesheet.
 	 */
 	public static function register_showcase(): void {
@@ -303,6 +349,10 @@ final class Assets {
 				true
 			);
 		}
+
+		// The showcase sheet loads after the bundle, so it carries its own copy
+		// of the palette for pages that render only the shortcode grid.
+		self::add_accent_palette( self::SHOWCASE_HANDLE );
 	}
 
 	/**

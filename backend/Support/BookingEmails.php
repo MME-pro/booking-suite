@@ -31,12 +31,13 @@ final class BookingEmails {
 	 * mail server was unreachable. Everything that can stop a send — no
 	 * template, switched off, no email address — simply returns false.
 	 *
-	 * @param string $template One of EmailTemplatesRepository::keys().
-	 * @param int    $booking_id
+	 * @param string                $template    One of EmailTemplatesRepository::keys().
+	 * @param int                   $booking_id
+	 * @param array<string, string> $attachments Filename => raw bytes.
 	 *
 	 * @return bool Whether the mail was handed to wp_mail().
 	 */
-	public static function send( string $template, int $booking_id ): bool {
+	public static function send( string $template, int $booking_id, array $attachments = array() ): bool {
 		$definition = EmailTemplatesRepository::find( $template );
 
 		if ( null === $definition || ! $definition['enabled'] ) {
@@ -84,16 +85,40 @@ final class BookingEmails {
 		}
 
 		/*
+		 * wp_mail attaches files by path, so anything generated in memory has to
+		 * touch disk first. These go to the system temp directory rather than
+		 * the uploads folder: an invoice is not media, and nothing should be
+		 * able to reach it over the web.
+		 */
+		$paths = array();
+
+		foreach ( $attachments as $filename => $bytes ) {
+			$path = trailingslashit( get_temp_dir() ) . wp_unique_filename( get_temp_dir(), $filename );
+
+			if ( false !== file_put_contents( $path, $bytes ) ) {
+				$paths[] = $path;
+			}
+		}
+
+		/*
 		 * Templates are written as plain text, so the body is sent as text and
 		 * newlines survive. Switching to HTML later means changing the header
 		 * and running the body through wpautop, not rewriting the templates.
 		 */
-		return wp_mail(
+		$sent = wp_mail(
 			(string) $mail['to'],
 			(string) $mail['subject'],
 			(string) $mail['body'],
-			array( 'Content-Type: text/plain; charset=UTF-8' )
+			array( 'Content-Type: text/plain; charset=UTF-8' ),
+			$paths
 		);
+
+		// wp_mail has read them by now, whether or not it succeeded.
+		foreach ( $paths as $path ) {
+			wp_delete_file( $path );
+		}
+
+		return $sent;
 	}
 
 	/**

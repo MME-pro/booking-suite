@@ -4,7 +4,11 @@ import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils"
 
 const alertVariants = cva(
-  "relative w-full rounded-lg border px-4 py-3 text-sm [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg~*]:pl-7",
+  // The icon is positioned against the first line of text, and where that line
+  // sits depends on whether there is a title. With a title it is the h5 at
+  // top-4; without one the description starts higher, so the icon follows it
+  // rather than floating above the only line there is.
+  "relative w-full rounded-lg border px-4 py-3 text-sm [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg:has(+div)]:top-3.5 [&>svg]:text-foreground [&>svg~*]:pl-7",
   {
     variants: {
       variant: {

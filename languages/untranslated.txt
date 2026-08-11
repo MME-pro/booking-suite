@@ -1,0 +1,2 @@
+%1$s (Extra) — %2$s je Stück
+Zusätzliche Person — %1$s je Person (%2$d im Preis enthalten)
