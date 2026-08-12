@@ -51,6 +51,15 @@ final class Assets {
 		// Gives the app wp.media for picking apartment photos.
 		wp_enqueue_media();
 
+		/*
+		 * And wp.editor for the email templates, which are written in a rich
+		 * text editor rather than as HTML. This is the same TinyMCE the block
+		 * editor's classic block uses, so it arrives already knowing how to
+		 * clean up pasted Word content — the usual way a template's markup
+		 * gets ruined.
+		 */
+		wp_enqueue_editor();
+
 		wp_enqueue_script(
 			self::HANDLE,
 			PLUGIN_URL . self::BUILD_PATH . 'index.js',

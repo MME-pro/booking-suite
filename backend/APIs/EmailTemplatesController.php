@@ -67,7 +67,16 @@ final class EmailTemplatesController {
 						'body'    => array(
 							'type'              => 'string',
 							'required'          => false,
-							'sanitize_callback' => 'sanitize_textarea_field',
+							/*
+							 * Bodies are HTML. sanitize_textarea_field would
+							 * strip every tag, so an author's markup would be
+							 * silently destroyed on save. wp_kses_post allows
+							 * what a post allows — formatting, links, lists,
+							 * tables and images — and refuses <script> and the
+							 * event attributes that make an email dangerous.
+							 * Only an administrator can reach this route.
+							 */
+							'sanitize_callback' => 'wp_kses_post',
 						),
 						'enabled' => array(
 							'type'     => 'boolean',
@@ -86,6 +95,35 @@ final class EmailTemplatesController {
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( self::class, 'reset' ),
 					'permission_callback' => array( self::class, 'can_manage' ),
+				),
+			)
+		);
+
+		/*
+		 * Preview is rendered by the same code that sends, so what the editor
+		 * shows is the email itself rather than the screen's impression of it.
+		 */
+		register_rest_route(
+			self::NAMESPACE,
+			'/' . self::ROUTE . '/(?P<key>[a-z_]+)/preview',
+			array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( self::class, 'preview' ),
+					'permission_callback' => array( self::class, 'can_manage' ),
+					'args'                => array(
+						// Unsaved, so the author can see a change before keeping it.
+						'subject' => array(
+							'type'              => 'string',
+							'required'          => false,
+							'sanitize_callback' => 'sanitize_text_field',
+						),
+						'body'    => array(
+							'type'              => 'string',
+							'required'          => false,
+							'sanitize_callback' => 'wp_kses_post',
+						),
+					),
 				),
 			)
 		);
@@ -159,6 +197,36 @@ final class EmailTemplatesController {
 		}
 
 		return new WP_REST_Response( $template, 200 );
+	}
+
+	/**
+	 * The finished email for a template, as HTML, without sending it.
+	 *
+	 * Takes the subject and body from the request rather than from storage, so
+	 * an author can see an edit before deciding to keep it.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function preview( WP_REST_Request $request ) {
+		$key      = (string) $request['key'];
+		$template = EmailTemplatesRepository::find( $key );
+
+		if ( null === $template ) {
+			return self::not_found();
+		}
+
+		$subject = $request->get_param( 'subject' );
+		$body    = $request->get_param( 'body' );
+
+		return new WP_REST_Response(
+			array(
+				'html' => BookingEmails::render(
+					null === $subject ? (string) $template['subject'] : (string) $subject,
+					null === $body ? (string) $template['body'] : (string) $body
+				),
+			),
+			200
+		);
 	}
 
 	/**

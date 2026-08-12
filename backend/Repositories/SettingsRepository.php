@@ -88,6 +88,58 @@ final class SettingsRepository {
 	/** Printed after a bold "Hinweis:" label. */
 	public const INVOICE_NOTICE = 'invoice_notice';
 
+	/** The next invoice number to issue, when it should not simply follow on. */
+	public const INVOICE_COUNTER = 'invoice_counter';
+
+	/** VAT rate as a percentage. 0 means prices are shown without any. */
+	public const TAX_RATE = 'tax_rate';
+
+	/*
+	 * Who the business is. These feed the invoice's sender block and the header
+	 * of every guest email, so the details are entered once rather than typed
+	 * into each document.
+	 */
+	public const COMPANY_NAME = 'company_name';
+
+	public const COMPANY_ADDRESS = 'company_address';
+
+	public const COMPANY_PHONE = 'company_phone';
+
+	public const COMPANY_EMAIL = 'company_email';
+
+	public const COMPANY_LOGO = 'company_logo';
+
+	/** Where notifications for the owner go. */
+	public const ADMIN_EMAIL = 'admin_email';
+
+	/*
+	 * The account guests transfer to, printed on the invoice. Held as separate
+	 * fields rather than one block of text: an IBAN is the thing a guest copies
+	 * into their banking app, and it has to be reliably formatted rather than
+	 * however someone happened to type it.
+	 */
+	public const BANK_HOLDER = 'bank_holder';
+
+	public const BANK_NAME = 'bank_name';
+
+	public const BANK_IBAN = 'bank_iban';
+
+	public const BANK_BIC = 'bank_bic';
+
+	/** Anything else about the account, kept from before the fields above. */
+	public const BANK_DETAILS = 'bank_details';
+
+	/** Minutes to leave free after a booking before the next may start. */
+	public const COOLDOWN_MINUTES = 'cooldown_minutes';
+
+	/** The master switch for guest email. Off stops every template. */
+	public const EMAIL_NOTIFICATIONS = 'email_notifications';
+
+	/** Linked from the booking flow. */
+	public const TERMS_URL = 'terms_url';
+
+	public const PRIVACY_URL = 'privacy_url';
+
 	/** Used until the Settings screen says otherwise. */
 	private const DEFAULTS = array(
 		self::CURRENCY         => 'EUR',
@@ -113,6 +165,23 @@ final class SettingsRepository {
 		self::INVOICE_PHONE    => '',
 		self::INVOICE_EMAIL    => '',
 		self::INVOICE_NOTICE   => '',
+		self::INVOICE_COUNTER  => '',
+		self::TAX_RATE         => '0',
+		self::COMPANY_NAME     => '',
+		self::COMPANY_ADDRESS  => '',
+		self::COMPANY_PHONE    => '',
+		self::COMPANY_EMAIL    => '',
+		self::COMPANY_LOGO     => '',
+		self::ADMIN_EMAIL      => '',
+		self::BANK_HOLDER      => '',
+		self::BANK_NAME        => '',
+		self::BANK_IBAN        => '',
+		self::BANK_BIC         => '',
+		self::BANK_DETAILS     => '',
+		self::COOLDOWN_MINUTES => '0',
+		self::EMAIL_NOTIFICATIONS => '1',
+		self::TERMS_URL        => '',
+		self::PRIVACY_URL      => '',
 	);
 
 	/**
@@ -217,6 +286,131 @@ final class SettingsRepository {
 			'glow'      => sprintf( 'rgba(%d, %d, %d, 0.16)', $r, $g, $b ),
 			'on_accent' => '#ffffff',
 		);
+	}
+
+	/**
+	 * The logo used on the invoice and in email headers.
+	 *
+	 * Falls back to the older `invoice_logo` key so a logo uploaded before the
+	 * setting was renamed keeps working without anyone re-uploading it.
+	 */
+	public static function logo_id(): int {
+		$id = (int) self::get( self::COMPANY_LOGO );
+
+		return $id > 0 ? $id : (int) self::get( self::INVOICE_LOGO );
+	}
+
+	/**
+	 * The sender block for the invoice, built from the company details.
+	 *
+	 * Falls back to the free-text block that used to hold this, so an install
+	 * that filled that in keeps its wording until the company fields are set.
+	 *
+	 * @return string[]
+	 */
+	public static function sender_lines(): array {
+		$lines = array(
+			self::get( self::COMPANY_NAME ),
+			self::get( self::COMPANY_ADDRESS ),
+		);
+
+		$phone = self::get( self::COMPANY_PHONE );
+		$email = self::get( self::COMPANY_EMAIL );
+
+		if ( '' !== $phone ) {
+			/* translators: %s: the company's telephone number. */
+			$lines[] = sprintf( __( 'Tel: %s', 'booking-suite' ), $phone );
+		}
+
+		if ( '' !== $email ) {
+			/* translators: %s: the company's email address. */
+			$lines[] = sprintf( __( 'E-Mail: %s', 'booking-suite' ), $email );
+		}
+
+		// One entry per line, so a multi-line address stays multi-line.
+		$out = array();
+
+		foreach ( $lines as $line ) {
+			foreach ( preg_split( '/\R/', (string) $line ) ?: array() as $part ) {
+				$part = trim( $part );
+
+				if ( '' !== $part ) {
+					$out[] = $part;
+				}
+			}
+		}
+
+		if ( $out ) {
+			return $out;
+		}
+
+		return array_values(
+			array_filter(
+				array_map( 'trim', preg_split( '/\R/', self::get( self::INVOICE_SENDER ) ) ?: array() )
+			)
+		);
+	}
+
+	/**
+	 * The bank block for the invoice, one entry per line.
+	 *
+	 * The IBAN is printed in groups of four, the way it is written on a bank
+	 * statement, so a guest can read it across without losing their place.
+	 *
+	 * @return string[]
+	 */
+	public static function bank_lines(): array {
+		$lines  = array();
+		$holder = self::get( self::BANK_HOLDER );
+		$name   = self::get( self::BANK_NAME );
+		$iban   = self::get( self::BANK_IBAN );
+		$bic    = self::get( self::BANK_BIC );
+
+		if ( '' !== $holder ) {
+			$lines[] = $holder;
+		}
+
+		if ( '' !== $name ) {
+			$lines[] = $name;
+		}
+
+		if ( '' !== $iban ) {
+			/* translators: %s: the IBAN, in groups of four. */
+			$lines[] = sprintf( __( 'IBAN: %s', 'booking-suite' ), self::format_iban( $iban ) );
+		}
+
+		if ( '' !== $bic ) {
+			/* translators: %s: the bank's BIC. */
+			$lines[] = sprintf( __( 'BIC: %s', 'booking-suite' ), strtoupper( trim( $bic ) ) );
+		}
+
+		// Anything typed into the free-text field before these existed.
+		foreach ( preg_split( '/\R/', self::get( self::BANK_DETAILS ) ) ?: array() as $extra ) {
+			$extra = trim( $extra );
+
+			if ( '' !== $extra ) {
+				$lines[] = $extra;
+			}
+		}
+
+		return $lines;
+	}
+
+	/** DE02120300000000202051 → DE02 1203 0000 0000 2020 51 */
+	public static function format_iban( string $iban ): string {
+		$compact = strtoupper( preg_replace( '/\s+/', '', $iban ) ?? $iban );
+
+		return trim( chunk_split( $compact, 4, ' ' ) );
+	}
+
+	/** VAT rate as a fraction: 19 becomes 0.19. */
+	public static function tax_fraction(): float {
+		return max( 0.0, min( 100.0, (float) self::get( self::TAX_RATE ) ) ) / 100;
+	}
+
+	/** Whether guest email is switched on at all. */
+	public static function emails_enabled(): bool {
+		return '0' !== self::get( self::EMAIL_NOTIFICATIONS );
 	}
 
 	public static function set( string $key, string $value, string $group = 'general', string $locale = '' ): void {

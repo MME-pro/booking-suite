@@ -906,4 +906,184 @@ Gute Reise und bis bald.
 {{site_url}}',
 
 	"The guest's full name"       => 'Der vollständige Name des Gastes',
+	'<h1>We have your request</h1>
+<p>Hello {{guest_first_name}},</p>
+<p>Thank you for your request. We have it, and we will confirm it shortly.</p>
+<table>
+<tr><th>Reference</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Arrival</th><td>{{check_in}}</td></tr>
+<tr><th>Departure</th><td>{{check_out}}</td></tr>
+<tr><th>Guests</th><td>{{guests}}</td></tr>
+<tr><th>Total</th><td>{{total}}</td></tr>
+</table>
+<p>Nothing is due yet — we will send payment details once the booking is confirmed.</p>
+<p>{{site_name}}</p>' => '<h1>Wir haben Ihre Anfrage</h1>
+<p>Hallo {{guest_first_name}},</p>
+<p>vielen Dank für Ihre Anfrage. Sie liegt uns vor, und wir bestätigen sie in Kürze.</p>
+<table>
+<tr><th>Buchungsnummer</th><td>{{reference}}</td></tr>
+<tr><th>Wohnung</th><td>{{apartment}}</td></tr>
+<tr><th>Anreise</th><td>{{check_in}}</td></tr>
+<tr><th>Abreise</th><td>{{check_out}}</td></tr>
+<tr><th>Gäste</th><td>{{guests}}</td></tr>
+<tr><th>Gesamt</th><td>{{total}}</td></tr>
+</table>
+<p>Es ist noch nichts fällig — die Zahlungsdaten senden wir Ihnen, sobald die Buchung bestätigt ist.</p>
+<p>{{site_name}}</p>',
+	'<h1>Your booking is confirmed</h1>
+<p>Hello {{guest_first_name}},</p>
+<p>Good news — your booking is confirmed and the dates are yours.</p>
+<table>
+<tr><th>Reference</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Arrival</th><td>{{check_in}}</td></tr>
+<tr><th>Departure</th><td>{{check_out}}</td></tr>
+<tr><th>Guests</th><td>{{guests}}</td></tr>
+<tr><th>Total</th><td>{{total}}</td></tr>
+</table>
+<blockquote>Please transfer the total using the reference above. We will confirm as soon as it arrives.</blockquote>
+<p>We look forward to having you.</p>
+<p>{{site_name}}</p>' => '<h1>Ihre Buchung ist bestätigt</h1>
+<p>Hallo {{guest_first_name}},</p>
+<p>gute Nachrichten — Ihre Buchung ist bestätigt und die Termine gehören Ihnen.</p>
+<table>
+<tr><th>Buchungsnummer</th><td>{{reference}}</td></tr>
+<tr><th>Wohnung</th><td>{{apartment}}</td></tr>
+<tr><th>Anreise</th><td>{{check_in}}</td></tr>
+<tr><th>Abreise</th><td>{{check_out}}</td></tr>
+<tr><th>Gäste</th><td>{{guests}}</td></tr>
+<tr><th>Gesamt</th><td>{{total}}</td></tr>
+</table>
+<blockquote>Bitte überweisen Sie den Gesamtbetrag unter Angabe der obigen Buchungsnummer. Wir bestätigen den Eingang umgehend.</blockquote>
+<p>Wir freuen uns auf Sie.</p>
+<p>{{site_name}}</p>',
+	'<h1>Payment received</h1>
+<p>Hello {{guest_first_name}},</p>
+<p>We have received your payment of <strong>{{total}}</strong>. Your stay is fully settled.</p>
+<table>
+<tr><th>Reference</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Arrival</th><td>{{check_in}}</td></tr>
+<tr><th>Departure</th><td>{{check_out}}</td></tr>
+</table>
+<p>Your invoice is attached to this email.</p>
+<p>Safe travels, and see you soon.</p>
+<p>{{site_name}}</p>' => '<h1>Zahlung erhalten</h1>
+<p>Hallo {{guest_first_name}},</p>
+<p>wir haben Ihre Zahlung über <strong>{{total}}</strong> erhalten. Ihr Aufenthalt ist vollständig bezahlt.</p>
+<table>
+<tr><th>Buchungsnummer</th><td>{{reference}}</td></tr>
+<tr><th>Wohnung</th><td>{{apartment}}</td></tr>
+<tr><th>Anreise</th><td>{{check_in}}</td></tr>
+<tr><th>Abreise</th><td>{{check_out}}</td></tr>
+</table>
+<p>Ihre Rechnung finden Sie im Anhang dieser E-Mail.</p>
+<p>Gute Reise und bis bald.</p>
+<p>{{site_name}}</p>',
+	'<h1>Your booking has changed</h1>
+<p>Hello {{guest_first_name}},</p>
+<p>Your booking has been updated, and there is a balance still to pay. The new invoice is attached.</p>
+<table>
+<tr><th>Reference</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Arrival</th><td>{{check_in}}</td></tr>
+<tr><th>Departure</th><td>{{check_out}}</td></tr>
+<tr><th>New total</th><td>{{total}}</td></tr>
+<tr><th>Already paid</th><td>{{amount_paid}}</td></tr>
+<tr><th>Still to pay</th><td>{{amount_due}}</td></tr>
+</table>
+<blockquote>Please transfer <strong>{{amount_due}}</strong> using the reference above.</blockquote>
+<p>{{site_name}}</p>' => '<h1>Ihre Buchung wurde geändert</h1>
+<p>Hallo {{guest_first_name}},</p>
+<p>Ihre Buchung wurde aktualisiert, und es steht noch ein Betrag offen. Die neue Rechnung finden Sie im Anhang.</p>
+<table>
+<tr><th>Buchungsnummer</th><td>{{reference}}</td></tr>
+<tr><th>Wohnung</th><td>{{apartment}}</td></tr>
+<tr><th>Anreise</th><td>{{check_in}}</td></tr>
+<tr><th>Abreise</th><td>{{check_out}}</td></tr>
+<tr><th>Neuer Gesamtbetrag</th><td>{{total}}</td></tr>
+<tr><th>Bereits bezahlt</th><td>{{amount_paid}}</td></tr>
+<tr><th>Noch zu zahlen</th><td>{{amount_due}}</td></tr>
+</table>
+<blockquote>Bitte überweisen Sie <strong>{{amount_due}}</strong> unter Angabe der obigen Buchungsnummer.</blockquote>
+<p>{{site_name}}</p>',
+	'Updated invoice — {{reference}}' => 'Aktualisierte Rechnung — {{reference}}',
+	'Balance due' => 'Offener Betrag',
+	'Sent when a booking is changed after it was invoiced and there is more to pay — a guest extending their stay, for instance.' => 'Wird gesendet, wenn eine bereits berechnete Buchung geändert wird und noch ein Betrag offen ist — etwa wenn ein Gast seinen Aufenthalt verlängert.',
+	'Balance after the booking was changed.' => 'Restbetrag nach Änderung der Buchung.',
+	'Settled so far, with currency' => 'Bisher bezahlt, mit Währung',
+	'Still to pay, with currency' => 'Noch zu zahlen, mit Währung',
+	'Invoice number, once one is issued' => 'Rechnungsnummer, sobald eine vergeben ist',
+	'Agreed total' => 'Vereinbarter Gesamtbetrag',
+	'Calculate automatically' => 'Automatisch berechnen',
+	'Set the price myself' => 'Preis selbst festlegen',
+	'How the price is set' => 'Wie der Preis bestimmt wird',
+	'Enter the agreed total.' => 'Geben Sie den vereinbarten Gesamtbetrag ein.',
+	'What the guest is charged, whatever the rates would give.' => 'Was dem Gast berechnet wird, unabhängig von den Tarifen.',
+	'Price breakdown' => 'Preisaufstellung',
+	'Calculated price: %s' => 'Berechneter Preis: %s',
+	'Base rate — first %d h' => 'Grundpreis — erste %d Std.',
+	'%1$d further h at %2$s' => '%1$d weitere Std. à %2$s',
+	'%1$d h booked, %2$d h charged' => '%1$d Std. gebucht, %2$d Std. berechnet',
+	'%1$d extra guests at %2$s' => '%1$d zusätzliche Gäste à %2$s',
+	'%d nights' => '%d Nächte',
+	'Choose an apartment, a date and a time to see the price.' => 'Wählen Sie Wohnung, Datum und Uhrzeit, um den Preis zu sehen.',
+	'This apartment is already taken for that window.' => 'Diese Wohnung ist in diesem Zeitraum bereits belegt.',
+	'This apartment has no rates set, so the price is provisional.' => 'Für diese Wohnung sind keine Tarife hinterlegt, der Preis ist daher vorläufig.',
+	'No start times for this date. Check the opening hours in Settings.' => 'Keine Startzeiten für dieses Datum. Prüfen Sie die Öffnungszeiten in den Einstellungen.',
+	'Give a date.' => 'Geben Sie ein Datum an.',
+	'That apartment does not exist.' => 'Diese Wohnung existiert nicht.',
+	'Preview' => 'Vorschau',
+	'Email preview' => 'E-Mail-Vorschau',
+	'The logo, header and footer are added automatically from Settings.' => 'Logo, Kopf- und Fußzeile werden automatisch aus den Einstellungen ergänzt.',
+	'Your company logo. Printed at the top of the invoice and shown in the header of every guest email.' => 'Ihr Firmenlogo. Wird oben auf der Rechnung gedruckt und im Kopf jeder Gast-E-Mail angezeigt.',
+	'Bereits bezahlt:' => 'Bereits bezahlt:',
+	'Offener Betrag:' => 'Offener Betrag:',
+	'Anna' => 'Anna',
+	'Anna Schmidt' => 'Anna Schmidt',
+	'Studio Rheinblick' => 'Studio Rheinblick',
+	'Company' => 'Unternehmen',
+	'Company information' => 'Unternehmensdaten',
+	'Company name' => 'Firmenname',
+	'Company logo' => 'Firmenlogo',
+	'Notifications' => 'Benachrichtigungen',
+	'Legal & invoice' => 'Rechtliches & Rechnung',
+	'Entered once here, and used on the invoice and in the header of every guest email.' => 'Einmal hier eingetragen und auf der Rechnung sowie im Kopf jeder Gast-E-Mail verwendet.',
+	'Rules applied when a booking is taken.' => 'Regeln, die bei jeder Buchung greifen.',
+	'How guests pay you.' => 'Wie Gäste bei Ihnen bezahlen.',
+	'Email sent by the plugin.' => 'E-Mails, die das Plugin versendet.',
+	'The invoice the guest receives, and the pages it and the booking flow link to.' => 'Die Rechnung für den Gast und die Seiten, auf die sie und der Buchungsablauf verweisen.',
+	'Cooldown (minutes)' => 'Pufferzeit (Minuten)',
+	'Turnaround time kept free after each booking. A slot that would start within this gap is treated as taken.' => 'Zeit, die nach jeder Buchung frei bleibt. Ein Termin, der innerhalb dieser Spanne beginnen würde, gilt als belegt.',
+	'Account holder' => 'Kontoinhaber',
+	'Bank' => 'Bank',
+	'IBAN' => 'IBAN',
+	'BIC' => 'BIC',
+	'IBAN: %s' => 'IBAN: %s',
+	'BIC: %s' => 'BIC: %s',
+	'Bankverbindung:' => 'Bankverbindung:',
+	'Additional details' => 'Weitere Angaben',
+	'Anything else to print under the account.' => 'Alles Weitere, das unter der Bankverbindung stehen soll.',
+	'Printed on the invoice in groups of four, so a guest can read it across without losing their place.' => 'Wird auf der Rechnung in Vierergruppen gedruckt, damit der Gast sie ohne Verrutschen ablesen kann.',
+	'Email notifications' => 'E-Mail-Benachrichtigungen',
+	'The master switch. Off stops every guest email, whatever the individual templates say.' => 'Der Hauptschalter. Aus stoppt jede Gast-E-Mail, unabhängig von den einzelnen Vorlagen.',
+	'Admin email' => 'E-Mail für Benachrichtigungen',
+	'Where notifications for you are sent. Leave empty to use the WordPress admin address.' => 'Wohin Ihre Benachrichtigungen gehen. Leer lassen, um die WordPress-Admin-Adresse zu verwenden.',
+	'One line per line, as it should appear on the invoice.' => 'Eine Zeile je Zeile, so wie sie auf der Rechnung erscheinen soll.',
+	'Printed at the top of the invoice and shown in the header of every guest email.' => 'Wird oben auf der Rechnung gedruckt und im Kopf jeder Gast-E-Mail angezeigt.',
+	'E-Mail: %s' => 'E-Mail: %s',
+	'Terms & conditions page' => 'Seite mit den AGB',
+	'Privacy policy page' => 'Seite zum Datenschutz',
+	'Invoice counter' => 'Rechnungszähler',
+	'The next number to issue. Only ever raises the sequence — it cannot reuse a number already sent.' => 'Die nächste zu vergebende Nummer. Sie kann die Zählung nur nach vorn setzen — eine bereits versendete Nummer wird nie erneut vergeben.',
+	'Tax rate (%)' => 'Steuersatz (%)',
+	'Worked back out of the price, which is what the guest pays. 0 shows no tax line.' => 'Wird aus dem Preis herausgerechnet, den der Gast zahlt. 0 blendet die Steuerzeile aus.',
+	'zzgl. %s%% MwSt.:' => 'zzgl. %s%% MwSt.:',
+	'Hesse' => 'Hessen',
+	'Hesse public holiday' => 'Gesetzlicher Feiertag in Hessen',
+	'Give a start and an end date.' => 'Geben Sie ein Start- und ein Enddatum an.',
+	'Ask for a shorter range.' => 'Wählen Sie einen kürzeren Zeitraum.',
+	'Recorded when the booking was marked paid.' => 'Erfasst, als die Buchung als bezahlt markiert wurde.',
+	'Recorded from the booking, which was already marked paid.' => 'Aus der Buchung übernommen, die bereits als bezahlt markiert war.',
 );

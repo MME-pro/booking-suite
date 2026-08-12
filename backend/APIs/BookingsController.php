@@ -16,6 +16,7 @@ declare( strict_types=1 );
 namespace BookingSuite\Backend\APIs;
 
 use BookingSuite\Backend\Pricing\RateCalculator;
+use BookingSuite\Backend\Pricing\SlotGenerator;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Repositories\CustomersRepository;
@@ -66,6 +67,33 @@ final class BookingsController {
 						'enum'     => BookingsTable::STATUSES,
 					),
 				),
+			)
+		);
+
+		/*
+		 * The admin's own slots and quote. They exist rather than reusing the
+		 * public ones because an operator is not a guest: times that have
+		 * already passed are offered, so a walk-in can be recorded after the
+		 * fact, and the booking being edited is excluded from availability so
+		 * its own window does not read as taken.
+		 */
+		register_rest_route(
+			self::NAMESPACE,
+			'/' . self::ROUTE . '/slots',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( self::class, 'slots' ),
+				'permission_callback' => array( self::class, 'can_manage' ),
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/' . self::ROUTE . '/quote',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( self::class, 'quote' ),
+				'permission_callback' => array( self::class, 'can_manage' ),
 			)
 		);
 
@@ -285,13 +313,34 @@ final class BookingsController {
 			BookingEmails::send( EmailTemplatesRepository::BOOKING_APPROVED, $id );
 		}
 
-		// Settling from here carries the invoice too, exactly as settling an
-		// individual payment on the Payments screen does.
-		if ( 'paid' === $payment && 'paid' !== $booking['paymentStatus'] ) {
+		/*
+		 * Settling from here carries the invoice too, exactly as settling an
+		 * individual payment on the Payments screen does — and it now records
+		 * the payment as well. Marking a booking paid used to change a column
+		 * and nothing else: no payment row, so no invoice number, so nothing to
+		 * invoice and nothing to re-issue when the booking was later amended.
+		 */
+		$settled_now = 'paid' === $payment && 'paid' !== $booking['paymentStatus'];
+
+		if ( $settled_now ) {
+			$payment_id = self::record_settlement( $id, $changes, $booking );
+
 			BookingEmails::send(
 				EmailTemplatesRepository::PAYMENT_RECEIVED,
 				$id,
-				Invoice::attachment_for_booking( $id )
+				$payment_id
+					? Invoice::attachment( $payment_id )
+					: Invoice::attachment_for_booking( $id )
+			);
+		}
+
+		// Only one email per save: settling already sent one.
+		if ( ! $settled_now ) {
+			self::settle_balance(
+				$id,
+				(float) $booking['total'],
+				(string) $booking['paymentStatus'],
+				$changes
 			);
 		}
 
@@ -300,6 +349,254 @@ final class BookingsController {
 		$booking['payments'] = PaymentsRepository::for_booking( $id );
 
 		return new WP_REST_Response( $booking, 200 );
+	}
+
+	/**
+	 * Make sure a booking marked paid actually has a payment behind it.
+	 *
+	 * "Paid" on the Bookings screen used to be a column and nothing more. That
+	 * left a booking that claimed to be settled with no payment record, no
+	 * invoice number, and therefore nothing to send the guest — and no way to
+	 * work out later what had been paid when the booking was amended.
+	 *
+	 * So the shortfall between what is recorded and what is owed is written
+	 * down as a settled payment. Where a request was already waiting — a
+	 * balance raised by an earlier edit — that row is marked paid rather than a
+	 * second one created beside it, so it keeps its invoice number.
+	 *
+	 * @param array<string, mixed> $changes What the update wrote.
+	 * @param array<string, mixed> $booking The booking as it was before.
+	 *
+	 * @return int The payment carrying the invoice, or 0 if none was needed.
+	 */
+	private static function record_settlement( int $id, array $changes, array $booking ): int {
+		$total   = (float) ( $changes['total_amount'] ?? $booking['total'] ?? 0 );
+		$settled = PaymentsRepository::settled_for( $id );
+		$due     = round( $total - $settled, 2 );
+
+		if ( $due <= 0.005 ) {
+			// Already covered; invoice whichever payment carries the number.
+			$pending = PaymentsRepository::pending_for( $id );
+
+			return null === $pending ? 0 : (int) $pending['id'];
+		}
+
+		$pending = PaymentsRepository::pending_for( $id );
+
+		if ( null === $pending ) {
+			$payment_id = (int) PaymentsRepository::create(
+				array(
+					'booking_id' => $id,
+					'method'     => 'transfer',
+					'status'     => 'paid',
+					'amount'     => $due,
+					'paid_at'    => current_time( 'mysql', true ),
+					'notes'      => __( 'Recorded when the booking was marked paid.', 'booking-suite' ),
+				)
+			);
+		} else {
+			$payment_id = (int) $pending['id'];
+
+			PaymentsRepository::set_amount( $payment_id, $due );
+			PaymentsRepository::set_status( $payment_id, 'paid' );
+		}
+
+		if ( $payment_id ) {
+			PaymentsRepository::assign_invoice_number( $payment_id );
+		}
+
+		return $payment_id;
+	}
+
+	/**
+	 * Settle up after the total changes on a booking that was already invoiced.
+	 *
+	 * This is the guest who books three hours, pays, and then asks at the desk
+	 * to make it twelve. What they have paid is now short of what they owe, and
+	 * three things are wrong until this runs: the booking still reads as paid,
+	 * there is no record of what is outstanding, and the invoice they hold is a
+	 * statement of the wrong amount.
+	 *
+	 * So the difference is raised as its own payment — a real row, with its own
+	 * invoice number, that the Payments screen shows as owed and that can be
+	 * marked paid when the money lands. The booking's payment status is set
+	 * from what has actually been settled rather than from whatever the form
+	 * posted, and the guest is sent the new invoice showing the total, what
+	 * they have already paid, and the balance.
+	 *
+	 * Where the total falls below what has been paid, no new charge is raised:
+	 * a refund is a decision for the operator, not something to invoice
+	 * automatically. The booking is simply marked paid and a corrected invoice
+	 * goes out.
+	 *
+	 * Nothing happens at all unless an invoice was issued and the total has
+	 * actually moved — editing a telephone number must not mail anyone.
+	 *
+	 * @param float                $was        The total before the update.
+	 * @param string               $was_status The payment status before it.
+	 * @param array<string, mixed> $changes    What the update wrote.
+	 */
+	private static function settle_balance( int $id, float $was, string $was_status, array $changes ): void {
+		if ( ! array_key_exists( 'total_amount', $changes ) ) {
+			return;
+		}
+
+		$total = (float) $changes['total_amount'];
+
+		// A cent of drift is rounding, not a change of price.
+		if ( abs( $total - $was ) < 0.005 ) {
+			return;
+		}
+
+		self::backfill_settlement( $id, $was, $was_status );
+
+		if ( ! self::has_invoice( $id ) ) {
+			return;
+		}
+
+		$paid       = PaymentsRepository::settled_for( $id );
+		$due        = round( $total - $paid, 2 );
+		$payment_id = 0;
+
+		if ( $due > 0.005 ) {
+			/*
+			 * One outstanding request at a time: if the price changes again
+			 * before the guest has paid, the existing one is amended rather
+			 * than a second raised beside it. Its invoice number is kept, so
+			 * the guest is not handed a new number for the same debt.
+			 */
+			$pending = PaymentsRepository::pending_for( $id );
+
+			if ( null === $pending ) {
+				$payment_id = (int) PaymentsRepository::create(
+					array(
+						'booking_id' => $id,
+						'method'     => 'transfer',
+						'status'     => 'pending',
+						'amount'     => $due,
+						'notes'      => __( 'Balance after the booking was changed.', 'booking-suite' ),
+					)
+				);
+			} else {
+				$payment_id = (int) $pending['id'];
+
+				PaymentsRepository::set_amount( $payment_id, $due );
+			}
+
+			if ( $payment_id ) {
+				PaymentsRepository::assign_invoice_number( $payment_id );
+			}
+		}
+
+		self::sync_payment_status( $id, $total, $paid );
+
+		// The invoice sent is the one asking for money, where there is one.
+		$attachment = $payment_id
+			? Invoice::attachment( $payment_id )
+			: Invoice::attachment_for_booking( $id );
+
+		BookingEmails::send(
+			$due > 0.005
+				? EmailTemplatesRepository::BALANCE_DUE
+				: EmailTemplatesRepository::PAYMENT_RECEIVED,
+			$id,
+			$attachment
+		);
+	}
+
+	/**
+	 * Give a booking that was already paid something to show for it.
+	 *
+	 * Bookings settled before payments were recorded — and any settled by an
+	 * older version of this plugin — say "paid" with no payment row behind it.
+	 * Amend one of those and there is nothing to work the balance out from, so
+	 * the guest gets no invoice and the arithmetic silently starts from zero.
+	 *
+	 * The booking's own status is the evidence: it said paid, so the total at
+	 * the time was settled. That is written down as a payment, and from then on
+	 * the booking behaves like any other.
+	 *
+	 * @param float  $was        The total that was settled.
+	 * @param string $was_status The payment status before this update.
+	 */
+	private static function backfill_settlement( int $id, float $was, string $was_status ): void {
+		if ( 'paid' !== $was_status || $was <= 0.005 ) {
+			return;
+		}
+
+		// Anything already recorded means the booking is not one of these.
+		if ( PaymentsRepository::settled_for( $id ) > 0.005 ) {
+			return;
+		}
+
+		$pending = PaymentsRepository::pending_for( $id );
+
+		if ( null === $pending ) {
+			$payment_id = (int) PaymentsRepository::create(
+				array(
+					'booking_id' => $id,
+					'method'     => 'transfer',
+					'status'     => 'paid',
+					'amount'     => $was,
+					'paid_at'    => current_time( 'mysql', true ),
+					'notes'      => __( 'Recorded from the booking, which was already marked paid.', 'booking-suite' ),
+				)
+			);
+		} else {
+			// A request was waiting and the booking says it was met.
+			$payment_id = (int) $pending['id'];
+
+			PaymentsRepository::set_amount( $payment_id, $was );
+			PaymentsRepository::set_status( $payment_id, 'paid' );
+		}
+
+		if ( $payment_id ) {
+			PaymentsRepository::assign_invoice_number( $payment_id );
+		}
+	}
+
+	/** Whether any payment on this booking has been invoiced. */
+	private static function has_invoice( int $id ): bool {
+		foreach ( PaymentsRepository::for_booking( $id ) as $row ) {
+			$payment = PaymentsRepository::find( (int) $row['id'] );
+
+			if ( null !== $payment && '' !== (string) $payment['invoiceNo'] ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Set the booking's payment status from what has actually been settled.
+	 *
+	 * Written straight to the table rather than through the update above,
+	 * because it has to beat the value the form posted: a screen that opened on
+	 * a settled booking sends 'paid', and after the price rises that is simply
+	 * untrue.
+	 */
+	private static function sync_payment_status( int $id, float $total, float $paid ): void {
+		global $wpdb;
+
+		if ( $paid + 0.005 >= $total ) {
+			$status = 'paid';
+		} elseif ( $paid > 0.005 ) {
+			$status = 'partial';
+		} else {
+			$status = 'unpaid';
+		}
+
+		$wpdb->update(
+			BookingsTable::table(),
+			array(
+				'payment_status' => $status,
+				'updated_at'     => current_time( 'mysql', true ),
+			),
+			array( 'id' => $id ),
+			array( '%s', '%s' ),
+			array( '%d' )
+		);
 	}
 
 	/**
@@ -391,6 +688,114 @@ final class BookingsController {
 	}
 
 	/**
+	 * Start times for a date, the same picker the guest sees.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function slots( WP_REST_Request $request ) {
+		$apartment = ApartmentsRepository::find( absint( $request->get_param( 'apartmentId' ) ) );
+
+		if ( null === $apartment ) {
+			return new WP_Error(
+				'booking_suite_not_found',
+				__( 'That apartment does not exist.', 'booking-suite' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		$date = (string) $request->get_param( 'date' );
+
+		if ( ! self::is_date( $date ) ) {
+			return new WP_Error(
+				'booking_suite_invalid_field',
+				__( 'Give a date.', 'booking-suite' ),
+				array(
+					'status' => 400,
+					'field'  => 'date',
+				)
+			);
+		}
+
+		$guests  = max( 1, absint( $request->get_param( 'guests' ) ) );
+		$hours   = (float) $request->get_param( 'hours' );
+		$hours   = $hours > 0 ? $hours : (float) SettingsRepository::number( SettingsRepository::BASE_HOURS );
+		$exclude = absint( $request->get_param( 'excludeId' ) );
+
+		return new WP_REST_Response(
+			array(
+				'date'      => $date,
+				'hours'     => $hours,
+				'durations' => SlotGenerator::duration_options( $apartment, $date, $guests ),
+				'slots'     => SlotGenerator::for_date(
+					$apartment,
+					$date,
+					$hours,
+					$guests,
+					array(
+						'includePast'     => true,
+						'ignoreBookingId' => $exclude ?: null,
+					)
+				),
+				'currency'  => SettingsRepository::currency(),
+			),
+			200
+		);
+	}
+
+	/**
+	 * What a stay costs, itemised, before it is saved.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function quote( WP_REST_Request $request ) {
+		$stay = self::parse_stay( $request );
+
+		if ( is_wp_error( $stay ) ) {
+			return $stay;
+		}
+
+		$exclude = absint( $request->get_param( 'excludeId' ) );
+
+		return new WP_REST_Response( self::breakdown( $stay, $exclude ?: null ), 200 );
+	}
+
+	/**
+	 * The itemised price of a stay.
+	 *
+	 * @param array<string, mixed> $stay
+	 *
+	 * @return array<string, mixed>
+	 */
+	private static function breakdown( array $stay, ?int $exclude = null ): array {
+		$quote = RateCalculator::quote(
+			$stay['apartment'],
+			$stay['starts_at'],
+			$stay['ends_at'],
+			$stay['guests']
+		);
+
+		return array(
+			'available'      => BookingsRepository::is_available(
+				$stay['room_id'],
+				$stay['starts_at'],
+				$stay['ends_at'],
+				$exclude
+			),
+			'mode'           => $quote['mode'],
+			'startsAt'       => $stay['starts_at'],
+			'endsAt'         => $stay['ends_at'],
+			'nights'         => $quote['nights'],
+			'nightBreakdown' => $quote['nightBreakdown'],
+			'duration'       => $quote['duration'],
+			'accommodation'  => $quote['accommodation'],
+			'guestCharge'    => $quote['guestCharge'],
+			'total'          => $quote['subtotal'],
+			'currency'       => SettingsRepository::currency(),
+			'priced'         => $quote['priced'],
+		);
+	}
+
+	/**
 	 * The agreed total: whatever the operator typed, or the calculated price.
 	 *
 	 * @param array<string, mixed> $stay
@@ -398,7 +803,17 @@ final class BookingsController {
 	private static function total_for( WP_REST_Request $request, array $stay ): float {
 		$override = $request->get_param( 'total' );
 
-		if ( null !== $override && '' !== $override ) {
+		/*
+		 * The mode is explicit rather than inferred from whether a total was
+		 * sent. Inferring it meant a screen that always posted the figure it was
+		 * displaying could never get a recalculated price back: every save
+		 * looked like an override, so changing the dates left the old total in
+		 * place. On 'auto' the figure is recalculated and anything sent with it
+		 * is ignored.
+		 */
+		$manual = 'manual' === (string) $request->get_param( 'priceMode' );
+
+		if ( $manual && null !== $override && '' !== $override ) {
 			return max( 0, round( (float) $override, 2 ) );
 		}
 

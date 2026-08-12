@@ -1,15 +1,13 @@
 /**
- * SettingsPage — plugin-wide settings.
+ * SettingsPage — everything the plugin is configured with, in tabs.
  *
- * One for now: the currency bookings are priced in. Stored server-side (see
- * backend/APIs/SettingsController.php), so adding a second here is a field and
- * an enum entry, nothing more.
+ * One form across every tab, saved by one button. The tabs group the fields for
+ * reading; they are not separate forms, so an owner setting up the plugin can
+ * work through the lot and save once rather than six times.
  *
  * There is deliberately no language setting. The plugin follows the WordPress
  * site language through its own translation catalogue, so a second control
  * could only ever disagree with Settings → General.
- *
- * Built on the shadcn/ui Form.
  */
 
 import { useEffect, useState } from 'react';
@@ -35,6 +33,7 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
 	Select,
 	SelectContent,
@@ -43,8 +42,8 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-
-import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
 import { settingsService } from '../../services';
@@ -59,6 +58,41 @@ const CURRENCY_LABELS = {
 	CHF: __( 'Swiss Franc (CHF)', 'booking-suite' ),
 };
 
+/** Sent as numbers; a text input hands back strings the endpoint refuses. */
+const NUMERIC = [
+	'companyLogo',
+	'invoiceDueDays',
+	'invoiceCounter',
+	'cooldownMinutes',
+	'taxRate',
+];
+
+const blank = {
+	currency: 'EUR',
+	accentColour: '#2563eb',
+	cooldownMinutes: 0,
+	bankHolder: '',
+	bankName: '',
+	bankIban: '',
+	bankBic: '',
+	bankDetails: '',
+	emailNotifications: true,
+	companyName: '',
+	companyAddress: '',
+	companyPhone: '',
+	companyEmail: '',
+	companyLogo: 0,
+	adminEmail: '',
+	termsUrl: '',
+	privacyUrl: '',
+	invoiceCounter: 0,
+	taxRate: 0,
+	invoicePrefix: 'INV',
+	invoiceDueDays: 30,
+	invoiceThanks: '',
+	invoiceNotice: '',
+};
+
 export default function SettingsPage() {
 	const [ choices, setChoices ] = useState( { currencies: [], accents: [] } );
 	// The logo's preview URL: the form holds only the attachment ID.
@@ -67,20 +101,7 @@ export default function SettingsPage() {
 	const [ error, setError ] = useState( null );
 	const [ isSaved, setSaved ] = useState( false );
 
-	const form = useForm( {
-		defaultValues: {
-			currency: 'EUR',
-			accentColour: '#2563eb',
-			invoiceLogo: 0,
-			invoiceSender: '',
-			invoicePrefix: 'INV',
-			invoiceDueDays: 30,
-			invoiceThanks: '',
-			invoicePhone: '',
-			invoiceEmail: '',
-			invoiceNotice: '',
-		},
-	} );
+	const form = useForm( { defaultValues: blank } );
 
 	const { reset } = form;
 
@@ -92,7 +113,7 @@ export default function SettingsPage() {
 			.then( ( payload ) => {
 				setChoices( payload.choices );
 				setLogoUrl( payload.logo?.url ?? '' );
-				reset( payload.settings );
+				reset( { ...blank, ...payload.settings } );
 				setError( null );
 			} )
 			.catch( ( cause ) => {
@@ -109,28 +130,39 @@ export default function SettingsPage() {
 		setError( null );
 		setSaved( false );
 
-		try {
-			const payload = await settingsService.update( {
-				...values,
-				// The two numeric fields travel as numbers; a text input hands
-				// back a string, which the endpoint's integer type rejects.
-				invoiceLogo: Number( values.invoiceLogo ) || 0,
-				invoiceDueDays: Number( values.invoiceDueDays ) || 0,
-			} );
+		const payload = { ...values };
 
-			setLogoUrl( payload.logo?.url ?? '' );
-			reset( payload.settings );
+		NUMERIC.forEach( ( key ) => {
+			payload[ key ] = Number( values[ key ] ) || 0;
+		} );
+
+		try {
+			const saved = await settingsService.update( payload );
+
+			setLogoUrl( saved.logo?.url ?? '' );
+			reset( { ...blank, ...saved.settings } );
 			setSaved( true );
 		} catch ( cause ) {
 			setError( cause.message );
 		}
 	};
 
+	/**
+	 * Clears the "saved" note as soon as anything moves.
+	 *
+	 * @param {Function} onChange The field's own change handler.
+	 * @return {Function} A handler that clears the note and then calls it.
+	 */
+	const touched = ( onChange ) => ( value ) => {
+		setSaved( false );
+		onChange( value );
+	};
+
 	const isSaving = form.formState.isSubmitting;
 
 	if ( isLoading ) {
 		return (
-			<Card className="max-w-2xl">
+			<Card className="max-w-3xl">
 				<CardContent className="flex flex-col gap-4 p-5">
 					<Skeleton className="h-5 w-40" />
 					<Skeleton className="h-9 w-full" />
@@ -141,7 +173,7 @@ export default function SettingsPage() {
 	}
 
 	return (
-		<div className="flex max-w-2xl flex-col gap-4">
+		<div className="flex max-w-3xl flex-col gap-4">
 			{ error && (
 				<Alert variant="destructive">
 					<AlertCircle className="h-4 w-4" />
@@ -161,30 +193,46 @@ export default function SettingsPage() {
 				</Alert>
 			) }
 
-			{ /*
-			 * One form across both cards: General and Invoice are separate
-			 * sections to read, but a single Save writes them together.
-			 */ }
 			<Form { ...form }>
 				<form
 					onSubmit={ form.handleSubmit( save ) }
 					className="flex flex-col gap-4"
 				>
-					<Card>
-						<CardHeader>
-							<CardTitle className="text-base">
+					<Tabs
+						defaultValue="general"
+						className="flex flex-col gap-4"
+					>
+						{ /* Wraps rather than squeezing six tabs onto a phone. */ }
+						<TabsList className="flex h-auto flex-wrap justify-start gap-1">
+							<TabsTrigger value="general">
 								{ __( 'General', 'booking-suite' ) }
-							</CardTitle>
-							<CardDescription>
-								{ __(
+							</TabsTrigger>
+							<TabsTrigger value="booking">
+								{ __( 'Booking', 'booking-suite' ) }
+							</TabsTrigger>
+							<TabsTrigger value="payment">
+								{ __( 'Payment', 'booking-suite' ) }
+							</TabsTrigger>
+							<TabsTrigger value="notifications">
+								{ __( 'Notifications', 'booking-suite' ) }
+							</TabsTrigger>
+							<TabsTrigger value="company">
+								{ __( 'Company', 'booking-suite' ) }
+							</TabsTrigger>
+							<TabsTrigger value="invoice">
+								{ __( 'Legal & invoice', 'booking-suite' ) }
+							</TabsTrigger>
+						</TabsList>
+
+						{ /* ── General ─────────────────────────────────── */ }
+						<TabsContent value="general" className="mt-0">
+							<Panel
+								title={ __( 'General', 'booking-suite' ) }
+								description={ __(
 									'How prices and the guest-facing booking flow are presented.',
 									'booking-suite'
 								) }
-							</CardDescription>
-						</CardHeader>
-
-						<CardContent>
-							<div className="flex flex-col gap-6">
+							>
 								<FormField
 									control={ form.control }
 									name="currency"
@@ -198,10 +246,9 @@ export default function SettingsPage() {
 											</FormLabel>
 											<Select
 												value={ field.value }
-												onValueChange={ ( value ) => {
-													setSaved( false );
-													field.onChange( value );
-												} }
+												onValueChange={ touched(
+													field.onChange
+												) }
 											>
 												<FormControl>
 													<SelectTrigger>
@@ -249,10 +296,9 @@ export default function SettingsPage() {
 												<AccentColourField
 													value={ field.value }
 													presets={ choices.accents }
-													onChange={ ( next ) => {
-														setSaved( false );
-														field.onChange( next );
-													} }
+													onChange={ touched(
+														field.onChange
+													) }
 												/>
 											</FormControl>
 											<FormDescription>
@@ -265,38 +311,168 @@ export default function SettingsPage() {
 										</FormItem>
 									) }
 								/>
-							</div>
-						</CardContent>
-					</Card>
+							</Panel>
+						</TabsContent>
 
-					{ /*
-					 * The invoice generator. Everything the PDF prints that is not
-					 * taken from the booking itself lives here, so the wording is
-					 * the owner's to change.
-					 */ }
-					<Card>
-						<CardHeader>
-							<CardTitle className="text-base">
-								{ __( 'Invoice generator', 'booking-suite' ) }
-							</CardTitle>
-							<CardDescription>
-								{ __(
-									'The invoice sent to the guest as a PDF when a payment is marked paid.',
+						{ /* ── Booking ─────────────────────────────────── */ }
+						<TabsContent value="booking" className="mt-0">
+							<Panel
+								title={ __( 'Booking', 'booking-suite' ) }
+								description={ __(
+									'Rules applied when a booking is taken.',
 									'booking-suite'
 								) }
-							</CardDescription>
-						</CardHeader>
+							>
+								<Field
+									form={ form }
+									name="cooldownMinutes"
+									type="number"
+									min="0"
+									max="1440"
+									touched={ touched }
+									label={ __(
+										'Cooldown (minutes)',
+										'booking-suite'
+									) }
+									description={ __(
+										'Turnaround time kept free after each booking. A slot that would start within this gap is treated as taken.',
+										'booking-suite'
+									) }
+								/>
+							</Panel>
+						</TabsContent>
 
-						<CardContent>
-							<div className="flex flex-col gap-6">
+						{ /* ── Payment ─────────────────────────────────── */ }
+						<TabsContent value="payment" className="mt-0">
+							<Panel
+								title={ __( 'Payment', 'booking-suite' ) }
+								description={ __(
+									'How guests pay you.',
+									'booking-suite'
+								) }
+							>
+								<div className="grid gap-4 sm:grid-cols-2">
+									<Field
+										form={ form }
+										name="bankHolder"
+										touched={ touched }
+										label={ __(
+											'Account holder',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="bankName"
+										touched={ touched }
+										label={ __( 'Bank', 'booking-suite' ) }
+									/>
+								</div>
+
+								<div className="grid gap-4 sm:grid-cols-3">
+									<Field
+										form={ form }
+										name="bankIban"
+										touched={ touched }
+										className="col-span-2 font-mono uppercase"
+										label={ __( 'IBAN', 'booking-suite' ) }
+										description={ __(
+											'Printed on the invoice in groups of four, so a guest can read it across without losing their place.',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="bankBic"
+										touched={ touched }
+										className="font-mono uppercase"
+										label={ __( 'BIC', 'booking-suite' ) }
+									/>
+								</div>
+
+								<Field
+									form={ form }
+									name="bankDetails"
+									as="textarea"
+									rows={ 2 }
+									touched={ touched }
+									label={ __(
+										'Additional details',
+										'booking-suite'
+									) }
+									description={ __(
+										'Anything else to print under the account.',
+										'booking-suite'
+									) }
+								/>
+							</Panel>
+						</TabsContent>
+
+						{ /* ── Notifications ───────────────────────────── */ }
+						<TabsContent value="notifications" className="mt-0">
+							<Panel
+								title={ __( 'Notifications', 'booking-suite' ) }
+								description={ __(
+									'Email sent by the plugin.',
+									'booking-suite'
+								) }
+							>
 								<FormField
 									control={ form.control }
-									name="invoiceLogo"
+									name="emailNotifications"
+									render={ ( { field } ) => (
+										<FormItem className="flex flex-row items-start gap-3 space-y-0 rounded-lg border p-4">
+											<FormControl>
+												<Switch
+													checked={ Boolean(
+														field.value
+													) }
+													onCheckedChange={ touched(
+														field.onChange
+													) }
+												/>
+											</FormControl>
+											<div className="flex flex-col gap-1">
+												<FormLabel>
+													{ __(
+														'Email notifications',
+														'booking-suite'
+													) }
+												</FormLabel>
+												<FormDescription>
+													{ __(
+														'The master switch. Off stops every guest email, whatever the individual templates say.',
+														'booking-suite'
+													) }
+												</FormDescription>
+											</div>
+											<FormMessage />
+										</FormItem>
+									) }
+								/>
+							</Panel>
+						</TabsContent>
+
+						{ /* ── Company ─────────────────────────────────── */ }
+						<TabsContent value="company" className="mt-0">
+							<Panel
+								title={ __(
+									'Company information',
+									'booking-suite'
+								) }
+								description={ __(
+									'Entered once here, and used on the invoice and in the header of every guest email.',
+									'booking-suite'
+								) }
+							>
+								<FormField
+									control={ form.control }
+									name="companyLogo"
 									render={ ( { field } ) => (
 										<FormItem>
 											<FormLabel>
 												{ __(
-													'Logo',
+													'Company logo',
 													'booking-suite'
 												) }
 											</FormLabel>
@@ -316,7 +492,7 @@ export default function SettingsPage() {
 											</FormControl>
 											<FormDescription>
 												{ __(
-													'Printed at the top left of the invoice.',
+													'Printed at the top of the invoice and shown in the header of every guest email.',
 													'booking-suite'
 												) }
 											</FormDescription>
@@ -325,235 +501,196 @@ export default function SettingsPage() {
 									) }
 								/>
 
-								<FormField
-									control={ form.control }
-									name="invoiceSender"
-									render={ ( { field } ) => (
-										<FormItem>
-											<FormLabel>
-												{ __(
-													'Sender block',
-													'booking-suite'
-												) }
-											</FormLabel>
-											<FormControl>
-												<Textarea
-													rows={ 6 }
-													{ ...field }
-													onChange={ ( event ) => {
-														setSaved( false );
-														field.onChange( event );
-													} }
-												/>
-											</FormControl>
-											<FormDescription>
-												{ __(
-													'Printed on the right, one line per line — company, address, telephone, email, VAT number.',
-													'booking-suite'
-												) }
-											</FormDescription>
-											<FormMessage />
-										</FormItem>
+								<Field
+									form={ form }
+									name="companyName"
+									touched={ touched }
+									label={ __(
+										'Company name',
+										'booking-suite'
+									) }
+								/>
+
+								<Field
+									form={ form }
+									name="companyAddress"
+									as="textarea"
+									rows={ 3 }
+									touched={ touched }
+									label={ __( 'Address', 'booking-suite' ) }
+									description={ __(
+										'One line per line, as it should appear on the invoice.',
+										'booking-suite'
 									) }
 								/>
 
 								<div className="grid gap-4 sm:grid-cols-2">
-									<FormField
-										control={ form.control }
+									<Field
+										form={ form }
+										name="companyPhone"
+										touched={ touched }
+										label={ __(
+											'Telephone',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="companyEmail"
+										type="email"
+										touched={ touched }
+										label={ __( 'Email', 'booking-suite' ) }
+									/>
+								</div>
+
+								<Field
+									form={ form }
+									name="adminEmail"
+									type="email"
+									touched={ touched }
+									label={ __(
+										'Admin email',
+										'booking-suite'
+									) }
+									description={ __(
+										'Where notifications for you are sent. Leave empty to use the WordPress admin address.',
+										'booking-suite'
+									) }
+								/>
+							</Panel>
+						</TabsContent>
+
+						{ /* ── Legal & invoice ─────────────────────────── */ }
+						<TabsContent value="invoice" className="mt-0">
+							<Panel
+								title={ __(
+									'Legal & invoice',
+									'booking-suite'
+								) }
+								description={ __(
+									'The invoice the guest receives, and the pages it and the booking flow link to.',
+									'booking-suite'
+								) }
+							>
+								<div className="grid gap-4 sm:grid-cols-2">
+									<Field
+										form={ form }
+										name="termsUrl"
+										type="url"
+										touched={ touched }
+										label={ __(
+											'Terms & conditions page',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="privacyUrl"
+										type="url"
+										touched={ touched }
+										label={ __(
+											'Privacy policy page',
+											'booking-suite'
+										) }
+									/>
+								</div>
+
+								<div className="grid gap-4 sm:grid-cols-2">
+									<Field
+										form={ form }
 										name="invoicePrefix"
-										render={ ( { field } ) => (
-											<FormItem>
-												<FormLabel>
-													{ __(
-														'Invoice number prefix',
-														'booking-suite'
-													) }
-												</FormLabel>
-												<FormControl>
-													<Input
-														{ ...field }
-														onChange={ (
-															event
-														) => {
-															setSaved( false );
-															field.onChange(
-																event
-															);
-														} }
-													/>
-												</FormControl>
-												<FormDescription>
-													{ __(
-														'Numbers run PREFIX-YEAR-0001 and restart each year.',
-														'booking-suite'
-													) }
-												</FormDescription>
-												<FormMessage />
-											</FormItem>
+										touched={ touched }
+										label={ __(
+											'Invoice number prefix',
+											'booking-suite'
+										) }
+										description={ __(
+											'Numbers run PREFIX-YEAR-0001 and restart each year.',
+											'booking-suite'
 										) }
 									/>
-
-									<FormField
-										control={ form.control }
-										name="invoiceDueDays"
-										render={ ( { field } ) => (
-											<FormItem>
-												<FormLabel>
-													{ __(
-														'Payment term (days)',
-														'booking-suite'
-													) }
-												</FormLabel>
-												<FormControl>
-													<Input
-														type="number"
-														min="0"
-														max="365"
-														{ ...field }
-														onChange={ (
-															event
-														) => {
-															setSaved( false );
-															field.onChange(
-																event
-															);
-														} }
-													/>
-												</FormControl>
-												<FormDescription>
-													{ __(
-														'Days from the invoice date to the due date.',
-														'booking-suite'
-													) }
-												</FormDescription>
-												<FormMessage />
-											</FormItem>
+									<Field
+										form={ form }
+										name="invoiceCounter"
+										type="number"
+										min="0"
+										touched={ touched }
+										label={ __(
+											'Invoice counter',
+											'booking-suite'
+										) }
+										description={ __(
+											'The next number to issue. Only ever raises the sequence — it cannot reuse a number already sent.',
+											'booking-suite'
 										) }
 									/>
 								</div>
-
-								<FormField
-									control={ form.control }
-									name="invoiceThanks"
-									render={ ( { field } ) => (
-										<FormItem>
-											<FormLabel>
-												{ __(
-													'Closing line',
-													'booking-suite'
-												) }
-											</FormLabel>
-											<FormControl>
-												<Textarea
-													rows={ 2 }
-													{ ...field }
-													onChange={ ( event ) => {
-														setSaved( false );
-														field.onChange( event );
-													} }
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									) }
-								/>
 
 								<div className="grid gap-4 sm:grid-cols-2">
-									<FormField
-										control={ form.control }
-										name="invoicePhone"
-										render={ ( { field } ) => (
-											<FormItem>
-												<FormLabel>
-													{ __(
-														'Telephone',
-														'booking-suite'
-													) }
-												</FormLabel>
-												<FormControl>
-													<Input
-														{ ...field }
-														onChange={ (
-															event
-														) => {
-															setSaved( false );
-															field.onChange(
-																event
-															);
-														} }
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
+									<Field
+										form={ form }
+										name="taxRate"
+										type="number"
+										min="0"
+										max="100"
+										step="0.1"
+										touched={ touched }
+										label={ __(
+											'Tax rate (%)',
+											'booking-suite'
+										) }
+										description={ __(
+											'Worked back out of the price, which is what the guest pays. 0 shows no tax line.',
+											'booking-suite'
 										) }
 									/>
-
-									<FormField
-										control={ form.control }
-										name="invoiceEmail"
-										render={ ( { field } ) => (
-											<FormItem>
-												<FormLabel>
-													{ __(
-														'Email',
-														'booking-suite'
-													) }
-												</FormLabel>
-												<FormControl>
-													<Input
-														type="email"
-														{ ...field }
-														onChange={ (
-															event
-														) => {
-															setSaved( false );
-															field.onChange(
-																event
-															);
-														} }
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
+									<Field
+										form={ form }
+										name="invoiceDueDays"
+										type="number"
+										min="0"
+										max="365"
+										touched={ touched }
+										label={ __(
+											'Payment term (days)',
+											'booking-suite'
+										) }
+										description={ __(
+											'Days from the invoice date to the due date.',
+											'booking-suite'
 										) }
 									/>
 								</div>
 
-								<FormField
-									control={ form.control }
-									name="invoiceNotice"
-									render={ ( { field } ) => (
-										<FormItem>
-											<FormLabel>
-												{ __(
-													'Notice',
-													'booking-suite'
-												) }
-											</FormLabel>
-											<FormControl>
-												<Textarea
-													rows={ 2 }
-													{ ...field }
-													onChange={ ( event ) => {
-														setSaved( false );
-														field.onChange( event );
-													} }
-												/>
-											</FormControl>
-											<FormDescription>
-												{ __(
-													'Printed last, after a bold "Hinweis:" label.',
-													'booking-suite'
-												) }
-											</FormDescription>
-											<FormMessage />
-										</FormItem>
+								<Field
+									form={ form }
+									name="invoiceThanks"
+									as="textarea"
+									rows={ 2 }
+									touched={ touched }
+									label={ __(
+										'Closing line',
+										'booking-suite'
 									) }
 								/>
-							</div>
-						</CardContent>
-					</Card>
 
+								<Field
+									form={ form }
+									name="invoiceNotice"
+									as="textarea"
+									rows={ 2 }
+									touched={ touched }
+									label={ __( 'Notice', 'booking-suite' ) }
+									description={ __(
+										'Printed last, after a bold "Hinweis:" label.',
+										'booking-suite'
+									) }
+								/>
+							</Panel>
+						</TabsContent>
+					</Tabs>
+
+					{ /* Outside the tabs: one save for the lot. */ }
 					<div className="flex justify-end">
 						<Button type="submit" disabled={ isSaving }>
 							{ isSaving
@@ -564,5 +701,75 @@ export default function SettingsPage() {
 				</form>
 			</Form>
 		</div>
+	);
+}
+
+function Panel( { title, description, children } ) {
+	return (
+		<Card>
+			<CardHeader>
+				<CardTitle className="text-base">{ title }</CardTitle>
+				<CardDescription>{ description }</CardDescription>
+			</CardHeader>
+			<CardContent className="flex flex-col gap-6">
+				{ children }
+			</CardContent>
+		</Card>
+	);
+}
+
+/**
+ * One labelled control, as an input or a textarea.
+ *
+ * @param {Object}   props
+ * @param {Object}   props.form          The react-hook-form instance.
+ * @param {string}   props.name          Field name.
+ * @param {string}   props.label         Its label.
+ * @param {string}   [props.as]          'textarea' for a multi-line field.
+ * @param {Function} props.touched       Wraps onChange to clear the saved note.
+ * @param {string}   [props.description]
+ */
+function Field( {
+	form,
+	name,
+	label: fieldLabel,
+	description,
+	as,
+	touched,
+	...rest
+} ) {
+	return (
+		<FormField
+			control={ form.control }
+			name={ name }
+			render={ ( { field } ) => (
+				<FormItem>
+					<FormLabel>{ fieldLabel }</FormLabel>
+					<FormControl>
+						{ 'textarea' === as ? (
+							<Textarea
+								{ ...rest }
+								{ ...field }
+								onChange={ ( event ) =>
+									touched( field.onChange )( event )
+								}
+							/>
+						) : (
+							<Input
+								{ ...rest }
+								{ ...field }
+								onChange={ ( event ) =>
+									touched( field.onChange )( event )
+								}
+							/>
+						) }
+					</FormControl>
+					{ description && (
+						<FormDescription>{ description }</FormDescription>
+					) }
+					<FormMessage />
+				</FormItem>
+			) }
+		/>
 	);
 }

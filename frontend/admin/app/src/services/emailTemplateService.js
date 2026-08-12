@@ -46,6 +46,20 @@ export const emailTemplateService = {
 	 */
 	test: ( key, email, signal ) =>
 		http.post( `${ RESOURCE }/${ key }/test`, { email }, { signal } ),
+
+	/**
+	 * The finished email as HTML, without sending it.
+	 *
+	 * The unsaved subject and body are posted, so the preview shows the edit in
+	 * progress rather than what is currently stored.
+	 *
+	 * @param {string}      key      Template key.
+	 * @param {Object}      values   subject and body as currently edited.
+	 * @param {AbortSignal} [signal]
+	 * @return {Promise<Object>} `{ html }`, rendered by the sending code.
+	 */
+	preview: ( key, values, signal ) =>
+		http.post( `${ RESOURCE }/${ key }/preview`, values, { signal } ),
 };
 
 export default emailTemplateService;

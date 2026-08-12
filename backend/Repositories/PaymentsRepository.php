@@ -148,6 +148,61 @@ final class PaymentsRepository {
 	}
 
 	/**
+	 * What has actually been settled against a booking.
+	 *
+	 * Refunds are stored as negative amounts, so summing the settled rows nets
+	 * them off rather than counting them as income.
+	 */
+	public static function settled_for( int $booking_id ): float {
+		$paid = 0.0;
+
+		foreach ( self::for_booking( $booking_id ) as $payment ) {
+			if ( 'paid' === ( $payment['status'] ?? '' ) ) {
+				$paid += (float) ( $payment['amount'] ?? 0 );
+			}
+		}
+
+		return round( $paid, 2 );
+	}
+
+	/**
+	 * The booking's outstanding payment request, if one is waiting.
+	 *
+	 * A booking carries at most one unsettled row at a time: when the price
+	 * changes again before the guest has paid, the existing request is amended
+	 * rather than a second one raised beside it.
+	 *
+	 * @return array<string, mixed>|null
+	 */
+	public static function pending_for( int $booking_id ): ?array {
+		foreach ( self::for_booking( $booking_id ) as $payment ) {
+			if ( 'pending' === ( $payment['status'] ?? '' ) ) {
+				return self::find( (int) $payment['id'] );
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Change what an unsettled payment asks for.
+	 */
+	public static function set_amount( int $id, float $amount ): void {
+		global $wpdb;
+
+		$wpdb->update(
+			PaymentsTable::table(),
+			array(
+				'amount'     => round( $amount, 2 ),
+				'updated_at' => current_time( 'mysql', true ),
+			),
+			array( 'id' => $id ),
+			array( '%f', '%s' ),
+			array( '%d' )
+		);
+	}
+
+	/**
 	 * Give a payment its invoice number, or return the one it already has.
 	 *
 	 * Numbers run PREFIX-YYYY-NNNN and restart each calendar year, which is
@@ -188,6 +243,18 @@ final class PaymentsRepository {
 		$next = '' === $highest
 			? 1
 			: (int) substr( $highest, strlen( $stem ) ) + 1;
+
+		/*
+		 * A counter set in Settings raises the floor — for a business carrying
+		 * numbering over from whatever it invoiced with before. It can only push
+		 * the sequence forward: letting it pull numbers back would mean issuing
+		 * a number that has already been sent to someone.
+		 */
+		$floor = (int) SettingsRepository::get( SettingsRepository::INVOICE_COUNTER );
+
+		if ( $floor > $next ) {
+			$next = $floor;
+		}
 
 		$number = $stem . str_pad( (string) $next, 4, '0', STR_PAD_LEFT );
 

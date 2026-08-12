@@ -48,11 +48,22 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 
+import { cn } from '@/lib/utils';
+
 import { apartmentService, bookingService } from '../../../../services';
+import PriceBreakdown from './PriceBreakdown';
+import SlotPicker from './SlotPicker';
+import { useBookingQuote } from './useBookingQuote';
 import './BookingForm.css';
 
 const STATUSES = [ 'pending', 'reserved', 'confirmed', 'completed' ];
 const PAYMENT_STATUSES = [ 'unpaid', 'partial', 'paid', 'refunded' ];
+
+/** Auto is the default: the rates decide unless someone says otherwise. */
+const PRICE_MODES = [
+	{ value: 'auto', label: __( 'Calculate automatically', 'booking-suite' ) },
+	{ value: 'manual', label: __( 'Set the price myself', 'booking-suite' ) },
+];
 
 const today = () => new Date().toISOString().slice( 0, 10 );
 
@@ -84,6 +95,7 @@ const schema = z
 			.min( 1, __( 'At least one hour.', 'booking-suite' ) ),
 		status: z.enum( STATUSES ),
 		paymentStatus: z.enum( PAYMENT_STATUSES ),
+		priceMode: z.enum( [ 'auto', 'manual' ] ),
 		total: z.string().optional(),
 		notes: z.string().optional(),
 		firstName: z.string().optional(),
@@ -96,6 +108,19 @@ const schema = z
 		phone: z.string().optional(),
 	} )
 	.superRefine( ( values, ctx ) => {
+		// A hand-set price needs a figure; on auto the field is not even shown.
+		if ( 'manual' === values.priceMode ) {
+			const amount = Number.parseFloat( values.total );
+
+			if ( ! values.total || Number.isNaN( amount ) || amount < 0 ) {
+				ctx.addIssue( {
+					code: z.ZodIssueCode.custom,
+					path: [ 'total' ],
+					message: __( 'Enter the agreed total.', 'booking-suite' ),
+				} );
+			}
+		}
+
 		// Only the fields belonging to the chosen mode are worth checking.
 		if ( 'overnight' === values.mode ) {
 			if ( ! values.checkIn ) {
@@ -174,6 +199,12 @@ const fromBooking = ( booking ) => {
 		guests: booking.guests ?? 1,
 		status: booking.status ?? 'confirmed',
 		paymentStatus: booking.paymentStatus ?? 'unpaid',
+		/*
+		 * An existing booking opens on auto. The stored total is kept in the
+		 * field, so switching to manual starts from what was actually agreed
+		 * rather than from an empty box.
+		 */
+		priceMode: 'auto',
 		total: booking.total ? String( booking.total ) : '',
 		notes: booking.notes ?? '',
 		firstName: ( booking.customerName ?? '' ).split( ' ' )[ 0 ] ?? '',
@@ -188,7 +219,9 @@ const fromBooking = ( booking ) => {
 
 const blank = () => ( {
 	apartmentId: '',
-	mode: 'overnight',
+	// By the hour is what the business actually sells; an overnight stay is
+	// the exception, so it is not what a new booking opens on.
+	mode: 'hourly',
 	date: today(),
 	startTime: '10:00',
 	hours: 3,
@@ -197,6 +230,7 @@ const blank = () => ( {
 	guests: 1,
 	status: 'confirmed',
 	paymentStatus: 'unpaid',
+	priceMode: 'auto',
 	total: '',
 	notes: '',
 	firstName: '',
@@ -232,6 +266,51 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 	const isOvernight = 'overnight' === form.watch( 'mode' );
 	const isSaving = form.formState.isSubmitting;
 
+	// Watched together, so the quote follows every field that changes a price.
+	const [
+		watchedApartment,
+		watchedMode,
+		watchedDate,
+		watchedStartTime,
+		watchedHours,
+		watchedCheckIn,
+		watchedCheckOut,
+		watchedGuests,
+		priceMode,
+		manualTotal,
+	] = form.watch( [
+		'apartmentId',
+		'mode',
+		'date',
+		'startTime',
+		'hours',
+		'checkIn',
+		'checkOut',
+		'guests',
+		'priceMode',
+		'total',
+	] );
+
+	const isManual = 'manual' === priceMode;
+
+	const {
+		quote,
+		slots,
+		isLoading: isQuoting,
+	} = useBookingQuote(
+		{
+			apartmentId: watchedApartment,
+			mode: watchedMode,
+			date: watchedDate,
+			startTime: watchedStartTime,
+			hours: watchedHours,
+			checkIn: watchedCheckIn,
+			checkOut: watchedCheckOut,
+			guests: watchedGuests,
+		},
+		isEdit ? booking.id : undefined
+	);
+
 	const save = async ( values ) => {
 		setError( null );
 
@@ -241,6 +320,8 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 			guests: values.guests,
 			status: values.status,
 			payment_status: values.paymentStatus,
+			// On auto the server recalculates and ignores whatever is sent.
+			priceMode: values.priceMode,
 			total: values.total,
 			notes: values.notes,
 			firstName: values.firstName,
@@ -276,7 +357,14 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 				}
 			} }
 		>
-			<DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
+			{ /*
+			 * Wide rather than tall. The form has seven rows of fields and a
+			 * grid of start times; in a narrow dialog that scrolled, and the
+			 * price — the thing worth checking before saving — sat below the
+			 * fold. max-h is kept as a floor for short screens, but at this
+			 * width the content fits without it.
+			 */ }
+			<DialogContent className="max-h-[92vh] overflow-y-auto sm:max-w-4xl">
 				<DialogHeader>
 					<DialogTitle>
 						{ isEdit
@@ -295,7 +383,7 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 					<form
 						id="bks-booking-form"
 						onSubmit={ form.handleSubmit( save ) }
-						className="flex flex-col gap-6"
+						className="flex flex-col gap-4"
 					>
 						{ error && (
 							<Alert variant="destructive">
@@ -420,7 +508,7 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 							</div>
 
 							{ isOvernight ? (
-								<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+								<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
 									<FormField
 										control={ form.control }
 										name="checkIn"
@@ -464,8 +552,21 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 											</FormItem>
 										) }
 									/>
+
+									<StatusField
+										form={ form }
+										name="status"
+										label={ __(
+											'Booking status',
+											'booking-suite'
+										) }
+										values={ STATUSES }
+									/>
 								</div>
 							) : (
+								// Date, length and where the booking stands: the
+								// three things an operator sets together when
+								// taking one over the phone.
 								<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
 									<FormField
 										control={ form.control }
@@ -481,28 +582,6 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 												<FormControl>
 													<Input
 														type="date"
-														{ ...field }
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										) }
-									/>
-
-									<FormField
-										control={ form.control }
-										name="startTime"
-										render={ ( { field } ) => (
-											<FormItem>
-												<FormLabel>
-													{ __(
-														'Start time',
-														'booking-suite'
-													) }
-												</FormLabel>
-												<FormControl>
-													<Input
-														type="time"
 														{ ...field }
 													/>
 												</FormControl>
@@ -533,13 +612,59 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 											</FormItem>
 										) }
 									/>
+
+									<StatusField
+										form={ form }
+										name="status"
+										label={ __(
+											'Booking status',
+											'booking-suite'
+										) }
+										values={ STATUSES }
+									/>
 								</div>
+							) }
+
+							{ /*
+							 * The free slots run the full width of the dialog
+							 * rather than sitting under the time input: there
+							 * are thirty of them on a normal day, and in a
+							 * third of a row they wrapped into a tall, unusable
+							 * column.
+							 */ }
+							{ /*
+							 * Rendered whether or not there are slots: this is
+							 * now the only way to set the time, so SlotPicker
+							 * has to be able to say why a list is empty, and a
+							 * validation error needs somewhere to appear.
+							 */ }
+							{ ! isOvernight && (
+								<FormField
+									control={ form.control }
+									name="startTime"
+									render={ ( { field } ) => (
+										<FormItem>
+											<FormLabel>
+												{ __(
+													'Start time',
+													'booking-suite'
+												) }
+											</FormLabel>
+											<SlotPicker
+												slots={ slots }
+												value={ field.value }
+												onChange={ field.onChange }
+											/>
+											<FormMessage />
+										</FormItem>
+									) }
+								/>
 							) }
 						</Section>
 
 						<Separator />
 
-						<Section title={ __( 'Guest', 'booking-suite' ) }>
+						<Section title={ __( 'Details', 'booking-suite' ) }>
 							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 								<TextField
 									form={ form }
@@ -571,19 +696,75 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 
 						<Separator />
 
-						<Section
-							title={ __( 'Status & price', 'booking-suite' ) }
-						>
+						<Section title={ __( 'Price', 'booking-suite' ) }>
 							<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-								<StatusField
-									form={ form }
-									name="status"
-									label={ __(
-										'Booking status',
-										'booking-suite'
+								<FormField
+									control={ form.control }
+									name="priceMode"
+									render={ ( { field } ) => (
+										<FormItem className="sm:col-span-2">
+											<FormLabel>
+												{ __(
+													'How the price is set',
+													'booking-suite'
+												) }
+											</FormLabel>
+											<FormControl>
+												{ /*
+												 * Two explicit states rather
+												 * than an empty override box:
+												 * "leave it blank to
+												 * calculate" never made clear
+												 * whether saving would
+												 * recalculate. This says which
+												 * one is in charge.
+												 */ }
+												<div
+													role="radiogroup"
+													aria-label={ __(
+														'How the price is set',
+														'booking-suite'
+													) }
+													className="flex flex-wrap gap-2"
+												>
+													{ PRICE_MODES.map(
+														( option ) => (
+															<button
+																key={
+																	option.value
+																}
+																type="button"
+																role="radio"
+																aria-checked={
+																	field.value ===
+																	option.value
+																}
+																onClick={ () =>
+																	field.onChange(
+																		option.value
+																	)
+																}
+																className={ cn(
+																	'rounded-md border px-3 py-2 text-sm font-medium transition-colors',
+																	'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
+																	field.value ===
+																		option.value
+																		? 'border-primary bg-primary text-primary-foreground'
+																		: 'bg-background hover:bg-accent'
+																) }
+															>
+																{ option.label }
+															</button>
+														)
+													) }
+												</div>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
 									) }
-									values={ STATUSES }
 								/>
+
+								{ /* Where the money stands, beside how it is set. */ }
 								<StatusField
 									form={ form }
 									name="paymentStatus"
@@ -594,39 +775,37 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 									values={ PAYMENT_STATUSES }
 								/>
 
-								<FormField
-									control={ form.control }
-									name="total"
-									render={ ( { field } ) => (
-										<FormItem>
-											<FormLabel>
-												{ __(
-													'Total override',
-													'booking-suite'
-												) }
-											</FormLabel>
-											<FormControl>
-												<Input
-													type="number"
-													min="0"
-													step="0.01"
-													placeholder={ __(
-														'Calculated',
+								{ isManual && (
+									<FormField
+										control={ form.control }
+										name="total"
+										render={ ( { field } ) => (
+											<FormItem className="sm:col-span-2">
+												<FormLabel>
+													{ __(
+														'Agreed total',
 														'booking-suite'
 													) }
-													{ ...field }
-												/>
-											</FormControl>
-											<FormDescription>
-												{ __(
-													'Leave empty to use the calculated rate.',
-													'booking-suite'
-												) }
-											</FormDescription>
-											<FormMessage />
-										</FormItem>
-									) }
-								/>
+												</FormLabel>
+												<FormControl>
+													<Input
+														type="number"
+														min="0"
+														step="0.01"
+														{ ...field }
+													/>
+												</FormControl>
+												<FormDescription>
+													{ __(
+														'What the guest is charged, whatever the rates would give.',
+														'booking-suite'
+													) }
+												</FormDescription>
+												<FormMessage />
+											</FormItem>
+										) }
+									/>
+								) }
 							</div>
 						</Section>
 
@@ -639,13 +818,25 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 								render={ ( { field } ) => (
 									<FormItem>
 										<FormControl>
-											<Textarea rows={ 4 } { ...field } />
+											<Textarea rows={ 2 } { ...field } />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
 								) }
 							/>
 						</Section>
+
+						{ /*
+						 * Last on the page, immediately above the Save button:
+						 * it is the figure to check before committing, so it
+						 * belongs where the eye lands last.
+						 */ }
+						<PriceBreakdown
+							quote={ quote }
+							isLoading={ isQuoting }
+							isManual={ isManual }
+							manual={ Number.parseFloat( manualTotal ) || 0 }
+						/>
 					</form>
 				</Form>
 
@@ -675,7 +866,7 @@ export default function BookingForm( { booking = null, onClose, onSaved } ) {
 
 function Section( { title, children } ) {
 	return (
-		<section className="flex flex-col gap-4">
+		<section className="flex flex-col gap-3">
 			<h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
 				{ title }
 			</h3>

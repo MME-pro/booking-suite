@@ -41,6 +41,19 @@ final class BookingsRepository {
 		$bookings = BookingsTable::table();
 		$statuses = implode( ',', array_fill( 0, count( self::BLOCKING_STATUSES ), '%s' ) );
 
+		/*
+		 * The cooldown is turnaround time — cleaning between one guest and the
+		 * next. It is applied by widening the window being tested rather than
+		 * by padding the stored bookings, so the gap is required on both sides
+		 * of the request and nothing about what is stored has to change.
+		 */
+		$cooldown = max( 0, (int) SettingsRepository::number( SettingsRepository::COOLDOWN_MINUTES ) );
+
+		if ( $cooldown > 0 ) {
+			$starts_at = gmdate( 'Y-m-d H:i:s', strtotime( $starts_at ) - $cooldown * MINUTE_IN_SECONDS );
+			$ends_at   = gmdate( 'Y-m-d H:i:s', strtotime( $ends_at ) + $cooldown * MINUTE_IN_SECONDS );
+		}
+
 		$params = array_merge(
 			array( $apartment_id ),
 			self::BLOCKING_STATUSES,

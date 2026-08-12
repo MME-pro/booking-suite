@@ -57,13 +57,32 @@ final class SettingsController {
 		'invoicePhone'   => SettingsRepository::INVOICE_PHONE,
 		'invoiceEmail'   => SettingsRepository::INVOICE_EMAIL,
 		'invoiceNotice'  => SettingsRepository::INVOICE_NOTICE,
+		'invoiceCounter' => SettingsRepository::INVOICE_COUNTER,
+		'taxRate'        => SettingsRepository::TAX_RATE,
+		'companyName'    => SettingsRepository::COMPANY_NAME,
+		'companyAddress' => SettingsRepository::COMPANY_ADDRESS,
+		'companyPhone'   => SettingsRepository::COMPANY_PHONE,
+		'companyEmail'   => SettingsRepository::COMPANY_EMAIL,
+		'companyLogo'    => SettingsRepository::COMPANY_LOGO,
+		'adminEmail'     => SettingsRepository::ADMIN_EMAIL,
+		'bankHolder'     => SettingsRepository::BANK_HOLDER,
+		'bankName'       => SettingsRepository::BANK_NAME,
+		'bankIban'       => SettingsRepository::BANK_IBAN,
+		'bankBic'        => SettingsRepository::BANK_BIC,
+		'bankDetails'    => SettingsRepository::BANK_DETAILS,
+		'cooldownMinutes' => SettingsRepository::COOLDOWN_MINUTES,
+		'emailNotifications' => SettingsRepository::EMAIL_NOTIFICATIONS,
+		'termsUrl'       => SettingsRepository::TERMS_URL,
+		'privacyUrl'     => SettingsRepository::PRIVACY_URL,
 	);
 
-	/** Free-text invoice fields: stored as written, escaped when drawn. */
+	/** Free-text fields: stored as written, escaped when drawn. */
 	private const TEXT_KEYS = array(
 		'invoiceSender',
 		'invoiceThanks',
 		'invoiceNotice',
+		'companyAddress',
+		'bankDetails',
 	);
 
 	public static function register(): void {
@@ -139,6 +158,98 @@ final class SettingsController {
 							'type'     => 'string',
 							'required' => false,
 						),
+						'invoiceCounter' => array(
+							'type'     => 'integer',
+							'required' => false,
+							'minimum'  => 0,
+						),
+						'taxRate'        => array(
+							'type'     => 'number',
+							'required' => false,
+							'minimum'  => 0,
+							'maximum'  => 100,
+						),
+						'companyName'    => array(
+							'type'     => 'string',
+							'required' => false,
+						),
+						'companyAddress' => array(
+							'type'     => 'string',
+							'required' => false,
+						),
+						'companyPhone'   => array(
+							'type'     => 'string',
+							'required' => false,
+						),
+						'companyEmail'   => array(
+							'type'     => 'string',
+							'required' => false,
+						),
+						'companyLogo'    => array(
+							'type'              => 'integer',
+							'required'          => false,
+							'validate_callback' => static fn( $value ): bool =>
+								is_numeric( $value )
+								&& ( 0 === (int) $value || 'attachment' === get_post_type( (int) $value ) ),
+						),
+						'adminEmail'     => array(
+							'type'     => 'string',
+							'required' => false,
+						),
+						'bankHolder'     => array(
+							'type'     => 'string',
+							'required' => false,
+						),
+						'bankName'       => array(
+							'type'     => 'string',
+							'required' => false,
+						),
+						'bankIban'       => array(
+							'type'              => 'string',
+							'required'          => false,
+							/*
+							 * Length and alphabet only — an IBAN's checksum is
+							 * the bank's business, and refusing an unusual but
+							 * valid one would be worse than accepting a typo.
+							 */
+							'validate_callback' => static fn( $value ): bool =>
+								is_string( $value )
+								&& ( '' === trim( $value )
+									|| 1 === preg_match( '/^[A-Za-z]{2}[0-9A-Za-z \s]{8,40}$/', trim( $value ) ) ),
+						),
+						'bankBic'        => array(
+							'type'              => 'string',
+							'required'          => false,
+							'validate_callback' => static fn( $value ): bool =>
+								is_string( $value )
+								&& ( '' === trim( $value )
+									|| 1 === preg_match( '/^[A-Za-z0-9]{8,11}$/', trim( $value ) ) ),
+						),
+						'bankDetails'    => array(
+							'type'     => 'string',
+							'required' => false,
+						),
+						'cooldownMinutes' => array(
+							'type'     => 'integer',
+							'required' => false,
+							'minimum'  => 0,
+							// A day of turnaround is already implausible.
+							'maximum'  => 1440,
+						),
+						'emailNotifications' => array(
+							'type'     => 'boolean',
+							'required' => false,
+						),
+						'termsUrl'       => array(
+							'type'              => 'string',
+							'required'          => false,
+							'sanitize_callback' => 'esc_url_raw',
+						),
+						'privacyUrl'     => array(
+							'type'              => 'string',
+							'required'          => false,
+							'sanitize_callback' => 'esc_url_raw',
+						),
 					),
 				),
 			)
@@ -171,6 +282,24 @@ final class SettingsController {
 			'invoicePhone'   => SettingsRepository::get( SettingsRepository::INVOICE_PHONE ),
 			'invoiceEmail'   => SettingsRepository::get( SettingsRepository::INVOICE_EMAIL ),
 			'invoiceNotice'  => SettingsRepository::get( SettingsRepository::INVOICE_NOTICE ),
+			'invoiceCounter' => (int) SettingsRepository::get( SettingsRepository::INVOICE_COUNTER ),
+			'taxRate'        => (float) SettingsRepository::get( SettingsRepository::TAX_RATE ),
+			'companyName'    => SettingsRepository::get( SettingsRepository::COMPANY_NAME ),
+			'companyAddress' => SettingsRepository::get( SettingsRepository::COMPANY_ADDRESS ),
+			'companyPhone'   => SettingsRepository::get( SettingsRepository::COMPANY_PHONE ),
+			'companyEmail'   => SettingsRepository::get( SettingsRepository::COMPANY_EMAIL ),
+			// The older invoice_logo, until a company logo is chosen.
+			'companyLogo'    => SettingsRepository::logo_id(),
+			'adminEmail'     => SettingsRepository::get( SettingsRepository::ADMIN_EMAIL ),
+			'bankHolder'     => SettingsRepository::get( SettingsRepository::BANK_HOLDER ),
+			'bankName'       => SettingsRepository::get( SettingsRepository::BANK_NAME ),
+			'bankIban'       => SettingsRepository::get( SettingsRepository::BANK_IBAN ),
+			'bankBic'        => SettingsRepository::get( SettingsRepository::BANK_BIC ),
+			'bankDetails'    => SettingsRepository::get( SettingsRepository::BANK_DETAILS ),
+			'cooldownMinutes' => (int) SettingsRepository::get( SettingsRepository::COOLDOWN_MINUTES ),
+			'emailNotifications' => SettingsRepository::emails_enabled(),
+			'termsUrl'       => SettingsRepository::get( SettingsRepository::TERMS_URL ),
+			'privacyUrl'     => SettingsRepository::get( SettingsRepository::PRIVACY_URL ),
 		);
 	}
 
@@ -180,7 +309,7 @@ final class SettingsController {
 	 * @return array<string, mixed>|null
 	 */
 	private static function logo(): ?array {
-		$id = (int) SettingsRepository::get( SettingsRepository::INVOICE_LOGO );
+		$id = SettingsRepository::logo_id();
 
 		if ( ! $id || 'attachment' !== get_post_type( $id ) ) {
 			return null;
@@ -205,9 +334,20 @@ final class SettingsController {
 			}
 
 			/*
-			 * The invoice's free-text fields keep their line breaks — the sender
-			 * block is several lines and is printed line by line — so they take
-			 * the textarea sanitiser rather than the single-line one.
+			 * Booleans first: casting false to a string gives '', which reads
+			 * back as "not set" and therefore as the default — so switching
+			 * notifications off would silently leave them on.
+			 */
+			if ( is_bool( $value ) ) {
+				SettingsRepository::set( $stored_key, $value ? '1' : '0' );
+
+				continue;
+			}
+
+			/*
+			 * Free-text fields keep their line breaks — an address is several
+			 * lines and is printed line by line — so they take the textarea
+			 * sanitiser rather than the single-line one.
 			 */
 			$value = in_array( $key, self::TEXT_KEYS, true )
 				? sanitize_textarea_field( (string) $value )

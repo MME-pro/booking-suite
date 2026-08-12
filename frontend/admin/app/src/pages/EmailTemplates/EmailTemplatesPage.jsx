@@ -25,9 +25,12 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+import RichText from '@/components/RichText/RichText';
 
 import { emailTemplateService } from '../../services';
+import EmailPreview from './components/EmailPreview/EmailPreview';
 
 export default function EmailTemplatesPage() {
 	const [ templates, setTemplates ] = useState( [] );
@@ -228,22 +231,77 @@ export default function EmailTemplatesPage() {
 									/>
 								</div>
 
-								<div className="flex flex-1 flex-col gap-1.5">
-									<Label htmlFor={ `${ template.key }-body` }>
-										{ __( 'Message', 'booking-suite' ) }
-									</Label>
-									<Textarea
-										id={ `${ template.key }-body` }
-										rows={ 10 }
-										className="min-h-[12rem] flex-1 font-mono text-xs"
-										value={ value.body }
-										onChange={ ( event ) =>
-											edit( template.key, {
-												body: event.target.value,
-											} )
-										}
-									/>
-								</div>
+								{ /*
+								 * Only the message is edited here. The header,
+								 * the logo and the footer come from the master
+								 * layout, which is why Preview shows more than
+								 * what is being typed.
+								 */ }
+								<Tabs
+									defaultValue="edit"
+									className="flex flex-1 flex-col gap-1.5"
+								>
+									<div className="flex flex-wrap items-center justify-between gap-2">
+										<Label
+											htmlFor={ `${ template.key }-body` }
+										>
+											{ __( 'Message', 'booking-suite' ) }
+										</Label>
+
+										<TabsList>
+											<TabsTrigger value="edit">
+												{ __(
+													'Edit',
+													'booking-suite'
+												) }
+											</TabsTrigger>
+											<TabsTrigger value="preview">
+												{ __(
+													'Preview',
+													'booking-suite'
+												) }
+											</TabsTrigger>
+										</TabsList>
+									</div>
+
+									{ /*
+									 * forceMount keeps the editor in the DOM
+									 * while Preview is showing. TinyMCE cannot
+									 * survive being unmounted and remounted on
+									 * every tab switch.
+									 */ }
+									<TabsContent
+										value="edit"
+										forceMount
+										className="mt-0 flex-1 data-[state=inactive]:hidden"
+									>
+										<RichText
+											id={ `${ template.key }-body` }
+											rows={ 14 }
+											value={ value.body }
+											onChange={ ( body ) =>
+												edit( template.key, { body } )
+											}
+										/>
+										<p className="mt-1.5 text-xs text-muted-foreground">
+											{ __(
+												'The logo, header and footer are added automatically from Settings.',
+												'booking-suite'
+											) }
+										</p>
+									</TabsContent>
+
+									<TabsContent
+										value="preview"
+										className="mt-0 flex-1"
+									>
+										<EmailPreview
+											templateKey={ template.key }
+											subject={ value.subject }
+											body={ value.body }
+										/>
+									</TabsContent>
+								</Tabs>
 
 								<Separator />
 

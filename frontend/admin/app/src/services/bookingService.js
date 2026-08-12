@@ -42,6 +42,29 @@ export const bookingService = {
 	 */
 	update: ( id, changes, signal ) =>
 		http.put( `${ RESOURCE }/${ id }`, changes, { signal } ),
+
+	/**
+	 * Start times for a date, with the price of each.
+	 *
+	 * The admin's own endpoint, not the guest one: it offers times that have
+	 * already passed, so a walk-in can be recorded after the fact.
+	 *
+	 * @param {Object}      params             apartmentId, date, hours, guests.
+	 * @param {number}      [params.excludeId] Booking being edited, so its own
+	 *                                         window does not read as taken.
+	 * @param {AbortSignal} [signal]
+	 */
+	slots: ( params, signal ) =>
+		http.get( `${ RESOURCE }/slots`, params, { signal } ),
+
+	/**
+	 * What a stay costs, itemised, before it is saved.
+	 *
+	 * @param {Object}      values   The stay as currently entered.
+	 * @param {AbortSignal} [signal]
+	 */
+	quote: ( values, signal ) =>
+		http.post( `${ RESOURCE }/quote`, values, { signal } ),
 };
 
 export default bookingService;

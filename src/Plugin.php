@@ -16,6 +16,7 @@ use BookingSuite\Backend\APIs\CustomersController;
 use BookingSuite\Backend\APIs\EmailTemplatesController;
 use BookingSuite\Backend\APIs\ExtrasController;
 use BookingSuite\Backend\APIs\GuideController;
+use BookingSuite\Backend\APIs\HolidaysController;
 use BookingSuite\Backend\APIs\PaymentsController;
 use BookingSuite\Backend\Installer;
 use BookingSuite\Backend\Migrations\MetaToTableMigration;
@@ -81,6 +82,7 @@ final class Plugin {
 		EmailTemplatesController::register();
 		ExtrasController::register();
 		GuideController::register();
+		HolidaysController::register();
 		PaymentsController::register();
 		ReportsController::register();
 		SettingsController::register();

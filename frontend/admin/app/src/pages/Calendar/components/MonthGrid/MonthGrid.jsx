@@ -21,6 +21,8 @@ import { cn } from '@/lib/utils';
 
 import { BookingChip } from '../BookingChip';
 import { entriesForDay } from '../../data/occupancy';
+import { useHolidays } from '../../../../hooks/useHolidays';
+import { dayKey } from '../../../../lib/dates';
 
 /*
  * Every booking on a day is shown, however many there are. A "+N more" hid
@@ -78,8 +80,15 @@ export default function MonthGrid( {
 	 */
 	renderDayContent = null,
 } ) {
+	/*
+	 * Fetched here rather than by each screen, so the Calendar and Availability
+	 * both mark holidays without either having to know about them.
+	 */
+	const holidays = useHolidays( month );
+
 	const DayCell = ( { day, modifiers, className, children, ...props } ) => {
 		const ref = useRef( null );
+		const holiday = holidays[ dayKey( day.date ) ];
 
 		useEffect( () => {
 			if ( modifiers.focused ) {
@@ -108,6 +117,12 @@ export default function MonthGrid( {
 					'relative flex h-full min-h-[7rem] w-full flex-col items-stretch gap-1 p-2 text-left transition-colors md:min-h-[8.5rem]',
 					'hover:bg-muted/40 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
 					'data-[selected=true]:bg-primary/5 data-[selected=true]:ring-1 data-[selected=true]:ring-inset data-[selected=true]:ring-primary',
+					/*
+					 * A wash rather than a border or a dot: a holiday is a
+					 * property of the whole day, and it has to stay legible
+					 * under the booking chips already sitting in the cell.
+					 */
+					holiday && 'bg-amber-50 dark:bg-amber-950/20',
 					className
 				) }
 				{ ...props }
@@ -135,6 +150,20 @@ export default function MonthGrid( {
 						</span>
 					) }
 				</span>
+
+				{ /*
+				 * Named, not just marked. "Fronleichnam" tells the owner why
+				 * the day is priced at the weekend rate; a coloured dot would
+				 * leave them guessing.
+				 */ }
+				{ holiday && (
+					<span
+						title={ holiday }
+						className="truncate text-[10px] font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-500"
+					>
+						{ holiday }
+					</span>
+				) }
 
 				{ custom }
 

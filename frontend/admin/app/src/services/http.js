@@ -129,6 +129,39 @@ addErrorInterceptor( ( error ) => {
  * @param {AbortSignal} [options.signal]
  * @return {Promise<*>} Parsed response body.
  */
+/**
+ * Ask WordPress for a fresh REST nonce.
+ *
+ * A nonce is only valid for a day, and an admin screen is often left open for
+ * longer — the tab looks perfectly alive, but every write starts coming back
+ * 403. Core exposes this exact endpoint for the purpose; it needs no nonce of
+ * its own, only the login cookie.
+ *
+ * @return {Promise<string>} The new nonce, or '' if it could not be had.
+ */
+async function refreshNonce() {
+	const adminUrl = settings.adminUrl || '/wp-admin/';
+
+	try {
+		const response = await fetch(
+			`${ adminUrl }admin-ajax.php?action=rest-nonce`,
+			{ credentials: 'same-origin' }
+		);
+
+		if ( ! response.ok ) {
+			return '';
+		}
+
+		const nonce = ( await response.text() ).trim();
+
+		// The endpoint returns the bare nonce; anything else means we were
+		// handed a login page rather than a token.
+		return /^[a-z0-9]{8,12}$/i.test( nonce ) ? nonce : '';
+	} catch ( cause ) {
+		return '';
+	}
+}
+
 export async function request( options ) {
 	const config = runInterceptors( 'request', {
 		method: 'GET',
@@ -172,6 +205,29 @@ export async function request( options ) {
 	const payload = text ? JSON.parse( text ) : null;
 
 	if ( ! response.ok ) {
+		/*
+		 * A rejected nonce is recoverable and worth recovering from: the
+		 * operator is still logged in, the token simply aged out while the tab
+		 * sat open. Fetch a new one and repeat the call once, so pressing
+		 * Approve on a screen opened yesterday works rather than failing with
+		 * "your session expired".
+		 *
+		 * Guarded by `retry` so a genuine permission failure cannot loop.
+		 */
+		const rejectedNonce =
+			403 === response.status &&
+			'rest_cookie_invalid_nonce' === payload?.code;
+
+		if ( rejectedNonce && false !== config.retry ) {
+			const nonce = await refreshNonce();
+
+			if ( nonce ) {
+				settings.nonce = nonce;
+
+				return request( { ...options, retry: false } );
+			}
+		}
+
 		throw runInterceptors(
 			'error',
 			toApiError( payload, response.status ),

@@ -311,6 +311,15 @@ export default function CalendarPage() {
 						{ label }
 					</li>
 				) ) }
+
+				{ /* The wash on a day cell, explained. */ }
+				<li className="flex items-center gap-1.5 text-xs text-muted-foreground">
+					<span
+						aria-hidden="true"
+						className="h-3 w-5 rounded-sm bg-amber-100 dark:bg-amber-950/50"
+					/>
+					{ __( 'Hesse public holiday', 'booking-suite' ) }
+				</li>
 			</ul>
 
 			<Card>

@@ -215,7 +215,8 @@ final class Invoice {
 		$pdf->line( self::MARGIN, $y, self::RIGHT, $y, self::HAIRLINE );
 		$y += 18;
 
-		$sender = self::lines( SettingsRepository::get( SettingsRepository::INVOICE_SENDER ) );
+		// Built from Company Information, so the details are entered once.
+		$sender = SettingsRepository::sender_lines();
 
 		$recipient = array_values(
 			array_filter(
@@ -438,22 +439,54 @@ final class Invoice {
 	private static function totals( Pdf $pdf, array $booking, float $y ): float {
 		$total    = (float) ( $booking['total'] ?? 0 );
 		$currency = (string) ( $booking['currency'] ?? 'EUR' );
+		$settled  = self::settled( (int) ( $booking['id'] ?? 0 ) );
 
 		$y += 14;
 
-		foreach (
-			array(
-				array( __( 'Netto:', 'booking-suite' ), $total, 9, Pdf::REGULAR, self::BODY ),
-				array( __( 'Gesamt:', 'booking-suite' ), $total, 9, Pdf::REGULAR, self::BODY ),
-			) as [ $label, $amount, $size, $font, $colour ]
-		) {
+		/*
+		 * The stored total is what the guest pays, so it is gross. Where a VAT
+		 * rate is set, the net and the tax are worked back out of it rather
+		 * than added on top — adding it on would change what is charged.
+		 */
+		$rate = SettingsRepository::tax_fraction();
+		$net  = $rate > 0 ? round( $total / ( 1 + $rate ), 2 ) : $total;
+		$tax  = round( $total - $net, 2 );
+
+		$lines = array(
+			array( __( 'Netto:', 'booking-suite' ), $net ),
+		);
+
+		if ( $rate > 0 ) {
+			$lines[] = array(
+				sprintf(
+					/* translators: %s: the VAT rate as a percentage. */
+					__( 'zzgl. %s%% MwSt.:', 'booking-suite' ),
+					number_format_i18n( $rate * 100, 0 )
+				),
+				$tax,
+			);
+		}
+
+		$lines[] = array( __( 'Gesamt:', 'booking-suite' ), $total );
+
+		/*
+		 * Once something has been paid, the invoice has to say so and show what
+		 * is left. Re-issuing after the total changes is the whole point of
+		 * this: without these two lines the guest is looking at a new full
+		 * amount with no sign of what they already sent.
+		 */
+		if ( $settled > 0.005 ) {
+			$lines[] = array( __( 'Bereits bezahlt:', 'booking-suite' ), -$settled );
+		}
+
+		foreach ( $lines as [ $label, $amount ] ) {
 			$pdf->text_right(
 				$label . ' ' . self::money( $amount, $currency ),
 				self::RIGHT,
 				$y,
-				$size,
-				$font,
-				$colour
+				9,
+				Pdf::REGULAR,
+				self::BODY
 			);
 			$y += 15;
 		}
@@ -462,8 +495,14 @@ final class Invoice {
 		$pdf->line( self::RIGHT - 200, $y, self::RIGHT, $y, self::RULE );
 		$y += 10;
 
+		// With a part payment recorded, the bold figure is what is still owed.
+		$outstanding = round( $total - $settled, 2 );
+
 		$pdf->text_right(
-			__( 'Gesamtbetrag:', 'booking-suite' ) . ' ' . self::money( $total, $currency ),
+			( $settled > 0.005
+				? __( 'Offener Betrag:', 'booking-suite' )
+				: __( 'Gesamtbetrag:', 'booking-suite' ) )
+			. ' ' . self::money( max( 0, $outstanding ), $currency ),
 			self::RIGHT,
 			$y,
 			12,
@@ -472,6 +511,10 @@ final class Invoice {
 		);
 
 		return $y + 34;
+	}
+
+	private static function settled( int $booking_id ): float {
+		return $booking_id ? PaymentsRepository::settled_for( $booking_id ) : 0.0;
 	}
 
 	private static function footer( Pdf $pdf, float $y ): void {
@@ -505,6 +548,22 @@ final class Invoice {
 
 			$pdf->text( $label . ' ' . $value, self::MARGIN, $y, 9, Pdf::REGULAR, self::MUTED );
 			$y += 13;
+		}
+
+		// Where to send the money, on the document that asks for it.
+		$bank = SettingsRepository::bank_lines();
+
+		if ( $bank ) {
+			$y    += 4;
+			$label = __( 'Bankverbindung:', 'booking-suite' );
+			$left  = self::MARGIN + Pdf::width( $label . ' ', 9, Pdf::BOLD );
+
+			$pdf->text( $label, self::MARGIN, $y, 9, Pdf::BOLD, self::MUTED );
+
+			foreach ( $bank as $line ) {
+				$pdf->text( $line, $left, $y, 9, Pdf::REGULAR, self::MUTED );
+				$y += 12;
+			}
 		}
 
 		$notice = SettingsRepository::get( SettingsRepository::INVOICE_NOTICE );
@@ -615,7 +674,7 @@ final class Invoice {
 	 * be handled as a separate image type for no visible gain.
 	 */
 	private static function logo(): ?string {
-		$id = (int) SettingsRepository::get( SettingsRepository::INVOICE_LOGO );
+		$id = SettingsRepository::logo_id();
 
 		if ( ! $id ) {
 			return null;

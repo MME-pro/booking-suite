@@ -39,11 +39,25 @@ final class SlotGenerator {
 	 * the opening hours.
 	 *
 	 * @param array<string, mixed> $apartment
-	 * @param int                  $guests Only affects the price, not the fit.
+	 * @param int                  $guests  Only affects the price, not the fit.
+	 * @param array<string, mixed> $options includePast: offer times that have
+	 *                                      already gone, which the admin needs
+	 *                                      in order to record a walk-in after
+	 *                                      the event. ignoreBookingId: the
+	 *                                      booking being edited, so its own
+	 *                                      window does not read as taken.
 	 *
 	 * @return array<int, array<string, mixed>>
 	 */
-	public static function for_date( array $apartment, string $date, float $hours, int $guests ): array {
+	public static function for_date(
+		array $apartment,
+		string $date,
+		float $hours,
+		int $guests,
+		array $options = array()
+	): array {
+		$include_past = (bool) ( $options['includePast'] ?? false );
+		$ignore       = isset( $options['ignoreBookingId'] ) ? (int) $options['ignoreBookingId'] : null;
 		$step = max( 15, (int) SettingsRepository::number( SettingsRepository::SLOT_STEP ) );
 
 		$open  = new DateTimeImmutable( $date . ' ' . SettingsRepository::get( SettingsRepository::DAY_START ) );
@@ -59,8 +73,9 @@ final class SlotGenerator {
 		for ( $start = $open; $start <= $close; $start = $start->modify( "+$step minutes" ) ) {
 			$end = $start->modify( '+' . $duration . ' seconds' );
 
-			// Never offer a time that has already passed.
-			if ( $start <= $now ) {
+			// Never offer a time that has already passed — unless the caller is
+			// the admin, recording something that has already happened.
+			if ( ! $include_past && $start <= $now ) {
 				continue;
 			}
 
@@ -74,7 +89,13 @@ final class SlotGenerator {
 				'end'       => $end->format( 'H:i' ),
 				'startsAt'  => $starts_at,
 				'endsAt'    => $ends_at,
-				'available' => BookingsRepository::is_available( (int) $apartment['id'], $starts_at, $ends_at ),
+				'available' => BookingsRepository::is_available(
+					(int) $apartment['id'],
+					$starts_at,
+					$ends_at,
+					$ignore
+				),
+				'past'      => $start <= $now,
 				'total'     => $quote['subtotal'],
 			);
 		}

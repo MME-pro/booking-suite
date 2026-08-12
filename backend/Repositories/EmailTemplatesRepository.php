@@ -34,6 +34,12 @@ final class EmailTemplatesRepository {
 	public const PAYMENT_RECEIVED = 'payment_received';
 
 	/**
+	 * Sent when a booking is amended after it was invoiced and there is more
+	 * to pay — the guest who extends a three-hour stay to twelve.
+	 */
+	public const BALANCE_DUE = 'balance_due';
+
+	/**
 	 * @return string[]
 	 */
 	public static function keys(): array {
@@ -41,6 +47,7 @@ final class EmailTemplatesRepository {
 			self::BOOKING_REQUEST,
 			self::BOOKING_APPROVED,
 			self::PAYMENT_RECEIVED,
+			self::BALANCE_DUE,
 		);
 	}
 
@@ -60,6 +67,9 @@ final class EmailTemplatesRepository {
 			'{{check_out}}'       => __( 'Departure date and time', 'booking-suite' ),
 			'{{guests}}'          => __( 'Number of guests', 'booking-suite' ),
 			'{{total}}'           => __( 'Booking total, with currency', 'booking-suite' ),
+			'{{amount_paid}}'     => __( 'Settled so far, with currency', 'booking-suite' ),
+			'{{amount_due}}'      => __( 'Still to pay, with currency', 'booking-suite' ),
+			'{{invoice_no}}'      => __( 'Invoice number, once one is issued', 'booking-suite' ),
 			'{{status}}'          => __( 'Booking status', 'booking-suite' ),
 			'{{payment_status}}'  => __( 'Payment status', 'booking-suite' ),
 			'{{site_name}}'       => __( 'Your site name', 'booking-suite' ),
@@ -83,16 +93,19 @@ final class EmailTemplatesRepository {
 				'enabled'     => true,
 				'subject'     => __( 'We have your request — {{reference}}', 'booking-suite' ),
 				'body'        => __(
-					"Hello {{guest_first_name}},\n\n"
-					. "Thank you for your request. We have it, and we will confirm it shortly.\n\n"
-					. "Reference: {{reference}}\n"
-					. "Apartment: {{apartment}}\n"
-					. "Arrival: {{check_in}}\n"
-					. "Departure: {{check_out}}\n"
-					. "Guests: {{guests}}\n"
-					. "Total: {{total}}\n\n"
-					. "Nothing is due yet — we will send payment details once the booking is confirmed.\n\n"
-					. "{{site_name}}\n{{site_url}}",
+					"<h1>We have your request</h1>\n"
+					. "<p>Hello {{guest_first_name}},</p>\n"
+					. "<p>Thank you for your request. We have it, and we will confirm it shortly.</p>\n"
+					. "<table>\n"
+					. "<tr><th>Reference</th><td>{{reference}}</td></tr>\n"
+					. "<tr><th>Apartment</th><td>{{apartment}}</td></tr>\n"
+					. "<tr><th>Arrival</th><td>{{check_in}}</td></tr>\n"
+					. "<tr><th>Departure</th><td>{{check_out}}</td></tr>\n"
+					. "<tr><th>Guests</th><td>{{guests}}</td></tr>\n"
+					. "<tr><th>Total</th><td>{{total}}</td></tr>\n"
+					. "</table>\n"
+					. "<p>Nothing is due yet — we will send payment details once the booking is confirmed.</p>\n"
+					. '<p>{{site_name}}</p>',
 					'booking-suite'
 				),
 			),
@@ -105,17 +118,20 @@ final class EmailTemplatesRepository {
 				'enabled'     => true,
 				'subject'     => __( 'Your booking is confirmed — {{reference}}', 'booking-suite' ),
 				'body'        => __(
-					"Hello {{guest_first_name}},\n\n"
-					. "Good news — your booking is confirmed and the dates are yours.\n\n"
-					. "Reference: {{reference}}\n"
-					. "Apartment: {{apartment}}\n"
-					. "Arrival: {{check_in}}\n"
-					. "Departure: {{check_out}}\n"
-					. "Guests: {{guests}}\n"
-					. "Total: {{total}}\n\n"
-					. "Please transfer the total using the reference above. We will confirm as soon as it arrives.\n\n"
-					. "We look forward to having you.\n\n"
-					. "{{site_name}}\n{{site_url}}",
+					"<h1>Your booking is confirmed</h1>\n"
+					. "<p>Hello {{guest_first_name}},</p>\n"
+					. "<p>Good news — your booking is confirmed and the dates are yours.</p>\n"
+					. "<table>\n"
+					. "<tr><th>Reference</th><td>{{reference}}</td></tr>\n"
+					. "<tr><th>Apartment</th><td>{{apartment}}</td></tr>\n"
+					. "<tr><th>Arrival</th><td>{{check_in}}</td></tr>\n"
+					. "<tr><th>Departure</th><td>{{check_out}}</td></tr>\n"
+					. "<tr><th>Guests</th><td>{{guests}}</td></tr>\n"
+					. "<tr><th>Total</th><td>{{total}}</td></tr>\n"
+					. "</table>\n"
+					. "<blockquote>Please transfer the total using the reference above. We will confirm as soon as it arrives.</blockquote>\n"
+					. "<p>We look forward to having you.</p>\n"
+					. '<p>{{site_name}}</p>',
 					'booking-suite'
 				),
 			),
@@ -128,14 +144,44 @@ final class EmailTemplatesRepository {
 				'enabled'     => true,
 				'subject'     => __( 'Payment received — {{reference}}', 'booking-suite' ),
 				'body'        => __(
-					"Hello {{guest_first_name}},\n\n"
-					. "We have received your payment of {{total}}. Your stay is fully settled.\n\n"
-					. "Reference: {{reference}}\n"
-					. "Apartment: {{apartment}}\n"
-					. "Arrival: {{check_in}}\n"
-					. "Departure: {{check_out}}\n\n"
-					. "Safe travels, and see you soon.\n\n"
-					. "{{site_name}}\n{{site_url}}",
+					"<h1>Payment received</h1>\n"
+					. "<p>Hello {{guest_first_name}},</p>\n"
+					. "<p>We have received your payment of <strong>{{total}}</strong>. Your stay is fully settled.</p>\n"
+					. "<table>\n"
+					. "<tr><th>Reference</th><td>{{reference}}</td></tr>\n"
+					. "<tr><th>Apartment</th><td>{{apartment}}</td></tr>\n"
+					. "<tr><th>Arrival</th><td>{{check_in}}</td></tr>\n"
+					. "<tr><th>Departure</th><td>{{check_out}}</td></tr>\n"
+					. "</table>\n"
+					. "<p>Your invoice is attached to this email.</p>\n"
+					. "<p>Safe travels, and see you soon.</p>\n"
+					. '<p>{{site_name}}</p>',
+					'booking-suite'
+				),
+			),
+			self::BALANCE_DUE      => array(
+				'label'       => __( 'Balance due', 'booking-suite' ),
+				'description' => __(
+					'Sent when a booking is changed after it was invoiced and there is more to pay — a guest extending their stay, for instance.',
+					'booking-suite'
+				),
+				'enabled'     => true,
+				'subject'     => __( 'Updated invoice — {{reference}}', 'booking-suite' ),
+				'body'        => __(
+					"<h1>Your booking has changed</h1>\n"
+					. "<p>Hello {{guest_first_name}},</p>\n"
+					. "<p>Your booking has been updated, and there is a balance still to pay. The new invoice is attached.</p>\n"
+					. "<table>\n"
+					. "<tr><th>Reference</th><td>{{reference}}</td></tr>\n"
+					. "<tr><th>Apartment</th><td>{{apartment}}</td></tr>\n"
+					. "<tr><th>Arrival</th><td>{{check_in}}</td></tr>\n"
+					. "<tr><th>Departure</th><td>{{check_out}}</td></tr>\n"
+					. "<tr><th>New total</th><td>{{total}}</td></tr>\n"
+					. "<tr><th>Already paid</th><td>{{amount_paid}}</td></tr>\n"
+					. "<tr><th>Still to pay</th><td>{{amount_due}}</td></tr>\n"
+					. "</table>\n"
+					. "<blockquote>Please transfer <strong>{{amount_due}}</strong> using the reference above.</blockquote>\n"
+					. '<p>{{site_name}}</p>',
 					'booking-suite'
 				),
 			),

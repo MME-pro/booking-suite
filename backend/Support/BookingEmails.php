@@ -19,6 +19,8 @@ namespace BookingSuite\Backend\Support;
 
 use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Repositories\EmailTemplatesRepository;
+use BookingSuite\Backend\Repositories\PaymentsRepository;
+use BookingSuite\Backend\Repositories\SettingsRepository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -38,6 +40,11 @@ final class BookingEmails {
 	 * @return bool Whether the mail was handed to wp_mail().
 	 */
 	public static function send( string $template, int $booking_id, array $attachments = array() ): bool {
+		// The master switch in Settings, above any individual template.
+		if ( ! SettingsRepository::emails_enabled() ) {
+			return false;
+		}
+
 		$definition = EmailTemplatesRepository::find( $template );
 
 		if ( null === $definition || ! $definition['enabled'] ) {
@@ -101,17 +108,32 @@ final class BookingEmails {
 		}
 
 		/*
-		 * Templates are written as plain text, so the body is sent as text and
-		 * newlines survive. Switching to HTML later means changing the header
-		 * and running the body through wpautop, not rewriting the templates.
+		 * Sent as HTML, wrapped in the plugin's layout. A template written
+		 * before this was HTML is plain text and still works: EmailLayout runs
+		 * it through wpautop so its line breaks survive.
 		 */
+		$html = EmailLayout::wrap( (string) $mail['body'], (string) $mail['subject'] );
+
+		/*
+		 * A plain-text alternative rides along. Clients that refuse HTML show
+		 * it, and spam filters expect an HTML message to carry one — sending
+		 * HTML alone measurably hurts deliverability.
+		 */
+		$alternative = static function ( $phpmailer ) use ( $html ): void {
+			$phpmailer->AltBody = EmailLayout::to_text( $html );
+		};
+
+		add_action( 'phpmailer_init', $alternative );
+
 		$sent = wp_mail(
 			(string) $mail['to'],
 			(string) $mail['subject'],
-			(string) $mail['body'],
-			array( 'Content-Type: text/plain; charset=UTF-8' ),
+			$html,
+			array( 'Content-Type: text/html; charset=UTF-8' ),
 			$paths
 		);
+
+		remove_action( 'phpmailer_init', $alternative );
 
 		// wp_mail has read them by now, whether or not it succeeded.
 		foreach ( $paths as $path ) {
@@ -119,6 +141,56 @@ final class BookingEmails {
 		}
 
 		return $sent;
+	}
+
+	/**
+	 * Fill a template in and wrap it, without sending anything.
+	 *
+	 * The editor's preview goes through here so that what an author sees is
+	 * produced by the same code that produces the email, rather than by a
+	 * second implementation that can drift away from it.
+	 *
+	 * Placeholders are filled from the most recent booking where there is one,
+	 * so the preview shows real names and dates; on a site with no bookings yet
+	 * it falls back to examples rather than showing raw placeholder names.
+	 */
+	public static function render( string $subject, string $body ): string {
+		$tokens = self::sample_tokens();
+
+		return EmailLayout::wrap(
+			self::replace( $body, $tokens ),
+			self::replace( $subject, $tokens )
+		);
+	}
+
+	/**
+	 * @return array<string, string>
+	 */
+	private static function sample_tokens(): array {
+		$bookings = BookingsRepository::all( array() );
+		$booking  = $bookings[0] ?? null;
+
+		if ( is_array( $booking ) ) {
+			return self::tokens( $booking );
+		}
+
+		return array(
+			'{{guest_name}}'       => __( 'Anna Schmidt', 'booking-suite' ),
+			'{{guest_first_name}}' => __( 'Anna', 'booking-suite' ),
+			'{{reference}}'        => 'BKS-000000',
+			'{{apartment}}'        => __( 'Studio Rheinblick', 'booking-suite' ),
+			'{{check_in}}'         => self::date( gmdate( 'Y-m-d H:i:s' ) ),
+			'{{check_out}}'        => self::date( gmdate( 'Y-m-d H:i:s', time() + 3 * HOUR_IN_SECONDS ) ),
+			'{{guests}}'           => '2',
+			'{{total}}'            => self::money( 180.0, 'EUR' ),
+			'{{amount_paid}}'      => self::money( 60.0, 'EUR' ),
+			'{{amount_due}}'       => self::money( 120.0, 'EUR' ),
+			'{{invoice_no}}'       => 'INV-2026-0001',
+			'{{status}}'           => 'confirmed',
+			'{{payment_status}}'   => 'paid',
+			'{{site_name}}'        => (string) get_bloginfo( 'name' ),
+			'{{site_url}}'         => (string) home_url(),
+		);
 	}
 
 	/**
@@ -132,7 +204,22 @@ final class BookingEmails {
 		$name  = (string) ( $booking['customerName'] ?? '' );
 		$first = trim( explode( ' ', $name )[0] ?? '' );
 
+		$id       = (int) ( $booking['id'] ?? 0 );
+		$currency = (string) ( $booking['currency'] ?? 'EUR' );
+		$total    = (float) ( $booking['total'] ?? 0 );
+
+		// What the guest has actually sent, and what is left of the total.
+		$paid = $id ? PaymentsRepository::settled_for( $id ) : 0.0;
+		$due  = max( 0, round( $total - $paid, 2 ) );
+
+		// The number of the invoice still awaiting payment, where there is one.
+		$pending    = $id ? PaymentsRepository::pending_for( $id ) : null;
+		$invoice_no = (string) ( $pending['invoiceNo'] ?? '' );
+
 		return array(
+			'{{amount_paid}}' => self::money( $paid, $currency ),
+			'{{amount_due}}'  => self::money( $due, $currency ),
+			'{{invoice_no}}'  => $invoice_no,
 			'{{guest_name}}'       => $name,
 			'{{guest_first_name}}' => '' !== $first ? $first : $name,
 			'{{reference}}'        => (string) ( $booking['reference'] ?? '' ),

@@ -13,6 +13,7 @@ export { customerService } from './customerService';
 export { emailTemplateService } from './emailTemplateService';
 export { extraService, toExtra } from './extraService';
 export { guideService } from './guideService';
+export { holidayService } from './holidayService';
 export { paymentService } from './paymentService';
 export { reportService } from './reportService';
 export { settingsService } from './settingsService';
