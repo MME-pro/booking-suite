@@ -20,7 +20,8 @@ import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 
 import { BookingChip } from '../BookingChip';
-import { entriesForDay } from '../../data/occupancy';
+import { LockChip } from '../LockChip';
+import { blocksForDay, entriesForDay } from '../../data/occupancy';
 import { useHolidays } from '../../../../hooks/useHolidays';
 import { dayKey } from '../../../../lib/dates';
 
@@ -71,6 +72,12 @@ export default function MonthGrid( {
 	visibleIds,
 	apartmentsById,
 	locale,
+	/**
+	 * Availability locks indexed by day, from buildBlockDays(). Optional: the
+	 * Availability screen draws locks its own way through renderDayContent, so
+	 * only the Calendar passes this.
+	 */
+	blockDays = null,
 	/** Opens one booking straight from its chip, without picking the day first. */
 	onSelectBooking = null,
 	/*
@@ -101,6 +108,11 @@ export default function MonthGrid( {
 		const entries = renderDayContent
 			? []
 			: entriesForDay( occupancy, day.date, visibleIds );
+
+		const locks =
+			renderDayContent || ! blockDays
+				? []
+				: blocksForDay( blockDays, day.date, visibleIds );
 
 		return (
 			<button
@@ -167,6 +179,27 @@ export default function MonthGrid( {
 
 				{ custom }
 
+				{ /*
+				 * Locks sit above the bookings, because a lock is the state of
+				 * the day and the bookings are what is happening inside it —
+				 * reading "closed" first and then the guests is the right order
+				 * for an operator scanning the month.
+				 */ }
+				<span className="hidden flex-col gap-0.5 sm:flex">
+					{ locks.map( ( block ) => (
+						<LockChip
+							key={ `lock-${ block.id }` }
+							block={ block }
+							colour={
+								block.isMaster
+									? '#64748b'
+									: apartmentsById.get( block.apartmentId )
+											?.colour ?? '#64748b'
+							}
+						/>
+					) ) }
+				</span>
+
 				{ /* Full chips where there is room; colour bars alone on phones. */ }
 				<span className="hidden flex-col gap-0.5 sm:flex">
 					{ entries.map( ( { booking, role } ) => (
@@ -183,7 +216,24 @@ export default function MonthGrid( {
 					) ) }
 				</span>
 
-				<span className="flex flex-wrap gap-0.5 sm:hidden">
+				<span className="flex flex-wrap items-center gap-0.5 sm:hidden">
+					{ /* A lock is a square rather than a dot, so the two kinds
+					   stay apart at the one size a phone can show. */ }
+					{ locks.map( ( block ) => (
+						<span
+							key={ `lock-${ block.id }` }
+							aria-hidden="true"
+							className="h-1.5 w-1.5 rounded-[1px] ring-1 ring-inset ring-card"
+							style={ {
+								backgroundColor: block.isMaster
+									? '#64748b'
+									: apartmentsById.get( block.apartmentId )
+											?.colour ?? '#64748b',
+								opacity: 0.55,
+							} }
+						/>
+					) ) }
+
 					{ entries.map( ( { booking, role } ) => (
 						<span
 							key={ `${ booking.id }-${ role }` }
@@ -210,6 +260,21 @@ export default function MonthGrid( {
 								'booking-suite'
 							),
 							entries.length
+						) }
+					</span>
+				) }
+
+				{ locks.length > 0 && (
+					<span className="sr-only">
+						{ sprintf(
+							/* translators: %d: number of blocked apartments on this day. */
+							_n(
+								'%d apartment blocked',
+								'%d apartments blocked',
+								locks.length,
+								'booking-suite'
+							),
+							locks.length
 						) }
 					</span>
 				) }

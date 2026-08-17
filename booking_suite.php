@@ -102,6 +102,7 @@ register_activation_hook(
 	static function (): void {
 		add_option( PREFIX . 'version', VERSION );
 		Backend\Installer::install();
+		Backend\Support\IcalSync::schedule();
 		flush_rewrite_rules();
 	}
 );
@@ -109,6 +110,9 @@ register_activation_hook(
 register_deactivation_hook(
 	__FILE__,
 	static function (): void {
+		// Nothing should keep pulling portal calendars for a plugin that is
+		// switched off; the subscriptions themselves stay in the database.
+		Backend\Support\IcalSync::unschedule();
 		flush_rewrite_rules();
 	}
 );

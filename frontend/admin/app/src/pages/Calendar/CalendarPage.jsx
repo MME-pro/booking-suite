@@ -36,14 +36,17 @@ import { BookingDetail } from '../Bookings/components/BookingDetail';
 
 import { chipStyle } from './components/BookingChip';
 import { DayBookingsTable } from './components/DayBookingsTable';
+import { LockChip, isImported, lockStyle } from './components/LockChip';
 import { MonthGrid } from './components/MonthGrid';
 import {
 	ARRIVAL,
 	DEPARTURE,
+	blocksForDay,
+	buildBlockDays,
 	buildOccupancy,
 	entriesForDay,
 } from './data/occupancy';
-import { apartmentService, bookingService } from '../../services';
+import { apartmentService, blockService, bookingService } from '../../services';
 import { settings } from '../../settings';
 
 const toBcp47 = ( locale ) => String( locale || 'de_DE' ).replace( '_', '-' );
@@ -89,6 +92,7 @@ const STATUS_LEGEND = [
 export default function CalendarPage() {
 	const [ apartments, setApartments ] = useState( [] );
 	const [ bookings, setBookings ] = useState( [] );
+	const [ blocks, setBlocks ] = useState( [] );
 	const [ isLoading, setLoading ] = useState( true );
 	const [ error, setError ] = useState( null );
 	const [ selected, setSelected ] = useState( () => new Date() );
@@ -105,13 +109,22 @@ export default function CalendarPage() {
 
 		const load = async () => {
 			try {
-				const [ apartmentList, bookingPayload ] = await Promise.all( [
-					apartmentService.list( {}, controller.signal ),
-					bookingService.list( {}, controller.signal ),
-				] );
+				/*
+				 * Locks travel with the bookings because the calendar is only
+				 * honest with both: a day closed by an Airbnb import looks
+				 * identical to a free one otherwise, and the operator would
+				 * take a booking for it.
+				 */
+				const [ apartmentList, bookingPayload, blockPayload ] =
+					await Promise.all( [
+						apartmentService.list( {}, controller.signal ),
+						bookingService.list( {}, controller.signal ),
+						blockService.list( {}, controller.signal ),
+					] );
 
 				setApartments( apartmentList );
 				setBookings( bookingPayload.bookings );
+				setBlocks( blockPayload.blocks );
 				setVisibleIds(
 					new Set( apartmentList.map( ( item ) => item.id ) )
 				);
@@ -137,9 +150,27 @@ export default function CalendarPage() {
 
 	const occupancy = useMemo( () => buildOccupancy( bookings ), [ bookings ] );
 
+	/*
+	 * Portal locks only. A lock made by hand in the Availability screen is
+	 * already on screen there, next to the button that releases it, and
+	 * repeating it here filled the month with chips carrying nothing to act on.
+	 * What the Calendar is for is the dates this site did NOT close itself —
+	 * the ones Airbnb and Booking.com closed, which would otherwise be
+	 * invisible until a guest tried to book them.
+	 */
+	const blockDays = useMemo(
+		() => buildBlockDays( blocks.filter( isImported ) ),
+		[ blocks ]
+	);
+
 	const dayEntries = useMemo(
 		() => entriesForDay( occupancy, selected, visibleIds ),
 		[ occupancy, selected, visibleIds ]
+	);
+
+	const dayLocks = useMemo(
+		() => blocksForDay( blockDays, selected, visibleIds ),
+		[ blockDays, selected, visibleIds ]
 	);
 
 	const counts = useMemo( () => {
@@ -289,6 +320,7 @@ export default function CalendarPage() {
 					selected={ selected }
 					onSelect={ setSelected }
 					occupancy={ occupancy }
+					blockDays={ blockDays }
 					visibleIds={ visibleIds }
 					apartmentsById={ apartmentsById }
 					locale={ dateLocale }
@@ -311,6 +343,24 @@ export default function CalendarPage() {
 						{ label }
 					</li>
 				) ) }
+
+				{ /*
+				 * The hatch, explained. A portal lock is the one thing in a
+				 * cell that is not a booking, so the legend has to name the
+				 * treatment or a striped chip just looks like a booking that
+				 * rendered oddly.
+				 */ }
+				<li className="flex items-center gap-1.5 text-xs text-muted-foreground">
+					<span
+						aria-hidden="true"
+						className="h-3 w-5 rounded-sm"
+						style={ lockStyle( LEGEND_COLOUR ) }
+					/>
+					{ __(
+						'Blocked by a portal (Airbnb, Booking.com)',
+						'booking-suite'
+					) }
+				</li>
 
 				{ /* The wash on a day cell, explained. */ }
 				<li className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -376,6 +426,46 @@ export default function CalendarPage() {
 				</div>
 
 				<CardContent className="p-0">
+					{ /*
+					 * Portal locks head the day, above the bookings table. A
+					 * date another channel has sold is sold whether or not
+					 * anything is booked here, and burying that under an empty
+					 * table — or worse, under "Nothing booked" — is how an
+					 * operator ends up selling a date Airbnb already sold.
+					 */ }
+					{ dayLocks.length > 0 && (
+						<div className="flex flex-col gap-2 border-b bg-muted/30 px-5 py-4">
+							<h4 className="text-sm font-semibold text-card-foreground">
+								{ sprintf(
+									/* translators: %d: number of apartments blocked by a portal. */
+									_n(
+										'%d apartment blocked by a portal',
+										'%d apartments blocked by a portal',
+										dayLocks.length,
+										'booking-suite'
+									),
+									dayLocks.length
+								) }
+							</h4>
+
+							<div className="grid gap-1.5 sm:grid-cols-2 xl:grid-cols-3">
+								{ dayLocks.map( ( block ) => (
+									<LockChip
+										key={ block.id }
+										block={ block }
+										colour={
+											block.isMaster
+												? LEGEND_COLOUR
+												: apartmentsById.get(
+														block.apartmentId
+												  )?.colour ?? LEGEND_COLOUR
+										}
+									/>
+								) ) }
+							</div>
+						</div>
+					) }
+
 					{ dayEntries.length > 0 ? (
 						<DayBookingsTable
 							entries={ dayEntries }
@@ -391,10 +481,15 @@ export default function CalendarPage() {
 								{ __( 'Nothing booked', 'booking-suite' ) }
 							</h4>
 							<p className="max-w-sm text-sm text-muted-foreground">
-								{ __(
-									'No booking touches this date for the apartments currently shown.',
-									'booking-suite'
-								) }
+								{ dayLocks.length > 0
+									? __(
+											'Nothing booked here — but a portal has the apartments above, so this date is not free.',
+											'booking-suite'
+									  )
+									: __(
+											'No booking touches this date for the apartments currently shown.',
+											'booking-suite'
+									  ) }
 							</p>
 						</div>
 					) }

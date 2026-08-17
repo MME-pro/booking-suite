@@ -17,6 +17,7 @@ import { ApartmentsPage } from './pages/Apartments';
 import { BookingsPage } from './pages/Bookings';
 import { AvailabilityPage } from './pages/Availability';
 import { CalendarPage } from './pages/Calendar';
+import { CalendarSyncPage } from './pages/CalendarSync';
 import { DashboardPage } from './pages/Dashboard';
 import { CustomersPage } from './pages/Customers';
 import { EmailTemplatesPage } from './pages/EmailTemplates';
@@ -60,6 +61,10 @@ const VIEWS = {
 	availability: {
 		title: __( 'Availability', 'booking-suite' ),
 		Component: AvailabilityPage,
+	},
+	calendarSync: {
+		title: __( 'Calendar Sync', 'booking-suite' ),
+		Component: CalendarSyncPage,
 	},
 	extras: {
 		title: __( 'Extras', 'booking-suite' ),

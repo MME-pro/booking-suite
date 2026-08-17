@@ -14,6 +14,7 @@ export { emailTemplateService } from './emailTemplateService';
 export { extraService, toExtra } from './extraService';
 export { guideService } from './guideService';
 export { holidayService } from './holidayService';
+export { icalService } from './icalService';
 export { paymentService } from './paymentService';
 export { reportService } from './reportService';
 export { settingsService } from './settingsService';

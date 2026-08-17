@@ -17,8 +17,10 @@ use BookingSuite\Backend\APIs\EmailTemplatesController;
 use BookingSuite\Backend\APIs\ExtrasController;
 use BookingSuite\Backend\APIs\GuideController;
 use BookingSuite\Backend\APIs\HolidaysController;
+use BookingSuite\Backend\APIs\IcalController;
 use BookingSuite\Backend\APIs\PaymentsController;
 use BookingSuite\Backend\Installer;
+use BookingSuite\Backend\Support\IcalSync;
 use BookingSuite\Backend\Migrations\MetaToTableMigration;
 use BookingSuite\Backend\Migrations\RoomsToPostsMigration;
 use BookingSuite\Backend\Integrations\ElementorTags;
@@ -71,6 +73,9 @@ final class Plugin {
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_init', array( Installer::class, 'maybe_upgrade' ) );
 
+		// The recurring pull of subscribed portal calendars.
+		IcalSync::register();
+
 		// Runs after the post type exists, and only until it has migrated.
 		add_action( 'admin_init', array( RoomsToPostsMigration::class, 'run' ), 20 );
 		add_action( 'admin_init', array( MetaToTableMigration::class, 'run' ), 21 );
@@ -83,6 +88,7 @@ final class Plugin {
 		ExtrasController::register();
 		GuideController::register();
 		HolidaysController::register();
+		IcalController::register();
 		PaymentsController::register();
 		ReportsController::register();
 		SettingsController::register();
