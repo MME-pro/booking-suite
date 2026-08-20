@@ -274,13 +274,7 @@ final class IcalController {
 					},
 					ApartmentsRepository::all()
 				),
-				'sources'    => array_map(
-					static fn( string $source ): array => array(
-						'value' => $source,
-						'label' => IcalParser::source_label( $source ),
-					),
-					IcalParser::SOURCES
-				),
+				'sources'    => IcalParser::source_options(),
 				// So the screen can say when the next automatic pull is due,
 				// rather than leaving the operator to trust that one happens.
 				'schedule'   => array(
@@ -571,8 +565,13 @@ final class IcalController {
 	/**
 	 * Portals hand out webcal:// links; they are https once fetched, and
 	 * storing them that way keeps the check above from having to know it.
+	 *
+	 * Public because the apartment form writes a subscription too, and a link
+	 * pasted there has to be stored in exactly the shape this screen stores it
+	 * in — otherwise the same address saved from the two places would read as
+	 * two different subscriptions.
 	 */
-	private static function clean_url( string $url ): string {
+	public static function clean_url( string $url ): string {
 		$url = trim( $url );
 
 		if ( str_starts_with( strtolower( $url ), 'webcal://' ) ) {

@@ -2,11 +2,11 @@
 /**
  * Admin REST routes for bookings.
  *
- * GET /booking-suite/v1/bookings       list, with filters
- * GET /booking-suite/v1/bookings/<id>  one booking, with its extras
- *
- * Read-only for now: creating, editing and cancelling from the admin comes
- * later.
+ * GET    /booking-suite/v1/bookings         list, with filters
+ * POST   /booking-suite/v1/bookings/create  take a booking on the guest's behalf
+ * GET    /booking-suite/v1/bookings/<id>    one booking, with its extras
+ * PUT    /booking-suite/v1/bookings/<id>    move it along, or edit the stay
+ * DELETE /booking-suite/v1/bookings/<id>    erase it, and everything on it
  *
  * @package BookingSuite
  */
@@ -132,6 +132,11 @@ final class BookingsController {
 							'enum'     => BookingsTable::PAYMENT_STATUSES,
 						),
 					),
+				),
+				array(
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => array( self::class, 'destroy' ),
+					'permission_callback' => array( self::class, 'can_manage' ),
 				),
 			)
 		);
@@ -596,6 +601,41 @@ final class BookingsController {
 			array( 'id' => $id ),
 			array( '%s', '%s' ),
 			array( '%d' )
+		);
+	}
+
+	/**
+	 * Erase a booking for good.
+	 *
+	 * Nothing here is a soft delete: the row goes, and its extras and payments
+	 * with it. The screen asks first, and says what will be lost, because this
+	 * is the one action on a booking that cannot be walked back.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function destroy( WP_REST_Request $request ) {
+		$id      = (int) $request['id'];
+		$booking = BookingsRepository::find( $id );
+
+		if ( null === $booking ) {
+			return self::not_found();
+		}
+
+		if ( ! BookingsRepository::delete( $id ) ) {
+			return new WP_Error(
+				'booking_suite_delete_failed',
+				__( 'The booking could not be deleted.', 'booking-suite' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		return new WP_REST_Response(
+			array(
+				'deleted'   => true,
+				'id'        => $id,
+				'reference' => (string) $booking['reference'],
+			),
+			200
 		);
 	}
 

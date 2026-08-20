@@ -44,6 +44,18 @@ export const bookingService = {
 		http.put( `${ RESOURCE }/${ id }`, changes, { signal } ),
 
 	/**
+	 * Erase a booking, its extras and its payments.
+	 *
+	 * A hard delete with nothing behind it — the screen confirms first, because
+	 * there is no undo and no archive to fish the booking back out of.
+	 *
+	 * @param {number}      id
+	 * @param {AbortSignal} [signal]
+	 */
+	remove: ( id, signal ) =>
+		http.delete( `${ RESOURCE }/${ id }`, { signal } ),
+
+	/**
 	 * Start times for a date, with the price of each.
 	 *
 	 * The admin's own endpoint, not the guest one: it offers times that have

@@ -18,7 +18,7 @@
  */
 
 import { __, sprintf } from '@wordpress/i18n';
-import { BadgeEuro, Check, CreditCard, Receipt } from 'lucide-react';
+import { BadgeEuro, Check, CreditCard, Receipt, Trash2 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -39,6 +39,7 @@ export default function BookingCard( {
 	onApprove = null,
 	onMarkPaid = null,
 	onViewPayment = null,
+	onDelete = null,
 	busyId = null,
 	tag = null,
 } ) {
@@ -57,7 +58,8 @@ export default function BookingCard( {
 	const showMarkPaid =
 		Boolean( onMarkPaid ) && 'paid' !== booking.paymentStatus;
 	const showPayment = Boolean( onViewPayment );
-	const hasActions = showApprove || showMarkPaid || showPayment;
+	const showDelete = Boolean( onDelete );
+	const hasActions = showApprove || showMarkPaid || showPayment || showDelete;
 
 	const open = () => onSelectBooking( booking );
 
@@ -294,6 +296,29 @@ export default function BookingCard( {
 							<CreditCard className="h-3.5 w-3.5 shrink-0" />
 							<span className="truncate">
 								{ __( 'Payment', 'booking-suite' ) }
+							</span>
+						</Button>
+					) }
+
+					{ /*
+					 * The one action here that takes no share of the row. The
+					 * others are things an operator does all day and want their
+					 * words; this one is reached for rarely, must not be hit by
+					 * accident on a phone, and would push the useful buttons
+					 * into a quarter of the width if it claimed a quarter.
+					 */ }
+					{ showDelete && (
+						<Button
+							size="sm"
+							variant="ghost"
+							className="h-8 w-8 shrink-0 p-0 text-destructive hover:bg-destructive/10 hover:text-destructive"
+							disabled={ isBusy }
+							onClick={ () => onDelete( booking ) }
+							title={ __( 'Delete booking', 'booking-suite' ) }
+						>
+							<Trash2 className="h-3.5 w-3.5" />
+							<span className="sr-only">
+								{ __( 'Delete booking', 'booking-suite' ) }
 							</span>
 						</Button>
 					) }

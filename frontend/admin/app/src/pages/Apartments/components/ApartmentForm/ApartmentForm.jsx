@@ -11,11 +11,20 @@
  */
 
 import { useState } from 'react';
-import { __ } from '@wordpress/i18n';
-import { useForm } from 'react-hook-form';
+import { __, sprintf } from '@wordpress/i18n';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { AlertCircle, HelpCircle } from 'lucide-react';
+import {
+	AlertCircle,
+	Check,
+	Copy,
+	HelpCircle,
+	Link2,
+	Loader2,
+	Plus,
+	Trash2,
+} from 'lucide-react';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -56,11 +65,15 @@ import {
 	TooltipTrigger,
 } from '@/components/ui/tooltip';
 
+import { copyToClipboard } from '@/lib/clipboard';
+
 import { ImageUpload } from '../../../../components';
-import { apartmentService } from '../../../../services';
+import { settings } from '../../../../settings';
+import { apartmentService, icalService } from '../../../../services';
 import {
 	MAX_CAPACITY,
 	MAX_LENGTH_191,
+	MAX_LENGTH_URL,
 	MIN_CAPACITY,
 	cleaningOptions,
 	emptyApartment,
@@ -93,6 +106,34 @@ const numericString = ( { min, max, message } ) =>
 		);
 	}, message );
 
+/**
+ * One calendar subscription: an apartment, a portal, and the .ics it publishes.
+ *
+ * The last-sync fields are carried through the form untouched. They are not
+ * editable and are never sent back — the row shows them so an operator can see
+ * at a glance which subscription is the one that has stopped working.
+ */
+const feedSchema = z.object( {
+	id: z.coerce.number().optional(),
+	source: z.string().min( 1 ),
+	url: z
+		.string()
+		.min( 1, __( 'Paste the calendar link.', 'booking-suite' ) )
+		.refine(
+			( value ) => /^(https?|webcal):\/\/\S+$/i.test( value.trim() ),
+			__(
+				'That should be a link starting with https:// or webcal://',
+				'booking-suite'
+			)
+		),
+	name: z.string().max( MAX_LENGTH_191 ).optional(),
+	active: z.boolean(),
+	lastSyncAt: z.string().optional(),
+	lastStatus: z.string().optional(),
+	lastMessage: z.string().optional(),
+	lastEventCount: z.coerce.number().optional(),
+} );
+
 const schema = z.object( {
 	name: z
 		.string()
@@ -120,6 +161,7 @@ const schema = z.object( {
 		min: 0,
 		message: __( 'Enter a rate of 0 or more.', 'booking-suite' ),
 	} ),
+	icalFeeds: z.array( feedSchema ),
 	internalShortLink: z.string().max( MAX_LENGTH_191 ).optional(),
 	bookingShortLink: z.string().max( MAX_LENGTH_191 ).optional(),
 	description: z.string().optional(),
@@ -142,6 +184,10 @@ const fromApartment = ( apartment ) => ( {
 	...apartment,
 	capacity: String( apartment.capacity ?? '' ),
 	cleaningMin: String( apartment.cleaningMin ?? '' ),
+	icalFeeds: ( apartment.icalFeeds ?? [] ).map( ( feed ) => ( {
+		...feed,
+		name: feed.name ?? '',
+	} ) ),
 } );
 
 export default function ApartmentForm( {
@@ -504,6 +550,21 @@ export default function ApartmentForm( {
 
 						<Separator />
 
+						{ /* The apartment's two ends of the channel manager. */ }
+						<Section
+							title={ __( 'Calendar sync', 'booking-suite' ) }
+							description={ __(
+								'Keep this apartment in step with Airbnb, Booking.com and anywhere else it is listed. Subscribe to as many calendars as it has portals, and publish one of its own.',
+								'booking-suite'
+							) }
+						>
+							<SubscriptionList form={ form } />
+
+							<ExportLinkField apartment={ apartment } />
+						</Section>
+
+						<Separator />
+
 						{ /* description */ }
 						<Section
 							title={ __( 'Description', 'booking-suite' ) }
@@ -591,6 +652,437 @@ export default function ApartmentForm( {
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
+	);
+}
+
+/**
+ * Every calendar this apartment reads, as rows you can add to and take away.
+ *
+ * The whole list is part of the apartment's form values, so a subscription is
+ * added, amended and removed by saving the apartment — the same Save, the same
+ * Cancel. Reaching for the feed endpoints directly as each row changed would be
+ * fewer moving parts, but it would also mean a row added and then abandoned
+ * with Cancel had already been created, and a new apartment could not carry any
+ * rows at all: there is nothing to attach them to until it exists.
+ *
+ * The server owns the reconciliation. This sends the list it wants to end up
+ * with, and ApartmentsController works out which rows are new, changed or gone.
+ *
+ * @param {Object} props
+ * @param {Object} props.form The parent react-hook-form instance.
+ */
+function SubscriptionList( { form } ) {
+	/*
+	 * `keyName` is not cosmetic. useFieldArray writes React's key into `id` by
+	 * default, and `id` here is the subscription's own database id — the thing
+	 * that decides whether a row is updated or inserted. Letting the two share
+	 * a name would hand the server a render key and have it create duplicates.
+	 */
+	const { fields, append, remove } = useFieldArray( {
+		control: form.control,
+		name: 'icalFeeds',
+		keyName: 'fieldKey',
+	} );
+
+	const sources = settings.icalSources?.length
+		? settings.icalSources
+		: [ { value: 'other', label: __( 'Calendar', 'booking-suite' ) } ];
+
+	return (
+		<div className="flex flex-col gap-3">
+			<div className="flex flex-col gap-1">
+				<span className="text-sm font-medium leading-none">
+					{ __( 'Subscriptions (import)', 'booking-suite' ) }
+				</span>
+				<p className="text-xs text-muted-foreground">
+					{ __(
+						'Dates these calendars have sold are pulled in and blocked here, so the apartment cannot be booked twice. Read automatically on a schedule; nothing is sent back to the portal.',
+						'booking-suite'
+					) }
+				</p>
+			</div>
+
+			{ ! fields.length && (
+				<p className="rounded-lg border border-dashed px-3 py-4 text-center text-xs text-muted-foreground">
+					{ __(
+						'No calendars subscribed. Add one to block the dates another portal has already sold.',
+						'booking-suite'
+					) }
+				</p>
+			) }
+
+			{ fields.map( ( field, index ) => (
+				<div
+					key={ field.fieldKey }
+					className="flex flex-col gap-3 rounded-lg border p-3"
+				>
+					{ /*
+					 * The id travels as a hidden input rather than being left
+					 * to the field array's default values, so what the server
+					 * receives is exactly what is on screen — a saved row keeps
+					 * its id and is updated, a new one has none and is created.
+					 */ }
+					<input
+						type="hidden"
+						{ ...form.register( `icalFeeds.${ index }.id` ) }
+					/>
+
+					<div className="flex items-end gap-2">
+						<FormField
+							control={ form.control }
+							name={ `icalFeeds.${ index }.source` }
+							render={ ( { field: sourceField } ) => (
+								<FormItem className="flex-1">
+									<FormLabel>
+										{ __( 'Portal', 'booking-suite' ) }
+									</FormLabel>
+									<Select
+										value={ sourceField.value }
+										onValueChange={ sourceField.onChange }
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{ sources.map( ( source ) => (
+												<SelectItem
+													key={ source.value }
+													value={ source.value }
+												>
+													{ source.label }
+												</SelectItem>
+											) ) }
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							) }
+						/>
+
+						<Button
+							type="button"
+							size="icon"
+							variant="ghost"
+							className="shrink-0 text-destructive hover:bg-destructive/10 hover:text-destructive"
+							onClick={ () => remove( index ) }
+							title={ __(
+								'Remove this subscription',
+								'booking-suite'
+							) }
+						>
+							<Trash2 className="h-4 w-4" />
+							<span className="sr-only">
+								{ __(
+									'Remove this subscription',
+									'booking-suite'
+								) }
+							</span>
+						</Button>
+					</div>
+
+					<FormField
+						control={ form.control }
+						name={ `icalFeeds.${ index }.url` }
+						render={ ( { field: urlField } ) => (
+							<FormItem>
+								<FormLabel>
+									{ __( 'Calendar link', 'booking-suite' ) }
+								</FormLabel>
+								<FormControl>
+									<Input
+										{ ...urlField }
+										type="url"
+										inputMode="url"
+										maxLength={ MAX_LENGTH_URL }
+										autoComplete="off"
+										spellCheck="false"
+										placeholder="https://www.airbnb.com/calendar/ical/…"
+										className="font-mono text-xs"
+									/>
+								</FormControl>
+								<FormDescription>
+									{ __(
+										'Airbnb: Calendar → Availability → Connect calendars. Booking.com: Rates & Availability → Sync calendars.',
+										'booking-suite'
+									) }
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						) }
+					/>
+
+					<div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+						<FormField
+							control={ form.control }
+							name={ `icalFeeds.${ index }.name` }
+							render={ ( { field: nameField } ) => (
+								<FormItem>
+									<FormLabel>
+										{ __(
+											'Label (optional)',
+											'booking-suite'
+										) }
+									</FormLabel>
+									<FormControl>
+										<Input
+											{ ...nameField }
+											maxLength={ MAX_LENGTH_191 }
+											placeholder={ __(
+												'e.g. Studio · Airbnb',
+												'booking-suite'
+											) }
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							) }
+						/>
+
+						<FormField
+							control={ form.control }
+							name={ `icalFeeds.${ index }.active` }
+							render={ ( { field: activeField } ) => (
+								<FormItem className="flex flex-row items-center gap-2 space-y-0 sm:pb-2">
+									<FormControl>
+										<Checkbox
+											checked={ activeField.value }
+											onCheckedChange={
+												activeField.onChange
+											}
+										/>
+									</FormControl>
+									<FormLabel className="font-normal">
+										{ __(
+											'Sync automatically',
+											'booking-suite'
+										) }
+									</FormLabel>
+								</FormItem>
+							) }
+						/>
+					</div>
+
+					<SyncStatus feed={ field } />
+				</div>
+			) ) }
+
+			<Button
+				type="button"
+				size="sm"
+				variant="outline"
+				className="w-fit"
+				onClick={ () =>
+					append( {
+						id: 0,
+						source: sources[ 0 ].value,
+						url: '',
+						name: '',
+						active: true,
+					} )
+				}
+			>
+				<Plus className="h-4 w-4" />
+				{ __( 'Add subscription', 'booking-suite' ) }
+			</Button>
+		</div>
+	);
+}
+
+/**
+ * How the last pull went, for a subscription that has had one.
+ *
+ * A subscription that has quietly stopped working looks exactly like one that
+ * is fine — the link is still there, the dates simply stop arriving. This is
+ * the only thing on the row that says which is which, so the failure carries
+ * the portal's own message rather than a tidied-up version of it.
+ *
+ * @param {Object} props
+ * @param {Object} props.feed The row as it was loaded.
+ */
+function SyncStatus( { feed } ) {
+	if ( ! feed.lastSyncAt ) {
+		return (
+			<p className="text-xs text-muted-foreground">
+				{ feed.id
+					? __( 'Not read yet.', 'booking-suite' )
+					: __(
+							'Saved with the apartment, then read on the next scheduled sync.',
+							'booking-suite'
+					  ) }
+			</p>
+		);
+	}
+
+	const failed = 'error' === feed.lastStatus;
+
+	return (
+		<p
+			className={ `text-xs ${
+				failed ? 'text-destructive' : 'text-muted-foreground'
+			}` }
+		>
+			{ failed
+				? sprintf(
+						/* translators: %s: the reason the last read failed. */
+						__( 'Last read failed: %s', 'booking-suite' ),
+						feed.lastMessage ||
+							__( 'no reason given', 'booking-suite' )
+				  )
+				: sprintf(
+						/* translators: 1: number of dated entries read, 2: when it was read. */
+						__( 'Last read %1$d entries on %2$s', 'booking-suite' ),
+						feed.lastEventCount ?? 0,
+						feed.lastSyncAt
+				  ) }
+		</p>
+	);
+}
+
+/**
+ * The address portals read this apartment's booked dates at.
+ *
+ * Not a form field. The link is minted by its own endpoint, because creating
+ * it puts a live public URL into the world and that is a decision of its own
+ * rather than a side effect of saving a rate — and because an apartment that
+ * does not exist yet has nothing to publish.
+ *
+ * @param {Object} props
+ * @param {Object} [props.apartment] The stored apartment, or null when adding.
+ */
+function ExportLinkField( { apartment } ) {
+	const [ url, setUrl ] = useState( apartment?.icalExportUrl ?? '' );
+	const [ isBusy, setBusy ] = useState( false );
+	const [ copied, setCopied ] = useState( false );
+	const [ error, setError ] = useState( null );
+
+	const publish = async () => {
+		setBusy( true );
+		setError( null );
+
+		try {
+			const result = await icalService.exportLink( apartment.id );
+
+			setUrl( result.exportUrl );
+		} catch ( cause ) {
+			setError( cause.message );
+		} finally {
+			setBusy( false );
+		}
+	};
+
+	const copy = async () => {
+		if ( ! ( await copyToClipboard( url ) ) ) {
+			setError(
+				__(
+					'Could not copy automatically — select the link and copy it by hand.',
+					'booking-suite'
+				)
+			);
+
+			return;
+		}
+
+		setCopied( true );
+		setError( null );
+
+		window.setTimeout( () => setCopied( false ), 2000 );
+	};
+
+	return (
+		<div className="flex flex-col gap-2">
+			<span className="text-sm font-medium leading-none">
+				{ __( 'Export link (.ics)', 'booking-suite' ) }
+			</span>
+
+			{ /*
+			 * There is nothing to publish until the apartment has an id, so a
+			 * new one is told when the link arrives rather than shown a button
+			 * that cannot work.
+			 */ }
+			{ ! apartment && (
+				<p className="text-xs text-muted-foreground">
+					{ __(
+						'Save the apartment first — the export link can be created once it exists.',
+						'booking-suite'
+					) }
+				</p>
+			) }
+
+			{ apartment && ! url && (
+				<>
+					<Button
+						type="button"
+						size="sm"
+						variant="outline"
+						className="w-fit"
+						disabled={ isBusy }
+						onClick={ publish }
+					>
+						{ isBusy ? (
+							<Loader2 className="h-4 w-4 animate-spin" />
+						) : (
+							<Link2 className="h-4 w-4" />
+						) }
+						{ __( 'Create export link', 'booking-suite' ) }
+					</Button>
+					<p className="text-xs text-muted-foreground">
+						{ __(
+							'Not published yet. Creating the link makes this apartment’s booked dates readable by anyone holding it — it says when the apartment is taken, never who by.',
+							'booking-suite'
+						) }
+					</p>
+				</>
+			) }
+
+			{ apartment && url && (
+				<>
+					<div className="flex items-center gap-2">
+						<Input
+							readOnly
+							value={ url }
+							onFocus={ ( event ) => event.target.select() }
+							aria-label={ __(
+								'Export link for this apartment',
+								'booking-suite'
+							) }
+							className="font-mono text-xs"
+						/>
+						<Button
+							type="button"
+							size="icon"
+							variant="outline"
+							className="shrink-0"
+							onClick={ copy }
+							title={ __( 'Copy link', 'booking-suite' ) }
+						>
+							{ copied ? (
+								<Check className="h-4 w-4 text-success" />
+							) : (
+								<Copy className="h-4 w-4" />
+							) }
+							<span className="sr-only">
+								{ __( 'Copy link', 'booking-suite' ) }
+							</span>
+						</Button>
+					</div>
+					<p className="text-xs text-muted-foreground">
+						{ __(
+							'Give this to Airbnb or Booking.com and they will block the dates this site has taken. Treat it as private; it can be replaced on the Calendar sync screen if it gets out.',
+							'booking-suite'
+						) }
+					</p>
+				</>
+			) }
+
+			{ error && (
+				<Alert variant="destructive">
+					<AlertCircle className="h-4 w-4" />
+					<AlertDescription>{ error }</AlertDescription>
+				</Alert>
+			) }
+		</div>
 	);
 }
 

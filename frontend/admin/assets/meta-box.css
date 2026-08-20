@@ -125,3 +125,109 @@
 		grid-template-columns: 1fr;
 	}
 }
+
+/* Calendar sync: the subscriptions this apartment reads, and the link it
+   publishes. Rows are cards rather than a table, because each is four fields
+   and a status line — a table of those is unreadable at any width. */
+
+.bks-meta__sync {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding: 14px 16px;
+	margin-bottom: 12px;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	background: #f6f7f7;
+}
+
+.bks-meta__feeds,
+.bks-meta__export {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+}
+
+.bks-meta__feed-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.bks-meta__feed {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin: 0;
+	padding: 12px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.bks-meta__feed-head,
+.bks-meta__feed-foot {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.bks-meta__feed-head .bks-meta__field,
+.bks-meta__feed-foot .bks-meta__field {
+	flex: 1 1 200px;
+}
+
+.bks-meta__feed-remove {
+	padding: 0;
+	color: #b32d2e;
+	cursor: pointer;
+}
+
+.bks-meta__feed-active {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding-bottom: 4px;
+	white-space: nowrap;
+}
+
+.bks-meta__feed-url {
+	width: 100%;
+	font-family: Menlo, Consolas, monaco, monospace;
+	font-size: 12px;
+}
+
+.bks-meta__feed-status {
+	margin: 0;
+	color: #646970;
+	font-size: 12px;
+}
+
+.bks-meta__feed-status.is-error {
+	color: #b32d2e;
+}
+
+.bks-meta__feed-empty {
+	width: 100%;
+	margin: 0;
+	padding: 14px;
+	border: 1px dashed #c3c4c7;
+	border-radius: 4px;
+	color: #646970;
+	text-align: center;
+}
+
+.bks-meta__export input[type="url"] {
+	max-width: 520px;
+}
+
+.bks-meta__sublabel {
+	font-weight: 600;
+}

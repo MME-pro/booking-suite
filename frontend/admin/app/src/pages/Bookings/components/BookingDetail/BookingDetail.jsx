@@ -10,7 +10,7 @@
 
 import { useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
-import { ArrowLeft, Mail, Phone, Pencil } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, Pencil, Trash2 } from 'lucide-react';
 
 import {
 	AlertDialog,
@@ -112,6 +112,7 @@ export default function BookingDetail( {
 	booking: initial,
 	onBack,
 	onEdit,
+	onDelete = null,
 	onUpdated,
 } ) {
 	const [ booking, setBooking ] = useState( initial );
@@ -258,6 +259,25 @@ export default function BookingDetail( {
 							>
 								<Pencil className="h-4 w-4" />
 								{ __( 'Edit booking', 'booking-suite' ) }
+							</Button>
+						) }
+
+						{ /*
+						 * Deleting is confirmed by whichever screen owns the
+						 * list, not here: the booking is about to stop
+						 * existing, and this component would be left showing a
+						 * record that is gone. It hands the booking over and
+						 * lets the page decide what to show next.
+						 */ }
+						{ onDelete && (
+							<Button
+								variant="outline"
+								className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+								disabled={ isBusy }
+								onClick={ () => onDelete( booking ) }
+							>
+								<Trash2 className="h-4 w-4" />
+								{ __( 'Delete booking', 'booking-suite' ) }
 							</Button>
 						) }
 

@@ -16,6 +16,9 @@ export const DEFAULT_COLOUR = '#3858e9';
 /** varchar(191) on `name` and both short links. */
 export const MAX_LENGTH_191 = 191;
 
+/** varchar(500) on the subscription's `url` column. */
+export const MAX_LENGTH_URL = 500;
+
 /** `capacity` is smallint unsigned; one guest is the column default. */
 export const MIN_CAPACITY = 1;
 export const MAX_CAPACITY = 65535;
@@ -47,4 +50,5 @@ export const emptyApartment = () => ( {
 	weekdayRate: '0.00',
 	weekendRate: '0.00',
 	active: true,
+	icalFeeds: [],
 } );

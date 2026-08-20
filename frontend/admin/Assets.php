@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace BookingSuite\Frontend\Admin;
 
 use BookingSuite\Backend\PostTypes\ApartmentPostType;
+use BookingSuite\Backend\Support\IcalParser;
 use BookingSuite\Backend\Support\Pwa;
 
 use const BookingSuite\PLUGIN_DIR;
@@ -116,6 +117,13 @@ final class Assets {
 				// Registered by the app; see Pwa for why it is scoped to wp-admin.
 				'workerUrl'  => esc_url_raw( Pwa::worker_url() ),
 				'adminPath'  => (string) wp_parse_url( admin_url(), PHP_URL_PATH ),
+				/*
+				 * The portals a calendar subscription can name. Handed over
+				 * with the bootstrap rather than fetched, because the
+				 * apartment form needs them the moment it opens and they are
+				 * a fixed list that changes only when this plugin does.
+				 */
+				'icalSources' => IcalParser::source_options(),
 			)
 		);
 	}

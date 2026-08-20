@@ -26,6 +26,17 @@ export const toApartment = ( row ) => ( {
 	weekdayRate: String( row.weekday_rate ?? 0 ),
 	weekendRate: String( row.weekend_rate ?? 0 ),
 	active: Boolean( row.active ),
+	/*
+	 * None of this is a column on the apartment. The subscriptions are the
+	 * calendars it reads other portals' sold dates from; the export link is
+	 * the address portals read this apartment's own booked dates at, and is
+	 * empty until the operator publishes it. All of it rides along on the row
+	 * so the form can show it without a second request. The REST layer already
+	 * casts a subscription to camelCase, so the list passes straight through.
+	 */
+	icalFeeds: row.ical_feeds ?? [],
+	icalExportUrl: row.ical_export_url ?? '',
+	icalFallbackUrl: row.ical_fallback_url ?? '',
 	createdAt: row.created_at,
 	updatedAt: row.updated_at,
 } );
@@ -98,6 +109,25 @@ export const toPayload = ( values ) => {
 
 	if ( has( 'active' ) ) {
 		payload.active = Boolean( values.active );
+	}
+
+	/*
+	 * Sent only when the form actually carries the list, because an empty list
+	 * is a real instruction here — it unsubscribes everything — and a screen
+	 * that knows nothing about calendars must not issue it by omission.
+	 *
+	 * Only the five writable fields go back. The last-sync columns the form
+	 * carries for display are the server's own record of what happened, and
+	 * posting them would invite it to trust the browser about its own history.
+	 */
+	if ( has( 'icalFeeds' ) ) {
+		payload.ical_feeds = values.icalFeeds.map( ( feed ) => ( {
+			id: Number( feed.id ) || 0,
+			name: String( feed.name ?? '' ).trim(),
+			url: String( feed.url ?? '' ).trim(),
+			source: feed.source,
+			active: Boolean( feed.active ),
+		} ) );
 	}
 
 	return payload;

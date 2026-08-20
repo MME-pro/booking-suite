@@ -17,6 +17,8 @@ const defaults = {
 	assetsUrl: '',
 	workerUrl: '',
 	adminPath: '/wp-admin/',
+	/** Portal options for a calendar subscription; see Assets.php. */
+	icalSources: [],
 };
 
 export const settings = {

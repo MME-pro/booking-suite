@@ -17,6 +17,16 @@ import {
 	TrendingUp,
 } from 'lucide-react';
 
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -68,6 +78,9 @@ export default function BookingsPage() {
 
 	/** The row a quick action is currently working on. */
 	const [ busyId, setBusyId ] = useState( null );
+
+	/** The booking awaiting delete confirmation, if any. */
+	const [ pendingDelete, setPendingDelete ] = useState( null );
 
 	const load = useCallback( async ( signal ) => {
 		setLoading( true );
@@ -166,6 +179,44 @@ export default function BookingsPage() {
 		}
 	};
 
+	/*
+	 * Erase a booking. Unlike the quick actions this cannot be applied to the
+	 * row in place — there is no row afterwards — so it drops out of the list
+	 * and, if the detail screen was open on it, out of that too.
+	 *
+	 * The list is reloaded rather than only filtered, because the status tab
+	 * counts come from the server and would otherwise still count it.
+	 */
+	const confirmDelete = async () => {
+		const booking = pendingDelete;
+
+		if ( ! booking ) {
+			return;
+		}
+
+		setPendingDelete( null );
+		setBusyId( booking.id );
+
+		try {
+			await bookingService.remove( booking.id );
+
+			setBookings( ( current ) =>
+				current.filter( ( item ) => item.id !== booking.id )
+			);
+
+			setSelectedBooking( ( current ) =>
+				current?.id === booking.id ? null : current
+			);
+
+			setError( null );
+			load();
+		} catch ( cause ) {
+			setError( cause.message );
+		} finally {
+			setBusyId( null );
+		}
+	};
+
 	// A booking changed: refresh the row in place, then reload so the status
 	// tab counts follow.
 	const applyUpdate = ( updated ) => {
@@ -182,6 +233,52 @@ export default function BookingsPage() {
 		load();
 	};
 
+	/*
+	 * One dialog, rendered by both branches below. What it warns about is the
+	 * part that has no equivalent anywhere else in this admin: every other way
+	 * of taking a booking off the board keeps the booking, and this one does
+	 * not.
+	 */
+	const deleteDialog = (
+		<AlertDialog
+			open={ null !== pendingDelete }
+			onOpenChange={ ( open ) => ! open && setPendingDelete( null ) }
+		>
+			<AlertDialogContent>
+				<AlertDialogHeader>
+					<AlertDialogTitle>
+						{ __( 'Delete this booking?', 'booking-suite' ) }
+					</AlertDialogTitle>
+					<AlertDialogDescription>
+						{ pendingDelete &&
+							sprintf(
+								/* translators: 1: booking reference, 2: guest name. */
+								__(
+									'%1$s (%2$s) will be erased for good, together with its payments and invoices. Nothing is kept and this cannot be undone. To free the dates without losing the booking, release it instead.',
+									'booking-suite'
+								),
+								pendingDelete.reference ||
+									`#${ pendingDelete.id }`,
+								pendingDelete.customerName ||
+									__( 'Guest', 'booking-suite' )
+							) }
+					</AlertDialogDescription>
+				</AlertDialogHeader>
+				<AlertDialogFooter>
+					<AlertDialogCancel>
+						{ __( 'Cancel', 'booking-suite' ) }
+					</AlertDialogCancel>
+					<AlertDialogAction
+						onClick={ confirmDelete }
+						className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+					>
+						{ __( 'Delete booking', 'booking-suite' ) }
+					</AlertDialogAction>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</AlertDialog>
+	);
+
 	// The detail view replaces the list rather than sitting over it, so it
 	// reads as its own page.
 	if ( selectedBooking ) {
@@ -191,6 +288,7 @@ export default function BookingsPage() {
 					booking={ selectedBooking }
 					onEdit={ () => setEditing( selectedBooking ) }
 					onBack={ () => setSelectedBooking( null ) }
+					onDelete={ setPendingDelete }
 					onUpdated={ applyUpdate }
 				/>
 
@@ -204,6 +302,8 @@ export default function BookingsPage() {
 						} }
 					/>
 				) }
+
+				{ deleteDialog }
 			</>
 		);
 	}
@@ -451,6 +551,7 @@ export default function BookingsPage() {
 								} )
 							}
 							onViewPayment={ setPayingBooking }
+							onDelete={ setPendingDelete }
 							emptyContent={
 								<EmptyBookings
 									title={ __(
@@ -491,6 +592,8 @@ export default function BookingsPage() {
 					} }
 				/>
 			) }
+
+			{ deleteDialog }
 
 			{ payingBooking && (
 				<PaymentDialog

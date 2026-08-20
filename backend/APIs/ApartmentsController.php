@@ -16,7 +16,10 @@ declare( strict_types=1 );
 namespace BookingSuite\Backend\APIs;
 
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
+use BookingSuite\Backend\Repositories\IcalFeedsRepository;
 use BookingSuite\Backend\Schemas\RoomsTable;
+use BookingSuite\Backend\Support\IcalFeed;
+use BookingSuite\Backend\Support\IcalParser;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -127,6 +130,12 @@ final class ApartmentsController {
 	 * Attachment ids alone cannot be rendered, so each row carries resolved
 	 * thumbnails alongside the raw `images` column.
 	 *
+	 * The calendar sync data rides along for the same reason: none of it is a
+	 * column on the apartment — the subscriptions are rows in their own table,
+	 * the export link is derived from a token — but the apartment form owns
+	 * all of it, and making it fetch them separately would mean two more round
+	 * trips for every apartment listed.
+	 *
 	 * @param array<string, mixed> $apartment
 	 *
 	 * @return array<string, mixed>
@@ -151,6 +160,20 @@ final class ApartmentsController {
 		}
 
 		$apartment['images_data'] = $resolved;
+
+		$id = (int) $apartment['id'];
+
+		$apartment['ical_feeds'] = IcalFeedsRepository::for_apartment( $id );
+
+		/*
+		 * Read, never mint. Listing apartments must not quietly publish a live
+		 * public calendar for every one of them — the token arrives when the
+		 * operator presses the button, exactly as on the Calendar sync screen.
+		 */
+		$token = ApartmentsRepository::token( $id );
+
+		$apartment['ical_export_url']   = IcalFeed::url_from_token( $token );
+		$apartment['ical_fallback_url'] = IcalFeed::fallback_from_token( $token );
 
 		return $apartment;
 	}
@@ -184,6 +207,14 @@ final class ApartmentsController {
 			return $conflict;
 		}
 
+		// Checked before the apartment is written: a subscription that will be
+		// refused must not leave a half-saved apartment behind.
+		$feeds = self::feeds_param( $request );
+
+		if ( is_wp_error( $feeds ) ) {
+			return $feeds;
+		}
+
 		$id = ApartmentsRepository::create( $data );
 
 		if ( null === $id ) {
@@ -192,6 +223,10 @@ final class ApartmentsController {
 				__( 'The apartment could not be saved.', 'booking-suite' ),
 				array( 'status' => 500 )
 			);
+		}
+
+		if ( null !== $feeds ) {
+			self::save_feeds( $id, $feeds );
 		}
 
 		return new WP_REST_Response( self::with_images( ApartmentsRepository::find( $id ) ), 201 );
@@ -219,6 +254,12 @@ final class ApartmentsController {
 			return $conflict;
 		}
 
+		$feeds = self::feeds_param( $request );
+
+		if ( is_wp_error( $feeds ) ) {
+			return $feeds;
+		}
+
 		if ( ! ApartmentsRepository::update( $id, $data ) ) {
 			return new WP_Error(
 				'booking_suite_update_failed',
@@ -227,28 +268,172 @@ final class ApartmentsController {
 			);
 		}
 
+		if ( null !== $feeds ) {
+			self::save_feeds( $id, $feeds );
+		}
+
 		return new WP_REST_Response( self::with_images( ApartmentsRepository::find( $id ) ), 200 );
 	}
 
 	/**
-	 * @return WP_REST_Response|WP_Error
+	 * The subscriptions the form posted, cleaned and checked.
+	 *
+	 * Answers null when the field was not sent at all, which is not the same
+	 * as sending an empty list: a screen that knows nothing about calendars —
+	 * a toggle of `active` from somewhere else, say — must not unsubscribe
+	 * every portal by omission, whereas an operator who removed the last row
+	 * genuinely means it.
+	 *
+	 * Every row is checked before any of them is written, so a save either
+	 * takes the whole list or leaves it exactly as it was.
+	 *
+	 * @return array<int, array<string, mixed>>|WP_Error|null
 	 */
-	public static function destroy( WP_REST_Request $request ) {
-		$id = (int) $request['id'];
+	private static function feeds_param( WP_REST_Request $request ) {
+		$raw = $request->get_param( 'ical_feeds' );
 
-		if ( null === ApartmentsRepository::find( $id ) ) {
-			return self::not_found();
+		if ( null === $raw ) {
+			return null;
 		}
 
-		if ( ! ApartmentsRepository::delete( $id ) ) {
-			return new WP_Error(
-				'booking_suite_delete_failed',
-				__( 'The apartment could not be deleted.', 'booking-suite' ),
-				array( 'status' => 500 )
+		$rows = array();
+		$seen = array();
+
+		foreach ( (array) $raw as $row ) {
+			$row = (array) $row;
+			$url = IcalController::clean_url( (string) ( $row['url'] ?? '' ) );
+
+			/*
+			 * A row with no link is one the operator opened and did not fill
+			 * in. Dropping it beats refusing the save: pressing "Add
+			 * subscription" and changing your mind should not stand between
+			 * you and saving a rate.
+			 */
+			if ( '' === $url ) {
+				continue;
+			}
+
+			if ( ! wp_http_validate_url( $url ) ) {
+				return self::invalid(
+					__( 'Paste the calendar link the portal gave you — it should start with https://', 'booking-suite' ),
+					'ical_feeds'
+				);
+			}
+
+			/*
+			 * Two subscriptions to one URL would fight over the same locks on
+			 * every sync, each undoing the other. Compared case-insensitively
+			 * because a host is case-insensitive and this is nearly always a
+			 * link pasted twice by accident.
+			 */
+			$key = strtolower( $url );
+
+			if ( isset( $seen[ $key ] ) ) {
+				return self::invalid(
+					__( 'That calendar is listed twice. Each subscription needs its own link.', 'booking-suite' ),
+					'ical_feeds'
+				);
+			}
+
+			$seen[ $key ] = true;
+
+			// An unrecognised portal is read off the link rather than refused:
+			// the choice is only a label until the first sync, after which the
+			// file itself says who wrote it.
+			$source = (string) ( $row['source'] ?? '' );
+
+			if ( ! in_array( $source, IcalParser::SOURCES, true ) ) {
+				$source = IcalParser::detect_source( $url );
+			}
+
+			$name = trim( sanitize_text_field( (string) ( $row['name'] ?? '' ) ) );
+
+			$rows[] = array(
+				'id'     => absint( $row['id'] ?? 0 ),
+				'name'   => '' === $name
+					? IcalParser::source_label( $source )
+					: mb_substr( $name, 0, self::MAX_LENGTH ),
+				'url'    => $url,
+				'source' => $source,
+				'active' => ! array_key_exists( 'active', $row )
+					|| rest_sanitize_boolean( $row['active'] ),
 			);
 		}
 
-		return new WP_REST_Response( array( 'deleted' => true, 'id' => $id ), 200 );
+		return $rows;
+	}
+
+	/**
+	 * Make this apartment's subscriptions match the list it was sent.
+	 *
+	 * The form owns the whole list, so this is a reconciliation rather than a
+	 * series of edits: rows carrying an id are updated, rows without one are
+	 * added, and anything the list no longer mentions is removed.
+	 *
+	 * Nothing is pulled here. Saving an apartment should not sit waiting on a
+	 * portal's server, and a new subscription is picked up by the next
+	 * scheduled sync anyway; the Calendar sync screen has the button for
+	 * pulling one now.
+	 *
+	 * @param array<int, array<string, mixed>> $rows From feeds_param().
+	 */
+	private static function save_feeds( int $apartment_id, array $rows ): void {
+		$existing = array();
+
+		foreach ( IcalFeedsRepository::for_apartment( $apartment_id ) as $feed ) {
+			$existing[ (int) $feed['id'] ] = $feed;
+		}
+
+		$kept = array();
+
+		foreach ( $rows as $row ) {
+			$id = (int) $row['id'];
+
+			/*
+			 * An id is only honoured if it is one of this apartment's own. A
+			 * number from anywhere else — another apartment's subscription, or
+			 * one deleted in a second tab — is treated as a new row rather
+			 * than allowed to overwrite something it does not belong to.
+			 */
+			if ( $id && isset( $existing[ $id ] ) ) {
+				IcalFeedsRepository::update(
+					$id,
+					array(
+						'name'   => $row['name'],
+						'url'    => $row['url'],
+						'source' => $row['source'],
+						'active' => $row['active'],
+					)
+				);
+
+				$kept[ $id ] = true;
+
+				continue;
+			}
+
+			IcalFeedsRepository::create(
+				array(
+					'room_id' => $apartment_id,
+					'name'    => $row['name'],
+					'url'     => $row['url'],
+					'source'  => $row['source'],
+					'active'  => $row['active'],
+				)
+			);
+		}
+
+		/*
+		 * Removed rows unsubscribe, but the locks they already brought in
+		 * stay. Dates a portal has sold are still sold after the subscription
+		 * goes, and dropping them here would silently put a booked apartment
+		 * back on sale. Releasing them is offered on the Calendar sync screen,
+		 * where it can be asked about.
+		 */
+		foreach ( array_keys( $existing ) as $id ) {
+			if ( ! isset( $kept[ $id ] ) ) {
+				IcalFeedsRepository::delete( (int) $id );
+			}
+		}
 	}
 
 	/**

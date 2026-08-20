@@ -14,7 +14,10 @@ declare( strict_types=1 );
 namespace BookingSuite\Backend\PostTypes;
 
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
+use BookingSuite\Backend\Repositories\IcalFeedsRepository;
 use BookingSuite\Backend\Schemas\ApartmentsTable;
+use BookingSuite\Backend\Support\IcalFeed;
+use BookingSuite\Backend\Support\IcalParser;
 
 use const BookingSuite\PLUGIN_URL;
 use const BookingSuite\VERSION;
@@ -27,10 +30,26 @@ final class ApartmentMetaBox {
 
 	private const MAX_LENGTH = 191;
 
+	/** varchar(500) on the subscription's `url` column. */
+	private const MAX_URL_LENGTH = 500;
+
+	/**
+	 * Where a rejected calendar link waits between the save and the redirect.
+	 *
+	 * A meta box has nowhere to answer back: save_post runs, WordPress
+	 * redirects, and anything the save wanted to say is gone. So a link that
+	 * could not be stored is parked here under the user who submitted it and
+	 * read out as a notice on the screen they land on — silently dropping a
+	 * pasted link would leave an operator believing a portal is connected when
+	 * nothing is.
+	 */
+	private const NOTICE_KEY = 'bks_apartment_feed_notice_';
+
 	public static function register(): void {
 		add_action( 'add_meta_boxes', array( self::class, 'add' ) );
 		add_action( 'save_post_' . ApartmentPostType::POST_TYPE, array( self::class, 'save' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( self::class, 'enqueue' ) );
+		add_action( 'admin_notices', array( self::class, 'render_notice' ) );
 	}
 
 	public static function add(): void {
@@ -177,6 +196,8 @@ final class ApartmentMetaBox {
 				</label>
 			</div>
 
+			<?php self::render_calendar_sync( $post->ID ); ?>
+
 			<div class="bks-meta__gallery" data-bks-gallery>
 				<span class="bks-meta__label"><?php esc_html_e( 'Photo gallery', 'booking-suite' ); ?></span>
 
@@ -203,6 +224,188 @@ final class ApartmentMetaBox {
 				</p>
 			</div>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Calendar sync: the calendars this apartment reads, and the one it
+	 * publishes.
+	 *
+	 * The same model the Booking Suite apartment form holds, because this box
+	 * exists so an apartment can be set up wherever the work happens to be —
+	 * and a channel connection made in one place and invisible in the other is
+	 * how an apartment ends up double-booked.
+	 */
+	private static function render_calendar_sync( int $post_id ): void {
+		$feeds = IcalFeedsRepository::for_apartment( $post_id );
+		$token = ApartmentsRepository::token( $post_id );
+
+		?>
+		<div class="bks-meta__sync">
+			<span class="bks-meta__label"><?php esc_html_e( 'Calendar sync', 'booking-suite' ); ?></span>
+
+			<div class="bks-meta__feeds" data-bks-feeds>
+				<span class="bks-meta__sublabel"><?php esc_html_e( 'Subscriptions (import)', 'booking-suite' ); ?></span>
+
+				<p class="description">
+					<?php esc_html_e( 'Dates these calendars have sold are pulled in and blocked here, so the apartment cannot be booked twice. Read automatically on a schedule; nothing is sent back to the portal.', 'booking-suite' ); ?>
+				</p>
+
+				<ul class="bks-meta__feed-list" data-bks-feed-list>
+					<?php foreach ( $feeds as $index => $feed ) : ?>
+						<?php self::render_feed_row( (string) $index, $feed ); ?>
+					<?php endforeach; ?>
+				</ul>
+
+				<?php if ( ! $feeds ) : ?>
+					<p class="bks-meta__feed-empty" data-bks-feed-empty>
+						<?php esc_html_e( 'No calendars subscribed. Add one to block the dates another portal has already sold.', 'booking-suite' ); ?>
+					</p>
+				<?php endif; ?>
+
+				<button type="button" class="button" data-bks-feed-add>
+					<?php esc_html_e( 'Add subscription', 'booking-suite' ); ?>
+				</button>
+
+				<?php
+				/*
+				 * The blank row lives in a <template>, so the browser parses it
+				 * but never submits it and never renders it. Cloning markup the
+				 * server wrote keeps one definition of a row instead of a PHP
+				 * one and a JavaScript one that drift apart.
+				 */
+				?>
+				<template data-bks-feed-template>
+					<?php self::render_feed_row( '__INDEX__', array() ); ?>
+				</template>
+			</div>
+
+			<div class="bks-meta__export">
+				<span class="bks-meta__label"><?php esc_html_e( 'Export link (.ics)', 'booking-suite' ); ?></span>
+
+				<?php if ( '' !== $token ) : ?>
+					<input
+						type="url"
+						class="bks-meta__feed-url"
+						readonly
+						value="<?php echo esc_url( IcalFeed::url_from_token( $token ) ); ?>"
+						onfocus="this.select()"
+						aria-label="<?php esc_attr_e( 'Export link for this apartment', 'booking-suite' ); ?>"
+					/>
+					<p class="description">
+						<?php esc_html_e( 'Give this to Airbnb or Booking.com and they will block the dates this site has taken. Treat it as private; it can be replaced on the Calendar sync screen if it gets out.', 'booking-suite' ); ?>
+					</p>
+				<?php else : ?>
+					<label>
+						<input type="checkbox" name="bks_ical_publish" value="1" />
+						<?php esc_html_e( 'Publish this apartment’s calendar when I save', 'booking-suite' ); ?>
+					</label>
+					<p class="description">
+						<?php esc_html_e( 'Not published yet. Creating the link makes this apartment’s booked dates readable by anyone holding it — it says when the apartment is taken, never who by.', 'booking-suite' ); ?>
+					</p>
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * One subscription row.
+	 *
+	 * @param string               $index Position in the posted array, or the
+	 *                                    placeholder the template is cloned with.
+	 * @param array<string, mixed> $feed  The stored subscription, or empty for a
+	 *                                    blank row.
+	 */
+	private static function render_feed_row( string $index, array $feed ): void {
+		$name   = 'bks_ical[' . $index . ']';
+		$source = (string) ( $feed['source'] ?? 'airbnb' );
+
+		?>
+		<li class="bks-meta__feed" data-bks-feed>
+			<input type="hidden" name="<?php echo esc_attr( $name ); ?>[id]" value="<?php echo esc_attr( (string) ( $feed['id'] ?? 0 ) ); ?>" />
+
+			<div class="bks-meta__feed-head">
+				<p class="bks-meta__field">
+					<label><?php esc_html_e( 'Portal', 'booking-suite' ); ?></label>
+					<select name="<?php echo esc_attr( $name ); ?>[source]">
+						<?php foreach ( IcalParser::source_options() as $option ) : ?>
+							<option value="<?php echo esc_attr( $option['value'] ); ?>" <?php selected( $source, $option['value'] ); ?>>
+								<?php echo esc_html( $option['label'] ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</p>
+
+				<button type="button" class="button-link bks-meta__feed-remove" data-bks-feed-remove>
+					<?php esc_html_e( 'Remove', 'booking-suite' ); ?>
+				</button>
+			</div>
+
+			<p class="bks-meta__field">
+				<label><?php esc_html_e( 'Calendar link', 'booking-suite' ); ?></label>
+				<input
+					type="url"
+					class="bks-meta__feed-url"
+					name="<?php echo esc_attr( $name ); ?>[url]"
+					maxlength="<?php echo esc_attr( (string) self::MAX_URL_LENGTH ); ?>"
+					value="<?php echo esc_url( (string) ( $feed['url'] ?? '' ) ); ?>"
+					placeholder="https://www.airbnb.com/calendar/ical/…"
+					autocomplete="off"
+					spellcheck="false"
+				/>
+				<span class="description">
+					<?php esc_html_e( 'Airbnb: Calendar → Availability → Connect calendars. Booking.com: Rates & Availability → Sync calendars.', 'booking-suite' ); ?>
+				</span>
+			</p>
+
+			<div class="bks-meta__feed-foot">
+				<p class="bks-meta__field">
+					<label><?php esc_html_e( 'Label (optional)', 'booking-suite' ); ?></label>
+					<input
+						type="text"
+						name="<?php echo esc_attr( $name ); ?>[name]"
+						maxlength="<?php echo esc_attr( (string) self::MAX_LENGTH ); ?>"
+						value="<?php echo esc_attr( (string) ( $feed['name'] ?? '' ) ); ?>"
+					/>
+				</p>
+
+				<label class="bks-meta__feed-active">
+					<input type="checkbox" name="<?php echo esc_attr( $name ); ?>[active]" value="1" <?php checked( (bool) ( $feed['active'] ?? true ) ); ?> />
+					<?php esc_html_e( 'Sync automatically', 'booking-suite' ); ?>
+				</label>
+			</div>
+
+			<?php
+			/*
+			 * A subscription that has quietly stopped working looks exactly like
+			 * one that is fine — the link is still there, the dates simply stop
+			 * arriving. This line is the only thing that tells them apart, so a
+			 * failure carries the portal's own message rather than a tidied-up
+			 * version of it.
+			 */
+			?>
+			<?php if ( ! empty( $feed['lastSyncAt'] ) ) : ?>
+				<p class="bks-meta__feed-status <?php echo IcalFeedsRepository::STATUS_ERROR === ( $feed['lastStatus'] ?? '' ) ? 'is-error' : ''; ?>">
+					<?php
+					if ( IcalFeedsRepository::STATUS_ERROR === ( $feed['lastStatus'] ?? '' ) ) {
+						printf(
+							/* translators: %s: the reason the last read failed. */
+							esc_html__( 'Last read failed: %s', 'booking-suite' ),
+							esc_html( (string) ( $feed['lastMessage'] ?: __( 'no reason given', 'booking-suite' ) ) )
+						);
+					} else {
+						printf(
+							/* translators: 1: number of dated entries read, 2: when it was read. */
+							esc_html__( 'Last read %1$d entries on %2$s', 'booking-suite' ),
+							(int) ( $feed['lastEventCount'] ?? 0 ),
+							esc_html( (string) $feed['lastSyncAt'] )
+						);
+					}
+					?>
+				</p>
+			<?php endif; ?>
+		</li>
 		<?php
 	}
 
@@ -313,6 +516,189 @@ final class ApartmentMetaBox {
 				'active'              => isset( $_POST['bks_active'] ),
 				'holiday_hesse'       => isset( $_POST['bks_holiday_hesse'] ),
 				'images'              => $images,
+			)
+		);
+
+		self::save_feeds( $post_id );
+		self::maybe_publish_calendar( $post_id );
+	}
+
+	/**
+	 * Make this apartment's subscriptions match the rows that were posted.
+	 *
+	 * The box owns the whole list, so this reconciles rather than edits: rows
+	 * carrying an id are updated, rows without one are added, and anything the
+	 * form no longer lists is removed.
+	 *
+	 * Absent input means absent, not empty. A save that never rendered this box
+	 * — a quick edit from the posts list, a status change, anything programmatic
+	 * — must not read "no rows posted" as "unsubscribe everything".
+	 */
+	private static function save_feeds( int $post_id ): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- save() verified it.
+		if ( ! isset( $_POST['bks_ical'] ) || ! is_array( $_POST['bks_ical'] ) ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitised per field below.
+		$posted = wp_unslash( $_POST['bks_ical'] );
+
+		$existing = array();
+
+		foreach ( IcalFeedsRepository::for_apartment( $post_id ) as $feed ) {
+			$existing[ (int) $feed['id'] ] = $feed;
+		}
+
+		$kept    = array();
+		$seen    = array();
+		$skipped = 0;
+
+		foreach ( (array) $posted as $row ) {
+			if ( ! is_array( $row ) ) {
+				continue;
+			}
+
+			$url = self::feed_url( (string) ( $row['url'] ?? '' ) );
+
+			// An empty row is one that was added and left alone; it is dropped
+			// rather than counted as a failure.
+			if ( '' === trim( (string) ( $row['url'] ?? '' ) ) ) {
+				continue;
+			}
+
+			/*
+			 * Anything else that will not stand up is dropped too, but counted:
+			 * the operator pasted something, and being told it did not take is
+			 * the whole point of the notice this feeds.
+			 */
+			if ( '' === $url || isset( $seen[ strtolower( $url ) ] ) ) {
+				++$skipped;
+
+				continue;
+			}
+
+			$seen[ strtolower( $url ) ] = true;
+
+			$source = sanitize_key( (string) ( $row['source'] ?? '' ) );
+
+			if ( ! in_array( $source, IcalParser::SOURCES, true ) ) {
+				$source = IcalParser::detect_source( $url );
+			}
+
+			$name = trim( sanitize_text_field( (string) ( $row['name'] ?? '' ) ) );
+
+			$values = array(
+				'name'   => '' === $name
+					? IcalParser::source_label( $source )
+					: mb_substr( $name, 0, self::MAX_LENGTH ),
+				'url'    => $url,
+				'source' => $source,
+				'active' => ! empty( $row['active'] ),
+			);
+
+			$id = absint( $row['id'] ?? 0 );
+
+			// An id is only honoured if it is one of this apartment's own.
+			if ( $id && isset( $existing[ $id ] ) ) {
+				IcalFeedsRepository::update( $id, $values );
+
+				$kept[ $id ] = true;
+
+				continue;
+			}
+
+			IcalFeedsRepository::create(
+				array_merge( array( 'room_id' => $post_id ), $values )
+			);
+		}
+
+		/*
+		 * Removed rows unsubscribe, but the locks they already brought in stay.
+		 * Dates a portal has sold are still sold after the subscription goes,
+		 * and dropping them here would silently put a booked apartment back on
+		 * sale. Releasing them is offered on the Calendar Sync screen, where it
+		 * can be asked about.
+		 */
+		foreach ( array_keys( $existing ) as $id ) {
+			if ( ! isset( $kept[ $id ] ) ) {
+				IcalFeedsRepository::delete( (int) $id );
+			}
+		}
+
+		if ( $skipped ) {
+			set_transient( self::NOTICE_KEY . get_current_user_id(), $skipped, MINUTE_IN_SECONDS );
+		}
+	}
+
+	/**
+	 * A pasted calendar link, in the shape the subscriptions table stores.
+	 *
+	 * Portals hand out webcal:// as often as https://; the two are the same
+	 * address with a different scheme, and normalising here means a link saved
+	 * from this box and the same link saved from the React form are one
+	 * subscription rather than two.
+	 *
+	 * @return string The stored form, or '' when it is not a usable address.
+	 */
+	private static function feed_url( string $raw ): string {
+		$url = trim( $raw );
+
+		if ( str_starts_with( strtolower( $url ), 'webcal://' ) ) {
+			$url = 'https://' . substr( $url, 9 );
+		}
+
+		$url = esc_url_raw( $url );
+
+		if ( ! wp_http_validate_url( $url ) ) {
+			return '';
+		}
+
+		return mb_substr( $url, 0, self::MAX_URL_LENGTH );
+	}
+
+	/**
+	 * Publish this apartment's calendar, if the operator asked for it.
+	 *
+	 * Only ever mints; it never replaces an existing token. Handing a portal a
+	 * link and then quietly changing it is how a connection breaks with nothing
+	 * to show for it, so replacing one is deliberate and lives on the Calendar
+	 * Sync screen behind its own confirmation.
+	 */
+	private static function maybe_publish_calendar( int $post_id ): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- save() verified it.
+		if ( ! isset( $_POST['bks_ical_publish'] ) ) {
+			return;
+		}
+
+		ApartmentsRepository::ensure_token( $post_id );
+	}
+
+	/**
+	 * Say so when a pasted calendar link did not survive the save.
+	 */
+	public static function render_notice(): void {
+		$key     = self::NOTICE_KEY . get_current_user_id();
+		$skipped = get_transient( $key );
+
+		if ( false === $skipped ) {
+			return;
+		}
+
+		delete_transient( $key );
+
+		printf(
+			'<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
+			esc_html(
+				sprintf(
+					/* translators: %d: number of calendar links that were not saved. */
+					_n(
+						'%d calendar link was not saved — it is not a usable address, or the same calendar was listed twice.',
+						'%d calendar links were not saved — they are not usable addresses, or the same calendar was listed twice.',
+						(int) $skipped,
+						'booking-suite'
+					),
+					(int) $skipped
+				)
 			)
 		);
 	}

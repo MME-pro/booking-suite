@@ -82,6 +82,35 @@ final class IcalFeedsRepository {
 	}
 
 	/**
+	 * Every subscription belonging to one apartment, oldest first.
+	 *
+	 * The order matters only in that it is stable: the apartment form lists
+	 * these as rows the operator edits in place, and a list that reshuffled
+	 * itself between saves would move a row out from under them.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	public static function for_apartment( int $apartment_id ): array {
+		global $wpdb;
+
+		$table = IcalFeedsTable::table();
+
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT f.*, p.post_title AS apartment_name
+				FROM $table f
+				LEFT JOIN {$wpdb->posts} p ON p.ID = f.room_id
+				WHERE f.room_id = %d
+				ORDER BY f.id ASC",
+				$apartment_id
+			),
+			ARRAY_A
+		) ?: array();
+
+		return array_map( array( self::class, 'cast' ), $rows );
+	}
+
+	/**
 	 * Whether another feed already subscribes this apartment to this URL.
 	 *
 	 * Two subscriptions to the same URL for the same apartment would fight over
@@ -202,6 +231,27 @@ final class IcalFeedsRepository {
 		global $wpdb;
 
 		return (bool) $wpdb->delete( IcalFeedsTable::table(), array( 'id' => $id ) );
+	}
+
+	/**
+	 * Drop every subscription belonging to an apartment.
+	 *
+	 * Called when the apartment itself is deleted. Left behind, these rows keep
+	 * being pulled on every scheduled sync — writing locks for a room nobody
+	 * can see, against a portal listing that is no longer anything to do with
+	 * this site — and no screen shows them, because every screen lists them by
+	 * the apartment they belong to.
+	 *
+	 * @return int How many were removed.
+	 */
+	public static function delete_for_apartment( int $apartment_id ): int {
+		global $wpdb;
+
+		return (int) $wpdb->delete(
+			IcalFeedsTable::table(),
+			array( 'room_id' => $apartment_id ),
+			array( '%d' )
+		);
 	}
 
 	/**

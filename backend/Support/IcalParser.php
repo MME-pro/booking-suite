@@ -96,6 +96,21 @@ final class IcalParser {
 	}
 
 	/**
+	 * Every source as a value/label pair, for a dropdown.
+	 *
+	 * @return array<int, array{value: string, label: string}>
+	 */
+	public static function source_options(): array {
+		return array_map(
+			static fn( string $source ): array => array(
+				'value' => $source,
+				'label' => self::source_label( $source ),
+			),
+			self::SOURCES
+		);
+	}
+
+	/**
 	 * Read a document.
 	 *
 	 * @param string $content Raw .ics text.

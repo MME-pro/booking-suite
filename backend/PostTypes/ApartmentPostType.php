@@ -15,6 +15,7 @@ declare( strict_types=1 );
 namespace BookingSuite\Backend\PostTypes;
 
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
+use BookingSuite\Backend\Repositories\IcalFeedsRepository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -74,6 +75,15 @@ final class ApartmentPostType {
 		}
 
 		ApartmentsRepository::delete_row( $post_id );
+
+		/*
+		 * The calendar subscriptions go too. They are the one thing hanging off
+		 * an apartment that keeps working after it is gone: the scheduled sync
+		 * would go on pulling them, writing locks for a room nobody can see,
+		 * and no screen lists them because every screen lists them under the
+		 * apartment they belong to.
+		 */
+		IcalFeedsRepository::delete_for_apartment( $post_id );
 	}
 
 	public static function register_post_type(): void {

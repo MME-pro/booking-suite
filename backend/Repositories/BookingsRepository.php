@@ -301,6 +301,34 @@ final class BookingsRepository {
 	}
 
 	/**
+	 * Erase a booking and everything hanging off it.
+	 *
+	 * A hard delete, by design. There is no cancelled status to park a booking
+	 * in — releasing one sends it back to pending, which keeps it on the list —
+	 * so a test booking, a duplicate or a request that was never real has no
+	 * other way out, and an operator who asks for this has already been asked
+	 * whether they mean it.
+	 *
+	 * The extras lines and the payments go with it. Both are read through the
+	 * booking they belong to and nothing looks them up any other way, so
+	 * leaving them behind would leave rows that no screen can reach, that the
+	 * revenue reports would still count, and that would claim invoice numbers
+	 * for a stay that no longer exists.
+	 *
+	 * The uploaded receipt is left in the media library. It is an attachment
+	 * like any other, it may be in use elsewhere, and removing files from under
+	 * the library is not something a booking should decide.
+	 */
+	public static function delete( int $id ): bool {
+		global $wpdb;
+
+		$wpdb->delete( ExtraBookingTable::table(), array( 'booking_id' => $id ), array( '%d' ) );
+		$wpdb->delete( PaymentsTable::table(), array( 'booking_id' => $id ), array( '%d' ) );
+
+		return false !== $wpdb->delete( BookingsTable::table(), array( 'id' => $id ), array( '%d' ) );
+	}
+
+	/**
 	 * Attach the chosen extras, pricing them at today's rate.
 	 *
 	 * @param array<int, array{id: int, quantity: int, price: float}> $extras

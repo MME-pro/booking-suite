@@ -1,5 +1,5 @@
 /**
- * Gallery picker for the apartment meta box.
+ * Gallery picker and calendar-subscription rows for the apartment meta box.
  *
  * Plain DOM work against wp.media — no build step, since this runs in the
  * classic post editor rather than inside the React app.
@@ -106,7 +106,66 @@
 		} );
 	}
 
+	/**
+	 * Calendar subscriptions: add a row, remove a row.
+	 *
+	 * The blank row is cloned from a <template> the server rendered, so there
+	 * is one definition of what a row looks like rather than a PHP one and a
+	 * JavaScript one that drift apart. Its field names carry a placeholder
+	 * where the index belongs, filled in here from a counter that only ever
+	 * goes up: PHP walks whatever it is given, so gaps left by removed rows
+	 * cost nothing and reusing an index would collide with a row still on the
+	 * page.
+	 *
+	 * @param {Element} root The subscriptions container.
+	 */
+	function setupFeeds( root ) {
+		var list = root.querySelector( '[data-bks-feed-list]' );
+		var add = root.querySelector( '[data-bks-feed-add]' );
+		var template = root.querySelector( '[data-bks-feed-template]' );
+		var empty = root.querySelector( '[data-bks-feed-empty]' );
+		var next = list.children.length;
+
+		function syncEmpty() {
+			if ( empty ) {
+				empty.hidden = list.children.length > 0;
+			}
+		}
+
+		add.addEventListener( 'click', function () {
+			var row = template.content.firstElementChild.cloneNode( true );
+			var index = String( next++ );
+
+			row.querySelectorAll( '[name]' ).forEach( function ( field ) {
+				field.name = field.name.replace( '__INDEX__', index );
+			} );
+
+			list.appendChild( row );
+			syncEmpty();
+
+			var url = row.querySelector( 'input[type="url"]' );
+
+			if ( url ) {
+				url.focus();
+			}
+		} );
+
+		list.addEventListener( 'click', function ( event ) {
+			var button = event.target.closest( '[data-bks-feed-remove]' );
+
+			if ( ! button ) {
+				return;
+			}
+
+			button.closest( '[data-bks-feed]' ).remove();
+			syncEmpty();
+		} );
+
+		syncEmpty();
+	}
+
 	document.addEventListener( 'DOMContentLoaded', function () {
 		document.querySelectorAll( '[data-bks-gallery]' ).forEach( setup );
+		document.querySelectorAll( '[data-bks-feeds]' ).forEach( setupFeeds );
 	} );
 } )();

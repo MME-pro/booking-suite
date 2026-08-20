@@ -18,7 +18,14 @@
  */
 
 import { __, sprintf } from '@wordpress/i18n';
-import { BadgeEuro, Check, CreditCard, Eye, Receipt } from 'lucide-react';
+import {
+	BadgeEuro,
+	Check,
+	CreditCard,
+	Eye,
+	Receipt,
+	Trash2,
+} from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -48,6 +55,7 @@ export default function BookingsTable( {
 	onApprove,
 	onMarkPaid,
 	onViewPayment,
+	onDelete = null,
 	busyId = null,
 	emptyContent = null,
 } ) {
@@ -60,6 +68,7 @@ export default function BookingsTable( {
 		onApprove,
 		onMarkPaid,
 		onViewPayment,
+		onDelete,
 		busyId,
 	};
 
@@ -114,7 +123,7 @@ export default function BookingsTable( {
 							<TableHead>
 								{ __( 'Payment', 'booking-suite' ) }
 							</TableHead>
-							<TableHead className="w-[190px] text-right">
+							<TableHead className="w-[230px] text-right">
 								{ __( 'Actions', 'booking-suite' ) }
 							</TableHead>
 						</TableRow>
@@ -370,6 +379,45 @@ export default function BookingsTable( {
 													) }
 												</span>
 											</Button>
+
+											{ /*
+											 * Last, and the only one drawn in
+											 * the destructive colour. It sits
+											 * furthest from Approve because
+											 * the two are pressed with very
+											 * different intentions and there
+											 * is no undo behind this one.
+											 */ }
+											{ onDelete && (
+												<Button
+													size="icon"
+													variant="ghost"
+													className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
+													disabled={
+														busyId === booking.id
+													}
+													onClick={ () =>
+														onDelete( booking )
+													}
+													title={ __(
+														'Delete booking',
+														'booking-suite'
+													) }
+												>
+													<Trash2 className="h-4 w-4" />
+													<span className="sr-only">
+														{ sprintf(
+															/* translators: %s: booking reference. */
+															__(
+																'Delete %s',
+																'booking-suite'
+															),
+															booking.reference ||
+																booking.id
+														) }
+													</span>
+												</Button>
+											) }
 										</div>
 									</TableCell>
 								</TableRow>

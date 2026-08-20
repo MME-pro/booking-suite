@@ -29,8 +29,14 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
 
 import { BookingDetail } from '../Bookings/components/BookingDetail';
 
@@ -98,8 +104,17 @@ export default function CalendarPage() {
 	const [ selected, setSelected ] = useState( () => new Date() );
 	const [ month, setMonth ] = useState( () => new Date() );
 
-	/** Apartment ids to show; null until the list loads, meaning "all". */
-	const [ visibleIds, setVisibleIds ] = useState( null );
+	/**
+	 * Which apartment the calendar is showing: an id, or 'all'.
+	 *
+	 * One choice rather than a row of on/off switches. The switches could
+	 * express things this cannot — any two of five apartments, say — but that
+	 * is not what the calendar is used for. What an operator actually does is
+	 * look at the whole estate, or at one apartment; and with the switches,
+	 * getting to "just this one" on a five-apartment property meant four
+	 * separate clicks to turn the others off, and four more to undo it.
+	 */
+	const [ apartmentFilter, setApartmentFilter ] = useState( 'all' );
 
 	/** The booking being read, shown over the calendar rather than away from it. */
 	const [ selectedBooking, setSelectedBooking ] = useState( null );
@@ -125,9 +140,6 @@ export default function CalendarPage() {
 				setApartments( apartmentList );
 				setBookings( bookingPayload.bookings );
 				setBlocks( blockPayload.blocks );
-				setVisibleIds(
-					new Set( apartmentList.map( ( item ) => item.id ) )
-				);
 				setError( null );
 			} catch ( cause ) {
 				if ( 'AbortError' !== cause.name ) {
@@ -142,6 +154,26 @@ export default function CalendarPage() {
 
 		return () => controller.abort();
 	}, [] );
+
+	/*
+	 * The filter, in the shape everything downstream already reads: a Set of
+	 * ids, or null for "do not filter at all". Deriving it here means the grid,
+	 * the day table and the lock list cannot drift apart from the dropdown.
+	 */
+	const visibleIds = useMemo(
+		() =>
+			'all' === apartmentFilter
+				? null
+				: new Set( [ Number( apartmentFilter ) ] ),
+		[ apartmentFilter ]
+	);
+
+	const selectedApartment =
+		'all' === apartmentFilter
+			? null
+			: apartments.find(
+					( item ) => item.id === Number( apartmentFilter )
+			  ) ?? null;
 
 	const apartmentsById = useMemo(
 		() => new Map( apartments.map( ( item ) => [ item.id, item ] ) ),
@@ -205,19 +237,6 @@ export default function CalendarPage() {
 		setMonth( today );
 	};
 
-	const toggleApartment = ( id ) =>
-		setVisibleIds( ( current ) => {
-			const next = new Set( current );
-
-			if ( next.has( id ) ) {
-				next.delete( id );
-			} else {
-				next.add( id );
-			}
-
-			return next;
-		} );
-
 	if ( isLoading ) {
 		return (
 			<div className="flex flex-col gap-4">
@@ -241,7 +260,7 @@ export default function CalendarPage() {
 
 			{ /*
 			 * The whole calendar is one panel: its own month nav and apartment
-			 * legend across the top, then the grid. The date picker's built-in
+			 * filter across the top, then the grid. The date picker's built-in
 			 * caption and arrows are hidden in MonthGrid in favour of this.
 			 */ }
 			<Card className="overflow-hidden">
@@ -278,40 +297,73 @@ export default function CalendarPage() {
 						</Button>
 					</div>
 
-					{ /* Apartment colours, doubling as show/hide filters. */ }
-					<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-						{ apartments.map( ( apartment ) => {
-							const isOn =
-								! visibleIds || visibleIds.has( apartment.id );
-
-							return (
-								<button
-									key={ apartment.id }
-									type="button"
-									onClick={ () =>
-										toggleApartment( apartment.id )
-									}
-									aria-pressed={ isOn }
-									className={ cn(
-										'flex items-center gap-2 text-xs font-medium transition-opacity',
-										isOn
-											? 'text-card-foreground'
-											: 'text-muted-foreground line-through opacity-60'
+					{ /*
+					 * The apartment filter. The swatch travels with the name
+					 * into the closed trigger, so the colour the chips in the
+					 * grid are drawn in is named right where the choice is
+					 * made — the legend the toggle row used to be, folded into
+					 * the control that replaced it.
+					 */ }
+					<Select
+						value={ apartmentFilter }
+						onValueChange={ setApartmentFilter }
+					>
+						<SelectTrigger
+							className="w-full sm:w-64"
+							aria-label={ __(
+								'Show one apartment',
+								'booking-suite'
+							) }
+						>
+							<SelectValue>
+								<span className="flex min-w-0 items-center gap-2">
+									{ selectedApartment && (
+										<span
+											aria-hidden="true"
+											className="h-3 w-3 shrink-0 rounded-sm"
+											style={ {
+												backgroundColor:
+													selectedApartment.colour,
+											} }
+										/>
 									) }
+									<span className="truncate">
+										{ selectedApartment
+											? selectedApartment.name
+											: __(
+													'All apartments',
+													'booking-suite'
+											  ) }
+									</span>
+								</span>
+							</SelectValue>
+						</SelectTrigger>
+
+						<SelectContent>
+							<SelectItem value="all">
+								{ __( 'All apartments', 'booking-suite' ) }
+							</SelectItem>
+
+							{ apartments.map( ( apartment ) => (
+								<SelectItem
+									key={ apartment.id }
+									value={ String( apartment.id ) }
 								>
-									<span
-										aria-hidden="true"
-										className="h-3 w-3 rounded-sm"
-										style={ {
-											backgroundColor: apartment.colour,
-											opacity: isOn ? 1 : 0.35,
-										} }
-									/>
-									{ apartment.name }
-								</button>
-							);
-						} ) }
-					</div>
+									<span className="flex items-center gap-2">
+										<span
+											aria-hidden="true"
+											className="h-3 w-3 shrink-0 rounded-sm"
+											style={ {
+												backgroundColor:
+													apartment.colour,
+											} }
+										/>
+										{ apartment.name }
+									</span>
+								</SelectItem>
+							) ) }
+						</SelectContent>
+					</Select>
 				</div>
 
 				<MonthGrid
