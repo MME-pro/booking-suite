@@ -2,10 +2,16 @@
    AppBar — Sleek Premium Management Header
    ═══════════════════════════════════════════════ */
 
+/*
+ * The bar scrolls away with the page rather than sticking to the top.
+ *
+ * It was pinned at `top: 32px` to clear the WordPress admin bar, which is the
+ * right offset on a desktop — but that bar is not fixed below 783px, so on a
+ * phone the offset is measured against nothing and the header floats 32px down
+ * over the content. It also cost around 70px of a short viewport permanently,
+ * to hold a title that does not change while you scroll.
+ */
 .bks-app-bar {
-	position: sticky !important;
-	top: 32px !important;
-	z-index: 20 !important;
 	display: flex !important;
 	align-items: center !important;
 	justify-content: space-between !important;

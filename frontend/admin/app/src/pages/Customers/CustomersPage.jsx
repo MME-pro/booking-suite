@@ -174,8 +174,14 @@ export default function CustomersPage() {
 				</Card>
 			) : (
 				<>
-					<div className="flex flex-wrap items-center justify-between gap-3">
-						<div className="relative">
+					{ /*
+					 * The search box takes the whole row on a phone and a fixed
+					 * width once there is room, with the count beside it. Left to
+					 * flex-wrap they broke at whatever point they ran out of
+					 * width, which put the count under a half-empty row.
+					 */ }
+					<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+						<div className="relative w-full sm:w-80">
 							<Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 							<Input
 								type="search"
@@ -191,11 +197,11 @@ export default function CustomersPage() {
 									'Name, email, phone or city…',
 									'booking-suite'
 								) }
-								className="w-full pl-8 sm:w-80"
+								className="w-full pl-8"
 							/>
 						</div>
 
-						<span className="text-xs text-muted-foreground">
+						<span className="shrink-0 whitespace-nowrap text-xs text-muted-foreground">
 							{ sprintf(
 								/* translators: %d: number of customers shown. */
 								_n(
@@ -209,17 +215,19 @@ export default function CustomersPage() {
 						</span>
 					</div>
 
-					<Card className="overflow-hidden">
-						<CustomersTable
-							customers={ visible }
-							onViewHistory={ setViewing }
-							emptyContent={
-								<EmptyCustomers
-									hasAny={ customers.length > 0 }
-								/>
-							}
-						/>
-					</Card>
+					{ /*
+					 * No Card around this: below `lg` the list IS cards, and a
+					 * card of cards reads as a box somebody forgot to remove.
+					 * CustomersTable puts the surface around the table and around
+					 * the empty state instead.
+					 */ }
+					<CustomersTable
+						customers={ visible }
+						onViewHistory={ setViewing }
+						emptyContent={
+							<EmptyCustomers hasAny={ customers.length > 0 } />
+						}
+					/>
 				</>
 			) }
 

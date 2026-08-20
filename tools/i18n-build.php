@@ -163,9 +163,17 @@ printf(
 	count( $missing )
 );
 
+/*
+ * The list is removed when nothing is missing, rather than left behind. A file
+ * that is only ever written and never cleared outlives the work it describes:
+ * the next person reads a stale list, believes there are strings to translate,
+ * and goes looking for entries that were added several builds ago.
+ */
 if ( $missing ) {
 	file_put_contents( $languages . '/untranslated.txt', implode( "\n", $missing ) . "\n" );
 	echo "Untranslated strings listed in languages/untranslated.txt\n";
+} elseif ( is_file( $languages . '/untranslated.txt' ) ) {
+	unlink( $languages . '/untranslated.txt' );
 }
 
 /** A string short enough for an error message. */

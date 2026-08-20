@@ -281,19 +281,23 @@ export default function PaymentsPage() {
 						) }
 					</span>
 
-					<Card className="overflow-hidden">
-						<PaymentsTable
-							payments={ visible }
-							busyId={ busyId }
-							onView={ setViewing }
-							onMarkPaid={ ( payment ) =>
-								setStatus( payment, 'paid' )
-							}
-							emptyContent={
-								<EmptyPayments hasAny={ payments.length > 0 } />
-							}
-						/>
-					</Card>
+					{ /*
+					 * No Card around this: below `lg` the ledger IS cards, and a
+					 * card of cards reads as a box somebody forgot to remove.
+					 * PaymentsTable puts the surface around the table and around
+					 * the empty state instead.
+					 */ }
+					<PaymentsTable
+						payments={ visible }
+						busyId={ busyId }
+						onView={ setViewing }
+						onMarkPaid={ ( payment ) =>
+							setStatus( payment, 'paid' )
+						}
+						emptyContent={
+							<EmptyPayments hasAny={ payments.length > 0 } />
+						}
+					/>
 				</>
 			) }
 

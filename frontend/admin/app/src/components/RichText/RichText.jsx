@@ -18,14 +18,23 @@
 
 import { useEffect, useId, useRef } from 'react';
 
+import './RichText.css';
+
 /**
  * @param {Object}   props
  * @param {string}   props.value    The HTML being edited.
  * @param {Function} props.onChange Called with the new HTML.
  * @param {number}   [props.rows]   Height of the editing area, in rows.
+ * @param {boolean}  [props.fill]   Fill the parent's height instead of `rows`.
  * @param {string}   [props.id]     Explicit id, when one is needed for a label.
  */
-export default function RichText( { value, onChange, rows = 14, id } ) {
+export default function RichText( {
+	value,
+	onChange,
+	rows = 14,
+	fill = false,
+	id,
+} ) {
 	const generated = useId().replace( /:/g, '' );
 	const editorId = id ?? `bks-richtext-${ generated }`;
 
@@ -95,13 +104,23 @@ export default function RichText( { value, onChange, rows = 14, id } ) {
 		}
 	}, [ editorId, value ] );
 
+	/*
+	 * The textarea is wrapped rather than left bare, because wp.editor builds
+	 * its own markup around it and the flex chain in RichText.css needs a box
+	 * it owns to start from. Without `fill` the wrapper is inert and the editor
+	 * keeps the height `rows` asked for.
+	 */
 	return (
-		<textarea
-			id={ editorId }
-			rows={ rows }
-			defaultValue={ value }
-			onChange={ ( event ) => onChangeRef.current( event.target.value ) }
-			className="w-full rounded-md border border-input bg-background p-3 font-mono text-xs"
-		/>
+		<div className={ fill ? 'bks-richtext--fill' : undefined }>
+			<textarea
+				id={ editorId }
+				rows={ rows }
+				defaultValue={ value }
+				onChange={ ( event ) =>
+					onChangeRef.current( event.target.value )
+				}
+				className="w-full rounded-md border border-input bg-background p-3 font-mono text-xs"
+			/>
+		</div>
 	);
 }

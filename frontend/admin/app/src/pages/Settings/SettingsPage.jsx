@@ -58,6 +58,22 @@ const CURRENCY_LABELS = {
 	CHF: __( 'Swiss Franc (CHF)', 'booking-suite' ),
 };
 
+/**
+ * The settings sections, in the order they are shown.
+ *
+ * One list feeding both the dropdown and the tab strip, so the two can never
+ * disagree about what exists or what it is called — and adding a section is one
+ * entry rather than two places to remember.
+ */
+const SECTIONS = [
+	{ value: 'general', label: __( 'General', 'booking-suite' ) },
+	{ value: 'booking', label: __( 'Booking', 'booking-suite' ) },
+	{ value: 'payment', label: __( 'Payment', 'booking-suite' ) },
+	{ value: 'notifications', label: __( 'Notifications', 'booking-suite' ) },
+	{ value: 'company', label: __( 'Company', 'booking-suite' ) },
+	{ value: 'invoice', label: __( 'Legal & invoice', 'booking-suite' ) },
+];
+
 /** Sent as numbers; a text input hands back strings the endpoint refuses. */
 const NUMERIC = [
 	'companyLogo',
@@ -100,6 +116,9 @@ export default function SettingsPage() {
 	const [ isLoading, setLoading ] = useState( true );
 	const [ error, setError ] = useState( null );
 	const [ isSaved, setSaved ] = useState( false );
+
+	/** Which section is open. Shared by the dropdown and the tab strip. */
+	const [ section, setSection ] = useState( SECTIONS[ 0 ].value );
 
 	const form = useForm( { defaultValues: blank } );
 
@@ -198,30 +217,54 @@ export default function SettingsPage() {
 					onSubmit={ form.handleSubmit( save ) }
 					className="flex flex-col gap-4"
 				>
+					{ /*
+					 * Controlled rather than `defaultValue`, because the section
+					 * is chosen by two different controls depending on the width
+					 * and they have to agree: a dropdown on a phone, the tab
+					 * strip once there is room.
+					 */ }
 					<Tabs
-						defaultValue="general"
+						value={ section }
+						onValueChange={ setSection }
 						className="flex flex-col gap-4"
 					>
-						{ /* Wraps rather than squeezing six tabs onto a phone. */ }
-						<TabsList className="flex h-auto flex-wrap justify-start gap-1">
-							<TabsTrigger value="general">
-								{ __( 'General', 'booking-suite' ) }
-							</TabsTrigger>
-							<TabsTrigger value="booking">
-								{ __( 'Booking', 'booking-suite' ) }
-							</TabsTrigger>
-							<TabsTrigger value="payment">
-								{ __( 'Payment', 'booking-suite' ) }
-							</TabsTrigger>
-							<TabsTrigger value="notifications">
-								{ __( 'Notifications', 'booking-suite' ) }
-							</TabsTrigger>
-							<TabsTrigger value="company">
-								{ __( 'Company', 'booking-suite' ) }
-							</TabsTrigger>
-							<TabsTrigger value="invoice">
-								{ __( 'Legal & invoice', 'booking-suite' ) }
-							</TabsTrigger>
+						{ /*
+						 * Six labels — one of them "Legal & invoice" — wrap to
+						 * three ragged rows on a phone, which is a lot of screen
+						 * spent on navigation before any setting appears. The
+						 * dropdown is one row, always tidy, and names the section
+						 * you are in without being opened.
+						 */ }
+						<Select value={ section } onValueChange={ setSection }>
+							<SelectTrigger
+								className="w-full sm:hidden"
+								aria-label={ __(
+									'Settings section',
+									'booking-suite'
+								) }
+							>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{ SECTIONS.map( ( { value, label } ) => (
+									<SelectItem key={ value } value={ value }>
+										{ label }
+									</SelectItem>
+								) ) }
+							</SelectContent>
+						</Select>
+
+						{ /*
+						 * From `sm` up the strip returns. `h-auto` matters here:
+						 * shadcn's TabsList is a fixed h-9, so without it the
+						 * second row of a wrap draws on top of the first.
+						 */ }
+						<TabsList className="hidden h-auto flex-wrap justify-start gap-1 sm:flex">
+							{ SECTIONS.map( ( { value, label } ) => (
+								<TabsTrigger key={ value } value={ value }>
+									{ label }
+								</TabsTrigger>
+							) ) }
 						</TabsList>
 
 						{ /* ── General ─────────────────────────────────── */ }

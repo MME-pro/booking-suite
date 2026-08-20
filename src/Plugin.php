@@ -20,7 +20,9 @@ use BookingSuite\Backend\APIs\HolidaysController;
 use BookingSuite\Backend\APIs\IcalController;
 use BookingSuite\Backend\APIs\PaymentsController;
 use BookingSuite\Backend\Installer;
+use BookingSuite\Backend\Support\IcalFeed;
 use BookingSuite\Backend\Support\IcalSync;
+use BookingSuite\Backend\Support\Pwa;
 use BookingSuite\Backend\Migrations\MetaToTableMigration;
 use BookingSuite\Backend\Migrations\RoomsToPostsMigration;
 use BookingSuite\Backend\Integrations\ElementorTags;
@@ -75,6 +77,13 @@ final class Plugin {
 
 		// The recurring pull of subscribed portal calendars.
 		IcalSync::register();
+
+		// And the public URL the portals read this site's own calendar from.
+		// Not admin-only: nothing fetching it is ever logged in.
+		IcalFeed::register();
+
+		// The manifest and worker that let the admin be installed to a phone.
+		Pwa::register();
 
 		// Runs after the post type exists, and only until it has migrated.
 		add_action( 'admin_init', array( RoomsToPostsMigration::class, 'run' ), 20 );

@@ -223,6 +223,101 @@ final class ApartmentsRepository {
 	}
 
 	/**
+	 * This apartment's calendar-export secret, creating one if it has none.
+	 *
+	 * The token is minted on demand rather than with the apartment, so an
+	 * apartment whose calendar is never published never has a live public URL
+	 * at all. Once minted it is stable: the operator gives the link to a portal
+	 * and the portal keeps reading it, so changing it without being asked would
+	 * silently break the connection.
+	 */
+	public static function ensure_token( int $post_id ): string {
+		global $wpdb;
+
+		self::ensure_row( $post_id );
+
+		$table = ApartmentsTable::table();
+
+		$token = (string) $wpdb->get_var(
+			$wpdb->prepare( "SELECT ical_token FROM $table WHERE post_id = %d", $post_id )
+		);
+
+		if ( '' !== $token ) {
+			return $token;
+		}
+
+		return self::reset_token( $post_id );
+	}
+
+	/**
+	 * The apartment's export secret, or '' when it has never been asked for.
+	 *
+	 * The read-only counterpart of ensure_token(): listing the apartments on a
+	 * screen should not quietly publish the ones nobody has published.
+	 */
+	public static function token( int $post_id ): string {
+		global $wpdb;
+
+		$table = ApartmentsTable::table();
+
+		return (string) $wpdb->get_var(
+			$wpdb->prepare( "SELECT ical_token FROM $table WHERE post_id = %d", $post_id )
+		);
+	}
+
+	/**
+	 * Mint a new secret, invalidating the old link.
+	 *
+	 * The way to revoke a calendar that has been shared too widely: every
+	 * portal still holding the previous URL stops being able to read it, and
+	 * has to be given the new one.
+	 */
+	public static function reset_token( int $post_id ): string {
+		global $wpdb;
+
+		// 32 hex characters from the CSPRNG. This is a bearer credential on a
+		// public URL, so it is generated the way a password would be.
+		$token = bin2hex( random_bytes( 16 ) );
+
+		$wpdb->update(
+			ApartmentsTable::table(),
+			array(
+				'ical_token' => $token,
+				'updated_at' => current_time( 'mysql', true ),
+			),
+			array( 'post_id' => $post_id ),
+			array( '%s', '%s' ),
+			array( '%d' )
+		);
+
+		return $token;
+	}
+
+	/**
+	 * The apartment a calendar token belongs to, or null.
+	 *
+	 * Deliberately narrow: it returns the id alone, because the only caller is
+	 * the public feed and nothing there should be handed a whole apartment row.
+	 */
+	public static function find_by_token( string $token ): ?int {
+		global $wpdb;
+
+		// Cheap rejection before touching the database — every real token is
+		// exactly 32 hex characters.
+		if ( ! preg_match( '/^[a-f0-9]{32}$/', $token ) ) {
+			return null;
+		}
+
+		$table = ApartmentsTable::table();
+
+		$post_id = $wpdb->get_var(
+			$wpdb->prepare( "SELECT post_id FROM $table WHERE ical_token = %s", $token )
+		);
+
+		return null === $post_id ? null : (int) $post_id;
+	}
+
+	/**
 	 * Whether a short link is already taken by a different apartment.
 	 */
 	public static function short_link_taken( string $column, string $value, ?int $ignore_id = null ): bool {

@@ -22,6 +22,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -131,6 +138,13 @@ export default function BookingsPage() {
 	}, [ bookings, search, status ] );
 
 	const tabs = [ 'all', ...statuses ];
+
+	// How many bookings a status holds; 'all' is the unfiltered total. Shared by
+	// the dropdown and the tab strip so the two can never disagree.
+	const countFor = ( value ) =>
+		counts[ value ] ?? ( 'all' === value ? bookings.length : 0 );
+
+	const statusLabel = ( value ) => value.replace( /_/g, ' ' );
 
 	/*
 	 * Quick actions from the list. Each is the same call the detail screen
@@ -248,7 +262,7 @@ export default function BookingsPage() {
 				</Alert>
 			) }
 
-			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+			<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 xl:grid-cols-3">
 				{ stats.map( ( { id, Icon, ...card } ) => (
 					<StatCard key={ id } icon={ Icon } { ...card } />
 				) ) }
@@ -265,120 +279,193 @@ export default function BookingsPage() {
 			) : (
 				<>
 					<div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-						<Tabs value={ status } onValueChange={ setStatus }>
-							<TabsList className="flex-wrap">
+						{ /*
+						 * The status filter takes two forms, because five pills
+						 * with counts do not fit one phone row and wrapping them
+						 * leaves a ragged two-line block above everything else.
+						 * Below `sm` it collapses to a dropdown: one control,
+						 * one row, always tidy, and it still shows the current
+						 * filter and its count without being opened.
+						 */ }
+						<Select value={ status } onValueChange={ setStatus }>
+							<SelectTrigger
+								className="w-full capitalize sm:hidden"
+								aria-label={ __(
+									'Filter by status',
+									'booking-suite'
+								) }
+							>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{ tabs.map( ( value ) => (
+									<SelectItem
+										key={ value }
+										value={ value }
+										className="capitalize"
+									>
+										{ statusLabel( value ) } (
+										{ countFor( value ) })
+									</SelectItem>
+								) ) }
+							</SelectContent>
+						</Select>
+
+						{ /*
+						 * `h-auto` is doing real work here. shadcn's TabsList is
+						 * a fixed h-9 strip, so `flex-wrap` alone wraps the
+						 * triggers while the box stays one row tall and the
+						 * second row draws on top of the first. Letting the
+						 * height follow the content is what makes wrapping
+						 * legible; the gap keeps the rows apart once it does.
+						 */ }
+						<Tabs
+							value={ status }
+							onValueChange={ setStatus }
+							className="hidden sm:block xl:w-auto"
+						>
+							<TabsList className="h-auto w-full flex-wrap justify-start gap-1 xl:w-auto">
 								{ tabs.map( ( value ) => (
 									<TabsTrigger
 										key={ value }
 										value={ value }
 										className="gap-2 capitalize"
 									>
-										{ value.replace( /_/g, ' ' ) }
+										{ statusLabel( value ) }
 										<Badge
 											variant="secondary"
 											className="px-1.5 py-0 text-[11px] font-normal tabular-nums"
 										>
-											{ counts[ value ] ??
-												( 'all' === value
-													? bookings.length
-													: 0 ) }
+											{ countFor( value ) }
 										</Badge>
 									</TabsTrigger>
 								) ) }
 							</TabsList>
 						</Tabs>
 
-						<div className="flex flex-wrap items-center gap-2">
-							<div className="relative">
-								<Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-								<Input
-									type="search"
-									value={ search }
-									onChange={ ( event ) =>
-										setSearch( event.target.value )
-									}
-									aria-label={ __(
-										'Search bookings',
+						{ /*
+						 * Two rows on a phone, one from `sm` up. The pairing is
+						 * deliberate: refresh belongs beside the search because
+						 * both act on the list you are looking at, and Add
+						 * Booking is the only thing here that creates something,
+						 * so it gets its own line and the full width rather than
+						 * being squeezed between an icon and a count.
+						 *
+						 * Everything here has a fixed place. The previous
+						 * flex-wrap let each control break wherever it happened
+						 * to run out of room, which is what made it look
+						 * unarranged rather than merely narrow.
+						 */ }
+						<div className="flex flex-col gap-2 sm:flex-row sm:items-center xl:shrink-0">
+							<div className="flex items-center gap-2">
+								<div className="relative flex-1 sm:w-56 sm:flex-none">
+									<Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+									<Input
+										type="search"
+										value={ search }
+										onChange={ ( event ) =>
+											setSearch( event.target.value )
+										}
+										aria-label={ __(
+											'Search bookings',
+											'booking-suite'
+										) }
+										placeholder={ __(
+											'Reference, guest, email…',
+											'booking-suite'
+										) }
+										className="w-full pl-8"
+									/>
+								</div>
+
+								<Button
+									size="icon"
+									variant="outline"
+									className="shrink-0"
+									onClick={ () => load() }
+									title={ __(
+										'Refresh bookings list',
 										'booking-suite'
 									) }
-									placeholder={ __(
-										'Reference, guest, email…',
-										'booking-suite'
-									) }
-									className="w-full pl-8 sm:w-64"
-								/>
+								>
+									<RefreshCw
+										className={ `h-4 w-4 ${
+											isLoading ? 'animate-spin' : ''
+										}` }
+									/>
+									<span className="sr-only">
+										{ __( 'Refresh', 'booking-suite' ) }
+									</span>
+								</Button>
 							</div>
 
-							<Button
-								size="icon"
-								variant="outline"
-								onClick={ () => load() }
-								title={ __(
-									'Refresh bookings list',
-									'booking-suite'
-								) }
-							>
-								<RefreshCw
-									className={ `h-4 w-4 ${
-										isLoading ? 'animate-spin' : ''
-									}` }
-								/>
-								<span className="sr-only">
-									{ __( 'Refresh', 'booking-suite' ) }
+							<div className="flex items-center gap-3">
+								<Button
+									className="flex-1 sm:flex-none"
+									onClick={ () => setEditing( 'new' ) }
+								>
+									<Plus className="h-4 w-4" />
+									{ __( 'Add Booking', 'booking-suite' ) }
+								</Button>
+
+								{ /*
+								 * A note about the list rather than a control:
+								 * it never moves, so it sits at the end on every
+								 * width and stays quiet.
+								 */ }
+								<span className="shrink-0 whitespace-nowrap text-xs text-muted-foreground">
+									{ sprintf(
+										/* translators: %d: number of bookings shown. */
+										_n(
+											'%d booking',
+											'%d bookings',
+											visible.length,
+											'booking-suite'
+										),
+										visible.length
+									) }
 								</span>
-							</Button>
-
-							<Button onClick={ () => setEditing( 'new' ) }>
-								<Plus className="h-4 w-4" />
-								{ __( 'Add Booking', 'booking-suite' ) }
-							</Button>
-
-							<span className="text-xs text-muted-foreground">
-								{ sprintf(
-									/* translators: %d: number of bookings shown. */
-									_n(
-										'%d booking',
-										'%d bookings',
-										visible.length,
-										'booking-suite'
-									),
-									visible.length
-								) }
-							</span>
+							</div>
 						</div>
 					</div>
 
-					<Card className="overflow-hidden">
-						{ bookings.length > 0 ? (
-							<BookingsTable
-								bookings={ visible }
-								onSelectBooking={ setSelectedBooking }
-								busyId={ busyId }
-								onApprove={ ( booking ) =>
-									runQuickAction( booking, {
-										status: 'confirmed',
-									} )
-								}
-								onMarkPaid={ ( booking ) =>
-									runQuickAction( booking, {
-										payment_status: 'paid',
-									} )
-								}
-								onViewPayment={ setPayingBooking }
-								emptyContent={
-									<EmptyBookings
-										title={ __(
-											'No bookings match your filter',
-											'booking-suite'
-										) }
-										description={ __(
-											'Try another status, or clear the search to see all requests.',
-											'booking-suite'
-										) }
-									/>
-								}
-							/>
-						) : (
+					{ /*
+					 * No Card around this: below `lg` the list IS cards, and a
+					 * card of cards reads as a box somebody forgot to remove.
+					 * BookingsTable puts the surface where it belongs — around
+					 * the table, and around the empty state.
+					 */ }
+					{ bookings.length > 0 ? (
+						<BookingsTable
+							bookings={ visible }
+							onSelectBooking={ setSelectedBooking }
+							busyId={ busyId }
+							onApprove={ ( booking ) =>
+								runQuickAction( booking, {
+									status: 'confirmed',
+								} )
+							}
+							onMarkPaid={ ( booking ) =>
+								runQuickAction( booking, {
+									payment_status: 'paid',
+								} )
+							}
+							onViewPayment={ setPayingBooking }
+							emptyContent={
+								<EmptyBookings
+									title={ __(
+										'No bookings match your filter',
+										'booking-suite'
+									) }
+									description={ __(
+										'Try another status, or clear the search to see all requests.',
+										'booking-suite'
+									) }
+								/>
+							}
+						/>
+					) : (
+						<Card className="overflow-hidden">
 							<EmptyBookings
 								title={ __(
 									'No booking requests yet',
@@ -389,8 +476,8 @@ export default function BookingsPage() {
 									'booking-suite'
 								) }
 							/>
-						) }
-					</Card>
+						</Card>
+					) }
 				</>
 			) }
 

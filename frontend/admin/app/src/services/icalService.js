@@ -114,6 +114,31 @@ export const icalService = {
 		return payload?.report ?? emptyReport();
 	},
 
+	/**
+	 * Publish an apartment's calendar, or replace the link it already has.
+	 *
+	 * Creating the link is a write, not a read — it puts a live public URL into
+	 * the world — which is why the list endpoint reports the links that exist
+	 * rather than making one for every apartment it shows.
+	 *
+	 * @param {number}      apartmentId
+	 * @param {boolean}     [regenerate] Replace the existing link.
+	 * @param {AbortSignal} [signal]
+	 * @return {Promise<Object>} exportUrl and fallbackUrl.
+	 */
+	async exportLink( apartmentId, regenerate = false, signal ) {
+		const payload = await http.post(
+			`${ RESOURCE }/export/${ apartmentId }`,
+			{ regenerate },
+			{ signal }
+		);
+
+		return {
+			exportUrl: payload?.exportUrl ?? '',
+			fallbackUrl: payload?.fallbackUrl ?? '',
+		};
+	},
+
 	async createFeed( values, signal ) {
 		const payload = await http.post( `${ RESOURCE }/feeds`, values, {
 			signal,

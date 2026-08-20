@@ -163,7 +163,64 @@ export default function ImportReport( { report } ) {
 				</Alert>
 			) }
 
-			<div className="overflow-x-auto rounded-lg border">
+			{ /*
+			 * Below `md` the same events are rows in a list rather than cells in
+			 * a table. Four columns on a phone would either scroll sideways —
+			 * hiding the summary, which is the column that says what the event
+			 * actually is — or squeeze the dates into two characters a line.
+			 */ }
+			<div className="flex flex-col gap-2 md:hidden">
+				{ events.map( ( event, index ) => {
+					const action = ACTIONS[ event.action ] ?? ACTIONS.skipped;
+
+					return (
+						<div
+							key={ `${ event.uid }-${ index }` }
+							className={ `flex flex-col gap-1.5 rounded-lg border p-3 ${
+								'skipped' === event.action
+									? 'text-muted-foreground'
+									: ''
+							}` }
+						>
+							<div className="flex items-center justify-between gap-2">
+								<Badge variant={ action.variant }>
+									{ action.label }
+								</Badge>
+
+								<span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+									{ event.allDay
+										? sprintf(
+												/* translators: %d: number of nights. */
+												_n(
+													'%d night',
+													'%d nights',
+													event.nights,
+													'booking-suite'
+												),
+												event.nights
+										  )
+										: '—' }
+								</span>
+							</div>
+
+							<div className="text-sm">
+								<Window event={ event } />
+							</div>
+
+							<div className="text-sm">
+								{ event.summary }
+								{ event.note && (
+									<span className="ml-1 text-xs text-muted-foreground">
+										({ event.note })
+									</span>
+								) }
+							</div>
+						</div>
+					);
+				} ) }
+			</div>
+
+			<div className="hidden overflow-x-auto rounded-lg border md:block">
 				<Table>
 					<TableHeader>
 						<TableRow>

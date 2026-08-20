@@ -279,8 +279,15 @@ export default function ExtrasPage() {
 			) : (
 				<>
 					<div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-						<div className="flex flex-wrap items-center gap-2">
-							<div className="relative">
+						{ /*
+						 * Search on its own row, then the filter beside the count
+						 * and the button. Only three filters here, so the tab strip
+						 * fits a phone row where the five on Bookings did not — it
+						 * just needs `h-auto` so it can grow if a translation makes
+						 * the labels longer than English does.
+						 */ }
+						<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
+							<div className="relative w-full sm:w-64">
 								<Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 								<Input
 									type="search"
@@ -296,19 +303,21 @@ export default function ExtrasPage() {
 										'Search by name…',
 										'booking-suite'
 									) }
-									className="w-full pl-8 sm:w-64"
+									className="w-full pl-8"
 								/>
 							</div>
 
 							<Tabs
 								value={ statusFilter }
 								onValueChange={ setStatusFilter }
+								className="w-full sm:w-auto"
 							>
-								<TabsList>
+								<TabsList className="h-auto w-full flex-wrap justify-start gap-1 sm:w-auto">
 									{ FILTERS.map( ( { value, label } ) => (
 										<TabsTrigger
 											key={ value }
 											value={ value }
+											className="flex-1 sm:flex-none"
 										>
 											{ label }
 										</TabsTrigger>
@@ -317,8 +326,17 @@ export default function ExtrasPage() {
 							</Tabs>
 						</div>
 
-						<div className="flex items-center gap-3">
-							<span className="text-xs text-muted-foreground">
+						<div className="flex items-center gap-3 lg:shrink-0">
+							<Button
+								className="min-w-0 flex-1 sm:flex-none"
+								onClick={ () => setEditing( 'new' ) }
+							>
+								<Plus className="h-4 w-4 shrink-0" />
+								<span className="truncate">
+									{ __( 'Add Extra', 'booking-suite' ) }
+								</span>
+							</Button>
+							<span className="shrink-0 whitespace-nowrap text-xs text-muted-foreground">
 								{ sprintf(
 									/* translators: %d: number of extras shown. */
 									_n(
@@ -330,36 +348,37 @@ export default function ExtrasPage() {
 									visible.length
 								) }
 							</span>
-							<Button onClick={ () => setEditing( 'new' ) }>
-								<Plus className="h-4 w-4" />
-								{ __( 'Add Extra', 'booking-suite' ) }
-							</Button>
 						</div>
 					</div>
 
-					<Card className="overflow-hidden">
-						{ extras.length > 0 ? (
-							<ExtrasTable
-								extras={ visible }
-								booked={ booked }
-								busyId={ busyId }
-								onEdit={ setEditing }
-								onDelete={ setPendingDelete }
-								onToggleActive={ toggleActive }
-								emptyContent={
-									<EmptyExtras
-										title={ __(
-											'No extras match your search',
-											'booking-suite'
-										) }
-										description={ __(
-											'Try a different name, or clear the search to see all extras.',
-											'booking-suite'
-										) }
-									/>
-								}
-							/>
-						) : (
+					{ /*
+					 * No Card around this: below lg the list IS cards, and a card of
+					 * cards reads as a box somebody forgot to remove. ExtrasTable puts
+					 * the surface around the table and around the empty state instead.
+					 */ }
+					{ extras.length > 0 ? (
+						<ExtrasTable
+							extras={ visible }
+							booked={ booked }
+							busyId={ busyId }
+							onEdit={ setEditing }
+							onDelete={ setPendingDelete }
+							onToggleActive={ toggleActive }
+							emptyContent={
+								<EmptyExtras
+									title={ __(
+										'No extras match your search',
+										'booking-suite'
+									) }
+									description={ __(
+										'Try a different name, or clear the search to see all extras.',
+										'booking-suite'
+									) }
+								/>
+							}
+						/>
+					) : (
+						<Card className="overflow-hidden">
 							<EmptyExtras
 								title={ __( 'No extras yet', 'booking-suite' ) }
 								description={ __(
@@ -376,8 +395,8 @@ export default function ExtrasPage() {
 									</Button>
 								}
 							/>
-						) }
-					</Card>
+						</Card>
+					) }
 				</>
 			) }
 

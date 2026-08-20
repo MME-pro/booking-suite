@@ -15,6 +15,8 @@ const defaults = {
 	nonce: '',
 	locale: 'en_US',
 	assetsUrl: '',
+	workerUrl: '',
+	adminPath: '/wp-admin/',
 };
 
 export const settings = {

@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace BookingSuite\Frontend\Admin;
 
 use BookingSuite\Backend\PostTypes\ApartmentPostType;
+use BookingSuite\Backend\Support\Pwa;
 
 use const BookingSuite\PLUGIN_DIR;
 use const BookingSuite\PLUGIN_URL;
@@ -112,6 +113,9 @@ final class Assets {
 				'nonce'      => wp_create_nonce( 'wp_rest' ),
 				'locale'     => get_user_locale(),
 				'assetsUrl'  => PLUGIN_URL . 'frontend/admin/app/build/',
+				// Registered by the app; see Pwa for why it is scoped to wp-admin.
+				'workerUrl'  => esc_url_raw( Pwa::worker_url() ),
+				'adminPath'  => (string) wp_parse_url( admin_url(), PHP_URL_PATH ),
 			)
 		);
 	}

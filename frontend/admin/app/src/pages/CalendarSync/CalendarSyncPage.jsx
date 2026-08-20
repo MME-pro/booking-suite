@@ -44,6 +44,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { StatCard } from '../../components/StatCard';
 import { icalService } from '../../services';
+import { ExportCard } from './components/ExportCard';
 import { FeedForm } from './components/FeedForm';
 import { FeedList } from './components/FeedList';
 import { ImportReport } from './components/ImportReport';
@@ -115,6 +116,20 @@ export default function CalendarSyncPage() {
 
 		return { active, failing, lastRead: lastRead ?? '' };
 	}, [ feeds ] );
+
+	/*
+	 * Merge the new link in place rather than reloading: the rest of the screen
+	 * has not changed, and a full refetch would throw away a sync report the
+	 * operator may still be reading.
+	 */
+	const handleExportChanged = ( apartmentId, links ) =>
+		setApartments( ( current ) =>
+			current.map( ( apartment ) =>
+				apartment.id === apartmentId
+					? { ...apartment, ...links }
+					: apartment
+			)
+		);
 
 	const handleSaved = ( saved ) => {
 		if ( ! saved ) {
@@ -341,24 +356,38 @@ export default function CalendarSyncPage() {
 					</p>
 				</div>
 
-				<div className="flex items-center gap-2">
+				{ /*
+				 * Both buttons share the row and stretch to fill it on a phone,
+				 * where "Sync all now" and "Add subscription" together are wider
+				 * than the screen and would otherwise break at whatever point
+				 * they ran out of room.
+				 */ }
+				<div className="flex items-center gap-2 lg:shrink-0">
 					{ feeds.length > 0 && (
 						<Button
 							variant="outline"
+							className="min-w-0 flex-1 lg:flex-none"
 							onClick={ syncEverything }
 							disabled={ syncingAll }
 						>
 							{ syncingAll ? (
-								<Loader2 className="h-4 w-4 animate-spin" />
+								<Loader2 className="h-4 w-4 shrink-0 animate-spin" />
 							) : (
-								<RefreshCw className="h-4 w-4" />
+								<RefreshCw className="h-4 w-4 shrink-0" />
 							) }
-							{ __( 'Sync all now', 'booking-suite' ) }
+							<span className="truncate">
+								{ __( 'Sync all now', 'booking-suite' ) }
+							</span>
 						</Button>
 					) }
-					<Button onClick={ () => setEditing( 'new' ) }>
-						<Plus className="h-4 w-4" />
-						{ __( 'Add subscription', 'booking-suite' ) }
+					<Button
+						className="min-w-0 flex-1 lg:flex-none"
+						onClick={ () => setEditing( 'new' ) }
+					>
+						<Plus className="h-4 w-4 shrink-0" />
+						<span className="truncate">
+							{ __( 'Add subscription', 'booking-suite' ) }
+						</span>
 					</Button>
 				</div>
 			</div>
@@ -443,6 +472,19 @@ export default function CalendarSyncPage() {
 						<ImportReport report={ lastReport } />
 					</CardContent>
 				</Card>
+			) }
+
+			{ /*
+			 * The outgoing direction, under the incoming one. Reading a portal
+			 * is what most operators set up first and the half that stops this
+			 * site overselling; publishing is what stops the portals doing the
+			 * same, and reads as the natural second step.
+			 */ }
+			{ apartments.length > 0 && (
+				<ExportCard
+					apartments={ apartments }
+					onChanged={ handleExportChanged }
+				/>
 			) }
 
 			{ /*

@@ -1,0 +1,82 @@
+/* ═══════════════════════════════════════════════
+   RichText — filling the height it is given
+   ═══════════════════════════════════════════════ */
+
+/*
+ * TinyMCE decides its height once, when it initialises, and writes the result
+ * as inline styles on its own boxes. That is why the editor stays short inside
+ * a tall pane no matter what the pane does — nothing about the container is
+ * consulted after setup.
+ *
+ * Rather than re-initialising the editor whenever the pane resizes — which
+ * would tear down and rebuild TinyMCE, losing the caret and the undo history —
+ * the layout is handed over to flexbox. Every box between the wrapper and the
+ * editing iframe becomes a flex column that may shrink, and the iframe is told
+ * to fill whatever is left.
+ *
+ * The `!important` is not defensiveness: TinyMCE writes real inline styles, and
+ * an inline style beats a class. It is the only way a stylesheet can win here.
+ *
+ * `min-height: 0` appears at every level on purpose. A flex child defaults to
+ * min-height:auto, which refuses to shrink below its content — one box missing
+ * it anywhere in the chain and the whole thing stops collapsing.
+ */
+
+.bks-richtext--fill {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	min-height: 0;
+}
+
+/* The wrapper wp.editor puts around the textarea. */
+.bks-richtext--fill .wp-editor-wrap,
+.bks-richtext--fill .wp-editor-container {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	min-height: 0;
+}
+
+/* The media buttons row keeps its own height. */
+.bks-richtext--fill .wp-editor-tools {
+	flex: 0 0 auto;
+}
+
+.bks-richtext--fill .mce-tinymce,
+.bks-richtext--fill .mce-tinymce > .mce-container-body {
+	display: flex !important;
+	flex: 1 1 auto !important;
+	flex-direction: column !important;
+	min-height: 0 !important;
+}
+
+/* The toolbar sits above and does not stretch. */
+.bks-richtext--fill .mce-top-part {
+	flex: 0 0 auto !important;
+}
+
+/*
+ * The editing area is the box TinyMCE writes a pixel height onto, so this is
+ * the override that matters.
+ */
+.bks-richtext--fill .mce-edit-area {
+	display: flex !important;
+	flex: 1 1 auto !important;
+	height: auto !important;
+	min-height: 0 !important;
+}
+
+.bks-richtext--fill .mce-edit-area iframe {
+	height: 100% !important;
+	min-height: 16rem !important;
+}
+
+/*
+ * The fallback when wp.editor is unavailable and the plain textarea is all
+ * there is — it should fill the same space rather than sitting at its rows.
+ */
+.bks-richtext--fill > textarea {
+	flex: 1 1 auto;
+	min-height: 16rem;
+}

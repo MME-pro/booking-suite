@@ -27,8 +27,14 @@ const DEBOUNCE_MS = 500;
  * @param {string} props.templateKey Which template is being edited.
  * @param {string} props.subject     The subject as currently edited.
  * @param {string} props.body        The body as currently edited.
+ * @param {string} [props.className] Extra classes for the frame wrapper.
  */
-export default function EmailPreview( { templateKey, subject, body } ) {
+export default function EmailPreview( {
+	templateKey,
+	subject,
+	body,
+	className = '',
+} ) {
 	const [ html, setHtml ] = useState( '' );
 	const [ error, setError ] = useState( null );
 	const [ isLoading, setLoading ] = useState( true );
@@ -84,7 +90,9 @@ export default function EmailPreview( { templateKey, subject, body } ) {
 	}
 
 	return (
-		<div className="relative overflow-hidden rounded-lg border bg-muted/30">
+		<div
+			className={ `relative flex min-h-0 flex-1 overflow-hidden rounded-lg border bg-muted/30 ${ className }` }
+		>
 			{ isLoading && (
 				<div className="absolute right-3 top-3 z-10">
 					<Loader2
@@ -102,7 +110,7 @@ export default function EmailPreview( { templateKey, subject, body } ) {
 				title={ __( 'Email preview', 'booking-suite' ) }
 				srcDoc={ html }
 				sandbox=""
-				className="h-[32rem] w-full border-0 bg-white"
+				className="h-full min-h-[24rem] w-full border-0 bg-white"
 			/>
 		</div>
 	);

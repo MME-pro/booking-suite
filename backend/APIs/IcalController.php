@@ -31,6 +31,7 @@ namespace BookingSuite\Backend\APIs;
 
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\IcalFeedsRepository;
+use BookingSuite\Backend\Support\IcalFeed;
 use BookingSuite\Backend\Support\IcalImporter;
 use BookingSuite\Backend\Support\IcalParser;
 use BookingSuite\Backend\Support\IcalSync;
@@ -185,6 +186,30 @@ final class IcalController {
 				),
 			)
 		);
+
+		/*
+		 * Minting the export link is a POST rather than part of the GET above,
+		 * because asking for the link is what creates the token — and creating
+		 * a live public URL is a change, not a read.
+		 */
+		register_rest_route(
+			self::NAMESPACE,
+			'/' . self::ROUTE . '/export/(?P<id>\d+)',
+			array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( self::class, 'export_link' ),
+					'permission_callback' => array( self::class, 'can_manage' ),
+					'args'                => array(
+						'regenerate' => array(
+							'type'     => 'boolean',
+							'required' => false,
+							'default'  => false,
+						),
+					),
+				),
+			)
+		);
 	}
 
 	public static function can_manage(): bool {
@@ -230,11 +255,23 @@ final class IcalController {
 			array(
 				'feeds'      => IcalFeedsRepository::all(),
 				'apartments' => array_map(
-					static fn( array $a ): array => array(
-						'id'     => (int) $a['id'],
-						'name'   => (string) $a['name'],
-						'colour' => (string) $a['colour'],
-					),
+					static function ( array $a ): array {
+						/*
+						 * Read, never mint: an apartment whose calendar has
+						 * never been published stays unpublished just because
+						 * somebody opened this screen. The token arrives when
+						 * the operator presses the button.
+						 */
+						$token = ApartmentsRepository::token( (int) $a['id'] );
+
+						return array(
+							'id'          => (int) $a['id'],
+							'name'        => (string) $a['name'],
+							'colour'      => (string) $a['colour'],
+							'exportUrl'   => IcalFeed::url_from_token( $token ),
+							'fallbackUrl' => IcalFeed::fallback_from_token( $token ),
+						);
+					},
 					ApartmentsRepository::all()
 				),
 				'sources'    => array_map(
@@ -458,6 +495,36 @@ final class IcalController {
 			array(
 				'report' => $report,
 				'feed'   => IcalFeedsRepository::find( (int) $request['id'] ),
+			),
+			200
+		);
+	}
+
+	/**
+	 * Publish an apartment's calendar, or replace the link it already has.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function export_link( WP_REST_Request $request ) {
+		$apartment_id = (int) $request['id'];
+
+		if ( null === ApartmentsRepository::find( $apartment_id ) ) {
+			return new WP_Error(
+				'booking_suite_apartment_not_found',
+				__( 'That apartment no longer exists.', 'booking-suite' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		$token = $request->get_param( 'regenerate' )
+			? ApartmentsRepository::reset_token( $apartment_id )
+			: ApartmentsRepository::ensure_token( $apartment_id );
+
+		return new WP_REST_Response(
+			array(
+				'apartmentId' => $apartment_id,
+				'exportUrl'   => IcalFeed::url_from_token( $token ),
+				'fallbackUrl' => IcalFeed::fallback_from_token( $token ),
 			),
 			200
 		);

@@ -1086,4 +1086,321 @@ Gute Reise und bis bald.
 	'Ask for a shorter range.' => 'Wählen Sie einen kürzeren Zeitraum.',
 	'Recorded when the booking was marked paid.' => 'Erfasst, als die Buchung als bezahlt markiert wurde.',
 	'Recorded from the booking, which was already marked paid.' => 'Aus der Buchung übernommen, die bereits als bezahlt markiert war.',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Calendar Sync' => 'Kalender-Sync',
+	'Automatic subscriptions' => 'Automatische Kalender-Abos',
+	'Calendar links read every 15 minutes. Dates the portal holds are blocked here; this site’s own bookings are not sent back.' => 'Kalender-Links werden alle 15 Minuten gelesen. Vom Portal belegte Termine werden hier gesperrt; die eigenen Buchungen dieser Website werden nicht zurückgesendet.',
+	'One-off file import' => 'Einmaliger Datei-Import',
+	'For trying a portal export before subscribing to it, or for a portal that only offers a download.' => 'Zum Ausprobieren eines Portal-Exports, bevor Sie ihn abonnieren – oder für ein Portal, das nur einen Download anbietet.',
+	'Export links' => 'Export-Links',
+	'Give these to Airbnb or Booking.com and they will block the dates this site has taken. One link per apartment — the same kind of link they give you.' => 'Geben Sie diese an Airbnb oder Booking.com weiter, damit dort die hier belegten Termine gesperrt werden. Ein Link je Apartment – dieselbe Art Link, die Sie von dort erhalten.',
+	'The file says only when the apartment is taken — never who by. Anyone holding the link can read it, so treat it as private and replace it if it gets out.' => 'Die Datei nennt nur, wann das Apartment belegt ist – nie durch wen. Wer den Link hat, kann sie lesen: Behandeln Sie ihn vertraulich und ersetzen Sie ihn, falls er nach außen gelangt.',
+	'Subscriptions' => 'Abos',
+	'%d syncing automatically' => array( '%d wird automatisch synchronisiert', '%d werden automatisch synchronisiert' ),
+	'Portals' => 'Portale',
+	'Failing' => 'Fehlerhaft',
+	'Check the calendar links' => 'Kalender-Links prüfen',
+	'Every calendar reads cleanly' => 'Alle Kalender werden fehlerfrei gelesen',
+	'Needs a look' => 'Prüfen',
+	'Healthy' => 'In Ordnung',
+	'Last read' => 'Zuletzt gelesen',
+	'Most recent portal read, UTC' => 'Letzter Portal-Abruf, UTC',
+	'No calendar read yet' => 'Noch kein Kalender gelesen',
+	'Freshness' => 'Aktualität',
+	'Next automatic sync' => 'Nächste automatische Synchronisierung',
+	'On %s, then every 15 minutes' => 'Am %s, danach alle 15 Minuten',
+	'Not scheduled' => 'Nicht eingeplant',
+	'Schedule' => 'Zeitplan',
+	'Add subscription' => 'Abo hinzufügen',
+	'Add a subscription' => 'Kalender-Abo hinzufügen',
+	'Edit subscription' => 'Kalender-Abo bearbeiten',
+	'Sync all now' => 'Alle jetzt synchronisieren',
+	'Sync now' => 'Jetzt synchronisieren',
+	'Paused' => 'Pausiert',
+	'No calendars subscribed yet' => 'Noch keine Kalender abonniert',
+	'Paste the calendar link from Airbnb or Booking.com and their bookings will block those dates here automatically — no more checking two calendars by hand.' => 'Fügen Sie den Kalender-Link von Airbnb oder Booking.com ein – deren Buchungen sperren die Termine dann automatisch hier. Kein manueller Abgleich zweier Kalender mehr.',
+	'Not read yet — it will be picked up by the next automatic sync.' => 'Noch nicht gelesen – wird bei der nächsten automatischen Synchronisierung berücksichtigt.',
+	'Last read %1$s UTC — %2$s' => 'Zuletzt gelesen %1$s UTC – %2$s',
+	'%1$d blocked, %2$d changed, %3$d released' => '%1$d gesperrt, %2$d geändert, %3$d freigegeben',
+	'Last sync — %s' => 'Letzte Synchronisierung – %s',
+	'Remove this subscription?' => 'Dieses Abo entfernen?',
+	'"%s" will stop being read. The dates it already blocked stay blocked unless you say otherwise below.' => '„%s“ wird nicht mehr gelesen. Die bereits gesperrten Termine bleiben gesperrt, sofern Sie unten nichts anderes angeben.',
+	'Also release the dates this calendar blocked' => 'Auch die von diesem Kalender gesperrten Termine freigeben',
+	'Puts them back on sale. Only do this if the portal is no longer selling the apartment — dates it has sold would otherwise become bookable here too.' => 'Gibt sie wieder zum Verkauf frei. Tun Sie das nur, wenn das Portal das Apartment nicht mehr anbietet – sonst werden dort verkaufte Termine auch hier wieder buchbar.',
+	'Booking Suite reads the calendar every 15 minutes and blocks the dates it holds. Nothing is sent to the portal.' => 'Booking Suite liest den Kalender alle 15 Minuten und sperrt die dort belegten Termine. An das Portal wird nichts gesendet.',
+	'Portal' => 'Portal',
+	'Only used until the first sync — after that the file says who wrote it.' => 'Wird nur bis zur ersten Synchronisierung verwendet – danach sagt die Datei selbst, wer sie erstellt hat.',
+	'Calendar link' => 'Kalender-Link',
+	'Paste the calendar link.' => 'Fügen Sie den Kalender-Link ein.',
+	'That should be a link starting with https:// or webcal://' => 'Das sollte ein Link sein, der mit https:// oder webcal:// beginnt.',
+	'Airbnb: Calendar → Availability → Connect calendars. Booking.com: Rates & Availability → Sync calendars.' => 'Airbnb: Kalender → Verfügbarkeit → Kalender verbinden. Booking.com: Preise & Verfügbarkeit → Kalender synchronisieren.',
+	'Label (optional)' => 'Bezeichnung (optional)',
+	'e.g. Studio · Airbnb' => 'z. B. Studio · Airbnb',
+	'Sync this calendar automatically' => 'Diesen Kalender automatisch synchronisieren',
+	'Switch off to pause the scheduled pull without losing the link.' => 'Ausschalten, um den geplanten Abruf zu pausieren, ohne den Link zu verlieren.',
+	'Import a calendar file' => 'Kalenderdatei importieren',
+	'Export the .ics file from Airbnb or Booking.com and upload it here. The dates it holds are blocked for the apartment you choose.' => 'Exportieren Sie die .ics-Datei bei Airbnb oder Booking.com und laden Sie sie hier hoch. Die enthaltenen Termine werden für das gewählte Apartment gesperrt.',
+	'Calendar file' => 'Kalenderdatei',
+	'Choose an apartment…' => 'Apartment wählen …',
+	'Check the file' => 'Datei prüfen',
+	'Import these dates' => 'Diese Termine importieren',
+	'Calendar imported' => 'Kalender importiert',
+	'That did not work' => 'Das hat nicht geklappt',
+	'%1$d blocked, %2$d changed, %3$d released.' => '%1$d gesperrt, %2$d geändert, %3$d freigegeben.',
+	'Ignore dates that have already passed' => 'Bereits vergangene Termine ignorieren',
+	'A portal export usually carries a year of history there is no point blocking.' => 'Ein Portal-Export enthält meist ein Jahr Vergangenheit, die zu sperren keinen Sinn ergibt.',
+	'Release dates this calendar no longer holds' => 'Termine freigeben, die dieser Kalender nicht mehr enthält',
+	'Makes the apartment match the file exactly, so a cancellation at the portal puts the dates back on sale here. Only affects dates imported from this same portal — never a lock you made yourself.' => 'Bringt das Apartment exakt mit der Datei in Einklang: Eine Stornierung im Portal gibt die Termine hier wieder frei. Betrifft nur Termine aus demselben Portal – nie eine von Ihnen selbst gesetzte Sperrung.',
+	'to add' => 'neu',
+	'to change' => 'zu ändern',
+	'to release' => 'freizugeben',
+	'unchanged' => 'unverändert',
+	'skipped' => 'übersprungen',
+	'%1$s → %2$s' => '%1$s → %2$s',
+	'Action' => 'Aktion',
+	'Dates' => 'Zeitraum',
+	'From the calendar' => 'Aus dem Kalender',
+	'New' => 'Neu',
+	'Changed' => 'Geändert',
+	'Already there' => 'Bereits vorhanden',
+	'Skipped' => 'Übersprungen',
+	'Double booking' => 'Doppelbuchung',
+	'These dates are already sold on this site and the portal has them too. Importing does not cancel anything — settle it at one of the two channels.' => 'Diese Termine sind auf dieser Website bereits verkauft und liegen zugleich beim Portal. Der Import storniert nichts – klären Sie es in einem der beiden Kanäle.',
+	'%d date is blocked here but no longer in the calendar' => array( '%d Termin ist hier gesperrt, steht aber nicht mehr im Kalender', '%d Termine sind hier gesperrt, stehen aber nicht mehr im Kalender' ),
+	'These will be released, putting the dates back on sale.' => 'Diese werden freigegeben und die Termine wieder zum Verkauf gestellt.',
+	'These will be left alone. Switch on "release dates the calendar no longer holds" to remove them.' => 'Diese bleiben unverändert. Aktivieren Sie „Termine freigeben, die dieser Kalender nicht mehr enthält“, um sie zu entfernen.',
+	'Create link' => 'Link erstellen',
+	'Copy link' => 'Link kopieren',
+	'Copied' => 'Kopiert',
+	'Download' => 'Herunterladen',
+	'Download the .ics file' => 'Die .ics-Datei herunterladen',
+	'Replace this link' => 'Diesen Link ersetzen',
+	'Replace this link?' => 'Diesen Link ersetzen?',
+	'Replace link' => 'Link ersetzen',
+	'Calendar link for %s' => 'Kalender-Link für %s',
+	'Could not copy automatically — select the link and copy it by hand.' => 'Automatisches Kopieren nicht möglich – markieren Sie den Link und kopieren Sie ihn von Hand.',
+	'Not published yet. Creating the link makes this apartment’s booked dates readable by anyone holding it.' => 'Noch nicht veröffentlicht. Sobald der Link erstellt ist, kann jeder, der ihn besitzt, die belegten Termine dieses Apartments lesen.',
+	'The current link stops working immediately. Every portal already using it will fail to read the calendar until you give them the new one — so only do this if the link has been shared somewhere it should not have been.' => 'Der bisherige Link funktioniert sofort nicht mehr. Jedes Portal, das ihn nutzt, kann den Kalender erst wieder lesen, wenn Sie ihm den neuen Link geben – tun Sie das also nur, wenn der Link an eine falsche Stelle gelangt ist.',
+	'Blocked by a portal (Airbnb, Booking.com)' => 'Von einem Portal gesperrt (Airbnb, Booking.com)',
+	'Blocked here' => 'Hier gesperrt',
+	'All apartments' => 'Alle Apartments',
+	'%d apartment blocked' => array( '%d Apartment gesperrt', '%d Apartments gesperrt' ),
+	'%d apartment blocked by a portal' => array( '%d Apartment von einem Portal gesperrt', '%d Apartments von einem Portal gesperrt' ),
+	'Nothing booked here — but a portal has the apartments above, so this date is not free.' => 'Hier ist nichts gebucht – die Apartments oben sind jedoch von einem Portal belegt, dieser Tag ist also nicht frei.',
+	'Imported from a portal calendar. Change it at the portal — the next sync follows.' => 'Aus einem Portal-Kalender importiert. Ändern Sie es im Portal – die nächste Synchronisierung übernimmt es.',
+	'Release it on the Availability screen.' => 'Auf der Seite „Verfügbarkeit“ freigeben.',
+	'Open booking %s' => 'Buchung %s öffnen',
+	'Mark paid' => 'Als bezahlt markieren',
+	'Filter by status' => 'Nach Status filtern',
+	'Deleted' => 'Gelöscht',
+	'Airbnb' => 'Airbnb',
+	'Booking.com' => 'Booking.com',
+	'Vrbo' => 'Vrbo',
+	'Expedia' => 'Expedia',
+	'Tripadvisor' => 'Tripadvisor',
+	'Google Calendar' => 'Google Kalender',
+	'Manual' => 'Manuell',
+	'Not available' => 'Nicht verfügbar',
+	'Every 15 minutes' => 'Alle 15 Minuten',
+	'Already over.' => 'Bereits vorbei.',
+	'Cancelled in the source calendar.' => 'Im Quellkalender storniert.',
+	'Marked as free time, not a booking.' => 'Als freie Zeit gekennzeichnet, keine Buchung.',
+	'Repeating events are not imported.' => 'Wiederkehrende Termine werden nicht importiert.',
+	'The event ends before it starts.' => 'Der Termin endet vor seinem Beginn.',
+	'The event has no readable start date.' => 'Der Termin hat kein lesbares Startdatum.',
+	'Was %1$s to %2$s.' => 'War %1$s bis %2$s.',
+	'%1$d added, %2$d changed, %3$d released.' => '%1$d hinzugefügt, %2$d geändert, %3$d freigegeben.',
+	'Choose a calendar file to import.' => 'Wählen Sie eine Kalenderdatei zum Importieren.',
+	'Choose which apartment the calendar belongs to.' => 'Wählen Sie, zu welchem Apartment der Kalender gehört.',
+	'Choose which apartment this calendar belongs to.' => 'Wählen Sie, zu welchem Apartment dieser Kalender gehört.',
+	'Paste the calendar link the portal gave you — it should start with https://' => 'Fügen Sie den Kalender-Link ein, den Sie vom Portal erhalten haben – er sollte mit https:// beginnen.',
+	'This apartment already subscribes to that calendar.' => 'Dieses Apartment hat diesen Kalender bereits abonniert.',
+	'That apartment no longer exists.' => 'Dieses Apartment existiert nicht mehr.',
+	'That calendar subscription no longer exists.' => 'Dieses Kalender-Abo existiert nicht mehr.',
+	'The calendar subscription could not be saved.' => 'Das Kalender-Abo konnte nicht gespeichert werden.',
+	'That file is not a calendar. Export the .ics file from the portal and upload it unchanged.' => 'Diese Datei ist kein Kalender. Exportieren Sie die .ics-Datei aus dem Portal und laden Sie sie unverändert hoch.',
+	'That file is too large to be a calendar export.' => 'Diese Datei ist zu groß für einen Kalender-Export.',
+	'That calendar is too large to be a listing export.' => 'Dieser Kalender ist zu groß für einen Inserats-Export.',
+	'That is not a usable calendar address.' => 'Das ist keine verwendbare Kalender-Adresse.',
+	'The calendar could not be reached: %s' => 'Der Kalender konnte nicht erreicht werden: %s',
+	'The portal answered with status %d. Check the calendar link is still valid.' => 'Das Portal antwortete mit Status %d. Prüfen Sie, ob der Kalender-Link noch gültig ist.',
+	'Calendar not found.' => 'Kalender nicht gefunden.',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Hide' => 'Ausblenden',
+	'Show' => 'Einblenden',
+	'View payment for %s' => 'Zahlung für %s ansehen',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Settings section' => 'Einstellungsbereich',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Install app' => 'App installieren',
+	'Add Booking Suite to your home screen' => 'Booking Suite zum Home-Bildschirm hinzufügen',
+	'Add to Home Screen' => 'Zum Home-Bildschirm hinzufügen',
+	'Safari cannot do this for you, but it takes three taps.' => 'Safari kann das nicht selbst erledigen – es sind aber nur drei Schritte.',
+	'Tap the Share button at the bottom of Safari.' => 'Tippen Sie unten in Safari auf die Teilen-Schaltfläche.',
+	'Scroll down and choose "Add to Home Screen".' => 'Scrollen Sie nach unten und wählen Sie „Zum Home-Bildschirm“.',
+	'Booking Suite opens full screen from its own icon, with no browser bars.' => 'Booking Suite öffnet sich mit eigenem Symbol im Vollbild, ohne Browserleisten.',
+	'Manage bookings, availability and payments.' => 'Buchungen, Verfügbarkeit und Zahlungen verwalten.',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Email templates' => 'E-Mail-Vorlagen',
+	'Unsaved changes' => 'Nicht gespeicherte Änderungen',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'%d available' => array( '%d verfügbar', '%d verfügbar' ),
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Guest emails' => 'Gäste-E-Mails',
+	'Owner emails' => 'Betreiber-E-Mails',
+	'The guest\'s email address' => 'E-Mail-Adresse des Gastes',
+	'The guest\'s phone number' => 'Telefonnummer des Gastes',
+	'Length of stay in nights' => 'Aufenthaltsdauer in Nächten',
+	'The one-time verification code' => 'Der einmalige Bestätigungscode',
+	'How long that code stays valid' => 'Wie lange dieser Code gültig bleibt',
+	'Why the booking was cancelled' => 'Grund der Stornierung',
+	'Link to the booking in the admin' => 'Link zur Buchung im Adminbereich',
+	'Booking reminder' => 'Erinnerung an den Aufenthalt',
+	'A note to the guest shortly before they arrive, with the practicalities.' => 'Eine Nachricht an den Gast kurz vor der Anreise, mit allen praktischen Angaben.',
+	'Email verification code' => 'E-Mail-Bestätigungscode',
+	'Carries the one-time code that proves the guest owns the address they booked with.' => 'Enthält den einmaligen Code, mit dem der Gast seine E-Mail-Adresse bestätigt.',
+	'Booking cancelled' => 'Buchung storniert',
+	'Sent to the guest when their booking is called off, whoever cancelled it.' => 'Geht an den Gast, wenn die Buchung storniert wird – unabhängig davon, wer storniert hat.',
+	'Booking confirmed (owner)' => 'Buchung bestätigt (Betreiber)',
+	'Tells you a booking has been confirmed, with the guest’s contact details.' => 'Informiert Sie über eine bestätigte Buchung, mit den Kontaktdaten des Gastes.',
+	'Payment received (owner)' => 'Zahlung eingegangen (Betreiber)',
+	'Tells you money has arrived against a booking.' => 'Informiert Sie, dass zu einer Buchung Geld eingegangen ist.',
+	'Your stay is coming up — {{reference}}' => 'Ihr Aufenthalt steht bevor – {{reference}}',
+	'Your verification code: {{otp_code}}' => 'Ihr Bestätigungscode: {{otp_code}}',
+	'Your booking has been cancelled — {{reference}}' => 'Ihre Buchung wurde storniert – {{reference}}',
+	'Booking confirmed: {{apartment}}, {{check_in}} — {{reference}}' => 'Buchung bestätigt: {{apartment}}, {{check_in}} – {{reference}}',
+	'Payment received: {{amount_paid}} — {{reference}}' => 'Zahlung eingegangen: {{amount_paid}} – {{reference}}',
+	'<h1>We are looking forward to having you</h1>
+<p>Hello {{guest_first_name}},</p>
+<p>Your stay at {{apartment}} is coming up. Here are the details again.</p>
+<table>
+<tr><th>Reference</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Arrival</th><td>{{check_in}}</td></tr>
+<tr><th>Departure</th><td>{{check_out}}</td></tr>
+<tr><th>Guests</th><td>{{guests}}</td></tr>
+</table>
+<p>If anything about your arrival has changed, reply to this email and let us know.</p>
+<p>{{site_name}}</p>' => '<h1>Wir freuen uns auf Sie</h1>
+<p>Hallo {{guest_first_name}},</p>
+<p>Ihr Aufenthalt in {{apartment}} steht bevor. Hier noch einmal die Details.</p>
+<table>
+<tr><th>Referenz</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Anreise</th><td>{{check_in}}</td></tr>
+<tr><th>Abreise</th><td>{{check_out}}</td></tr>
+<tr><th>Gäste</th><td>{{guests}}</td></tr>
+</table>
+<p>Sollte sich an Ihrer Anreise etwas geändert haben, antworten Sie einfach auf diese E-Mail.</p>
+<p>{{site_name}}</p>',
+	'<h1>Your verification code</h1>
+<p>Hello,</p>
+<p>Use this code to confirm your email address:</p>
+<blockquote><strong>{{otp_code}}</strong></blockquote>
+<p>It is valid for {{otp_minutes}} minutes. If you did not ask for it, you can ignore this message — nothing has been booked.</p>
+<p>{{site_name}}</p>' => '<h1>Ihr Bestätigungscode</h1>
+<p>Hallo,</p>
+<p>Bestätigen Sie Ihre E-Mail-Adresse mit diesem Code:</p>
+<blockquote><strong>{{otp_code}}</strong></blockquote>
+<p>Er ist {{otp_minutes}} Minuten gültig. Falls Sie ihn nicht angefordert haben, können Sie diese Nachricht ignorieren – es wurde nichts gebucht.</p>
+<p>{{site_name}}</p>',
+	'<h1>Your booking has been cancelled</h1>
+<p>Hello {{guest_first_name}},</p>
+<p>Your booking has been cancelled and the dates released.</p>
+<table>
+<tr><th>Reference</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Arrival</th><td>{{check_in}}</td></tr>
+<tr><th>Departure</th><td>{{check_out}}</td></tr>
+<tr><th>Reason</th><td>{{cancel_reason}}</td></tr>
+</table>
+<p>Anything already paid will be refunded to the account it came from. Do reply if you would like to book other dates.</p>
+<p>{{site_name}}</p>' => '<h1>Ihre Buchung wurde storniert</h1>
+<p>Hallo {{guest_first_name}},</p>
+<p>Ihre Buchung wurde storniert und die Termine wieder freigegeben.</p>
+<table>
+<tr><th>Referenz</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Anreise</th><td>{{check_in}}</td></tr>
+<tr><th>Abreise</th><td>{{check_out}}</td></tr>
+<tr><th>Grund</th><td>{{cancel_reason}}</td></tr>
+</table>
+<p>Bereits gezahlte Beträge werden auf das Konto zurückerstattet, von dem sie stammen. Antworten Sie gern, wenn Sie andere Termine buchen möchten.</p>
+<p>{{site_name}}</p>',
+	'<h1>Booking confirmed</h1>
+<table>
+<tr><th>Reference</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Arrival</th><td>{{check_in}}</td></tr>
+<tr><th>Departure</th><td>{{check_out}}</td></tr>
+<tr><th>Guests</th><td>{{guests}}</td></tr>
+<tr><th>Guest</th><td>{{guest_name}}</td></tr>
+<tr><th>Email</th><td>{{guest_email}}</td></tr>
+<tr><th>Phone</th><td>{{guest_phone}}</td></tr>
+<tr><th>Total</th><td>{{total}}</td></tr>
+<tr><th>Payment</th><td>{{payment_status}}</td></tr>
+</table>
+<p><a href="{{admin_url}}">Open this booking in the admin</a></p>' => '<h1>Buchung bestätigt</h1>
+<table>
+<tr><th>Referenz</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Anreise</th><td>{{check_in}}</td></tr>
+<tr><th>Abreise</th><td>{{check_out}}</td></tr>
+<tr><th>Gäste</th><td>{{guests}}</td></tr>
+<tr><th>Gast</th><td>{{guest_name}}</td></tr>
+<tr><th>E-Mail</th><td>{{guest_email}}</td></tr>
+<tr><th>Telefon</th><td>{{guest_phone}}</td></tr>
+<tr><th>Gesamt</th><td>{{total}}</td></tr>
+<tr><th>Zahlung</th><td>{{payment_status}}</td></tr>
+</table>
+<p><a href="{{admin_url}}">Buchung im Adminbereich öffnen</a></p>',
+	'<h1>Payment received</h1>
+<table>
+<tr><th>Reference</th><td>{{reference}}</td></tr>
+<tr><th>Guest</th><td>{{guest_name}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Invoice</th><td>{{invoice_no}}</td></tr>
+<tr><th>Received</th><td>{{amount_paid}}</td></tr>
+<tr><th>Still to pay</th><td>{{amount_due}}</td></tr>
+<tr><th>Booking total</th><td>{{total}}</td></tr>
+</table>
+<p><a href="{{admin_url}}">Open this booking in the admin</a></p>' => '<h1>Zahlung eingegangen</h1>
+<table>
+<tr><th>Referenz</th><td>{{reference}}</td></tr>
+<tr><th>Gast</th><td>{{guest_name}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Rechnung</th><td>{{invoice_no}}</td></tr>
+<tr><th>Eingegangen</th><td>{{amount_paid}}</td></tr>
+<tr><th>Offen</th><td>{{amount_due}}</td></tr>
+<tr><th>Buchungssumme</th><td>{{total}}</td></tr>
+</table>
+<p><a href="{{admin_url}}">Buchung im Adminbereich öffnen</a></p>',
 );
