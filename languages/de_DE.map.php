@@ -1403,4 +1403,39 @@ Gute Reise und bis bald.
 <tr><th>Buchungssumme</th><td>{{total}}</td></tr>
 </table>
 <p><a href="{{admin_url}}">Buchung im Adminbereich öffnen</a></p>',
+
+	// Booking delete, the calendar filter, and the calendar links on the
+	// apartment form.
+	'Delete booking' => 'Buchung löschen',
+	'Delete this booking?' => 'Diese Buchung löschen?',
+	'%1$s (%2$s) will be erased for good, together with its payments and invoices. Nothing is kept and this cannot be undone. To free the dates without losing the booking, release it instead.' => '%1$s (%2$s) wird endgültig gelöscht, zusammen mit allen Zahlungen und Rechnungen. Es bleibt nichts erhalten und das kann nicht rückgängig gemacht werden. Um nur die Termine freizugeben, ohne die Buchung zu verlieren, geben Sie sie stattdessen frei.',
+	'The booking could not be deleted.' => 'Die Buchung konnte nicht gelöscht werden.',
+	'Show one apartment' => 'Ein Apartment anzeigen',
+	'Calendar sync' => 'Kalender-Sync',
+	'Export link (.ics)' => 'Export-Link (.ics)',
+	'Export link for this apartment' => 'Export-Link für dieses Apartment',
+	'Create export link' => 'Export-Link erstellen',
+	'Save the apartment first — the export link can be created once it exists.' => 'Speichern Sie das Apartment zuerst — der Export-Link kann erstellt werden, sobald es existiert.',
+	'Not published yet. Creating the link makes this apartment’s booked dates readable by anyone holding it — it says when the apartment is taken, never who by.' => 'Noch nicht veröffentlicht. Sobald der Link erstellt ist, kann jeder, der ihn besitzt, die belegten Termine dieses Apartments lesen — er nennt nur, wann das Apartment belegt ist, niemals durch wen.',
+	'Give this to Airbnb or Booking.com and they will block the dates this site has taken. Treat it as private; it can be replaced on the Calendar sync screen if it gets out.' => 'Geben Sie ihn an Airbnb oder Booking.com weiter, dann sperren diese die hier belegten Termine. Behandeln Sie ihn vertraulich; auf der Seite „Kalender-Sync“ kann er ersetzt werden, falls er in falsche Hände gerät.',
+
+	// The calendar subscriptions an apartment carries, on both the Booking
+	// Suite form and the post editor meta box.
+	'Subscriptions (import)' => 'Abonnements (Import)',
+	'Dates these calendars have sold are pulled in and blocked here, so the apartment cannot be booked twice. Read automatically on a schedule; nothing is sent back to the portal.' => 'Dort belegte Termine werden übernommen und hier gesperrt, damit das Apartment nicht doppelt gebucht werden kann. Wird planmäßig automatisch gelesen; an das Portal wird nichts zurückgesendet.',
+	'Keep this apartment in step with Airbnb, Booking.com and anywhere else it is listed. Subscribe to as many calendars as it has portals, and publish one of its own.' => 'Halten Sie dieses Apartment mit Airbnb, Booking.com und allen anderen Portalen im Gleichtakt, auf denen es gelistet ist. Abonnieren Sie so viele Kalender wie es Portale gibt — und veröffentlichen Sie einen eigenen.',
+	'No calendars subscribed. Add one to block the dates another portal has already sold.' => 'Keine Kalender abonniert. Fügen Sie einen hinzu, um Termine zu sperren, die ein anderes Portal bereits belegt hat.',
+	'Remove this subscription' => 'Dieses Abonnement entfernen',
+	'Sync automatically' => 'Automatisch synchronisieren',
+	'Not read yet.' => 'Noch nicht gelesen.',
+	'Saved with the apartment, then read on the next scheduled sync.' => 'Wird mit dem Apartment gespeichert und beim nächsten planmäßigen Abgleich gelesen.',
+	'Last read %1$d entries on %2$s' => 'Zuletzt %1$d Einträge gelesen am %2$s',
+	'Last read failed: %s' => 'Letztes Lesen fehlgeschlagen: %s',
+	'no reason given' => 'kein Grund angegeben',
+	'That calendar is listed twice. Each subscription needs its own link.' => 'Dieser Kalender ist zweimal aufgeführt. Jedes Abonnement braucht seinen eigenen Link.',
+	'Publish this apartment’s calendar when I save' => 'Kalender dieses Apartments beim Speichern veröffentlichen',
+	'%d calendar link was not saved — it is not a usable address, or the same calendar was listed twice.' => array(
+		'%d Kalender-Link wurde nicht gespeichert — er ist keine brauchbare Adresse, oder derselbe Kalender wurde zweimal aufgeführt.',
+		'%d Kalender-Links wurden nicht gespeichert — sie sind keine brauchbaren Adressen, oder derselbe Kalender wurde zweimal aufgeführt.',
+	),
 );
