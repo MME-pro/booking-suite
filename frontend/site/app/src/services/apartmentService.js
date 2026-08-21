@@ -16,9 +16,15 @@ const settings = {
 	minHours: 3,
 	maxHours: 8,
 
-	// WordPress's own defaults for Settings → General.
+	// WordPress's own defaults for Settings → General — except the clock.
 	dateFormat: 'F j, Y',
-	timeFormat: 'g:i a',
+	/*
+	 * 24-hour, not WordPress's 'g:i a'. Times run 00:00 to 23:30 throughout the
+	 * booking flow, and a fallback that produced "11:30 pm" would put a second
+	 * convention on the same screen as the slot buttons, which are always
+	 * 24-hour because the server formats them that way.
+	 */
+	timeFormat: 'H:i',
 	timezone: 'UTC',
 	startOfWeek: 1,
 	...( typeof window !== 'undefined' ? window.bookingSuiteSite ?? {} : {} ),

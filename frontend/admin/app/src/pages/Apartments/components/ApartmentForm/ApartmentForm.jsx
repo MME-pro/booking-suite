@@ -15,16 +15,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import {
-	AlertCircle,
-	Check,
-	Copy,
-	HelpCircle,
-	Link2,
-	Loader2,
-	Plus,
-	Trash2,
-} from 'lucide-react';
+import { AlertCircle, HelpCircle } from 'lucide-react';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -65,11 +56,10 @@ import {
 	TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-import { copyToClipboard } from '@/lib/clipboard';
-
 import { ImageUpload } from '../../../../components';
 import { settings } from '../../../../settings';
-import { apartmentService, icalService } from '../../../../services';
+import { apartmentService } from '../../../../services';
+import ExportLinks from './ExportLinks';
 import {
 	MAX_CAPACITY,
 	MAX_LENGTH_191,
@@ -184,11 +174,53 @@ const fromApartment = ( apartment ) => ( {
 	...apartment,
 	capacity: String( apartment.capacity ?? '' ),
 	cleaningMin: String( apartment.cleaningMin ?? '' ),
-	icalFeeds: ( apartment.icalFeeds ?? [] ).map( ( feed ) => ( {
-		...feed,
-		name: feed.name ?? '',
-	} ) ),
+	icalFeeds: subscriptionRows( apartment.icalFeeds ),
 } );
+
+/**
+ * The portals an apartment syncs with, in the order they are shown.
+ *
+ * Fixed rather than a list the operator builds: both rows are always on the
+ * screen, whether or not they have a link yet, so the section reads as "here
+ * is where the Airbnb link goes" rather than as an empty list with an Add
+ * button and a portal to pick out of nine.
+ */
+const PORTALS = [ 'airbnb', 'booking' ];
+
+/**
+ * Exactly one form row per portal, carrying its saved subscription if it has
+ * one. Clearing a row's link unsubscribes that portal; the row itself stays.
+ *
+ * @param {Array} [feeds] The apartment's saved subscriptions.
+ * @return {Array} One row per entry in PORTALS, in that order.
+ */
+function subscriptionRows( feeds ) {
+	const saved = new Map(
+		( feeds ?? [] ).map( ( feed ) => [ feed.source, feed ] )
+	);
+
+	return PORTALS.map( ( source ) => {
+		const feed = saved.get( source );
+
+		return {
+			id: feed?.id ?? 0,
+			source,
+			url: feed?.url ?? '',
+			/*
+			 * Neither of these is on the screen any more. The name is kept
+			 * because other screens read it; a subscription always syncs, so
+			 * `active` is not a choice the form offers — one that should not
+			 * sync is one whose link should be cleared.
+			 */
+			name: feed?.name ?? '',
+			active: true,
+			lastSyncAt: feed?.lastSyncAt ?? null,
+			lastStatus: feed?.lastStatus ?? '',
+			lastMessage: feed?.lastMessage ?? '',
+			lastEventCount: feed?.lastEventCount ?? 0,
+		};
+	} );
+}
 
 export default function ApartmentForm( {
 	apartment = null,
@@ -560,7 +592,10 @@ export default function ApartmentForm( {
 						>
 							<SubscriptionList form={ form } />
 
-							<ExportLinkField apartment={ apartment } />
+							<ExportLinks
+								apartment={ apartment }
+								form={ form }
+							/>
 						</Section>
 
 						<Separator />
@@ -671,6 +706,65 @@ export default function ApartmentForm( {
  * @param {Object} props
  * @param {Object} props.form The parent react-hook-form instance.
  */
+/**
+ * The operator-facing name of a portal.
+ *
+ * @param {string} source A portal key.
+ * @return {string} Its label.
+ */
+function portalLabel( source ) {
+	const match = ( settings.icalSources ?? [] ).find(
+		( entry ) => entry.value === source
+	);
+
+	return match?.label ?? source;
+}
+
+/**
+ * The shape of the link this portal hands out.
+ *
+ * A worked example beats a description of one: the portals' own URLs are
+ * distinctive enough that seeing the right shape is how you know you have
+ * copied the right thing out of the extranet.
+ *
+ * @param {string} source A portal key.
+ * @return {string} A URL-shaped hint.
+ */
+function portalPlaceholder( source ) {
+	return (
+		{
+			airbnb: 'https://www.airbnb.com/calendar/ical/12345.ics?s=…',
+			booking: 'https://admin.booking.com/hotel/hoteladmin/ical.html?t=…',
+		}[ source ] ?? 'https://…/calendar.ics'
+	);
+}
+
+/**
+ * Where in this portal's own admin the link is found.
+ *
+ * Each row belongs to one portal, so it names that portal's route and nothing
+ * else — someone filling in the Airbnb row should not have to read past
+ * Booking.com's instructions to find their own.
+ *
+ * @param {string} source A portal key.
+ * @return {string} A route through that portal's extranet.
+ */
+function portalHint( source ) {
+	return (
+		{
+			airbnb: __(
+				'Airbnb: Calendar → Availability → Connect calendars.',
+				'booking-suite'
+			),
+			booking: __(
+				'Booking.com: Rates & Availability → Sync calendars.',
+				'booking-suite'
+			),
+		}[ source ] ??
+		__( 'Paste the calendar link this portal gave you.', 'booking-suite' )
+	);
+}
+
 function SubscriptionList( { form } ) {
 	/*
 	 * `keyName` is not cosmetic. useFieldArray writes React's key into `id` by
@@ -678,15 +772,11 @@ function SubscriptionList( { form } ) {
 	 * that decides whether a row is updated or inserted. Letting the two share
 	 * a name would hand the server a render key and have it create duplicates.
 	 */
-	const { fields, append, remove } = useFieldArray( {
+	const { fields } = useFieldArray( {
 		control: form.control,
 		name: 'icalFeeds',
 		keyName: 'fieldKey',
 	} );
-
-	const sources = settings.icalSources?.length
-		? settings.icalSources
-		: [ { value: 'other', label: __( 'Calendar', 'booking-suite' ) } ];
 
 	return (
 		<div className="flex flex-col gap-3">
@@ -696,20 +786,11 @@ function SubscriptionList( { form } ) {
 				</span>
 				<p className="text-xs text-muted-foreground">
 					{ __(
-						'Dates these calendars have sold are pulled in and blocked here, so the apartment cannot be booked twice. Read automatically on a schedule; nothing is sent back to the portal.',
+						'Dates these portals have sold are blocked here, read automatically on a schedule.',
 						'booking-suite'
 					) }
 				</p>
 			</div>
-
-			{ ! fields.length && (
-				<p className="rounded-lg border border-dashed px-3 py-4 text-center text-xs text-muted-foreground">
-					{ __(
-						'No calendars subscribed. Add one to block the dates another portal has already sold.',
-						'booking-suite'
-					) }
-				</p>
-			) }
 
 			{ fields.map( ( field, index ) => (
 				<div
@@ -727,60 +808,14 @@ function SubscriptionList( { form } ) {
 						{ ...form.register( `icalFeeds.${ index }.id` ) }
 					/>
 
-					<div className="flex items-end gap-2">
-						<FormField
-							control={ form.control }
-							name={ `icalFeeds.${ index }.source` }
-							render={ ( { field: sourceField } ) => (
-								<FormItem className="flex-1">
-									<FormLabel>
-										{ __( 'Portal', 'booking-suite' ) }
-									</FormLabel>
-									<Select
-										value={ sourceField.value }
-										onValueChange={ sourceField.onChange }
-									>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue />
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{ sources.map( ( source ) => (
-												<SelectItem
-													key={ source.value }
-													value={ source.value }
-												>
-													{ source.label }
-												</SelectItem>
-											) ) }
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							) }
-						/>
+					<input
+						type="hidden"
+						{ ...form.register( `icalFeeds.${ index }.source` ) }
+					/>
 
-						<Button
-							type="button"
-							size="icon"
-							variant="ghost"
-							className="shrink-0 text-destructive hover:bg-destructive/10 hover:text-destructive"
-							onClick={ () => remove( index ) }
-							title={ __(
-								'Remove this subscription',
-								'booking-suite'
-							) }
-						>
-							<Trash2 className="h-4 w-4" />
-							<span className="sr-only">
-								{ __(
-									'Remove this subscription',
-									'booking-suite'
-								) }
-							</span>
-						</Button>
-					</div>
+					<span className="text-sm font-medium text-card-foreground">
+						{ portalLabel( field.source ) }
+					</span>
 
 					<FormField
 						control={ form.control }
@@ -798,94 +833,23 @@ function SubscriptionList( { form } ) {
 										maxLength={ MAX_LENGTH_URL }
 										autoComplete="off"
 										spellCheck="false"
-										placeholder="https://www.airbnb.com/calendar/ical/…"
+										placeholder={ portalPlaceholder(
+											field.source
+										) }
 										className="font-mono text-xs"
 									/>
 								</FormControl>
 								<FormDescription>
-									{ __(
-										'Airbnb: Calendar → Availability → Connect calendars. Booking.com: Rates & Availability → Sync calendars.',
-										'booking-suite'
-									) }
+									{ portalHint( field.source ) }
 								</FormDescription>
 								<FormMessage />
 							</FormItem>
 						) }
 					/>
 
-					<div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
-						<FormField
-							control={ form.control }
-							name={ `icalFeeds.${ index }.name` }
-							render={ ( { field: nameField } ) => (
-								<FormItem>
-									<FormLabel>
-										{ __(
-											'Label (optional)',
-											'booking-suite'
-										) }
-									</FormLabel>
-									<FormControl>
-										<Input
-											{ ...nameField }
-											maxLength={ MAX_LENGTH_191 }
-											placeholder={ __(
-												'e.g. Studio · Airbnb',
-												'booking-suite'
-											) }
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							) }
-						/>
-
-						<FormField
-							control={ form.control }
-							name={ `icalFeeds.${ index }.active` }
-							render={ ( { field: activeField } ) => (
-								<FormItem className="flex flex-row items-center gap-2 space-y-0 sm:pb-2">
-									<FormControl>
-										<Checkbox
-											checked={ activeField.value }
-											onCheckedChange={
-												activeField.onChange
-											}
-										/>
-									</FormControl>
-									<FormLabel className="font-normal">
-										{ __(
-											'Sync automatically',
-											'booking-suite'
-										) }
-									</FormLabel>
-								</FormItem>
-							) }
-						/>
-					</div>
-
 					<SyncStatus feed={ field } />
 				</div>
 			) ) }
-
-			<Button
-				type="button"
-				size="sm"
-				variant="outline"
-				className="w-fit"
-				onClick={ () =>
-					append( {
-						id: 0,
-						source: sources[ 0 ].value,
-						url: '',
-						name: '',
-						active: true,
-					} )
-				}
-			>
-				<Plus className="h-4 w-4" />
-				{ __( 'Add subscription', 'booking-suite' ) }
-			</Button>
 		</div>
 	);
 }
@@ -951,140 +915,6 @@ function SyncStatus( { feed } ) {
  * @param {Object} props
  * @param {Object} [props.apartment] The stored apartment, or null when adding.
  */
-function ExportLinkField( { apartment } ) {
-	const [ url, setUrl ] = useState( apartment?.icalExportUrl ?? '' );
-	const [ isBusy, setBusy ] = useState( false );
-	const [ copied, setCopied ] = useState( false );
-	const [ error, setError ] = useState( null );
-
-	const publish = async () => {
-		setBusy( true );
-		setError( null );
-
-		try {
-			const result = await icalService.exportLink( apartment.id );
-
-			setUrl( result.exportUrl );
-		} catch ( cause ) {
-			setError( cause.message );
-		} finally {
-			setBusy( false );
-		}
-	};
-
-	const copy = async () => {
-		if ( ! ( await copyToClipboard( url ) ) ) {
-			setError(
-				__(
-					'Could not copy automatically — select the link and copy it by hand.',
-					'booking-suite'
-				)
-			);
-
-			return;
-		}
-
-		setCopied( true );
-		setError( null );
-
-		window.setTimeout( () => setCopied( false ), 2000 );
-	};
-
-	return (
-		<div className="flex flex-col gap-2">
-			<span className="text-sm font-medium leading-none">
-				{ __( 'Export link (.ics)', 'booking-suite' ) }
-			</span>
-
-			{ /*
-			 * There is nothing to publish until the apartment has an id, so a
-			 * new one is told when the link arrives rather than shown a button
-			 * that cannot work.
-			 */ }
-			{ ! apartment && (
-				<p className="text-xs text-muted-foreground">
-					{ __(
-						'Save the apartment first — the export link can be created once it exists.',
-						'booking-suite'
-					) }
-				</p>
-			) }
-
-			{ apartment && ! url && (
-				<>
-					<Button
-						type="button"
-						size="sm"
-						variant="outline"
-						className="w-fit"
-						disabled={ isBusy }
-						onClick={ publish }
-					>
-						{ isBusy ? (
-							<Loader2 className="h-4 w-4 animate-spin" />
-						) : (
-							<Link2 className="h-4 w-4" />
-						) }
-						{ __( 'Create export link', 'booking-suite' ) }
-					</Button>
-					<p className="text-xs text-muted-foreground">
-						{ __(
-							'Not published yet. Creating the link makes this apartment’s booked dates readable by anyone holding it — it says when the apartment is taken, never who by.',
-							'booking-suite'
-						) }
-					</p>
-				</>
-			) }
-
-			{ apartment && url && (
-				<>
-					<div className="flex items-center gap-2">
-						<Input
-							readOnly
-							value={ url }
-							onFocus={ ( event ) => event.target.select() }
-							aria-label={ __(
-								'Export link for this apartment',
-								'booking-suite'
-							) }
-							className="font-mono text-xs"
-						/>
-						<Button
-							type="button"
-							size="icon"
-							variant="outline"
-							className="shrink-0"
-							onClick={ copy }
-							title={ __( 'Copy link', 'booking-suite' ) }
-						>
-							{ copied ? (
-								<Check className="h-4 w-4 text-success" />
-							) : (
-								<Copy className="h-4 w-4" />
-							) }
-							<span className="sr-only">
-								{ __( 'Copy link', 'booking-suite' ) }
-							</span>
-						</Button>
-					</div>
-					<p className="text-xs text-muted-foreground">
-						{ __(
-							'Give this to Airbnb or Booking.com and they will block the dates this site has taken. Treat it as private; it can be replaced on the Calendar sync screen if it gets out.',
-							'booking-suite'
-						) }
-					</p>
-				</>
-			) }
-
-			{ error && (
-				<Alert variant="destructive">
-					<AlertCircle className="h-4 w-4" />
-					<AlertDescription>{ error }</AlertDescription>
-				</Alert>
-			) }
-		</div>
-	);
-}
 
 function Section( { title, description = null, children } ) {
 	return (

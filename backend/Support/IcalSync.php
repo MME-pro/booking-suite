@@ -38,8 +38,16 @@ final class IcalSync {
 	/** The cron hook every scheduled pull runs on. */
 	public const HOOK = 'bksuite_ical_sync';
 
-	/** Our own schedule; WordPress ships nothing shorter than hourly. */
-	public const INTERVAL = 'bksuite_quarter_hourly';
+	/**
+	 * Our own schedule; WordPress ships nothing shorter than hourly.
+	 *
+	 * The slug carries the length rather than being a stable name for "our
+	 * interval". WP-Cron stores the recurrence in seconds on the event itself
+	 * when it is booked, so shortening the interval behind an unchanged slug
+	 * would leave every existing install running at the old spacing. A new
+	 * slug is what makes schedule() notice the mismatch and re-book.
+	 */
+	public const INTERVAL = 'bksuite_five_minutely';
 
 	public static function register(): void {
 		self::register_interval();
@@ -52,7 +60,7 @@ final class IcalSync {
 	}
 
 	/**
-	 * Teach WP-Cron the 15-minute interval.
+	 * Teach WP-Cron the 5-minute interval.
 	 *
 	 * Called from schedule() as well as register(), because activation runs the
 	 * scheduling directly and wp_schedule_event() refuses a recurrence it has
@@ -69,8 +77,8 @@ final class IcalSync {
 	 */
 	public static function add_interval( array $schedules ): array {
 		$schedules[ self::INTERVAL ] = array(
-			'interval' => 15 * MINUTE_IN_SECONDS,
-			'display'  => __( 'Every 15 minutes', 'booking-suite' ),
+			'interval' => 5 * MINUTE_IN_SECONDS,
+			'display'  => __( 'Every 5 minutes', 'booking-suite' ),
 		);
 
 		return $schedules;

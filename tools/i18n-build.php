@@ -53,6 +53,35 @@ if ( ! is_array( $entries ) ) {
 
 $map = require $languages . '/' . LOCALE . '.map.php';
 
+/**
+ * Normalise the catalogue's line endings before anything is looked up in it.
+ *
+ * The extractor hands back LF regardless of how the source is stored, but the
+ * map is a PHP file: whatever separator sits on disk ends up inside the string
+ * literals verbatim. On a checkout with core.autocrlf=true the multi-line keys
+ * — the email bodies — grow a CR per line and stop matching, which reads as
+ * "nine templates suddenly untranslated" rather than as a checkout artefact.
+ * Normalising here keeps the catalogue correct on either kind of clone.
+ *
+ * @param mixed $value A translation, or an array of plural forms.
+ * @return mixed The same shape, with CRLF and lone CR reduced to LF.
+ */
+$to_lf = static function ( $value ) use ( &$to_lf ) {
+	if ( is_array( $value ) ) {
+		return array_map( $to_lf, $value );
+	}
+
+	return is_string( $value ) ? str_replace( array( "\r\n", "\r" ), "\n", $value ) : $value;
+};
+
+$normalised = array();
+
+foreach ( $map as $key => $value ) {
+	$normalised[ $to_lf( $key ) ] = $to_lf( $value );
+}
+
+$map = $normalised;
+
 $problems   = array();
 $missing    = array();
 $translated = array();

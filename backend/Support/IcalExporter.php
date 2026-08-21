@@ -22,6 +22,14 @@
  * booking — is written with its real times instead, in UTC. Rounding those up
  * to a whole day would take a night off sale that nobody has bought.
  *
+ * A feed is built under a SCOPE, which decides which locks it carries. The
+ * scope named for a portal is the feed *for* that portal, and leaves out the
+ * locks that portal itself sent us: Airbnb has no use for its own sold dates
+ * read back, and a portal that re-exports what it just read can start a lock
+ * bouncing between two calendars, gaining a new UID on each lap. `suite`
+ * publishes only what was sold or locked on this site; `all` publishes
+ * everything and is what a bare token URL has always served.
+ *
  * @package BookingSuite
  */
 
@@ -38,6 +46,55 @@ use DateTimeZone;
 defined( 'ABSPATH' ) || exit;
 
 final class IcalExporter {
+
+	/**
+	 * Everything this site knows the apartment to be taken for.
+	 *
+	 * What a bare token URL serves, so every link already sitting in a portal's
+	 * settings keeps meaning exactly what it meant before scopes existed.
+	 */
+	public const SCOPE_ALL = 'all';
+
+	/** Only this site's own bookings and the operator's own manual locks. */
+	public const SCOPE_SUITE = 'suite';
+
+	/** The scopes that are not the name of a portal. */
+	private const OWN_SCOPES = array( self::SCOPE_ALL, self::SCOPE_SUITE );
+
+	/**
+	 * Every scope a feed can be published under.
+	 *
+	 * The portal scopes are the import sources: a scope named for a portal
+	 * means the feed for that portal, so the list of portals we can publish
+	 * *to* is by construction the list we can import *from*.
+	 *
+	 * @return string[]
+	 */
+	public static function scopes(): array {
+		return array_merge( self::OWN_SCOPES, IcalParser::SOURCES );
+	}
+
+	/** Whether a scope is one this exporter will build. */
+	public static function is_scope( string $scope ): bool {
+		return in_array( $scope, self::scopes(), true );
+	}
+
+	/**
+	 * Human label for a scope, used to name the calendar inside the file so a
+	 * person subscribed to two of them can tell which is which.
+	 */
+	public static function scope_label( string $scope ): string {
+		if ( self::SCOPE_ALL === $scope ) {
+			return __( 'All channels', 'booking-suite' );
+		}
+
+		if ( self::SCOPE_SUITE === $scope ) {
+			return __( 'Direct bookings only', 'booking-suite' );
+		}
+
+		/* translators: %s: portal name, e.g. Airbnb. */
+		return sprintf( __( 'For %s', 'booking-suite' ), IcalParser::source_label( $scope ) );
+	}
 
 	/**
 	 * Booking statuses that take the dates off the market.
@@ -64,13 +121,23 @@ final class IcalExporter {
 	/**
 	 * Build the document for one apartment.
 	 *
+	 * @param int    $apartment_id The apartment to publish.
+	 * @param string $scope        Which locks to carry. See the scope constants.
+	 *
 	 * @return string|null The .ics text, or null when there is no such apartment.
 	 */
-	public static function build( int $apartment_id ): ?string {
+	public static function build( int $apartment_id, string $scope = self::SCOPE_ALL ): ?string {
 		$apartment = ApartmentsRepository::find( $apartment_id );
 
 		if ( null === $apartment ) {
 			return null;
+		}
+
+		// An unknown scope is served as the full feed rather than refused: the
+		// worst a stray suffix can then do is publish more than was asked for,
+		// never leave a portal believing dates are free when they are sold.
+		if ( ! self::is_scope( $scope ) ) {
+			$scope = self::SCOPE_ALL;
 		}
 
 		$lines = array(
@@ -79,14 +146,18 @@ final class IcalExporter {
 			'PRODID:-//MME-Pro//Booking Suite ' . \BookingSuite\VERSION . '//EN',
 			'CALSCALE:GREGORIAN',
 			'METHOD:PUBLISH',
-			'X-WR-CALNAME:' . self::escape( (string) $apartment['name'] ),
+			'X-WR-CALNAME:' . self::escape(
+				self::SCOPE_ALL === $scope
+					? (string) $apartment['name']
+					: (string) $apartment['name'] . ' — ' . self::scope_label( $scope )
+			),
 			// Tells a subscribing client how often it is worth coming back.
 			// Advisory only — every portal uses its own schedule regardless.
 			'REFRESH-INTERVAL;VALUE=DURATION:PT1H',
 			'X-PUBLISHED-TTL:PT1H',
 		);
 
-		foreach ( self::events( $apartment_id ) as $event ) {
+		foreach ( self::events( $apartment_id, $scope ) as $event ) {
 			$lines = array_merge( $lines, self::vevent( $event ) );
 		}
 
@@ -103,14 +174,22 @@ final class IcalExporter {
 	/**
 	 * Everything that makes the apartment unavailable, in date order.
 	 *
-	 * Locks imported from another portal are included. That is the point of a
-	 * hub: an Airbnb booking read in this morning is what closes the date on
-	 * Booking.com this afternoon. A portal re-reading its own block does no
-	 * harm — the dates are already closed there.
+	 * Bookings taken on this site are in every scope — they are the one thing
+	 * every channel has to be told about. What the scope decides is the locks:
+	 *
+	 *   all     every lock, whoever put it there.
+	 *   suite   manual locks only. Nothing that arrived from a portal.
+	 *   <portal> every lock except that portal's own, which is what makes this
+	 *           site a hub: the Airbnb stay read in this morning is what closes
+	 *           the date on Booking.com this afternoon, while Airbnb itself is
+	 *           never handed back the dates it just gave us.
+	 *
+	 * @param int    $apartment_id The apartment.
+	 * @param string $scope        A validated scope.
 	 *
 	 * @return array<int, array<string, mixed>>
 	 */
-	private static function events( int $apartment_id ): array {
+	private static function events( int $apartment_id, string $scope ): array {
 		global $wpdb;
 
 		$from = gmdate( 'Y-m-d H:i:s', time() - self::PAST_DAYS * DAY_IN_SECONDS );
@@ -141,17 +220,30 @@ final class IcalExporter {
 		 * NULL` keeps extras out: a projector being booked does not make the
 		 * apartment unavailable.
 		 */
+		$scope_sql  = '';
+		$scope_args = array();
+
+		if ( self::SCOPE_SUITE === $scope ) {
+			// 'manual' is the default the column is written with, so this is
+			// every lock the operator made here and nothing that was imported.
+			$scope_sql    = 'AND source = %s';
+			$scope_args[] = 'manual';
+		} elseif ( self::SCOPE_ALL !== $scope ) {
+			$scope_sql    = 'AND source <> %s';
+			$scope_args[] = $scope;
+		}
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$locked = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT id, starts_at, ends_at FROM $blocks
 				WHERE ( room_id = %d OR room_id IS NULL )
 					AND extra_id IS NULL
+					$scope_sql
 					AND starts_at < %s
 					AND ends_at > %s
 				ORDER BY starts_at ASC",
-				$apartment_id,
-				$to,
-				$from
+				array_merge( array( $apartment_id ), $scope_args, array( $to, $from ) )
 			),
 			ARRAY_A
 		) ?: array();

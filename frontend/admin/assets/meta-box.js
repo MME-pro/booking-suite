@@ -107,65 +107,106 @@
 	}
 
 	/**
-	 * Calendar subscriptions: add a row, remove a row.
+	 * Read this apartment's subscriptions now, rather than at the next run.
 	 *
-	 * The blank row is cloned from a <template> the server rendered, so there
-	 * is one definition of what a row looks like rather than a PHP one and a
-	 * JavaScript one that drift apart. Its field names carry a placeholder
-	 * where the index belongs, filled in here from a counter that only ever
-	 * goes up: PHP walks whatever it is given, so gaps left by removed rows
-	 * cost nothing and reusing an index would collide with a row still on the
-	 * page.
+	 * The schedule pulls every five minutes, which is right for keeping up but
+	 * wrong for the moment a link is first pasted: an operator should not have
+	 * to wait to find out whether what they pasted works. Each row's own note
+	 * is rewritten from what comes back, so a portal that failed says so on its
+	 * own line rather than in a banner about "the calendars".
 	 *
 	 * @param {Element} root The subscriptions container.
 	 */
-	function setupFeeds( root ) {
-		var list = root.querySelector( '[data-bks-feed-list]' );
-		var add = root.querySelector( '[data-bks-feed-add]' );
-		var template = root.querySelector( '[data-bks-feed-template]' );
-		var empty = root.querySelector( '[data-bks-feed-empty]' );
-		var next = list.children.length;
+	function setupSync( root ) {
+		var button = root.querySelector( '[data-bks-sync]' );
+		var apartment = root.getAttribute( 'data-bks-apartment' );
 
-		function syncEmpty() {
-			if ( empty ) {
-				empty.hidden = list.children.length > 0;
-			}
+		if ( ! button || ! apartment || ! strings.restRoot ) {
+			return;
 		}
 
-		add.addEventListener( 'click', function () {
-			var row = template.content.firstElementChild.cloneNode( true );
-			var index = String( next++ );
+		var rows = [].slice.call( root.querySelectorAll( '[data-bks-feed]' ) );
 
-			row.querySelectorAll( '[name]' ).forEach( function ( field ) {
-				field.name = field.name.replace( '__INDEX__', index );
-			} );
+		/**
+		 * @param {Element} row  The row to write into.
+		 * @param {string}  text What to say.
+		 * @param {boolean} bad  Whether it is a failure.
+		 */
+		function note( row, text, bad ) {
+			var el = row.querySelector( '.bks-meta__feed-note' );
 
-			list.appendChild( row );
-			syncEmpty();
-
-			var url = row.querySelector( 'input[type="url"]' );
-
-			if ( url ) {
-				url.focus();
-			}
-		} );
-
-		list.addEventListener( 'click', function ( event ) {
-			var button = event.target.closest( '[data-bks-feed-remove]' );
-
-			if ( ! button ) {
+			if ( ! el ) {
 				return;
 			}
 
-			button.closest( '[data-bks-feed]' ).remove();
-			syncEmpty();
+			el.textContent = text;
+			el.classList.toggle( 'is-error', !! bad );
+		}
+
+		button.addEventListener( 'click', function () {
+			/*
+			 * A row with no saved link has nothing to pull, and saying so on
+			 * the row beats a button that appears to do nothing.
+			 */
+			var live = rows.filter( function ( row ) {
+				var url = row.querySelector( 'input[type="url"]' );
+
+				return url && '' !== url.value.trim();
+			} );
+
+			if ( ! live.length ) {
+				rows.forEach( function ( row ) {
+					note( row, strings.syncEmpty || '', false );
+				} );
+
+				return;
+			}
+
+			button.disabled = true;
+
+			live.forEach( function ( row ) {
+				note( row, strings.syncing || '', false );
+			} );
+
+			window
+				.fetch( strings.restRoot + apartment + '/sync', {
+					method: 'POST',
+					credentials: 'same-origin',
+					headers: {
+						'X-WP-Nonce': strings.nonce,
+						'Content-Type': 'application/json',
+					},
+				} )
+				.then( function ( response ) {
+					if ( ! response.ok ) {
+						throw new Error( 'HTTP ' + response.status );
+					}
+
+					return response.json();
+				} )
+				.then( function ( payload ) {
+					( payload.feeds || [] ).forEach( function ( feed ) {
+						var row = root.querySelector(
+							'[data-bks-feed="' + feed.source + '"]'
+						);
+
+						if ( row ) {
+							note( row, feed.note, feed.failed );
+						}
+					} );
+				} )
+				.catch( function () {
+					live.forEach( function ( row ) {
+						note( row, strings.syncFailed || '', true );
+					} );
+				} )
+				.finally( function () {
+					button.disabled = false;
+				} );
 		} );
-
-		syncEmpty();
 	}
-
 	document.addEventListener( 'DOMContentLoaded', function () {
 		document.querySelectorAll( '[data-bks-gallery]' ).forEach( setup );
-		document.querySelectorAll( '[data-bks-feeds]' ).forEach( setupFeeds );
+		document.querySelectorAll( '[data-bks-feeds]' ).forEach( setupSync );
 	} );
 } )();

@@ -42,7 +42,7 @@ export default function BookingsChart( { series } ) {
 		<div className="flex flex-col gap-4">
 			<ChartContainer
 				config={ CHART_CONFIG }
-				className="aspect-auto h-[260px] w-full"
+				className="aspect-auto h-[200px] w-full"
 			>
 				<BarChart
 					data={ series }

@@ -168,12 +168,16 @@ final class ApartmentsController {
 		/*
 		 * Read, never mint. Listing apartments must not quietly publish a live
 		 * public calendar for every one of them — the token arrives when the
-		 * operator presses the button, exactly as on the Calendar sync screen.
+		 * operator presses the button.
 		 */
 		$token = ApartmentsRepository::token( $id );
 
 		$apartment['ical_export_url']   = IcalFeed::url_from_token( $token );
 		$apartment['ical_fallback_url'] = IcalFeed::fallback_from_token( $token );
+
+		// The same link under each scope, so the form can offer the feed for a
+		// portal without a second request once the token exists.
+		$apartment['ical_exports'] = IcalFeed::exports( $id, $token );
 
 		return $apartment;
 	}
@@ -346,17 +350,21 @@ final class ApartmentsController {
 				$source = IcalParser::detect_source( $url );
 			}
 
-			$name = trim( sanitize_text_field( (string) ( $row['name'] ?? '' ) ) );
-
+			/*
+			 * A subscription is a link and the portal it came from. The name is
+			 * still a column because other screens read it, but it is the
+			 * portal's own label rather than something typed in; and a
+			 * subscription always syncs, since one that should not is one whose
+			 * link should be cleared instead. Both are settled here rather than
+			 * taken from the request, so the REST route and the meta box cannot
+			 * disagree about what a row means.
+			 */
 			$rows[] = array(
 				'id'     => absint( $row['id'] ?? 0 ),
-				'name'   => '' === $name
-					? IcalParser::source_label( $source )
-					: mb_substr( $name, 0, self::MAX_LENGTH ),
+				'name'   => IcalParser::source_label( $source ),
 				'url'    => $url,
 				'source' => $source,
-				'active' => ! array_key_exists( 'active', $row )
-					|| rest_sanitize_boolean( $row['active'] ),
+				'active' => true,
 			);
 		}
 
@@ -372,8 +380,7 @@ final class ApartmentsController {
 	 *
 	 * Nothing is pulled here. Saving an apartment should not sit waiting on a
 	 * portal's server, and a new subscription is picked up by the next
-	 * scheduled sync anyway; the Calendar sync screen has the button for
-	 * pulling one now.
+	 * scheduled sync anyway.
 	 *
 	 * @param array<int, array<string, mixed>> $rows From feeds_param().
 	 */
@@ -426,8 +433,7 @@ final class ApartmentsController {
 		 * Removed rows unsubscribe, but the locks they already brought in
 		 * stay. Dates a portal has sold are still sold after the subscription
 		 * goes, and dropping them here would silently put a booked apartment
-		 * back on sale. Releasing them is offered on the Calendar sync screen,
-		 * where it can be asked about.
+		 * back on sale.
 		 */
 		foreach ( array_keys( $existing ) as $id ) {
 			if ( ! isset( $kept[ $id ] ) ) {

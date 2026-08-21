@@ -152,8 +152,17 @@ final class SettingsRepository {
 		self::GUEST_SURCHARGE  => '20',
 		self::OVERNIGHT_START  => '16:00',
 		self::OVERNIGHT_END    => '11:00',
-		self::DAY_START        => '08:00',
-		self::DAY_END          => '22:00',
+		/*
+		 * The whole day, in half-hour steps: 00:00 through 23:30, which is 48
+		 * start times. The window is what SlotGenerator walks, and the last
+		 * start it offers is DAY_END itself — so 23:30 rather than 00:00, which
+		 * would be the following midnight.
+		 *
+		 * A booking may still finish after the window closes; only the start
+		 * has to fall inside it.
+		 */
+		self::DAY_START        => '00:00',
+		self::DAY_END          => '23:30',
 		self::SLOT_STEP        => '30',
 		self::MIN_HOURS        => '1',
 		self::MAX_HOURS        => '8',

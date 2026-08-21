@@ -68,7 +68,7 @@ export default function ReportCharts( { report } ) {
 	const statusTotal = statusData.reduce( ( sum, row ) => sum + row.count, 0 );
 
 	return (
-		<div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+		<div className="grid grid-cols-1 items-start gap-4 xl:grid-cols-2">
 			<ChartCard
 				title={ __( 'Bookings Trend', 'booking-suite' ) }
 				description={ __(
@@ -83,7 +83,7 @@ export default function ReportCharts( { report } ) {
 							color: '#2a78d6',
 						},
 					} }
-					className="aspect-auto h-[240px] w-full"
+					className="aspect-auto h-[190px] w-full"
 				>
 					<BarChart data={ trend }>
 						<CartesianGrid vertical={ false } />
@@ -124,7 +124,7 @@ export default function ReportCharts( { report } ) {
 							color: '#1baf7a',
 						},
 					} }
-					className="aspect-auto h-[240px] w-full"
+					className="aspect-auto h-[190px] w-full"
 				>
 					<AreaChart data={ trend }>
 						<defs>
@@ -196,7 +196,7 @@ export default function ReportCharts( { report } ) {
 							color: '#2a78d6',
 						},
 					} }
-					className="aspect-auto h-[240px] w-full"
+					className="aspect-auto h-[190px] w-full"
 				>
 					{ /* Horizontal: apartment names need room to be readable. */ }
 					<BarChart
@@ -256,7 +256,7 @@ export default function ReportCharts( { report } ) {
 					<div className="flex flex-col gap-3">
 						<ChartContainer
 							config={ {} }
-							className="aspect-auto h-[200px] w-full"
+							className="aspect-auto h-[170px] w-full"
 						>
 							<PieChart>
 								<ChartTooltip
@@ -264,12 +264,19 @@ export default function ReportCharts( { report } ) {
 										<ChartTooltipContent hideLabel />
 									}
 								/>
+								{ /*
+								 * The radii are scaled with the box. At the
+								 * old 80 the ring was 160px across inside a
+								 * 170px container — five pixels of air top
+								 * and bottom, which reads as clipped rather
+								 * than deliberate.
+								 */ }
 								<Pie
 									data={ statusData }
 									dataKey="count"
 									nameKey="status"
-									innerRadius={ 50 }
-									outerRadius={ 80 }
+									innerRadius={ 42 }
+									outerRadius={ 66 }
 									strokeWidth={ 2 }
 									stroke="hsl(var(--card))"
 								>

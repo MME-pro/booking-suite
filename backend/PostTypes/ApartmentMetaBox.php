@@ -45,6 +45,17 @@ final class ApartmentMetaBox {
 	 */
 	private const NOTICE_KEY = 'bks_apartment_feed_notice_';
 
+	/**
+	 * The portals an apartment syncs with, in the order they are shown.
+	 *
+	 * Fixed rather than a list the operator builds. Both rows are always on
+	 * the screen, whether or not they have a link yet, so the section reads as
+	 * "here is where the Airbnb link goes" rather than as an empty list with
+	 * an Add button and a portal to pick out of nine. Clearing a link removes
+	 * that subscription; the row stays.
+	 */
+	private const PORTALS = array( 'airbnb', 'booking' );
+
 	public static function register(): void {
 		add_action( 'add_meta_boxes', array( self::class, 'add' ) );
 		add_action( 'save_post_' . ApartmentPostType::POST_TYPE, array( self::class, 'save' ), 10, 2 );
@@ -98,6 +109,11 @@ final class ApartmentMetaBox {
 				'frameTitle'  => __( 'Apartment photos', 'booking-suite' ),
 				'frameButton' => __( 'Use these photos', 'booking-suite' ),
 				'removeLabel' => __( 'Remove photo', 'booking-suite' ),
+				'restRoot'    => esc_url_raw( rest_url( 'booking-suite/v1/ical/apartments/' ) ),
+				'nonce'       => wp_create_nonce( 'wp_rest' ),
+				'syncing'     => __( 'Reading…', 'booking-suite' ),
+				'syncFailed'  => __( 'Could not read the calendars just now. Try again in a moment.', 'booking-suite' ),
+				'syncEmpty'   => __( 'Nothing to read — no calendar link is saved yet.', 'booking-suite' ),
 			)
 		);
 	}
@@ -236,72 +252,197 @@ final class ApartmentMetaBox {
 	 * and a channel connection made in one place and invisible in the other is
 	 * how an apartment ends up double-booked.
 	 */
+	/**
+	 * The shape of the link the operator is being asked for.
+	 *
+	 * A worked example beats a description of one: the portals' own URLs are
+	 * distinctive enough that seeing the right shape is how you know you have
+	 * copied the right thing out of the extranet.
+	 *
+	 * @param string $source The portal key.
+	 * @return string A URL-shaped hint.
+	 */
+	/**
+	 * Where in this portal's own admin the link is found.
+	 *
+	 * Each row now belongs to one portal, so it names that portal's route and
+	 * nothing else — an operator filling in the Airbnb row should not have to
+	 * read past Booking.com's instructions to find their own.
+	 *
+	 * @param string $source The portal key.
+	 * @return string A route through that portal's extranet.
+	 */
+	private static function feed_hint( string $source ): string {
+		$hints = array(
+			'airbnb'  => __( 'Airbnb: Calendar → Availability → Connect calendars.', 'booking-suite' ),
+			'booking' => __( 'Booking.com: Rates & Availability → Sync calendars.', 'booking-suite' ),
+		);
+
+		return $hints[ $source ] ?? __( 'Paste the calendar link this portal gave you.', 'booking-suite' );
+	}
+
+	private static function feed_placeholder( string $source ): string {
+		$examples = array(
+			'airbnb'  => 'https://www.airbnb.com/calendar/ical/12345.ics?s=…',
+			'booking' => 'https://admin.booking.com/hotel/hoteladmin/ical.html?t=…',
+		);
+
+		return $examples[ $source ] ?? 'https://…/calendar.ics';
+	}
+
+	/**
+	 * The export links worth showing for this apartment.
+	 *
+	 * One per portal, matching the two subscription rows above, and shown
+	 * whether or not that portal has a link yet. Each leaves out the dates its
+	 * own portal gave us — a lock re-exported to its source can bounce between
+	 * the two calendars, gaining a fresh UID on every lap, and neither side can
+	 * tell the copies apart afterwards. A portal with nothing subscribed has
+	 * given us nothing to leave out, so its link is simply everything we have.
+	 *
+	 * The all-channels and direct-only feeds still exist and still serve; they
+	 * are not offered here because this screen is about the two portals.
+	 *
+	 * @param int    $post_id The apartment.
+	 * @param string $token   Its published secret.
+	 * @return array<int, array<string, mixed>> Rows from IcalFeed::exports().
+	 */
+	private static function offered_exports( int $post_id, string $token ): array {
+		$by_scope = array();
+
+		foreach ( IcalFeed::exports( $post_id, $token ) as $export ) {
+			$by_scope[ $export['scope'] ] = $export;
+		}
+
+		$offered = array();
+
+		foreach ( self::PORTALS as $source ) {
+			if ( isset( $by_scope[ $source ] ) ) {
+				$offered[] = $by_scope[ $source ];
+			}
+		}
+
+		return $offered;
+	}
 	private static function render_calendar_sync( int $post_id ): void {
-		$feeds = IcalFeedsRepository::for_apartment( $post_id );
 		$token = ApartmentsRepository::token( $post_id );
+
+		// At most one subscription per portal is kept; a second row for the
+		// same portal could only be two links fighting over the same locks.
+		$by_source = array();
+
+		foreach ( IcalFeedsRepository::for_apartment( $post_id ) as $feed ) {
+			$source = (string) ( $feed['source'] ?? '' );
+
+			if ( ! isset( $by_source[ $source ] ) ) {
+				$by_source[ $source ] = $feed;
+			}
+		}
 
 		?>
 		<div class="bks-meta__sync">
 			<span class="bks-meta__label"><?php esc_html_e( 'Calendar sync', 'booking-suite' ); ?></span>
 
-			<div class="bks-meta__feeds" data-bks-feeds>
-				<span class="bks-meta__sublabel"><?php esc_html_e( 'Subscriptions (import)', 'booking-suite' ); ?></span>
+			<div class="bks-meta__feeds" data-bks-feeds data-bks-apartment="<?php echo esc_attr( (string) $post_id ); ?>">
+				<div class="bks-meta__feeds-head">
+					<span class="bks-meta__sublabel"><?php esc_html_e( 'Subscriptions (import)', 'booking-suite' ); ?></span>
+
+					<?php
+					/*
+					 * The schedule reads these every few minutes anyway; this
+					 * is for the moment after a link is pasted, when waiting
+					 * for the next run to find out whether it works is the
+					 * difference between a setting that is finished and one
+					 * that might be. It reads what is *saved*, so a link typed
+					 * and not yet saved has nothing to pull.
+					 */
+					?>
+					<button type="button" class="button button-small" data-bks-sync>
+						<?php esc_html_e( 'Sync now', 'booking-suite' ); ?>
+					</button>
+				</div>
 
 				<p class="description">
-					<?php esc_html_e( 'Dates these calendars have sold are pulled in and blocked here, so the apartment cannot be booked twice. Read automatically on a schedule; nothing is sent back to the portal.', 'booking-suite' ); ?>
+					<?php esc_html_e( 'Dates these portals have sold are blocked here, read automatically on a schedule.', 'booking-suite' ); ?>
 				</p>
 
-				<ul class="bks-meta__feed-list" data-bks-feed-list>
-					<?php foreach ( $feeds as $index => $feed ) : ?>
-						<?php self::render_feed_row( (string) $index, $feed ); ?>
+				<ul class="bks-meta__feed-list">
+					<?php foreach ( self::PORTALS as $source ) : ?>
+						<?php self::render_feed_row( $source, $by_source[ $source ] ?? array() ); ?>
 					<?php endforeach; ?>
 				</ul>
-
-				<?php if ( ! $feeds ) : ?>
-					<p class="bks-meta__feed-empty" data-bks-feed-empty>
-						<?php esc_html_e( 'No calendars subscribed. Add one to block the dates another portal has already sold.', 'booking-suite' ); ?>
-					</p>
-				<?php endif; ?>
-
-				<button type="button" class="button" data-bks-feed-add>
-					<?php esc_html_e( 'Add subscription', 'booking-suite' ); ?>
-				</button>
-
-				<?php
-				/*
-				 * The blank row lives in a <template>, so the browser parses it
-				 * but never submits it and never renders it. Cloning markup the
-				 * server wrote keeps one definition of a row instead of a PHP
-				 * one and a JavaScript one that drift apart.
-				 */
-				?>
-				<template data-bks-feed-template>
-					<?php self::render_feed_row( '__INDEX__', array() ); ?>
-				</template>
 			</div>
 
 			<div class="bks-meta__export">
-				<span class="bks-meta__label"><?php esc_html_e( 'Export link (.ics)', 'booking-suite' ); ?></span>
+				<span class="bks-meta__label"><?php esc_html_e( 'Export links (.ics)', 'booking-suite' ); ?></span>
 
 				<?php if ( '' !== $token ) : ?>
-					<input
-						type="url"
-						class="bks-meta__feed-url"
-						readonly
-						value="<?php echo esc_url( IcalFeed::url_from_token( $token ) ); ?>"
-						onfocus="this.select()"
-						aria-label="<?php esc_attr_e( 'Export link for this apartment', 'booking-suite' ); ?>"
-					/>
 					<p class="description">
-						<?php esc_html_e( 'Give this to Airbnb or Booking.com and they will block the dates this site has taken. Treat it as private; it can be replaced on the Calendar sync screen if it gets out.', 'booking-suite' ); ?>
+						<?php esc_html_e( 'Give each to the portal it is named for. Each leaves out that portal’s own dates, and is readable by anyone holding it.', 'booking-suite' ); ?>
 					</p>
+
+					<ul class="bks-meta__export-list">
+						<?php foreach ( self::offered_exports( $post_id, $token ) as $export ) : ?>
+							<li class="bks-meta__export-row">
+								<span class="bks-meta__export-name"><?php echo esc_html( $export['label'] ); ?></span>
+
+								<input
+									type="url"
+									class="bks-meta__feed-url"
+									readonly
+									value="<?php echo esc_url( $export['url'] ); ?>"
+									onfocus="this.select()"
+									aria-label="
+									<?php
+									printf(
+										/* translators: %s: which feed, e.g. "For Airbnb". */
+										esc_attr__( 'Export link — %s', 'booking-suite' ),
+										esc_attr( $export['label'] )
+									);
+									?>
+									"
+								/>
+
+								<?php
+								/*
+								 * What the file carries beyond this site's own
+								 * bookings. "Carries Booking.com" is the whole
+								 * reason to hand this particular link to Airbnb,
+								 * so it sits with the link rather than in the
+								 * paragraph above.
+								 */
+								?>
+								<p class="bks-meta__feed-note">
+									<?php
+									if ( $export['carries'] ) {
+										printf(
+											/* translators: %s: comma-separated portal names. */
+											esc_html__( 'Direct bookings + %s', 'booking-suite' ),
+											esc_html(
+												implode(
+													', ',
+													array_map(
+														static fn( string $source ): string => IcalParser::source_label( $source ),
+														$export['carries']
+													)
+												)
+											)
+										);
+									} else {
+										esc_html_e( 'Direct bookings only', 'booking-suite' );
+									}
+									?>
+								</p>
+							</li>
+						<?php endforeach; ?>
+					</ul>
 				<?php else : ?>
 					<label>
 						<input type="checkbox" name="bks_ical_publish" value="1" />
 						<?php esc_html_e( 'Publish this apartment’s calendar when I save', 'booking-suite' ); ?>
 					</label>
 					<p class="description">
-						<?php esc_html_e( 'Not published yet. Creating the link makes this apartment’s booked dates readable by anyone holding it — it says when the apartment is taken, never who by.', 'booking-suite' ); ?>
+						<?php esc_html_e( 'Not published yet. Creating the links makes this apartment’s booked dates readable by anyone holding one — each says when the apartment is taken, never who by.', 'booking-suite' ); ?>
 					</p>
 				<?php endif; ?>
 			</div>
@@ -310,101 +451,85 @@ final class ApartmentMetaBox {
 	}
 
 	/**
-	 * One subscription row.
+	 * One portal's subscription row.
 	 *
-	 * @param string               $index Position in the posted array, or the
-	 *                                    placeholder the template is cloned with.
-	 * @param array<string, mixed> $feed  The stored subscription, or empty for a
-	 *                                    blank row.
+	 * The portal is the row rather than a field in it, so it is posted as a
+	 * hidden value and the array is keyed by it. Keying on the portal instead
+	 * of a counter also means a row cannot drift onto the wrong subscription
+	 * between render and save.
+	 *
+	 * @param string               $source The portal key, e.g. 'airbnb'.
+	 * @param array<string, mixed> $feed   Its subscription, or empty if it has
+	 *                                     none yet.
 	 */
-	private static function render_feed_row( string $index, array $feed ): void {
-		$name   = 'bks_ical[' . $index . ']';
-		$source = (string) ( $feed['source'] ?? 'airbnb' );
+	private static function render_feed_row( string $source, array $feed ): void {
+		$name  = 'bks_ical[' . $source . ']';
+		$label = IcalParser::source_label( $source );
 
 		?>
-		<li class="bks-meta__feed" data-bks-feed>
+		<li class="bks-meta__feed" data-bks-feed="<?php echo esc_attr( $source ); ?>">
 			<input type="hidden" name="<?php echo esc_attr( $name ); ?>[id]" value="<?php echo esc_attr( (string) ( $feed['id'] ?? 0 ) ); ?>" />
+			<input type="hidden" name="<?php echo esc_attr( $name ); ?>[source]" value="<?php echo esc_attr( $source ); ?>" />
 
-			<div class="bks-meta__feed-head">
-				<p class="bks-meta__field">
-					<label><?php esc_html_e( 'Portal', 'booking-suite' ); ?></label>
-					<select name="<?php echo esc_attr( $name ); ?>[source]">
-						<?php foreach ( IcalParser::source_options() as $option ) : ?>
-							<option value="<?php echo esc_attr( $option['value'] ); ?>" <?php selected( $source, $option['value'] ); ?>>
-								<?php echo esc_html( $option['label'] ); ?>
-							</option>
-						<?php endforeach; ?>
-					</select>
-				</p>
-
-				<button type="button" class="button-link bks-meta__feed-remove" data-bks-feed-remove>
-					<?php esc_html_e( 'Remove', 'booking-suite' ); ?>
-				</button>
-			</div>
-
-			<p class="bks-meta__field">
-				<label><?php esc_html_e( 'Calendar link', 'booking-suite' ); ?></label>
-				<input
-					type="url"
-					class="bks-meta__feed-url"
-					name="<?php echo esc_attr( $name ); ?>[url]"
-					maxlength="<?php echo esc_attr( (string) self::MAX_URL_LENGTH ); ?>"
-					value="<?php echo esc_url( (string) ( $feed['url'] ?? '' ) ); ?>"
-					placeholder="https://www.airbnb.com/calendar/ical/…"
-					autocomplete="off"
-					spellcheck="false"
-				/>
-				<span class="description">
-					<?php esc_html_e( 'Airbnb: Calendar → Availability → Connect calendars. Booking.com: Rates & Availability → Sync calendars.', 'booking-suite' ); ?>
-				</span>
-			</p>
-
-			<div class="bks-meta__feed-foot">
-				<p class="bks-meta__field">
-					<label><?php esc_html_e( 'Label (optional)', 'booking-suite' ); ?></label>
-					<input
-						type="text"
-						name="<?php echo esc_attr( $name ); ?>[name]"
-						maxlength="<?php echo esc_attr( (string) self::MAX_LENGTH ); ?>"
-						value="<?php echo esc_attr( (string) ( $feed['name'] ?? '' ) ); ?>"
-					/>
-				</p>
-
-				<label class="bks-meta__feed-active">
-					<input type="checkbox" name="<?php echo esc_attr( $name ); ?>[active]" value="1" <?php checked( (bool) ( $feed['active'] ?? true ) ); ?> />
-					<?php esc_html_e( 'Sync automatically', 'booking-suite' ); ?>
-				</label>
-			</div>
+			<span class="bks-meta__feed-portal"><?php echo esc_html( $label ); ?></span>
 
 			<?php
 			/*
-			 * A subscription that has quietly stopped working looks exactly like
-			 * one that is fine — the link is still there, the dates simply stop
-			 * arriving. This line is the only thing that tells them apart, so a
-			 * failure carries the portal's own message rather than a tidied-up
-			 * version of it.
+			 * The field labels are the row's own heading and each field's
+			 * placeholder. Spelling them out again above every input is what
+			 * made two subscriptions fill a screen, and a screen-reader label
+			 * carries the same information without taking a line.
 			 */
 			?>
-			<?php if ( ! empty( $feed['lastSyncAt'] ) ) : ?>
-				<p class="bks-meta__feed-status <?php echo IcalFeedsRepository::STATUS_ERROR === ( $feed['lastStatus'] ?? '' ) ? 'is-error' : ''; ?>">
-					<?php
-					if ( IcalFeedsRepository::STATUS_ERROR === ( $feed['lastStatus'] ?? '' ) ) {
-						printf(
-							/* translators: %s: the reason the last read failed. */
-							esc_html__( 'Last read failed: %s', 'booking-suite' ),
-							esc_html( (string) ( $feed['lastMessage'] ?: __( 'no reason given', 'booking-suite' ) ) )
-						);
-					} else {
-						printf(
-							/* translators: 1: number of dated entries read, 2: when it was read. */
-							esc_html__( 'Last read %1$d entries on %2$s', 'booking-suite' ),
-							(int) ( $feed['lastEventCount'] ?? 0 ),
-							esc_html( (string) $feed['lastSyncAt'] )
-						);
-					}
-					?>
-				</p>
-			<?php endif; ?>
+			<input
+				type="url"
+				class="bks-meta__feed-url"
+				name="<?php echo esc_attr( $name ); ?>[url]"
+				maxlength="<?php echo esc_attr( (string) self::MAX_URL_LENGTH ); ?>"
+				value="<?php echo esc_url( (string) ( $feed['url'] ?? '' ) ); ?>"
+				placeholder="<?php echo esc_attr( self::feed_placeholder( $source ) ); ?>"
+				aria-label="
+				<?php
+				printf(
+					/* translators: %s: portal name, e.g. Airbnb. */
+					esc_attr__( 'Calendar link — %s', 'booking-suite' ),
+					esc_attr( $label )
+				);
+				?>
+				"
+				autocomplete="off"
+				spellcheck="false"
+			/>
+
+			<?php
+			/*
+			 * Where the link is found, and how the last read went, on one
+			 * quiet line. A subscription that has stopped working looks
+			 * exactly like one that is fine — the link is still there, the
+			 * dates simply stop arriving — so a failure carries the portal's
+			 * own message rather than a tidied-up version of it.
+			 */
+			?>
+			<p class="bks-meta__feed-note <?php echo IcalFeedsRepository::STATUS_ERROR === ( $feed['lastStatus'] ?? '' ) ? 'is-error' : ''; ?>">
+				<?php
+				if ( IcalFeedsRepository::STATUS_ERROR === ( $feed['lastStatus'] ?? '' ) ) {
+					printf(
+						/* translators: %s: the reason the last read failed. */
+						esc_html__( 'Last read failed: %s', 'booking-suite' ),
+						esc_html( (string) ( $feed['lastMessage'] ?: __( 'no reason given', 'booking-suite' ) ) )
+					);
+				} elseif ( ! empty( $feed['lastSyncAt'] ) ) {
+					printf(
+						/* translators: 1: number of dated entries read, 2: when it was read. */
+						esc_html__( 'Last read %1$d entries on %2$s', 'booking-suite' ),
+						(int) ( $feed['lastEventCount'] ?? 0 ),
+						esc_html( (string) $feed['lastSyncAt'] )
+					);
+				} else {
+					echo esc_html( self::feed_hint( $source ) );
+				}
+				?>
+			</p>
 		</li>
 		<?php
 	}
@@ -585,15 +710,18 @@ final class ApartmentMetaBox {
 				$source = IcalParser::detect_source( $url );
 			}
 
-			$name = trim( sanitize_text_field( (string) ( $row['name'] ?? '' ) ) );
-
+			/*
+			 * The row carries a link and nothing else now. The name is kept as
+			 * a column because other screens read it, but it is the portal's
+			 * own label rather than something to be typed; and a subscription
+			 * always syncs — one that should not is one whose link should be
+			 * cleared instead.
+			 */
 			$values = array(
-				'name'   => '' === $name
-					? IcalParser::source_label( $source )
-					: mb_substr( $name, 0, self::MAX_LENGTH ),
+				'name'   => IcalParser::source_label( $source ),
 				'url'    => $url,
 				'source' => $source,
-				'active' => ! empty( $row['active'] ),
+				'active' => true,
 			);
 
 			$id = absint( $row['id'] ?? 0 );
@@ -616,8 +744,7 @@ final class ApartmentMetaBox {
 		 * Removed rows unsubscribe, but the locks they already brought in stay.
 		 * Dates a portal has sold are still sold after the subscription goes,
 		 * and dropping them here would silently put a booked apartment back on
-		 * sale. Releasing them is offered on the Calendar Sync screen, where it
-		 * can be asked about.
+		 * sale. Releasing them is a separate, deliberate act.
 		 */
 		foreach ( array_keys( $existing ) as $id ) {
 			if ( ! isset( $kept[ $id ] ) ) {

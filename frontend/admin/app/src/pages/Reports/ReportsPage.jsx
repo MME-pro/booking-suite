@@ -343,7 +343,7 @@ export default function ReportsPage() {
 
 					<ReportCharts report={ report } />
 
-					<div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+					<div className="grid grid-cols-1 items-start gap-4 xl:grid-cols-2">
 						<Card className="break-inside-avoid overflow-hidden">
 							<CardHeader className="pb-3">
 								<CardTitle className="text-base">

@@ -175,6 +175,26 @@ final class IcalController {
 			)
 		);
 
+		/*
+		 * One apartment's subscriptions, pulled now.
+		 *
+		 * Separate from /sync because the apartment screen has no business
+		 * reaching into every other apartment's portals: a button that says
+		 * "sync this apartment" should do only that, and should not take as
+		 * long as the whole estate.
+		 */
+		register_rest_route(
+			self::NAMESPACE,
+			'/' . self::ROUTE . '/apartments/(?P<id>\d+)/sync',
+			array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( self::class, 'sync_apartment' ),
+					'permission_callback' => array( self::class, 'can_manage' ),
+				),
+			)
+		);
+
 		register_rest_route(
 			self::NAMESPACE,
 			'/' . self::ROUTE . '/sync',
@@ -495,6 +515,47 @@ final class IcalController {
 	}
 
 	/**
+	 * Pull every subscription belonging to one apartment, now.
+	 *
+	 * A failing portal is reported rather than thrown: one of the two being
+	 * unreachable is not a reason to leave the other unread, and the row's own
+	 * status line is where the failure belongs anyway.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public static function sync_apartment( WP_REST_Request $request ): WP_REST_Response {
+		$results = array();
+
+		foreach ( IcalFeedsRepository::for_apartment( (int) $request['id'] ) as $feed ) {
+			IcalImporter::sync_feed( (int) $feed['id'], false );
+
+			// Re-read rather than trust the report: the import wrote the
+			// outcome to the row, and the row is what the screen shows.
+			$fresh  = IcalFeedsRepository::find( (int) $feed['id'] ) ?? array();
+			$failed = IcalFeedsRepository::STATUS_ERROR === ( $fresh['lastStatus'] ?? '' );
+
+			$results[] = array(
+				'source' => (string) ( $fresh['source'] ?? $feed['source'] ),
+				'failed' => $failed,
+				'note'   => $failed
+					? sprintf(
+						/* translators: %s: the reason the read failed. */
+						__( 'Last read failed: %s', 'booking-suite' ),
+						(string) ( $fresh['lastMessage'] ?: __( 'no reason given', 'booking-suite' ) )
+					)
+					: sprintf(
+						/* translators: 1: number of dated entries read, 2: when it was read. */
+						__( 'Last read %1$d entries on %2$s', 'booking-suite' ),
+						(int) ( $fresh['lastEventCount'] ?? 0 ),
+						(string) ( $fresh['lastSyncAt'] ?? '' )
+					),
+			);
+		}
+
+		return new WP_REST_Response( array( 'feeds' => $results ), 200 );
+	}
+
+	/**
 	 * Publish an apartment's calendar, or replace the link it already has.
 	 *
 	 * @return WP_REST_Response|WP_Error
@@ -517,8 +578,19 @@ final class IcalController {
 		return new WP_REST_Response(
 			array(
 				'apartmentId' => $apartment_id,
+				/*
+				 * The bare address stays in the response under the name it has
+				 * always had, so anything reading `exportUrl` keeps working.
+				 */
 				'exportUrl'   => IcalFeed::url_from_token( $token ),
 				'fallbackUrl' => IcalFeed::fallback_from_token( $token ),
+				/*
+				 * Every scope in one reply. Minting the token is what makes all
+				 * of them real at once — they ride on the same secret — so a
+				 * screen that has just published should not have to ask again
+				 * for each one.
+				 */
+				'exports'     => IcalFeed::exports( $apartment_id, $token ),
 			),
 			200
 		);

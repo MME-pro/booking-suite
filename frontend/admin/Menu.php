@@ -41,8 +41,6 @@ final class Menu {
 
 	public const SLUG_CALENDAR = 'booking-suite-calendar';
 
-	public const SLUG_ICAL = 'booking-suite-calendar-sync';
-
 	public const SLUG_EXTRAS = 'booking-suite-extras';
 
 	public const SLUG_EMAILS = 'booking-suite-email-templates';
@@ -70,7 +68,6 @@ final class Menu {
 			self::SLUG_GUIDE      => 'guide',
 			self::SLUG_CALENDAR   => 'calendar',
 			self::SLUG_AVAILABILITY => 'availability',
-			self::SLUG_ICAL       => 'calendarSync',
 			self::SLUG_EXTRAS     => 'extras',
 			self::SLUG_SETTINGS   => 'settings',
 		);
@@ -177,17 +174,6 @@ final class Menu {
 			__( 'Availability', 'booking-suite' ),
 			self::CAPABILITY,
 			self::SLUG_AVAILABILITY,
-			array( self::class, 'render_root' )
-		);
-
-		// Beside Availability, because it is the same board being filled in —
-		// only by Airbnb and Booking.com rather than by hand.
-		add_submenu_page(
-			self::SLUG_DASHBOARD,
-			__( 'Calendar Sync', 'booking-suite' ),
-			__( 'Calendar Sync', 'booking-suite' ),
-			self::CAPABILITY,
-			self::SLUG_ICAL,
 			array( self::class, 'render_root' )
 		);
 

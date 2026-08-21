@@ -146,86 +146,95 @@
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: 8px;
+	gap: 6px;
+	width: 100%;
 }
 
-.bks-meta__feed-list {
+/* The heading and its button share a line, hard against each edge. */
+.bks-meta__feeds-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	width: 100%;
+}
+
+.bks-meta__feed-list,
+.bks-meta__export-list {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 6px;
 	width: 100%;
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-.bks-meta__feed {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
+/*
+ * A subscription on one line: portal, link, label, toggle — with a quiet note
+ * underneath spanning the lot.
+ *
+ * The portal column is fixed so both rows' fields line up; the link takes
+ * whatever is left. `minmax(0, 1fr)` rather than `1fr` because a grid item's
+ * default minimum is its content, and a long URL in a monospace field would
+ * otherwise push the row wider than the meta box.
+ */
+.bks-meta__feed,
+.bks-meta__export-row {
+	display: grid;
+	grid-template-columns: 116px minmax(0, 1fr);
+	align-items: center;
+	gap: 2px 8px;
 	margin: 0;
-	padding: 12px;
+	padding: 6px 10px;
 	border: 1px solid #dcdcde;
 	border-radius: 4px;
 	background: #fff;
 }
 
-.bks-meta__feed-head,
-.bks-meta__feed-foot {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: flex-end;
-	justify-content: space-between;
-	gap: 12px;
-}
-
-.bks-meta__feed-head .bks-meta__field,
-.bks-meta__feed-foot .bks-meta__field {
-	flex: 1 1 200px;
-}
-
-.bks-meta__feed-remove {
-	padding: 0;
-	color: #b32d2e;
-	cursor: pointer;
-}
-
-.bks-meta__feed-active {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	padding-bottom: 4px;
-	white-space: nowrap;
+.bks-meta__feed-portal,
+.bks-meta__export-name {
+	font-weight: 600;
+	line-height: 1.3;
 }
 
 .bks-meta__feed-url {
 	width: 100%;
+	margin: 0;
+}
+
+.bks-meta__feed-url {
 	font-family: Menlo, Consolas, monaco, monospace;
 	font-size: 12px;
 }
 
-.bks-meta__feed-status {
+/* The note sits under the fields, not under the portal name. */
+.bks-meta__feed-note {
+	grid-column: 2 / -1;
 	margin: 0;
 	color: #646970;
 	font-size: 12px;
+	line-height: 1.4;
 }
 
-.bks-meta__feed-status.is-error {
+.bks-meta__feed-note.is-error {
 	color: #b32d2e;
 }
 
-.bks-meta__feed-empty {
-	width: 100%;
-	margin: 0;
-	padding: 14px;
-	border: 1px dashed #c3c4c7;
-	border-radius: 4px;
-	color: #646970;
-	text-align: center;
-}
+/*
+ * Below the meta box's narrow breakpoint a fixed name column and a URL cannot
+ * share a line, so the row becomes a stack — the portal name still first, so
+ * it never reads as a heading for the row above it.
+ */
+@media screen and (max-width: 782px) {
+	.bks-meta__feed,
+	.bks-meta__export-row {
+		grid-template-columns: minmax(0, 1fr);
+	}
 
-.bks-meta__export input[type="url"] {
-	max-width: 520px;
+	.bks-meta__feed-note {
+		grid-column: 1;
+	}
 }
 
 .bks-meta__sublabel {

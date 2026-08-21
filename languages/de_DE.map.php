@@ -1438,4 +1438,70 @@ Gute Reise und bis bald.
 		'%d Kalender-Link wurde nicht gespeichert — er ist keine brauchbare Adresse, oder derselbe Kalender wurde zweimal aufgeführt.',
 		'%d Kalender-Links wurden nicht gespeichert — sie sind keine brauchbaren Adressen, oder derselbe Kalender wurde zweimal aufgeführt.',
 	),
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Export links (.ics)' => 'Export-Links (.ics)',
+	'Create export links' => 'Export-Links erstellen',
+	'All channels' => 'Alle Kanäle',
+	'For %s' => 'Für %s',
+	'Direct bookings only' => 'Nur Direktbuchungen',
+	'Direct bookings + %s' => 'Direktbuchungen + %s',
+	'Export link — %s' => 'Export-Link – %s',
+	'Save the apartment first — the export links can be created once it exists.' => 'Speichern Sie das Apartment zuerst – die Export-Links können erstellt werden, sobald es existiert.',
+	'Not published yet. Creating them makes this apartment’s booked dates readable by anyone holding a link — each says when the apartment is taken, never who by.' => 'Noch nicht veröffentlicht. Sobald die Links erstellt sind, kann jeder, der einen davon besitzt, die belegten Termine dieses Apartments lesen – sie nennen nur, wann es belegt ist, nie durch wen.',
+	'%s appear once this apartment imports a portal calendar — until then every link would carry the same dates.' => '%s erscheinen, sobald dieses Apartment einen Portal-Kalender importiert – bis dahin würde jeder Link dieselben Termine enthalten.',
+	'Give each link to the portal it is named for. Treat them as private; they can be replaced on the Calendar Sync screen if one gets out.' => 'Geben Sie jeden Link an das Portal weiter, nach dem er benannt ist. Behandeln Sie sie vertraulich; auf der Seite „Kalender-Sync“ lassen sie sich ersetzen, falls einer nach außen gelangt.',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'The other half of the same sync. Each link is shaped for one portal and leaves out that portal’s own dates, so nothing is sent back where it came from.' => 'Die andere Hälfte derselben Synchronisation. Jeder Link ist auf ein Portal zugeschnitten und lässt die eigenen Termine dieses Portals aus, sodass nichts dorthin zurückgeschickt wird, woher es kam.',
+	'%s appear once a subscription above names a portal — until then every link would carry the same dates.' => '%s erscheinen, sobald ein Abonnement oben ein Portal benennt – bis dahin würde jeder Link dieselben Termine enthalten.',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Give this one to any portal you do not import from.' => 'Geben Sie diesen an jedes Portal weiter, von dem Sie nicht importieren.',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Not published yet. Creating the links makes this apartment’s booked dates readable by anyone holding one — each says when the apartment is taken, never who by.' => 'Noch nicht veröffentlicht. Sobald die Links erstellt sind, kann jeder, der einen davon besitzt, die belegten Termine dieses Apartments lesen – sie nennen nur, wann das Apartment belegt ist, nie durch wen.',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Give each link to the portal it is named for. Treat them as private: anyone holding one can read when this apartment is taken.' => 'Geben Sie jeden Link an das Portal weiter, nach dem er benannt ist. Behandeln Sie sie vertraulich: Wer einen davon besitzt, kann lesen, wann dieses Apartment belegt ist.',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Airbnb: Calendar → Availability → Connect calendars.' => 'Airbnb: Kalender → Verfügbarkeit → Kalender verbinden.',
+	'Booking.com: Rates & Availability → Sync calendars.' => 'Booking.com: Preise & Verfügbarkeit → Kalender synchronisieren.',
+	'Paste the calendar link this portal gave you.' => 'Fügen Sie den Kalender-Link ein, den Ihnen dieses Portal gegeben hat.',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Calendar link — %s' => 'Kalender-Link – %s',
+	'Dates these portals have sold are blocked here, read automatically on a schedule.' => 'Von diesen Portalen belegte Termine werden hier gesperrt, automatisch nach Zeitplan gelesen.',
+	'Give each to the portal it is named for. Each leaves out that portal’s own dates, and is readable by anyone holding it.' => 'Geben Sie jeden an das Portal weiter, nach dem er benannt ist. Jeder lässt die eigenen Termine dieses Portals aus und ist für jeden lesbar, der ihn besitzt.',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'Reading…' => 'Wird gelesen…',
+	'Every 5 minutes' => 'Alle 5 Minuten',
+	'Could not read the calendars just now. Try again in a moment.' => 'Die Kalender konnten gerade nicht gelesen werden. Versuchen Sie es gleich noch einmal.',
+	'Nothing to read — no calendar link is saved yet.' => 'Nichts zu lesen – es ist noch kein Kalender-Link gespeichert.',
 );

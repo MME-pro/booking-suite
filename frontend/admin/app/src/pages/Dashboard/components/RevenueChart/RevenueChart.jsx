@@ -31,7 +31,7 @@ export default function RevenueChart( { series, currency = 'EUR' } ) {
 	return (
 		<ChartContainer
 			config={ config }
-			className="aspect-auto h-[260px] w-full"
+			className="aspect-auto h-[200px] w-full"
 		>
 			<AreaChart
 				data={ series }

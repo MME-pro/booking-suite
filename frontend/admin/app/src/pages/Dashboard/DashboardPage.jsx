@@ -187,7 +187,7 @@ export default function DashboardPage() {
 						</ToggleGroup>
 					</div>
 
-					<div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+					<div className="grid grid-cols-1 items-start gap-4 xl:grid-cols-2">
 						<Card>
 							<CardHeader className="pb-2">
 								<CardTitle className="text-base">
@@ -263,7 +263,7 @@ function DashboardSkeleton() {
 				) ) }
 			</div>
 
-			<div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+			<div className="grid grid-cols-1 items-start gap-4 xl:grid-cols-2">
 				{ [ 0, 1 ].map( ( key ) => (
 					<Card key={ key }>
 						<CardContent className="flex flex-col gap-3 p-5">

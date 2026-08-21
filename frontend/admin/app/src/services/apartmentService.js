@@ -36,6 +36,8 @@ export const toApartment = ( row ) => ( {
 	 */
 	icalFeeds: row.ical_feeds ?? [],
 	icalExportUrl: row.ical_export_url ?? '',
+	// One entry per scope: the whole feed, direct-only, and one per portal.
+	icalExports: row.ical_exports ?? [],
 	icalFallbackUrl: row.ical_fallback_url ?? '',
 	createdAt: row.created_at,
 	updatedAt: row.updated_at,

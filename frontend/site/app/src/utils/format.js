@@ -48,7 +48,16 @@ export function formatWpTime( time ) {
 		Number( parts[ 2 ] )
 	);
 
-	return wpFormat( date, settings.timeFormat || 'H:i', settings.locale );
+	/*
+	 * Always 24-hour, rather than following Settings → General.
+	 *
+	 * The slot buttons come from the server already formatted as HH:MM, so a
+	 * site whose WordPress clock is set to 'g:i a' would show "2:30 pm" in the
+	 * summary beside a button reading "14:30" — the same time twice, in two
+	 * conventions, on one screen. The brief asks for one clock throughout, and
+	 * this is where it is decided.
+	 */
+	return wpFormat( date, 'H:i', settings.locale );
 }
 
 export function formatPrice( amount, currency = 'EUR', locale = 'de_DE' ) {
