@@ -45,6 +45,8 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { StatCard } from '../../components/StatCard';
 import { bookingService } from '../../services';
 import { BookingsTable } from './components/BookingsTable';
+import { ListPager } from '@/components/ListPager';
+import { usePaged } from '@/hooks/usePaged';
 import { BookingDetail } from './components/BookingDetail';
 import { BookingForm } from './components/BookingForm';
 import { PaymentDialog } from './components/PaymentDialog';
@@ -149,6 +151,12 @@ export default function BookingsPage() {
 				.some( ( field ) => field.toLowerCase().includes( term ) );
 		} );
 	}, [ bookings, search, status ] );
+
+	/*
+	 * Paged after filtering, so the tab counts and the search still describe
+	 * every booking rather than the page you happen to be on.
+	 */
+	const paged = usePaged( visible );
 
 	const tabs = [ 'all', ...statuses ];
 
@@ -537,7 +545,7 @@ export default function BookingsPage() {
 					 */ }
 					{ bookings.length > 0 ? (
 						<BookingsTable
-							bookings={ visible }
+							bookings={ paged.rows }
 							onSelectBooking={ setSelectedBooking }
 							busyId={ busyId }
 							onApprove={ ( booking ) =>
@@ -579,6 +587,15 @@ export default function BookingsPage() {
 							/>
 						</Card>
 					) }
+
+					<ListPager
+						page={ paged.page }
+						pageCount={ paged.pageCount }
+						onPage={ paged.setPage }
+						from={ paged.from }
+						to={ paged.to }
+						total={ paged.total }
+					/>
 				</>
 			) }
 

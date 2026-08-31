@@ -48,6 +48,8 @@ import { dayKey, toDate } from '../../lib/dates';
 import { blockService } from '../../services';
 import { settings } from '../../settings';
 import { formatDateTime } from '../Bookings/data/format';
+import { ListPager } from '@/components/ListPager';
+import { usePaged } from '@/hooks/usePaged';
 
 const toBcp47 = ( locale ) => String( locale || 'de_DE' ).replace( '_', '-' );
 
@@ -182,6 +184,13 @@ export default function AvailabilityPage() {
 
 		return days;
 	}, [ visibleBlocks ] );
+
+	/*
+	 * The lock list is paged; the calendar above it is not. A month of squares
+	 * is a fixed size whatever it holds, while a property that closes for
+	 * winter can accumulate hundreds of locks below it.
+	 */
+	const pagedBlocks = usePaged( visibleBlocks );
 
 	const selectedLocks = byDay.get( dayKey( selected ) ) ?? [];
 	const isExtraScope = 'extra' === scope;
@@ -486,7 +495,7 @@ export default function AvailabilityPage() {
 					) }
 
 					<ul className="divide-y">
-						{ visibleBlocks.map( ( block ) => (
+						{ pagedBlocks.rows.map( ( block ) => (
 							<li
 								key={ block.id }
 								className="flex flex-wrap items-center gap-3 px-5 py-3"
@@ -539,6 +548,17 @@ export default function AvailabilityPage() {
 							</li>
 						) ) }
 					</ul>
+
+					<div className="px-5 pb-1">
+						<ListPager
+							page={ pagedBlocks.page }
+							pageCount={ pagedBlocks.pageCount }
+							onPage={ pagedBlocks.setPage }
+							from={ pagedBlocks.from }
+							to={ pagedBlocks.to }
+							total={ pagedBlocks.total }
+						/>
+					</div>
 				</CardContent>
 			</Card>
 

@@ -118,12 +118,26 @@ final class BookingEmails {
 		 * A plain-text alternative rides along. Clients that refuse HTML show
 		 * it, and spam filters expect an HTML message to carry one — sending
 		 * HTML alone measurably hurts deliverability.
+		 *
+		 * The message is also restated as HTML here, at the last possible
+		 * moment. The Content-Type header below is enough for wp_mail() on its
+		 * own, but a site sending through an SMTP or OAuth plugin has that
+		 * plugin's own mailer in the middle, and those decide HTML-or-text by
+		 * reading ContentType off PHPMailer after every other hook has run. One
+		 * that finds it unset sends the markup as the visible body, which is
+		 * how a formatted email arrives as a page of tags. Saying it here costs
+		 * nothing when it is already true.
 		 */
-		$alternative = static function ( $phpmailer ) use ( $html ): void {
-			$phpmailer->AltBody = EmailLayout::to_text( $html );
+		$prepare = static function ( $phpmailer ) use ( $html ): void {
+			$phpmailer->isHTML( true );
+			$phpmailer->ContentType = 'text/html';
+			$phpmailer->CharSet     = 'UTF-8';
+			$phpmailer->AltBody     = EmailLayout::to_text( $html );
 		};
 
-		add_action( 'phpmailer_init', $alternative );
+		// Last, so a mailer plugin hooking at the default priority has already
+		// had its say.
+		add_action( 'phpmailer_init', $prepare, PHP_INT_MAX );
 
 		$sent = wp_mail(
 			(string) $mail['to'],
@@ -133,7 +147,7 @@ final class BookingEmails {
 			$paths
 		);
 
-		remove_action( 'phpmailer_init', $alternative );
+		remove_action( 'phpmailer_init', $prepare, PHP_INT_MAX );
 
 		// wp_mail has read them by now, whether or not it succeeded.
 		foreach ( $paths as $path ) {

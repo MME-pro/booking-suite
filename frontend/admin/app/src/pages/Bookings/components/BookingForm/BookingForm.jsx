@@ -182,8 +182,15 @@ const fromBooking = ( booking ) => {
 	const startTime = startsAt.slice( 11, 16 );
 	const endDate = endsAt.slice( 0, 10 );
 
-	// A stay that spans days is an overnight one.
-	const isOvernight = startDate !== endDate;
+	/*
+	 * The server says which it is; spanning two dates does not.
+	 *
+	 * This read `startDate !== endDate`, the same mistake the pricing engine
+	 * used to make — an hourly visit from 22:00 to 02:00 spans two dates and is
+	 * not a night. Such a booking loaded into the overnight fields, and saving
+	 * it repriced a four-hour visit as a full night.
+	 */
+	const isOvernight = 'overnight' === booking.mode;
 
 	const hours = Math.max(
 		1,
@@ -206,11 +213,19 @@ const fromBooking = ( booking ) => {
 		status: booking.status ?? 'confirmed',
 		paymentStatus: booking.paymentStatus ?? 'unpaid',
 		/*
-		 * An existing booking opens on auto. The stored total is kept in the
-		 * field, so switching to manual starts from what was actually agreed
-		 * rather than from an empty box.
+		 * An existing booking opens on its own total, not on a fresh one.
+		 *
+		 * It used to open on auto, which quietly repriced it: the form fetched
+		 * a new quote and saving wrote that figure over what had been agreed.
+		 * Any edit at all — a corrected phone number, a guest added inside the
+		 * two the base rate already covers — could change the total, and the
+		 * change looked like it belonged to whatever had just been touched.
+		 *
+		 * Manual keeps the booking worth what it was sold for. The calculated
+		 * figure is still shown beside it by PriceBreakdown, and one click on
+		 * Auto adopts it, so repricing is a decision rather than a side effect.
 		 */
-		priceMode: 'auto',
+		priceMode: booking.total ? 'manual' : 'auto',
 		total: booking.total ? String( booking.total ) : '',
 		notes: booking.notes ?? '',
 		firstName: ( booking.customerName ?? '' ).split( ' ' )[ 0 ] ?? '',

@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\Repositories;
 
+use BookingSuite\Backend\Pricing\RateCalculator;
 use BookingSuite\Backend\Schemas\ApartmentsTable;
 use BookingSuite\Backend\Schemas\BlocksTable;
 use BookingSuite\Backend\Schemas\BookingsTable;
@@ -588,6 +589,20 @@ final class BookingsRepository {
 			'guests'        => (int) $row['guests'],
 			'startsAt'      => (string) $row['starts_at'],
 			'endsAt'        => (string) $row['ends_at'],
+
+			/*
+			 * Which of the two billing models this stay is, decided here rather
+			 * than guessed at by whoever is drawing it.
+			 *
+			 * The admin form worked it out from "does it span two dates", which
+			 * is the same mistake the pricing engine used to make: an hourly
+			 * visit from 22:00 to 02:00 spans two dates and is not a night. It
+			 * loaded into the overnight fields and repriced accordingly.
+			 */
+			'mode'          => RateCalculator::is_overnight_window(
+				(string) $row['starts_at'],
+				(string) $row['ends_at']
+			) ? 'overnight' : 'hourly',
 			'total'         => (float) $row['total_amount'],
 			'currency'      => (string) $row['currency'],
 			'source'        => (string) $row['source'],
