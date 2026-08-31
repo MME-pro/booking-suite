@@ -3983,6 +3983,15 @@
         "comments": []
     },
     {
+        "single": "Every 15 minutes",
+        "line": 90,
+        "comment": "",
+        "refs": [
+            "backend/Support/Updater.php:90"
+        ],
+        "comments": []
+    },
+    {
         "single": "Every 5 minutes",
         "line": 81,
         "comment": "",
@@ -8519,6 +8528,17 @@
             "backend/APIs/ExtrasController.php:266"
         ],
         "comments": []
+    },
+    {
+        "single": "The update could not be downloaded (HTTP %d). Check the GitHub token in Settings.",
+        "line": 287,
+        "comment": "translators: %d: an HTTP status code.",
+        "refs": [
+            "backend/Support/Updater.php:287"
+        ],
+        "comments": {
+            "translators: %d: an HTTP status code.": true
+        }
     },
     {
         "single": "Their first name only",

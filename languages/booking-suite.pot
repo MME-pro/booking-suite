@@ -1758,6 +1758,10 @@ msgstr ""
 msgid "Euro (€)"
 msgstr ""
 
+#: backend/Support/Updater.php:90
+msgid "Every 15 minutes"
+msgstr ""
+
 #: backend/Support/IcalSync.php:81
 msgid "Every 5 minutes"
 msgstr ""
@@ -3716,6 +3720,11 @@ msgstr ""
 
 #: backend/APIs/ExtrasController.php:266
 msgid "The stock quantity cannot be negative."
+msgstr ""
+
+#. translators: %d: an HTTP status code.
+#: backend/Support/Updater.php:287
+msgid "The update could not be downloaded (HTTP %d). Check the GitHub token in Settings."
 msgstr ""
 
 #: backend/Repositories/EmailTemplatesRepository.php:113

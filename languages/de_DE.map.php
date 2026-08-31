@@ -1504,4 +1504,10 @@ Gute Reise und bis bald.
 	'Every 5 minutes' => 'Alle 5 Minuten',
 	'Could not read the calendars just now. Try again in a moment.' => 'Die Kalender konnten gerade nicht gelesen werden. Versuchen Sie es gleich noch einmal.',
 	'Nothing to read — no calendar link is saved yet.' => 'Nichts zu lesen – es ist noch kein Kalender-Link gespeichert.',
+
+	/*
+	 * Calendar Sync: importing portal calendars, publishing this site's own,
+	 * and the responsive card layouts added alongside them.
+	 */
+	'The update could not be downloaded (HTTP %d). Check the GitHub token in Settings.' => 'Das Update konnte nicht heruntergeladen werden (HTTP %d). Prüfen Sie den GitHub-Token in den Einstellungen.',
 );

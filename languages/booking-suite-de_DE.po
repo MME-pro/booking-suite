@@ -1757,6 +1757,10 @@ msgstr "Einmal hier eingetragen und auf der Rechnung sowie im Kopf jeder Gast-E-
 msgid "Euro (€)"
 msgstr "Euro (€)"
 
+#: backend/Support/Updater.php:90
+msgid "Every 15 minutes"
+msgstr "Alle 15 Minuten"
+
 #: backend/Support/IcalSync.php:81
 msgid "Every 5 minutes"
 msgstr "Alle 5 Minuten"
@@ -3716,6 +3720,11 @@ msgstr "Derselbe Wert wie der Beitragstitel — eine Änderung hier benennt das 
 #: backend/APIs/ExtrasController.php:266
 msgid "The stock quantity cannot be negative."
 msgstr "Die Bestandsmenge darf nicht negativ sein."
+
+#. translators: %d: an HTTP status code.
+#: backend/Support/Updater.php:287
+msgid "The update could not be downloaded (HTTP %d). Check the GitHub token in Settings."
+msgstr "Das Update konnte nicht heruntergeladen werden (HTTP %d). Prüfen Sie den GitHub-Token in den Einstellungen."
 
 #: backend/Repositories/EmailTemplatesRepository.php:113
 msgid "Their first name only"
