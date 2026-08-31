@@ -37,6 +37,7 @@ use BookingSuite\Backend\APIs\SettingsController;
 use BookingSuite\Backend\APIs\SystemController;
 use BookingSuite\Frontend\Site\Assets as SiteAssets;
 use BookingSuite\Frontend\Site\Shortcodes as SiteShortcodes;
+use BookingSuite\Backend\Support\Updater;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -84,6 +85,13 @@ final class Plugin {
 
 		// The manifest and worker that let the admin be installed to a phone.
 		Pwa::register();
+
+		/*
+		 * Updates come from this plugin's own GitHub releases, since it will
+		 * never be on wordpress.org. Registered outside is_admin(): the
+		 * quarter-hourly check runs under cron, which is not an admin request.
+		 */
+		Updater::register();
 
 		// Runs after the post type exists, and only until it has migrated.
 		add_action( 'admin_init', array( RoomsToPostsMigration::class, 'run' ), 20 );

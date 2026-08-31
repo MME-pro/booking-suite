@@ -3,7 +3,7 @@
  * Plugin Name:       Booking Suite
  * Plugin URI:        https://mme-pro.de/
  * Description:       Booking Suite plugin scaffold.
- * Version:           0.4.0
+ * Version:           0.5.0
  * Requires at least: 6.6
  * Requires PHP:      8.1
  * Author:            MME-Pro (Marcel Busse)
@@ -21,7 +21,7 @@ namespace BookingSuite;
 
 defined( 'ABSPATH' ) || exit;
 
-const VERSION     = '0.4.0';
+const VERSION     = '0.5.0';
 const PREFIX      = 'bksuite_';
 const TEXT_DOMAIN = 'booking-suite';
 
@@ -121,6 +121,9 @@ register_deactivation_hook(
 		// Nothing should keep pulling portal calendars for a plugin that is
 		// switched off; the subscriptions themselves stay in the database.
 		Backend\Support\IcalSync::unschedule();
+
+		// Nor should a switched-off plugin keep asking GitHub about itself.
+		Backend\Support\Updater::unschedule();
 		flush_rewrite_rules();
 	}
 );
