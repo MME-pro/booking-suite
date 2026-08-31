@@ -10,7 +10,7 @@
  * formatted.
  */
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 
 import { useDismissable } from '../../hooks/useDismissable';
@@ -39,11 +39,34 @@ export default function DateField( {
 	placeholder = __( 'Choose a date', 'booking-suite' ),
 } ) {
 	const [ isOpen, setOpen ] = useState( false );
+	const popoverRef = useRef( null );
 
 	const { containerRef, triggerRef } = useDismissable( {
 		isOpen,
 		onClose: () => setOpen( false ),
 	} );
+
+	/*
+	 * Bring the whole panel into view when it opens.
+	 *
+	 * The popover hangs below its trigger inside the modal's scrolling body. On
+	 * a phone that body is only a few hundred pixels tall, so a month grid
+	 * opened from a field near the middle of the form has its last week cut off
+	 * by the footer — and nothing on screen says there is more to scroll to.
+	 *
+	 * 'nearest' scrolls the least that will do it, so a panel already fully
+	 * visible does not move at all.
+	 */
+	useEffect( () => {
+		if ( ! isOpen ) {
+			return;
+		}
+
+		popoverRef.current?.scrollIntoView( {
+			block: 'nearest',
+			behavior: 'smooth',
+		} );
+	}, [ isOpen ] );
 
 	const selected = fromKey( value );
 	const floor = fromKey( min ) ?? startOfToday();
@@ -84,6 +107,7 @@ export default function DateField( {
 
 			{ isOpen && (
 				<div
+					ref={ popoverRef }
 					className="bks-datefield__popover"
 					role="dialog"
 					aria-label={ label }

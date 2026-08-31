@@ -45,16 +45,28 @@ button.bks-book-now,
 	display: block;
 }
 
+/*
+ * Visually hidden, and it has to win.
+ *
+ * The hidden file input behind the payment dropzone carries this class and also
+ * matches `.bks-field input`, which is one point more specific and was sizing
+ * it to the full width of the form — a 390px box, absolutely positioned, that
+ * reported itself as hanging off the side of the modal. It is only invisible
+ * because of the clip; nothing about its box was actually small. !important is
+ * the right tool for a utility whose single job is to be unconditionally
+ * hidden, whatever it is applied to.
+ */
 .bks-sr-only {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	margin: -1px;
-	padding: 0;
-	overflow: hidden;
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	min-height: 0 !important;
+	margin: -1px !important;
+	padding: 0 !important;
+	overflow: hidden !important;
 	clip: rect(0, 0, 0, 0);
 	white-space: nowrap;
-	border: 0;
+	border: 0 !important;
 }
 
 @media ( prefers-reduced-motion: reduce ) {
@@ -65,4 +77,25 @@ button.bks-book-now,
 		transition-duration: 0.01ms !important;
 		animation-duration: 0.01ms !important;
 	}
+}
+
+/*
+ * Nothing the plugin renders may widen the page.
+ *
+ * A single long word — an apartment name, a guest's email on the confirmation
+ * screen, a bank reference — is enough to push a phone's layout sideways, and
+ * the symptom shows up as the whole theme scrolling horizontally rather than
+ * as anything obviously ours. Breaking long words and capping the root is the
+ * cheap insurance against being blamed for it.
+ */
+.bks-site-root {
+	max-width: 100%;
+	overflow-wrap: break-word;
+}
+
+/* The grey flash a tap leaves on Android is not part of the design. */
+.bks-site-root button,
+.bks-site-root a,
+.bks-site-root [role="button"] {
+	-webkit-tap-highlight-color: transparent;
 }

@@ -135,3 +135,29 @@ a.bks-book-now--text:hover {
 	box-shadow: none !important;
 	transform: none !important;
 }
+
+/*
+ * A thumb-sized target on a touch screen. The small variant is 13px text with
+ * 9px of padding — comfortable under a cursor, a miss under a thumb — and this
+ * is the one button of ours a theme is most likely to place on its own, out of
+ * reach of any surrounding layout that might have given it room.
+ */
+@media (pointer: coarse) {
+
+	.bks-book-now,
+	button.bks-book-now,
+	a.bks-book-now {
+		min-height: var(--bks-site-tap, 44px) !important;
+	}
+}
+
+/* Full width below 26rem: at that size a centred pill leaves the two thumb
+   positions either side of it doing nothing. */
+@media (max-width: 26rem) {
+
+	.bks-book-now--lg {
+		display: flex !important;
+		width: 100% !important;
+		padding-inline: 24px !important;
+	}
+}

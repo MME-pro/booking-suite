@@ -526,3 +526,88 @@
 	opacity: 0.6;
 	cursor: progress;
 }
+
+/* Touch and phone layout ------------------------------------------------- */
+
+/*
+ * Every control in the rail grows to a thumb-sized target on a touch screen.
+ * The fields are stacked rows on a phone, so height is free here in a way it
+ * is not on the desktop pill — nothing else moves to pay for it.
+ */
+@media (pointer: coarse) {
+
+	.bks-filter__field {
+		min-height: var(--bks-site-tap, 44px);
+	}
+
+	.bks-filter__submit {
+		min-height: calc(var(--bks-site-tap, 44px) + 4px);
+	}
+
+	.bks-stepper__button {
+		width: var(--bks-site-tap, 44px);
+		height: var(--bks-site-tap, 44px);
+	}
+
+	.bks-stepper__button--sm {
+		width: 36px;
+		height: 36px;
+	}
+
+	.bks-calendar__nav {
+		width: var(--bks-site-tap, 44px);
+		height: var(--bks-site-tap, 44px);
+	}
+}
+
+@media (max-width: 51.99rem) {
+
+	/* Stacked, so the rail is a card and its rows need dividing. */
+	.bks-filter__field + .bks-filter__field {
+		box-shadow: inset 0 1px 0 var(--bks-site-border);
+	}
+
+	.bks-filter__field:hover,
+	.bks-filter__field:focus-within,
+	.bks-filter__field:hover + .bks-filter__field,
+	.bks-filter__field:focus-within + .bks-filter__field {
+		box-shadow: none;
+	}
+
+	/*
+	 * The popover is as wide as the rail and no wider. Left to itself the
+	 * calendar sits hard against the left edge of a full-width panel, which
+	 * reads as a mistake next to a centred month name.
+	 */
+	.bks-filter__popover {
+		max-height: min(70vh, 30rem);
+		overflow-y: auto;
+		overscroll-behavior: contain;
+	}
+
+	/*
+	 * The month grid fills the panel rather than keeping its 17rem desktop
+	 * width inside it. The rail is stacked at this size so the panel is the
+	 * full width of the bar, and seven columns across that puts every day cell
+	 * over 48px — a calendar for a thumb rather than for a cursor.
+	 */
+	.bks-filter__popover--calendar .bks-cal {
+		width: 100%;
+	}
+
+	.bks-filter__submit {
+		margin-top: 2px;
+	}
+}
+
+/* Below 22rem the uppercase labels and the value no longer both fit. */
+@media (max-width: 22rem) {
+
+	.bks-filter__field {
+		padding-inline: var(--bks-site-space-3);
+	}
+
+	.bks-filter__popover {
+		padding: var(--bks-site-space-4);
+	}
+}

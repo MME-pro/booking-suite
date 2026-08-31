@@ -5,6 +5,15 @@
 
 .bks-apartments {
 	width: 100%;
+
+	/*
+	 * The side gutter. The shortcode is routinely dropped into a full-bleed
+	 * section, where the grid runs to both edges of a phone and the cards read
+	 * as if they had been cut off rather than laid out. The token is 0 on
+	 * desktop — a theme's own container is doing the job there — and only
+	 * becomes a real value below 48rem.
+	 */
+	padding-inline: var(--bks-site-gutter, 0);
 }
 
 .bks-apartments__heading {
@@ -39,4 +48,15 @@
 	outline: 2px solid var(--bks-site-brand);
 	outline-offset: 3px;
 	border-radius: var(--bks-site-radius-xs);
+}
+
+/*
+ * The heading has room to breathe on a wide screen; on a phone it is stealing
+ * space from the first card.
+ */
+@media (max-width: 47.99rem) {
+
+	.bks-apartments__heading {
+		margin-bottom: var(--bks-site-space-4);
+	}
 }

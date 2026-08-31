@@ -138,3 +138,37 @@
 		animation: none;
 	}
 }
+
+/*
+ * On a phone the trigger matches the taller inputs the modal switches to at the
+ * same width — it stands in a row with them, and a control 44px tall beside one
+ * of 48px is the kind of misalignment that reads as sloppiness rather than as a
+ * difference.
+ */
+@media (max-width: 40rem) {
+
+	.bks-datefield__trigger {
+		height: 48px;
+		font-size: 16px;
+	}
+}
+
+/*
+ * Full width, and the month grid fills it.
+ *
+ * The panel is the width of the modal's form here, so a calendar left at its
+ * 17rem desktop width sits in the corner of a panel half again as wide. Seven
+ * columns across the whole panel also lands each day cell over 48px.
+ */
+@media (max-width: 34rem) {
+
+	.bks-datefield__popover {
+		max-height: min(70vh, 26rem);
+		overflow-y: auto;
+		overscroll-behavior: contain;
+	}
+
+	.bks-datefield__popover .bks-cal {
+		width: 100%;
+	}
+}

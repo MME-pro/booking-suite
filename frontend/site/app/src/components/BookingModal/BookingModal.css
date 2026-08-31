@@ -32,9 +32,15 @@
 .bks-booking {
 	display: flex;
 	flex-direction: column;
-	width: 95vw;
+
+	/* 100% of the padded overlay, not 95vw — vw ignores the overlay padding
+	   and the scrollbar, so the dialog could sit wider than its own frame. */
+	width: 100%;
 	max-width: 960px;
 	max-height: min(92vh, 840px);
+
+	/* svh where it exists: on a touch browser vh includes the chrome. */
+	max-height: min(92svh, 840px);
 	background: var(--bks-site-surface);
 	border: 1px solid var(--bks-site-border);
 	border-radius: 24px;
@@ -1337,7 +1343,13 @@
 
 /* ═══════════════════════════════════════════════
    Mobile Responsive Layout (Bottom Sheet)
-   ═══════════════════════════════════════════════ */
+   ═══════════════════════════════════════════════
+
+   The modal is the whole product on a phone: five steps, a calendar, a file
+   upload and a total the guest has to read before they commit. So below 640px
+   it stops being a dialog floating on a page and becomes a sheet that owns the
+   screen — header pinned, body scrolling, actions on the bottom edge where a
+   thumb already is. */
 
 @media (max-width: 640px) {
 
@@ -1347,18 +1359,58 @@
 	}
 
 	.bks-booking {
-		width: 100vw;
+		/*
+		 * 100% of the overlay, not 100vw: with a scrollbar present vw is wider
+		 * than the viewport, and the sheet pushes the page sideways.
+		 */
+		width: 100%;
 		max-width: none;
+
+		/*
+		 * svh, not vh. On iOS and Android vh is the *large* viewport — the
+		 * height the page has once the address bar has scrolled away — so a
+		 * sheet sized in vh puts its footer, and with it the primary button,
+		 * underneath the browser chrome on load. svh is the small viewport:
+		 * always visible, and it does not resize as the bar hides, so the
+		 * layout stays still while the guest scrolls. The vh line above each
+		 * is the fallback for browsers without the unit.
+		 */
 		height: 94vh;
+		height: 94svh;
+		max-height: 94vh;
+		max-height: 94svh;
 		border-radius: var(--bks-site-radius) var(--bks-site-radius) 0 0;
 	}
 
 	.bks-booking__header {
-		padding: 18px 20px 0;
+		padding: 16px 16px 0;
+		gap: 12px;
+	}
+
+	.bks-booking__thumb {
+		width: 42px;
+		height: 42px;
+	}
+
+	.bks-booking__title {
+		font-size: 18px;
 	}
 
 	.bks-booking__body {
-		padding: 20px;
+		padding: 16px;
+
+		/* Momentum scrolling, and no rubber-banding through to the page. */
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior: contain;
+	}
+
+	/*
+	 * The rail keeps only the current step's label. Five labels on a 360px
+	 * screen scroll horizontally, which hides the progress the rail exists to
+	 * show — the numbers alone still carry it.
+	 */
+	.bks-booking__steps {
+		padding: 14px 0 16px;
 	}
 
 	.bks-booking__step:not(.is-current) .bks-booking__step-label {
@@ -1366,21 +1418,333 @@
 	}
 
 	.bks-booking__step + .bks-booking__step::before {
-		width: 16px;
-		margin: 0 6px;
+		width: 14px;
+		margin: 0 5px;
 	}
 
-	.bks-booking__footer {
+	.bks-booking__step-no {
+		width: 30px;
+		height: 30px;
+	}
+
+	/* Steps ------------------------------------------------------------- */
+
+	.bks-step,
+	.bks-when {
+		gap: 16px;
+	}
+
+	.bks-step__row,
+	.bks-when__row {
+		gap: 12px;
+	}
+
+	/*
+	 * Both rows collapse to one column. The 160-180px floor they carry for the
+	 * desktop layout is met by a 360px screen, so without this two fields sit
+	 * side by side at half a phone's width and the labels wrap mid-word.
+	 */
+	.bks-step__row > *,
+	.bks-when__row > * {
+		flex: 1 1 100%;
+		min-width: 0;
+	}
+
+	.bks-field--narrow {
+		max-width: none;
+		flex: 1 1 100%;
+	}
+
+	/*
+	 * 16px, and this one is not a preference.
+	 *
+	 * Safari on iOS zooms the whole page in when a field smaller than 16px
+	 * takes focus, and it does not zoom back out — the guest is left dragging a
+	 * magnified modal sideways to reach the next field. Every text control in
+	 * the flow is set here.
+	 */
+	.bks-field input,
+	.bks-field textarea,
+	.bks-field select {
+		height: 48px;
+		font-size: 16px;
+	}
+
+	.bks-field textarea {
+		height: auto;
+		min-height: 96px;
+	}
+
+	/* Choices ------------------------------------------------------------ */
+
+	.bks-modes {
+		grid-template-columns: 1fr;
+	}
+
+	.bks-modes__option {
+		padding: 14px 16px;
+	}
+
+	.bks-durations {
+		grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+		gap: 8px;
+	}
+
+	.bks-slots {
+		grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+		gap: 8px;
+	}
+
+	.bks-slots__slot {
+		padding: 12px 6px;
+	}
+
+	.bks-overnight {
+		display: flex;
+		padding: 14px 16px;
+	}
+
+	/*
+	 * Extras. Image, name, price and a stepper do not fit on one line at this
+	 * width — the name ends up two characters wide. The stepper drops to its
+	 * own row, right-aligned, which also puts a 44px target well clear of the
+	 * card's edge.
+	 */
+	.bks-extras__item {
 		flex-wrap: wrap;
-		padding: 16px 20px;
+		gap: 12px;
+		padding: 14px 16px;
+	}
+
+	.bks-extras__text {
+		flex: 1 1 60%;
+	}
+
+	.bks-extras__stepper {
+		width: 100%;
+		justify-content: flex-end;
+	}
+
+	/* Payment ------------------------------------------------------------ */
+
+	.bks-payment__option {
+		gap: 12px;
+		padding: 16px;
+	}
+
+	.bks-payment__dropzone {
+		padding: 22px 16px;
+	}
+
+	/* Review ------------------------------------------------------------- */
+
+	.bks-review__facts {
+		grid-template-columns: 1fr 1fr;
+		gap: 12px;
+		padding: 16px;
+	}
+
+	.bks-review__facts dd {
+		font-size: 15px;
+	}
+
+	/* A long line label and its amount, rather than one squeezing the other. */
+	.bks-review__lines li {
+		gap: 12px;
+		font-size: 14px;
+	}
+
+	.bks-review__total strong {
+		font-size: 21px;
+	}
+
+	/* Footer ------------------------------------------------------------- */
+
+	/*
+	 * Stacked, and the actions get the full width. Side by side, "Back" and
+	 * "Continue" share a row with a four-figure total and each ends up too
+	 * narrow to read — and the primary action is the one thing on this screen
+	 * that must never be ambiguous.
+	 *
+	 * The safe-area inset is what keeps the buttons clear of the iPhone home
+	 * indicator, which otherwise sits directly on top of them.
+	 */
+	.bks-booking__footer {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 12px;
+		padding: 14px 16px;
+		padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+	}
+
+	.bks-booking__total {
+		flex-direction: row;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 8px;
+	}
+
+	.bks-booking__total-value {
+		font-size: 20px;
 	}
 
 	.bks-booking__actions {
-		flex: 1;
+		width: 100%;
 	}
 
 	.bks-booking__button {
-		flex: 1;
+		flex: 1 !important;
+		min-height: 48px !important;
+		padding: 13px 16px !important;
+	}
+
+	/* Confirmation ------------------------------------------------------- */
+
+	.bks-done {
+		padding: 28px 16px;
+	}
+
+	.bks-done__title {
+		font-size: 21px;
+	}
+
+	/* Two facts at 40px apart do not fit; they wrap into a two-column block. */
+	.bks-done__summary {
+		flex-wrap: wrap;
+		gap: 16px 32px;
+		padding: 16px 20px;
+	}
+}
+
+/*
+ * Touch targets. Independent of width — a tablet has a coarse pointer and 900px
+ * of room — so this is keyed on the pointer rather than on a breakpoint.
+ */
+@media (pointer: coarse) {
+
+	.bks-booking__close {
+		width: var(--bks-site-tap, 44px) !important;
+		height: var(--bks-site-tap, 44px) !important;
+	}
+
+	.bks-extras__stepper button {
+		width: var(--bks-site-tap, 44px);
+		height: var(--bks-site-tap, 44px);
+	}
+
+	.bks-slots__slot,
+	.bks-durations__option {
+		min-height: var(--bks-site-tap, 44px);
+	}
+
+	/* No pointer to lift away from; the transform only fights the scroll. */
+	.bks-booking__button:hover {
+		transform: none !important;
+	}
+}
+
+/*
+ * The in-between widths — a large phone in landscape, a small tablet. The sheet
+ * is not warranted, but 24px of overlay padding around a 92vh dialog is more
+ * frame than the content can spare.
+ */
+@media (min-width: 40.0625rem) and (max-width: 56rem) {
+
+	.bks-booking__overlay {
+		padding: 16px;
+	}
+
+	.bks-booking__header {
+		padding: 20px 24px 0;
+	}
+
+	.bks-booking__body {
+		padding: 24px;
+	}
+
+	.bks-booking__footer {
+		padding: 16px 24px;
+	}
+}
+
+/*
+ * Landscape on a phone.
+ *
+ * Roughly 380px of height, most of it wanted by the form. The dialog goes
+ * edge to edge — 16px of overlay showing down each side of a full-height
+ * sheet reads as a mistake rather than as a frame — and the header, rail and
+ * footer all give back what they can so the scrolling part keeps the room.
+ *
+ * The horizontal safe-area insets matter here and nowhere else: a notch sits
+ * on the long edge, which is a side of the screen only once the phone is
+ * turned.
+ */
+@media (max-height: 30rem) and (orientation: landscape) {
+
+	.bks-booking__overlay {
+		align-items: stretch;
+		padding: 0;
+	}
+
+	.bks-booking {
+		width: 100%;
+		max-width: none;
+		height: 100vh;
+		height: 100svh;
+		max-height: 100vh;
+		max-height: 100svh;
+		border-radius: 0;
+	}
+
+	.bks-booking__header {
+		padding-top: 10px;
+		padding-right: calc(16px + env(safe-area-inset-right, 0px));
+		padding-bottom: 0;
+		padding-left: calc(16px + env(safe-area-inset-left, 0px));
+	}
+
+	.bks-booking__title {
+		font-size: 17px;
+	}
+
+	.bks-booking__steps {
+		padding: 8px 0 10px;
+	}
+
+	.bks-booking__step-no {
+		width: 26px;
+		height: 26px;
+		font-size: 12px;
+	}
+
+	.bks-booking__body {
+		padding-top: 12px;
+		padding-right: calc(16px + env(safe-area-inset-right, 0px));
+		padding-bottom: 12px;
+		padding-left: calc(16px + env(safe-area-inset-left, 0px));
+	}
+
+	/*
+	 * Back to a row: the width is there, and stacking the total above the
+	 * buttons would cost two of the few lines the form has left.
+	 */
+	.bks-booking__footer {
+		flex-direction: row;
+		align-items: center;
+		gap: 16px;
+		padding-top: 10px;
+		padding-right: calc(16px + env(safe-area-inset-right, 0px));
+		padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+		padding-left: calc(16px + env(safe-area-inset-left, 0px));
+	}
+
+	.bks-booking__actions {
+		width: auto;
+	}
+
+	.bks-booking__button {
+		flex: 0 0 auto !important;
+		min-height: 44px !important;
 	}
 }
 

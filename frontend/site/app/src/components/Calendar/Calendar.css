@@ -140,3 +140,24 @@
 	opacity: 0.32;
 	cursor: not-allowed;
 }
+
+/*
+ * A 28px arrow is a comfortable target for a cursor and a miss for a thumb.
+ * The days are already square cells sized by the grid, so only the month
+ * navigation needs the extra room.
+ */
+@media (pointer: coarse) {
+
+	.bks-cal {
+		width: 18.5rem;
+	}
+
+	.bks-cal__nav {
+		width: var(--bks-site-tap, 44px);
+		height: var(--bks-site-tap, 44px);
+	}
+
+	.bks-cal__day {
+		font-size: 14px;
+	}
+}

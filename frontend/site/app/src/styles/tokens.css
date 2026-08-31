@@ -110,3 +110,42 @@
 	/* The narrowest a card may get before the grid drops a column. */
 	--bks-site-card-min: 17rem;
 }
+
+/*
+ * Phone-sized overrides.
+ *
+ * Only the layout tokens move. Colour, type and elevation are the same design
+ * at every width — what has to give on a 360px screen is the space between
+ * things, not what they look like.
+ *
+ * --bks-site-gutter is the one the host page cares about: a shortcode dropped
+ * into a full-bleed section has nothing between the cards and the edge of the
+ * screen, which is what makes the list feel cramped on a phone. The apartment
+ * list and the showcase both pad by it. A theme that already provides its own
+ * side padding can set it back to 0px.
+ */
+@media (max-width: 47.99rem) {
+
+	:root,
+	.bks-site-root,
+	.bks-book-now {
+		--bks-site-gutter: 16px;
+		--bks-site-gap: 16px;
+		--bks-site-card-min: 15rem;
+		--bks-site-radius: 16px;
+	}
+}
+
+/*
+ * A finger is not a mouse pointer. Controls that are comfortable at 32-36px
+ * under a cursor are a miss under a thumb, so anything tappable grows to this
+ * on a touch screen. 44px is the figure both platform guidelines land on.
+ */
+@media (pointer: coarse) {
+
+	:root,
+	.bks-site-root,
+	.bks-book-now {
+		--bks-site-tap: 44px;
+	}
+}

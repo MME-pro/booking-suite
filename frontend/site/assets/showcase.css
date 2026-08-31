@@ -906,3 +906,145 @@
 		transform: none;
 	}
 }
+
+/* Phone layout ------------------------------------------------------------
+ *
+ * The showcase is a homepage block, which means it is usually dropped into a
+ * full-bleed section with no container of its own. Everything below is about
+ * that: giving the cards a gutter, keeping the panels inside the screen, and
+ * making the controls large enough to hit.
+ */
+
+/*
+ * The side gutter. 0 on desktop — a theme's container is doing the job there —
+ * and a real value below 48rem, where the grid would otherwise run to both
+ * edges of the phone and the cards read as cut off rather than laid out.
+ */
+.bks-showcase {
+	padding-inline: var(--bks-site-gutter, 0);
+}
+
+/*
+ * A panel anchored 10px to the left of its field hangs off the right edge of a
+ * phone once it is 200px wide, and the page scrolls sideways to reveal it.
+ * Below the desktop breakpoint it is pinned to its field instead and capped at
+ * the width of the screen.
+ */
+@media (max-width: 51.99rem) {
+
+	/*
+	 * The panel measures itself against the field, not against the <details>
+	 * inside it.
+	 *
+	 * <details> is the positioned ancestor by default, and it sits inside the
+	 * field's 16px of side padding — so a panel at left: 0; right: 0 came out
+	 * 32px narrower than the row it belongs to, visibly inset on both sides.
+	 * Standing the <details> down hands the job to the field, which is already
+	 * position: relative, and the panel lines up with the row exactly. It is
+	 * also what the React filter bar does, so the two bars behave alike.
+	 */
+	.bks-showcase__menu {
+		position: static;
+	}
+
+	.bks-showcase__menu-panel {
+		top: calc(100% + 6px);
+		right: 0;
+		left: 0;
+		min-width: 0;
+		max-width: none;
+		max-height: min(60vh, 17rem);
+	}
+
+	.bks-showcase__menu--calendar .bks-showcase__menu-panel {
+		min-width: 0;
+		max-height: min(70vh, 26rem);
+	}
+
+	/*
+	 * The month grid fills the panel rather than sitting at a fixed 17.5rem
+	 * inside it. Seven columns across the full width of the rail puts every day
+	 * cell over 48px, which is the difference between a calendar you can use
+	 * with a thumb and one you have to aim at.
+	 */
+	.bks-showcase__cal {
+		width: 100%;
+	}
+}
+
+/*
+ * Arrival takes a row to itself in the two-column layout.
+ *
+ * Its panel is a seven-column month grid, and a panel is only ever as wide as
+ * the field it hangs from — so in a half-width column the calendar came out
+ * around 150px across, a stack of unreadable columns floating over the cards
+ * beside it. Every other menu in the rail is a list of short strings and is
+ * perfectly happy at half width; only this one needs the room, so only this
+ * one gets a row.
+ *
+ * The bound matches the two-column rule above; below 26rem the whole rail is
+ * already one column and this changes nothing.
+ */
+@media (min-width: 26rem) and (max-width: 51.99rem) {
+
+	.bks-showcase__search-field--date {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (max-width: 47.99rem) {
+
+	.bks-showcase__header {
+		margin-bottom: 20px;
+	}
+
+	.bks-showcase__body {
+		padding: 16px;
+	}
+
+	.bks-showcase__footer {
+		padding-top: 12px;
+	}
+
+	/*
+	 * 16px on the typed fields.
+	 *
+	 * Safari on iOS zooms the page in whenever a field under 16px takes focus,
+	 * and does not zoom back out — on a search bar that is the first thing a
+	 * guest touches, which makes it the first thing that goes wrong. The
+	 * !important matches the reset above it; without it the 15px there wins.
+	 */
+	.bks-showcase__search-control input,
+	.bks-showcase__search-control select {
+		font-size: 16px !important;
+	}
+}
+
+/*
+ * Touch. The rows of the stacked rail, the submit button and the day cells all
+ * grow to a thumb-sized target; on a phone the rail is a stack of full-width
+ * rows, so the height costs nothing else on the screen.
+ */
+@media (pointer: coarse) {
+
+	.bks-showcase__search-field {
+		min-height: var(--bks-site-tap, 44px);
+	}
+
+	.bks-showcase__search-submit {
+		min-height: calc(var(--bks-site-tap, 44px) + 4px) !important;
+	}
+
+	.bks-showcase__option {
+		min-height: var(--bks-site-tap, 44px);
+	}
+
+	/* No pointer to lift away from, and the transform fights the scroll. */
+	.bks-showcase__card:hover {
+		transform: none;
+	}
+
+	.bks-showcase__card:hover .bks-showcase__media img {
+		transform: none;
+	}
+}

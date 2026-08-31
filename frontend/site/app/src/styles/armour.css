@@ -429,6 +429,24 @@
 }
 
 /*
+ * And nowhere else inside a <label>.
+ *
+ * The rule above forces `label` back to sentence case, but text-transform is
+ * inherited, and a theme rule that names the child element beats an inherited
+ * value from the parent. The dropzone is a <label> wrapping two spans, so its
+ * prompt and its file-type hint were being shouted — which on a phone also
+ * pushed "Click or drop your payment screenshot here" onto a second line.
+ */
+.bks-site-root .bks-payment__dropzone-content,
+.bks-site-root .bks-payment__dropzone-content *,
+.bks-site-root .bks-payment__dropzone-hint,
+.bks-site-root .bks-overnight,
+.bks-site-root .bks-overnight * {
+	text-transform: none !important;
+	letter-spacing: normal !important;
+}
+
+/*
  * Field labels are the one place where a theme rule silently knocks a row out
  * of line. Most themes give `label` a line-height and a bottom margin; some of
  * our labels are <label> and some are <span> (the Date control and the search
@@ -468,13 +486,37 @@
  * controls meant to be pills, circles or square-edged. Shape is restated on the
  * components that have one rather than blanket-reset, so nothing else moves.
  */
-.bks-site-root .bks-filter,
 .bks-site-root .bks-filter__submit,
 .bks-site-root .bks-card__cta,
-.bks-showcase .bks-showcase__search,
 .bks-showcase .bks-showcase__search-submit,
 .bks-showcase .bks-showcase__badge {
 	border-radius: var(--bks-site-radius-pill, 999px) !important;
+}
+
+/*
+ * The two search rails are the exception, and the reason this rule is split.
+ *
+ * They are a pill only once their fields sit side by side; below 52rem they
+ * stack into a card and take the ordinary radius. Restating the pill at every
+ * width — which is what this rule used to do — drew a 999px ellipse around a
+ * 260px-tall stack of rows on a phone, which is a shape no theme asked for and
+ * the component never wanted. The breakpoints match the ones the two
+ * components declare for themselves; changing one means changing the other.
+ */
+@media (max-width: 51.99rem) {
+
+	.bks-site-root .bks-filter,
+	.bks-showcase .bks-showcase__search {
+		border-radius: var(--bks-site-radius, 18px) !important;
+	}
+}
+
+@media (min-width: 52rem) {
+
+	.bks-site-root .bks-filter,
+	.bks-showcase .bks-showcase__search {
+		border-radius: var(--bks-site-radius-pill, 999px) !important;
+	}
 }
 
 .bks-site-root .bks-card,
@@ -648,8 +690,33 @@
 	border-radius: var(--bks-site-radius, 18px) !important;
 }
 
-.bks-site-root .bks-booking {
-	border-radius: 24px !important;
+/*
+ * The dialog, and the same split as the search rails above: it is a floating
+ * card at 24px on a wide screen and a bottom sheet on a phone, where only the
+ * top corners are rounded because the other two sit on the edge of the screen.
+ * Restating 24px at every width rounded the bottom of the sheet away from the
+ * screen edge and left a sliver of the page showing under it.
+ */
+@media (min-width: 40.0625rem) {
+
+	.bks-site-root .bks-booking {
+		border-radius: 24px !important;
+	}
+}
+
+@media (max-width: 640px) {
+
+	.bks-site-root .bks-booking {
+		border-radius: var(--bks-site-radius, 18px) var(--bks-site-radius, 18px) 0 0 !important;
+	}
+}
+
+/* Full screen in landscape, where the sheet has no room to sit below a gap. */
+@media (max-height: 30rem) and (orientation: landscape) {
+
+	.bks-site-root .bks-booking {
+		border-radius: 0 !important;
+	}
 }
 
 /* Round things that are not buttons and so miss the rules above. */
@@ -816,10 +883,28 @@
  * The calendar keeps its own size wherever it is dropped. Without this a theme
  * that pads buttons turns each day cell into a large tile and the picker grows
  * to fill whatever field opened it.
+ *
+ * Scoped above 52rem, and the split matters: the two panels that hold a
+ * calendar are the full width of their bar on a phone, and this rule pinned
+ * the month grid to 17rem inside them — a picker sitting in the corner of a
+ * panel half again as wide, with day cells too small to hit. Below the
+ * breakpoint the components size it themselves; what this rule was actually
+ * defending against, a theme's button padding inflating the cells, is handled
+ * by the .bks-cal__day rule below at every width.
  */
-.bks-site-root .bks-cal {
-	width: 17rem !important;
-	max-width: 100% !important;
+@media (min-width: 52rem) {
+
+	.bks-site-root .bks-cal {
+		width: 17rem !important;
+		max-width: 100% !important;
+	}
+}
+
+@media (max-width: 51.99rem) {
+
+	.bks-site-root .bks-cal {
+		max-width: 100% !important;
+	}
 }
 
 .bks-site-root .bks-cal__day {

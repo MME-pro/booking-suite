@@ -363,3 +363,49 @@
 		text-align: center;
 	}
 }
+
+/*
+ * Touch. The gallery arrows are already permanently visible on a touch screen
+ * (see above); at 34px they are also permanently hard to hit, and they sit over
+ * a photograph where a near miss scrolls the page instead.
+ */
+@media (pointer: coarse) {
+
+	.bks-card__nav {
+		width: var(--bks-site-tap, 44px);
+		height: var(--bks-site-tap, 44px);
+	}
+
+	.bks-card__cta {
+		min-height: var(--bks-site-tap, 44px);
+	}
+
+	/* No hover to lift on, and the transform only fights momentum scrolling. */
+	.bks-card:hover {
+		transform: none;
+	}
+
+	.bks-card:hover .bks-card__image {
+		transform: none;
+	}
+}
+
+@media (max-width: 34rem) {
+
+	.bks-card__body {
+		padding: var(--bks-site-space-4);
+		gap: var(--bks-site-space-2);
+	}
+
+	/*
+	 * Three lines rather than two. The card is the full width of the screen
+	 * here, so a longer excerpt costs one line, not a row of uneven heights.
+	 */
+	.bks-card__excerpt {
+		-webkit-line-clamp: 3;
+	}
+
+	.bks-card__footer {
+		padding-top: var(--bks-site-space-3);
+	}
+}
