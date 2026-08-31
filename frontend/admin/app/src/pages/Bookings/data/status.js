@@ -19,6 +19,7 @@ export const STATUS_CLASSES = {
 	reserved: 'bg-primary/10 text-primary hover:bg-primary/10',
 	confirmed: 'bg-success/10 text-success hover:bg-success/10',
 	completed: 'bg-muted text-muted-foreground hover:bg-muted',
+	cancelled: 'bg-destructive/10 text-destructive hover:bg-destructive/10',
 };
 
 export const PAYMENT_CLASSES = {

@@ -108,6 +108,7 @@ register_activation_hook(
 		update_option( PREFIX . 'version', VERSION, false );
 		Backend\Installer::install();
 		Backend\Support\IcalSync::schedule();
+		Backend\Support\BookingLifecycle::schedule();
 
 		// So the calendar export URL resolves from the first request onwards.
 		Backend\Support\IcalFeed::add_rewrite();
@@ -124,6 +125,9 @@ register_deactivation_hook(
 
 		// Nor should a switched-off plugin keep asking GitHub about itself.
 		Backend\Support\Updater::unschedule();
+
+		// A plugin that is off has no business rewriting booking statuses.
+		Backend\Support\BookingLifecycle::unschedule();
 		flush_rewrite_rules();
 	}
 );

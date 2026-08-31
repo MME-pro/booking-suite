@@ -93,6 +93,7 @@ const STATUS_LEGEND = [
 	{ status: 'reserved', label: __( 'Reserved', 'booking-suite' ) },
 	{ status: 'confirmed', label: __( 'Confirmed', 'booking-suite' ) },
 	{ status: 'completed', label: __( 'Completed', 'booking-suite' ) },
+	{ status: 'cancelled', label: __( 'Cancelled', 'booking-suite' ) },
 ];
 
 export default function CalendarPage() {

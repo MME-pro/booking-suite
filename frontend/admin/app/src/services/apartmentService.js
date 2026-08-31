@@ -25,6 +25,8 @@ export const toApartment = ( row ) => ( {
 	cleaningMin: row.cleaning_min,
 	weekdayRate: String( row.weekday_rate ?? 0 ),
 	weekendRate: String( row.weekend_rate ?? 0 ),
+	surchargeHour: String( row.surcharge_hour ?? 20 ),
+	surchargeGuest: String( row.surcharge_guest ?? 20 ),
 	active: Boolean( row.active ),
 	/*
 	 * None of this is a column on the apartment. The subscriptions are the
@@ -107,6 +109,14 @@ export const toPayload = ( values ) => {
 
 	if ( has( 'weekendRate' ) ) {
 		payload.weekend_rate = toRate( values.weekendRate );
+	}
+
+	if ( has( 'surchargeHour' ) ) {
+		payload.surcharge_hour = toRate( values.surchargeHour );
+	}
+
+	if ( has( 'surchargeGuest' ) ) {
+		payload.surcharge_guest = toRate( values.surchargeGuest );
 	}
 
 	if ( has( 'active' ) ) {

@@ -13,6 +13,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\PostTypes;
 
+use BookingSuite\Backend\Pricing\RateCalculator;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\IcalFeedsRepository;
 use BookingSuite\Backend\Schemas\ApartmentsTable;
@@ -131,6 +132,8 @@ final class ApartmentMetaBox {
 		$gallery  = array_map( 'absint', (array) ( $apartment['images'] ?? array() ) );
 		$weekday  = (float) ( $apartment['weekday_rate'] ?? 0 );
 		$weekend  = (float) ( $apartment['weekend_rate'] ?? 0 );
+		$per_hour = (float) ( $apartment['surcharge_hour'] ?? RateCalculator::DEFAULT_SURCHARGE );
+		$per_head = (float) ( $apartment['surcharge_guest'] ?? RateCalculator::DEFAULT_SURCHARGE );
 
 		wp_nonce_field( self::NONCE, self::NONCE );
 
@@ -197,6 +200,20 @@ final class ApartmentMetaBox {
 							<?php esc_html_e( 'Weekend rate (Fri/Sat)', 'booking-suite' ); ?>
 						</label>
 						<input type="number" id="bks-weekend-rate" name="bks_weekend_rate" min="0" step="0.01" value="<?php echo esc_attr( number_format( $weekend, 2, '.', '' ) ); ?>" />
+					</p>
+
+					<p class="bks-meta__field">
+						<label for="bks-surcharge-hour">
+							<?php esc_html_e( 'Per extra hour', 'booking-suite' ); ?>
+						</label>
+						<input type="number" id="bks-surcharge-hour" name="bks_surcharge_hour" min="0" step="0.01" value="<?php echo esc_attr( number_format( $per_hour, 2, '.', '' ) ); ?>" />
+					</p>
+
+					<p class="bks-meta__field">
+						<label for="bks-surcharge-guest">
+							<?php esc_html_e( 'Per extra guest', 'booking-suite' ); ?>
+						</label>
+						<input type="number" id="bks-surcharge-guest" name="bks_surcharge_guest" min="0" step="0.01" value="<?php echo esc_attr( number_format( $per_head, 2, '.', '' ) ); ?>" />
 					</p>
 				</div>
 			</div>
@@ -636,6 +653,8 @@ final class ApartmentMetaBox {
 				'cleaning_min'        => in_array( $cleaning, ApartmentsTable::CLEANING_MINUTES, true ) ? $cleaning : 30,
 				'weekday_rate'       => self::rate( 'bks_weekday_rate' ),
 				'weekend_rate'       => self::rate( 'bks_weekend_rate' ),
+				'surcharge_hour'      => self::rate( 'bks_surcharge_hour' ),
+				'surcharge_guest'     => self::rate( 'bks_surcharge_guest' ),
 				'internal_short_link' => $links['internal_short_link'],
 				'booking_short_link'  => $links['booking_short_link'],
 				'active'              => isset( $_POST['bks_active'] ),

@@ -142,11 +142,31 @@ export default function BookingLauncher() {
 		return null;
 	}
 
+	/*
+	 * The key remounts the modal when the apartment changes.
+	 *
+	 * `initialStay` seeds a useState initialiser, which React runs once — so
+	 * without a new key the modal would fetch the other apartment's context
+	 * while still holding the stay from the one before it, and the guest would
+	 * land on a different room with the old date silently kept.
+	 */
 	return (
 		<BookingModal
+			key={ opening.id }
 			apartmentId={ opening.id }
 			initialStay={ opening.stay }
 			onClose={ () => setOpening( null ) }
+			onSwitchApartment={ ( { id, date, start } ) =>
+				setOpening( {
+					id,
+					stay: {
+						...( opening.stay ?? {} ),
+						mode: 'hourly',
+						date,
+						startTime: start,
+					},
+				} )
+			}
 		/>
 	);
 }

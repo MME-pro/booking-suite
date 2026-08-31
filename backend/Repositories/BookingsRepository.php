@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\Repositories;
 
+use BookingSuite\Backend\Schemas\ApartmentsTable;
 use BookingSuite\Backend\Schemas\BlocksTable;
 use BookingSuite\Backend\Schemas\BookingsTable;
 use BookingSuite\Backend\Schemas\CustomersTable;
@@ -30,6 +31,75 @@ final class BookingsRepository {
 	private const BLOCKING_STATUSES = array( 'reserved', 'confirmed' );
 
 	/**
+	 * Cleaning turnaround per apartment, in minutes, for this request.
+	 *
+	 * @var array<int, int>
+	 */
+	private static array $cleaning = array();
+
+	/**
+	 * An occupied window grown by the apartment's turnaround at both ends.
+	 *
+	 * is_available() gets the same effect by widening the request instead; a
+	 * caller holding a list of windows needs it baked into the windows.
+	 *
+	 * @return array{0: string, 1: string}
+	 */
+	private static function with_turnaround( int $apartment_id, string $starts_at, string $ends_at ): array {
+		$cleaning = self::cleaning_minutes( $apartment_id );
+
+		if ( 0 === $cleaning ) {
+			return array( $starts_at, $ends_at );
+		}
+
+		$pad = $cleaning * MINUTE_IN_SECONDS;
+
+		return array(
+			gmdate( 'Y-m-d H:i:s', strtotime( $starts_at ) - $pad ),
+			gmdate( 'Y-m-d H:i:s', strtotime( $ends_at ) + $pad ),
+		);
+	}
+
+	/**
+	 * How long the apartment needs between guests.
+	 *
+	 * The one place the buffer is read. It used to be a single site-wide
+	 * setting, which meant three apartments configured for 60, 30 and 45
+	 * minutes were all held to whichever number that setting carried.
+	 *
+	 * Cached for the request because the picker asks about one apartment
+	 * dozens of times over — every start time in a day is its own
+	 * is_available() call, and each would otherwise repeat this lookup.
+	 *
+	 * Read straight from the table rather than through ApartmentsRepository:
+	 * one column by primary key, with no join to wp_posts for a name and a
+	 * gallery that nothing here wants.
+	 */
+	private static function cleaning_minutes( int $apartment_id ): int {
+		if ( isset( self::$cleaning[ $apartment_id ] ) ) {
+			return self::$cleaning[ $apartment_id ];
+		}
+
+		global $wpdb;
+
+		$table = ApartmentsTable::table();
+
+		$minutes = $wpdb->get_var(
+			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT cleaning_min FROM $table WHERE post_id = %d",
+				$apartment_id
+			)
+		);
+
+		// No row means no apartment; the caller is about to find that out for
+		// itself, and inventing a buffer here would only mask it.
+		self::$cleaning[ $apartment_id ] = null === $minutes ? 0 : max( 0, (int) $minutes );
+
+		return self::$cleaning[ $apartment_id ];
+	}
+
+	/**
 	 * Whether the apartment is free for the whole window.
 	 *
 	 * Ranges touch rather than overlap when one ends exactly as the other
@@ -42,16 +112,19 @@ final class BookingsRepository {
 		$statuses = implode( ',', array_fill( 0, count( self::BLOCKING_STATUSES ), '%s' ) );
 
 		/*
-		 * The cooldown is turnaround time — cleaning between one guest and the
-		 * next. It is applied by widening the window being tested rather than
-		 * by padding the stored bookings, so the gap is required on both sides
-		 * of the request and nothing about what is stored has to change.
+		 * Turnaround time — cleaning between one guest and the next.
+		 *
+		 * It is applied by widening the window being tested rather than by
+		 * padding the stored bookings, so the gap is required on both sides of
+		 * the request and nothing about what is stored has to change. Widening
+		 * both ends is also what puts the buffer before an overnight check-in
+		 * as well as after a departure, counted back from 16:00.
 		 */
-		$cooldown = max( 0, (int) SettingsRepository::number( SettingsRepository::COOLDOWN_MINUTES ) );
+		$cleaning = self::cleaning_minutes( $apartment_id );
 
-		if ( $cooldown > 0 ) {
-			$starts_at = gmdate( 'Y-m-d H:i:s', strtotime( $starts_at ) - $cooldown * MINUTE_IN_SECONDS );
-			$ends_at   = gmdate( 'Y-m-d H:i:s', strtotime( $ends_at ) + $cooldown * MINUTE_IN_SECONDS );
+		if ( $cleaning > 0 ) {
+			$starts_at = gmdate( 'Y-m-d H:i:s', strtotime( $starts_at ) - $cleaning * MINUTE_IN_SECONDS );
+			$ends_at   = gmdate( 'Y-m-d H:i:s', strtotime( $ends_at ) + $cleaning * MINUTE_IN_SECONDS );
 		}
 
 		$params = array_merge(
@@ -119,6 +192,11 @@ final class BookingsRepository {
 	 * apartment's list, and `extra_id IS NULL` keeps an extra's lock from
 	 * closing the whole property, exactly as in is_available().
 	 *
+	 * Every window comes back grown by that apartment's cleaning turnaround,
+	 * for the same reason: a gap too short to clean in is not a gap. Without it
+	 * this returned bookable what is_available() then refused, and the search
+	 * bar offered an apartment whose every slot the booking modal rejected.
+	 *
 	 * @param int[]  $room_ids
 	 * @param string $from 'Y-m-d H:i:s'.
 	 * @param string $to   'Y-m-d H:i:s'.
@@ -155,7 +233,11 @@ final class BookingsRepository {
 		) ?: array();
 
 		foreach ( $rows as $row ) {
-			$busy[ (int) $row['room_id'] ][] = array( $row['starts_at'], $row['ends_at'] );
+			$busy[ (int) $row['room_id'] ][] = self::with_turnaround(
+				(int) $row['room_id'],
+				$row['starts_at'],
+				$row['ends_at']
+			);
 		}
 
 		$blocks = BlocksTable::table();
@@ -174,18 +256,25 @@ final class BookingsRepository {
 		) ?: array();
 
 		foreach ( $locks as $lock ) {
-			$window = array( $lock['starts_at'], $lock['ends_at'] );
-
 			if ( null === $lock['room_id'] ) {
-				// A master lock closes every apartment in the list.
+				// A master lock closes every apartment in the list, and each
+				// pads it by its own turnaround.
 				foreach ( $room_ids as $id ) {
-					$busy[ $id ][] = $window;
+					$busy[ $id ][] = self::with_turnaround(
+						$id,
+						$lock['starts_at'],
+						$lock['ends_at']
+					);
 				}
 
 				continue;
 			}
 
-			$busy[ (int) $lock['room_id'] ][] = $window;
+			$busy[ (int) $lock['room_id'] ][] = self::with_turnaround(
+				(int) $lock['room_id'],
+				$lock['starts_at'],
+				$lock['ends_at']
+			);
 		}
 
 		return $busy;

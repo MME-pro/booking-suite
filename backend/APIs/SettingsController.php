@@ -70,7 +70,6 @@ final class SettingsController {
 		'bankIban'       => SettingsRepository::BANK_IBAN,
 		'bankBic'        => SettingsRepository::BANK_BIC,
 		'bankDetails'    => SettingsRepository::BANK_DETAILS,
-		'cooldownMinutes' => SettingsRepository::COOLDOWN_MINUTES,
 		'emailNotifications' => SettingsRepository::EMAIL_NOTIFICATIONS,
 		'termsUrl'       => SettingsRepository::TERMS_URL,
 		'privacyUrl'     => SettingsRepository::PRIVACY_URL,
@@ -229,13 +228,6 @@ final class SettingsController {
 							'type'     => 'string',
 							'required' => false,
 						),
-						'cooldownMinutes' => array(
-							'type'     => 'integer',
-							'required' => false,
-							'minimum'  => 0,
-							// A day of turnaround is already implausible.
-							'maximum'  => 1440,
-						),
 						'emailNotifications' => array(
 							'type'     => 'boolean',
 							'required' => false,
@@ -296,7 +288,6 @@ final class SettingsController {
 			'bankIban'       => SettingsRepository::get( SettingsRepository::BANK_IBAN ),
 			'bankBic'        => SettingsRepository::get( SettingsRepository::BANK_BIC ),
 			'bankDetails'    => SettingsRepository::get( SettingsRepository::BANK_DETAILS ),
-			'cooldownMinutes' => (int) SettingsRepository::get( SettingsRepository::COOLDOWN_MINUTES ),
 			'emailNotifications' => SettingsRepository::emails_enabled(),
 			'termsUrl'       => SettingsRepository::get( SettingsRepository::TERMS_URL ),
 			'privacyUrl'     => SettingsRepository::get( SettingsRepository::PRIVACY_URL ),

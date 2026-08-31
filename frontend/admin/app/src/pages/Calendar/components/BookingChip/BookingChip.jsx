@@ -64,6 +64,18 @@ export const chipStyle = ( status, colour ) => {
 		};
 	}
 
+	// Fainter still than completed, and struck through in the label: the
+	// window is not held, and a cancelled chip that reads like a live one is
+	// the sort of thing an owner double-books on.
+	if ( 'cancelled' === status ) {
+		return {
+			...base,
+			borderLeftStyle: 'dotted',
+			backgroundColor: tint( colour, 0.04 ),
+			opacity: 0.45,
+		};
+	}
+
 	if ( 'reserved' === status ) {
 		return { ...base, backgroundColor: tint( colour, 0.1 ) };
 	}

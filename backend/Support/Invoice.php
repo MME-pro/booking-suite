@@ -19,6 +19,7 @@ declare( strict_types=1 );
 namespace BookingSuite\Backend\Support;
 
 use BookingSuite\Backend\Pricing\RateCalculator;
+use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Repositories\PaymentsRepository;
 use BookingSuite\Backend\Repositories\SettingsRepository;
@@ -351,8 +352,17 @@ final class Invoice {
 			? ( $ends->getTimestamp() - $starts->getTimestamp() ) / 3600
 			: 0.0;
 
-		$extras    = is_array( $booking['extras'] ?? null ) ? $booking['extras'] : array();
-		$surcharge = RateCalculator::guest_surcharge( (int) ( $booking['guests'] ?? 0 ) );
+		$extras = is_array( $booking['extras'] ?? null ) ? $booking['extras'] : array();
+
+		/*
+		 * The guest surcharge is the apartment's own rate now, so the apartment
+		 * has to be fetched to bill it. A booking whose apartment has since
+		 * been deleted falls back to the default inside guest_surcharge(); the
+		 * invoice still adds up either way, because the room line below is the
+		 * remainder rather than a figure of its own.
+		 */
+		$apartment = ApartmentsRepository::find( (int) ( $booking['apartmentId'] ?? 0 ) ) ?? array();
+		$surcharge = RateCalculator::guest_surcharge( $apartment, (int) ( $booking['guests'] ?? 0 ) );
 
 		$extras_total = 0.0;
 

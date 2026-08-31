@@ -2,10 +2,17 @@
 /**
  * Works out what a stay costs.
  *
- * Today it knows one rule: a night is charged by the day it starts on, at the
- * weekend rate for Friday and Saturday and the weekday rate otherwise. The
- * remaining factors — Hesse holidays, time-based rates, guest and hour
- * surcharges, package prices — will be layered on here.
+ * A stay is priced one of two ways. An overnight is a package: one rate for the
+ * whole 16:00–11:00 window, chosen by the day it starts on — the weekend rate
+ * for Friday and Saturday, and for a Hesse public holiday or its eve where the
+ * apartment follows them, the weekday rate otherwise. Anything shorter is
+ * hourly, and climbs the staircase: a base rate covering the first hours, then
+ * a surcharge for each hour above them.
+ *
+ * Both read two rates off the apartment and the rest off the global settings.
+ * The per-apartment rate matrix in `price_rules` — many rows, each with its own
+ * weekdays, holiday rule, package prices, surcharges and visibility — is not
+ * wired in here yet; today it only supplies the "from" price on a card.
  *
  * @package BookingSuite
  */
@@ -35,6 +42,14 @@ final class RateCalculator {
 	public const BILLING_BREAKS = array( 6 => 5 );
 
 	/**
+	 * Fallback for an apartment row that predates the surcharge columns.
+	 *
+	 * The same figure the site-wide settings carried, so an apartment the
+	 * upgrade has not reached yet prices exactly as it did before.
+	 */
+	public const DEFAULT_SURCHARGE = 20.0;
+
+	/**
 	 * Per-night breakdown between two yyyy-mm-dd dates.
 	 *
 	 * The check-out day is not charged: three nights from Friday means Fri,
@@ -53,20 +68,32 @@ final class RateCalculator {
 		for ( $day = $start; $day < $end; $day = $day->modify( '+1 day' ) ) {
 			$date = $day->format( 'Y-m-d' );
 
-			// Each night is its own 16:00–11:00 block, priced by the hourly
-			// rules: the base rate covers the first hours, the rest are
-			// charged per hour.
-			$price = self::duration_price( $apartment, $date . ' 00:00:00', self::overnight_hours() );
+			/*
+			 * A night is one price for the whole window, not a long hourly
+			 * booking.
+			 *
+			 * This ran the 16:00–11:00 window through duration_price(), which
+			 * billed it as nineteen hours: the base rate plus sixteen hourly
+			 * surcharges. A room advertised at 120 a night quoted 440 at
+			 * checkout, and no setting could bring the two back together —
+			 * reaching the advertised figure would have needed a negative base
+			 * rate. The hourly staircase prices hourly bookings; an overnight
+			 * stay is a package, and its rate is the package price.
+			 */
+			$rate = round( self::base_rate( $apartment, $date ), 2 );
 
 			$nights[] = array(
 				'date'       => $date,
-				'weekend'    => $price['weekend'],
+				'weekend'    => self::is_weekend_rate( $apartment, $date ),
 				'holiday'    => ! empty( $apartment['holiday_hesse'] )
 					&& HesseHolidays::is_holiday_or_eve( $date ),
-				'baseRate'   => $price['baseRate'],
-				'extraHours' => $price['extraHours'],
-				'extraTotal' => $price['extraTotal'],
-				'rate'       => $price['total'],
+				'baseRate'   => $rate,
+
+				// Kept at zero rather than dropped: the admin breakdown and the
+				// guest review both read this shape.
+				'extraHours' => 0,
+				'extraTotal' => 0.0,
+				'rate'       => $rate,
 			);
 		}
 
@@ -127,11 +154,18 @@ final class RateCalculator {
 	 * What extra guests add.
 	 *
 	 * The base rate covers INCLUDED_GUESTS people; each one beyond that adds
-	 * the guest surcharge.
+	 * the apartment's guest surcharge.
+	 *
+	 * How many are included stays a site-wide figure — it describes the house
+	 * convention, not the room — while what the next one costs belongs to the
+	 * apartment: a studio and a villa have no business charging the same for a
+	 * fifth guest.
+	 *
+	 * @param array<string, mixed> $apartment
 	 */
-	public static function guest_surcharge( int $guests ): array {
+	public static function guest_surcharge( array $apartment, int $guests ): array {
 		$included  = max( 0, (int) SettingsRepository::number( SettingsRepository::INCLUDED_GUESTS ) );
-		$per_guest = max( 0, SettingsRepository::number( SettingsRepository::GUEST_SURCHARGE ) );
+		$per_guest = max( 0, (float) ( $apartment['surcharge_guest'] ?? self::DEFAULT_SURCHARGE ) );
 
 		$extra = max( 0, $guests - $included );
 
@@ -159,7 +193,7 @@ final class RateCalculator {
 	 * Price one block of time.
 	 *
 	 * The base rate covers the first BASE_HOURS hours; every hour beyond that
-	 * adds the hourly surcharge.
+	 * adds the apartment's hourly surcharge.
 	 *
 	 * @param array<string, mixed> $apartment
 	 *
@@ -167,7 +201,7 @@ final class RateCalculator {
 	 */
 	public static function duration_price( array $apartment, string $starts_at, float $hours ): array {
 		$base_hours = max( 1, (int) SettingsRepository::number( SettingsRepository::BASE_HOURS ) );
-		$surcharge  = max( 0, SettingsRepository::number( SettingsRepository::HOURLY_SURCHARGE ) );
+		$surcharge  = max( 0, (float) ( $apartment['surcharge_hour'] ?? self::DEFAULT_SURCHARGE ) );
 
 		$base     = self::base_rate( $apartment, $starts_at );
 		$booked   = (int) max( 1, ceil( round( $hours, 4 ) ) );
@@ -230,12 +264,36 @@ final class RateCalculator {
 	}
 
 	/**
+	 * Whether a stay is an overnight one, for any number of nights.
+	 *
+	 * The overnight rate belongs to the 16:00–11:00 window and to nothing else.
+	 * Anything that starts or ends elsewhere is an hourly booking, however long
+	 * it runs and whatever it crosses on the way.
+	 *
+	 * This used to be decided by comparing the two dates, which made "does it
+	 * cross midnight" the test — so an hourly visit from 22:00 to 02:00 was
+	 * charged a full night at the nightly rate, coming out cheaper than the
+	 * same four hours in the afternoon and blocking the room until 11:00. The
+	 * clock times are what distinguish the two, so the clock times are what is
+	 * checked.
+	 */
+	public static function is_overnight_window( string $starts_at, string $ends_at ): bool {
+		$start_time = SettingsRepository::get( SettingsRepository::OVERNIGHT_START );
+		$end_time   = SettingsRepository::get( SettingsRepository::OVERNIGHT_END );
+
+		return substr( $starts_at, 11, 5 ) === substr( $start_time, 0, 5 )
+			&& substr( $ends_at, 11, 5 ) === substr( $end_time, 0, 5 )
+			&& substr( $ends_at, 0, 10 ) > substr( $starts_at, 0, 10 );
+	}
+
+	/**
 	 * Price a whole stay.
 	 *
-	 * Overnight wins: any window covering at least one 16:00–11:00 night is
-	 * charged per night at the base rate, with no hourly surcharge. Shorter
-	 * windows fall through to the hourly rules. The guest charge is added once
-	 * for the stay, whatever its length.
+	 * A stay is overnight only when it occupies the 16:00–11:00 window, in
+	 * which case it is charged per night at the base rate with no hourly
+	 * surcharge. Everything else is hourly, including a booking that runs past
+	 * midnight or over a whole day — crossing a date boundary is not what makes
+	 * a stay a night. The guest charge is added once, whatever the length.
 	 *
 	 * @param array<string, mixed> $apartment
 	 *
@@ -245,7 +303,9 @@ final class RateCalculator {
 		$check_in  = substr( $starts_at, 0, 10 );
 		$check_out = substr( $ends_at, 0, 10 );
 
-		$nights = self::nights( $apartment, $check_in, $check_out );
+		$nights = self::is_overnight_window( $starts_at, $ends_at )
+			? self::nights( $apartment, $check_in, $check_out )
+			: array();
 
 		if ( $nights ) {
 			$accommodation = self::total( $nights );
@@ -259,7 +319,7 @@ final class RateCalculator {
 			$mode          = 'hourly';
 		}
 
-		$guest_charge = self::guest_surcharge( $guests );
+		$guest_charge = self::guest_surcharge( $apartment, $guests );
 
 		return array(
 			'mode'          => $mode,

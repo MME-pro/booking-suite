@@ -12,6 +12,7 @@ import { __, sprintf, _n } from '@wordpress/i18n';
 import { bookingService } from '../../services/bookingService';
 import { settings } from '../../services/apartmentService';
 import { formatPrice } from '../../utils/format';
+import { addDays, startOfToday, toKey } from '../../utils/date';
 import StepWhen from './StepWhen';
 import StepOptions from './StepOptions';
 import StepDetails from './StepDetails';
@@ -34,7 +35,12 @@ const emptyGuest = {
 	notes: '',
 };
 
-export default function BookingModal( { apartmentId, initialStay, onClose } ) {
+export default function BookingModal( {
+	apartmentId,
+	initialStay,
+	onClose,
+	onSwitchApartment,
+} ) {
 	const [ context, setContext ] = useState( null );
 	const [ step, setStep ] = useState( 'when' );
 	const [ isDone, setDone ] = useState( false );
@@ -51,10 +57,15 @@ export default function BookingModal( { apartmentId, initialStay, onClose } ) {
 	 * on their dates and they never describe the same trip twice.
 	 */
 	const [ stay, setStay ] = useState( () => {
-		const today = new Date().toISOString().slice( 0, 10 );
-		const tomorrow = new Date( Date.now() + 86400000 )
-			.toISOString()
-			.slice( 0, 10 );
+		/*
+		 * Local dates. Both of these were read back with toISOString(), which
+		 * is UTC — east of Greenwich that made "today" tomorrow's date after
+		 * the evening offset, and adding 86,400,000ms lands an hour out across
+		 * a daylight-saving change. A booking is a pair of calendar days as the
+		 * guest keeps them, so utils/date does the arithmetic.
+		 */
+		const today = toKey( startOfToday() );
+		const tomorrow = toKey( addDays( startOfToday(), 1 ) );
 
 		return {
 			mode: 'hourly',
@@ -72,7 +83,7 @@ export default function BookingModal( { apartmentId, initialStay, onClose } ) {
 	const [ guest, setGuest ] = useState( emptyGuest );
 	const [ payment, setPayment ] = useState( () => ( {
 		method: 'transfer',
-		date: new Date().toISOString().slice( 0, 10 ),
+		date: toKey( startOfToday() ),
 		proofName: '',
 		proofData: '',
 	} ) );
@@ -87,6 +98,24 @@ export default function BookingModal( { apartmentId, initialStay, onClose } ) {
 			.then( ( data ) => {
 				setContext( data );
 				setError( null );
+
+				/*
+				 * The party size can arrive larger than the apartment takes —
+				 * the search bar asks for it before an apartment is chosen, and
+				 * the Book now shortcode accepts a `guests` attribute set by
+				 * hand. Capacity is only known once the context lands, so the
+				 * opening figure is held to it here rather than being left to
+				 * fail validation at the end of the flow.
+				 */
+				const capacity = Number( data?.apartment?.capacity ?? 0 );
+
+				if ( capacity > 0 ) {
+					setStay( ( current ) =>
+						current.guests > capacity
+							? { ...current, guests: capacity }
+							: current
+					);
+				}
 			} )
 			.catch( ( cause ) => {
 				if ( 'AbortError' !== cause.name ) {
@@ -351,6 +380,7 @@ export default function BookingModal( { apartmentId, initialStay, onClose } ) {
 								<StepWhen
 									stay={ stay }
 									onChange={ setStay }
+									onSwitchApartment={ onSwitchApartment }
 									quote={ quote }
 									capacity={ apartment.capacity }
 									apartmentId={ apartmentId }

@@ -33,14 +33,8 @@ final class SettingsRepository {
 	/** Hours the base rate covers. */
 	public const BASE_HOURS = 'base_hours';
 
-	/** Charged for each hour beyond the base. */
-	public const HOURLY_SURCHARGE = 'hourly_surcharge';
-
 	/** Guests the base rate covers. */
 	public const INCLUDED_GUESTS = 'included_guests';
-
-	/** Charged for each guest beyond that. */
-	public const GUEST_SURCHARGE = 'guest_surcharge';
 
 	/** The fixed overnight window. */
 	public const OVERNIGHT_START = 'overnight_start';
@@ -129,9 +123,6 @@ final class SettingsRepository {
 	/** Anything else about the account, kept from before the fields above. */
 	public const BANK_DETAILS = 'bank_details';
 
-	/** Minutes to leave free after a booking before the next may start. */
-	public const COOLDOWN_MINUTES = 'cooldown_minutes';
-
 	/** The master switch for guest email. Off stops every template. */
 	public const EMAIL_NOTIFICATIONS = 'email_notifications';
 
@@ -145,11 +136,9 @@ final class SettingsRepository {
 		self::CURRENCY         => 'EUR',
 		self::ACCENT_COLOUR    => '#2563eb',
 		self::BASE_HOURS       => '3',
-		self::HOURLY_SURCHARGE => '20',
 		// The base rate covers two guests; only those beyond it are charged,
 		// so four guests add two lots of the surcharge.
 		self::INCLUDED_GUESTS  => '2',
-		self::GUEST_SURCHARGE  => '20',
 		self::OVERNIGHT_START  => '16:00',
 		self::OVERNIGHT_END    => '11:00',
 		/*
@@ -187,7 +176,6 @@ final class SettingsRepository {
 		self::BANK_IBAN        => '',
 		self::BANK_BIC         => '',
 		self::BANK_DETAILS     => '',
-		self::COOLDOWN_MINUTES => '0',
 		self::EMAIL_NOTIFICATIONS => '1',
 		self::TERMS_URL        => '',
 		self::PRIVACY_URL      => '',

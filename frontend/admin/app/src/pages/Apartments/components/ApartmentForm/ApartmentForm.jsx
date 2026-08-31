@@ -151,6 +151,14 @@ const schema = z.object( {
 		min: 0,
 		message: __( 'Enter a rate of 0 or more.', 'booking-suite' ),
 	} ),
+	surchargeHour: numericString( {
+		min: 0,
+		message: __( 'Enter a rate of 0 or more.', 'booking-suite' ),
+	} ),
+	surchargeGuest: numericString( {
+		min: 0,
+		message: __( 'Enter a rate of 0 or more.', 'booking-suite' ),
+	} ),
 	icalFeeds: z.array( feedSchema ),
 	internalShortLink: z.string().max( MAX_LENGTH_191 ).optional(),
 	bookingShortLink: z.string().max( MAX_LENGTH_191 ).optional(),
@@ -542,6 +550,44 @@ export default function ApartmentForm( {
 									name="weekendRate"
 									label={ __(
 										'Weekend rate (Fri/Sat)',
+										'booking-suite'
+									) }
+								/>
+							</div>
+						</Section>
+
+						<Separator />
+
+						{ /* surcharge_hour, surcharge_guest */ }
+						<Section
+							title={ __( 'Surcharges', 'booking-suite' ) }
+							description={ __(
+								'What this apartment adds beyond the base rate. Both were once one figure for the whole site, which made a studio and a villa charge the same for a fifth guest.',
+								'booking-suite'
+							) }
+						>
+							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+								<RateField
+									form={ form }
+									name="surchargeHour"
+									label={ __(
+										'Per extra hour',
+										'booking-suite'
+									) }
+									description={ __(
+										'Charged for each hour beyond the base the rate covers.',
+										'booking-suite'
+									) }
+								/>
+								<RateField
+									form={ form }
+									name="surchargeGuest"
+									label={ __(
+										'Per extra guest',
+										'booking-suite'
+									) }
+									description={ __(
+										'Charged for each guest beyond the party size the rate covers.',
 										'booking-suite'
 									) }
 								/>
@@ -959,7 +1005,8 @@ function Hint( { text } ) {
 	);
 }
 
-function RateField( { form, name, label } ) {
+// `description` is optional: the two base rates need no explaining.
+function RateField( { form, name, label, description } ) {
 	return (
 		<FormField
 			control={ form.control }
@@ -976,6 +1023,9 @@ function RateField( { form, name, label } ) {
 							{ ...field }
 						/>
 					</FormControl>
+					{ description && (
+						<FormDescription>{ description }</FormDescription>
+					) }
 					<FormMessage />
 				</FormItem>
 			) }

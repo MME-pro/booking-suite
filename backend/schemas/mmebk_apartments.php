@@ -51,6 +51,12 @@ final class ApartmentsTable {
 		// per apartment, no surrogate id to keep in step.
 		// `weekday_rate` covers Sunday–Thursday nights and `weekend_rate`
 		// Friday and Saturday; 0.00 means "not priced yet".
+		//
+		// `surcharge_hour` is charged for each hour above the base, and
+		// `surcharge_guest` for each guest above the included party size. Both
+		// were site-wide settings, which is wrong for a property whose rooms
+		// differ in size — the studio and the villa were made to charge the
+		// same for a fifth guest. 20.00 is the default the settings carried.
 		// `images` holds a JSON array of attachment IDs.
 		// The short links are NULL-able so the UNIQUE keys tolerate "not set".
 		//
@@ -67,6 +73,8 @@ final class ApartmentsTable {
 			cleaning_min smallint(5) unsigned NOT NULL default 30,
 			weekday_rate decimal(10,2) NOT NULL default 0.00,
 			weekend_rate decimal(10,2) NOT NULL default 0.00,
+			surcharge_hour decimal(10,2) NOT NULL default 20.00,
+			surcharge_guest decimal(10,2) NOT NULL default 20.00,
 			holiday_hesse tinyint(1) unsigned NOT NULL default 0,
 			active tinyint(1) unsigned NOT NULL default 1,
 			internal_short_link varchar(191) NULL default NULL,

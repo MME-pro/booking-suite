@@ -49,6 +49,11 @@ export const emptyApartment = () => ( {
 	cleaningMin: String( CLEANING_MINUTES[ 0 ] ),
 	weekdayRate: '0.00',
 	weekendRate: '0.00',
+
+	// 20.00 is what the site-wide surcharges carried before they moved onto
+	// the apartment, so a new room starts where every existing one sits.
+	surchargeHour: '20.00',
+	surchargeGuest: '20.00',
 	active: true,
 	icalFeeds: [],
 } );

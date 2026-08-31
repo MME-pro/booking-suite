@@ -79,14 +79,12 @@ const NUMERIC = [
 	'companyLogo',
 	'invoiceDueDays',
 	'invoiceCounter',
-	'cooldownMinutes',
 	'taxRate',
 ];
 
 const blank = {
 	currency: 'EUR',
 	accentColour: '#2563eb',
-	cooldownMinutes: 0,
 	bankHolder: '',
 	bankName: '',
 	bankIban: '',
@@ -366,22 +364,22 @@ export default function SettingsPage() {
 									'booking-suite'
 								) }
 							>
-								<Field
-									form={ form }
-									name="cooldownMinutes"
-									type="number"
-									min="0"
-									max="1440"
-									touched={ touched }
-									label={ __(
-										'Cooldown (minutes)',
+								{ /*
+								 * The site-wide cooldown used to live here. It
+								 * is gone: turnaround is a property of the
+								 * apartment, not of the site, and holding a
+								 * 60-minute apartment to a 30-minute setting
+								 * was letting guests book into a gap nobody
+								 * could clean in. The note stays because this
+								 * is where an owner who knew the old setting
+								 * will come looking for it.
+								 */ }
+								<p className="text-sm text-muted-foreground">
+									{ __(
+										'Turnaround time is set per apartment. Open an apartment and choose its cleaning time — 30, 45 or 60 minutes — and that gap is kept free before and after every booking in it.',
 										'booking-suite'
 									) }
-									description={ __(
-										'Turnaround time kept free after each booking. A slot that would start within this gap is treated as taken.',
-										'booking-suite'
-									) }
-								/>
+								</p>
 							</Panel>
 						</TabsContent>
 

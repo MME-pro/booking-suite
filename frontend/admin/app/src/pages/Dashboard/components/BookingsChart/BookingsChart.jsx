@@ -26,6 +26,7 @@ const CHART_CONFIG = {
 	reserved: { label: __( 'Reserved', 'booking-suite' ), color: '#2a78d6' },
 	confirmed: { label: __( 'Confirmed', 'booking-suite' ), color: '#1baf7a' },
 	completed: { label: __( 'Completed', 'booking-suite' ), color: '#4a3aa7' },
+	cancelled: { label: __( 'Cancelled', 'booking-suite' ), color: '#b3261e' },
 };
 
 export default function BookingsChart( { series } ) {

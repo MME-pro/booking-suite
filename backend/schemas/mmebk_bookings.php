@@ -24,8 +24,15 @@ final class BookingsTable {
 	 * reserved  — held for the guest while payment is awaited
 	 * confirmed — approved and going ahead
 	 * completed — the stay has happened
+	 * cancelled — it will not happen, and holds no dates
+	 *
+	 * `cancelled` is deliberately absent from BLOCKING_STATUSES: a cancelled
+	 * booking frees its dates the moment it is cancelled. Before it existed the
+	 * only way out of a booking was to delete the row, which threw away the
+	 * record along with the reservation — see BookingLifecycle, which parks
+	 * expired requests here instead.
 	 */
-	public const STATUSES = array( 'pending', 'reserved', 'confirmed', 'completed' );
+	public const STATUSES = array( 'pending', 'reserved', 'confirmed', 'completed', 'cancelled' );
 
 	/** Settlement state, tracked separately from the booking status. */
 	public const PAYMENT_STATUSES = array( 'unpaid', 'partial', 'paid', 'refunded' );

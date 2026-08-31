@@ -508,7 +508,11 @@ final class ApartmentsController {
 			$data['cleaning_min'] = $cleaning;
 		}
 
-		foreach ( array( 'weekday_rate', 'weekend_rate' ) as $rate ) {
+		// The two surcharges validate exactly as the rates do — a negative one
+		// would pay the guest to bring a friend.
+		$rates = array( 'weekday_rate', 'weekend_rate', 'surcharge_hour', 'surcharge_guest' );
+
+		foreach ( $rates as $rate ) {
 			if ( ! $has( $rate ) ) {
 				continue;
 			}

@@ -12,7 +12,13 @@
 import { dayKey, dayOffset, toDate } from '../../../lib/dates';
 
 /** Booking statuses, in the order they progress. */
-export const STATUS_ORDER = [ 'pending', 'reserved', 'confirmed', 'completed' ];
+export const STATUS_ORDER = [
+	'pending',
+	'reserved',
+	'confirmed',
+	'completed',
+	'cancelled',
+];
 
 /** Payment states that count as money not yet in the bank. */
 const OUTSTANDING_PAYMENTS = [ 'unpaid', 'partial' ];

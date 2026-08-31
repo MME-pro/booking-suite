@@ -44,6 +44,7 @@ export const STATUS_COLOURS = {
 	reserved: '#2a78d6',
 	confirmed: '#1baf7a',
 	completed: '#4a3aa7',
+	cancelled: '#b3261e',
 };
 
 const STATUS_LABELS = {
@@ -51,6 +52,7 @@ const STATUS_LABELS = {
 	reserved: __( 'Reserved', 'booking-suite' ),
 	confirmed: __( 'Confirmed', 'booking-suite' ),
 	completed: __( 'Completed', 'booking-suite' ),
+	cancelled: __( 'Cancelled', 'booking-suite' ),
 };
 
 /**

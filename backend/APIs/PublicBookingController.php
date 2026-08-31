@@ -153,13 +153,33 @@ final class PublicBookingController {
 		$hours  = (float) $request->get_param( 'hours' );
 		$hours  = $hours > 0 ? $hours : (float) SettingsRepository::number( SettingsRepository::BASE_HOURS );
 
+		$slots = SlotGenerator::for_date( $apartment, $date, $hours, $guests );
+
+		$has_free = (bool) array_filter(
+			$slots,
+			static fn( array $slot ): bool => (bool) $slot['available']
+		);
+
+		/*
+		 * Only looked for when the day came up empty. Searching a fortnight
+		 * ahead across every apartment on a day that already has room is work
+		 * nobody asked for, and the panel would not show it anyway.
+		 */
+		$alternatives = $has_free
+			? array(
+				'sameApartment'   => null,
+				'otherApartments' => array(),
+			)
+			: SlotGenerator::alternatives( $apartment, $date, $hours, $guests );
+
 		return new WP_REST_Response(
 			array(
-				'date'      => $date,
-				'hours'     => $hours,
-				'durations' => SlotGenerator::duration_options( $apartment, $date, $guests ),
-				'slots'     => SlotGenerator::for_date( $apartment, $date, $hours, $guests ),
-				'currency'  => SettingsRepository::currency(),
+				'date'         => $date,
+				'hours'        => $hours,
+				'durations'    => SlotGenerator::duration_options( $apartment, $date, $guests ),
+				'slots'        => $slots,
+				'alternatives' => $alternatives,
+				'currency'     => SettingsRepository::currency(),
 			),
 			200
 		);
@@ -359,9 +379,35 @@ final class PublicBookingController {
 			return self::error( 'booking_suite_not_bookable', __( 'This apartment cannot be booked.', 'booking-suite' ), 404 );
 		}
 
-		// Capacity is guidance, not a limit: a guest may book for any party
-		// size and the extra-guest charge applies to all of them.
-		$guests = max( 1, absint( $request->get_param( 'guests' ) ) );
+		/*
+		 * Capacity is a limit, and this is where it is enforced.
+		 *
+		 * The number input in the modal carries a max, but that only binds the
+		 * spinner — a typed or pasted figure sails past it, and anything
+		 * posting to this endpoint directly ignores it entirely. The apartment
+		 * sleeps what it sleeps, so a party larger than that is refused here
+		 * rather than quietly priced and confirmed.
+		 */
+		$guests   = max( 1, absint( $request->get_param( 'guests' ) ) );
+		$capacity = max( 0, (int) ( $apartment['capacity'] ?? 0 ) );
+
+		if ( $capacity > 0 && $guests > $capacity ) {
+			return self::error(
+				'booking_suite_over_capacity',
+				sprintf(
+					/* translators: %d: the largest party the apartment takes. */
+					_n(
+						'This apartment takes at most %d guest.',
+						'This apartment takes at most %d guests.',
+						$capacity,
+						'booking-suite'
+					),
+					$capacity
+				),
+				400,
+				'guests'
+			);
+		}
 
 		if ( 'hourly' === $request->get_param( 'mode' ) ) {
 			return self::parse_hourly( $request, $apartment, $guests );
@@ -537,14 +583,43 @@ final class PublicBookingController {
 			return self::error( 'booking_suite_invalid_field', __( 'Please choose a start time.', 'booking-suite' ), 400, 'startTime' );
 		}
 
-		// Any positive length is allowed; the settings only shape the
-		// suggestions shown in the picker.
 		$hours = (float) $request->get_param( 'hours' );
 
 		if ( $hours <= 0 ) {
 			return self::error(
 				'booking_suite_invalid_field',
 				__( 'Please choose how long you need.', 'booking-suite' ),
+				400,
+				'hours'
+			);
+		}
+
+		/*
+		 * The shortest booking a guest may make.
+		 *
+		 * This endpoint used to take any positive length, on the grounds that
+		 * the setting only shaped the picker's suggestions — but the picker is
+		 * not the only way in, and a typed or posted 1 went straight through.
+		 *
+		 * Guests only. An admin booking is made through BookingsController,
+		 * which deliberately has no minimum: the owner takes a one-hour visit
+		 * or a favour for a regular whenever they choose.
+		 */
+		$minimum = max( 1, (int) SettingsRepository::number( SettingsRepository::MIN_HOURS ) );
+
+		if ( $hours < $minimum ) {
+			return self::error(
+				'booking_suite_invalid_field',
+				sprintf(
+					/* translators: %d: the shortest bookable length, in hours. */
+					_n(
+						'Bookings start at %d hour.',
+						'Bookings start at %d hours.',
+						$minimum,
+						'booking-suite'
+					),
+					$minimum
+				),
 				400,
 				'hours'
 			);

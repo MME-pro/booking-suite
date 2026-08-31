@@ -37,6 +37,7 @@ const STATUS_CLASSES = {
 	reserved: 'bg-primary/10 text-primary hover:bg-primary/10',
 	confirmed: 'bg-success/10 text-success hover:bg-success/10',
 	completed: 'bg-muted text-muted-foreground hover:bg-muted',
+	cancelled: 'bg-destructive/10 text-destructive hover:bg-destructive/10',
 };
 
 const PAYMENT_CLASSES = {
@@ -90,8 +91,13 @@ const nextActions = ( booking ) => {
 		} );
 	}
 
-	// Sending a held booking back to pending is what frees its dates now that
-	// there is no cancelled status.
+	/*
+	 * Releasing frees the dates and puts the booking back in the queue, which
+	 * is what you want when a held slot is wanted for someone else but the
+	 * request itself is still live. Cancelling it outright is the status
+	 * dropdown on the edit form — and is what the hourly sweep does on its own
+	 * once a pending request's window has closed.
+	 */
 	if ( [ 'reserved', 'confirmed' ].includes( status ) ) {
 		actions.push( {
 			key: 'release',

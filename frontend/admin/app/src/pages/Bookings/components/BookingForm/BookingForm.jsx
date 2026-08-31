@@ -56,7 +56,13 @@ import SlotPicker from './SlotPicker';
 import { useBookingQuote } from './useBookingQuote';
 import './BookingForm.css';
 
-const STATUSES = [ 'pending', 'reserved', 'confirmed', 'completed' ];
+const STATUSES = [
+	'pending',
+	'reserved',
+	'confirmed',
+	'completed',
+	'cancelled',
+];
 const PAYMENT_STATUSES = [ 'unpaid', 'partial', 'paid', 'refunded' ];
 
 /** Auto is the default: the rates decide unless someone says otherwise. */

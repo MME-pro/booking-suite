@@ -11,18 +11,102 @@ import { __, sprintf, _n } from '@wordpress/i18n';
 
 import { bookingService } from '../../services/bookingService';
 import { settings } from '../../services/apartmentService';
-import { formatPrice, formatWpTime } from '../../utils/format';
+import { formatPrice, formatWpDate, formatWpTime } from '../../utils/format';
+import { addDays, fromKey, startOfToday, toKey } from '../../utils/date';
 import DateField from '../DateField/DateField';
+import Alternatives from './Alternatives';
 
-const today = () => new Date().toISOString().slice( 0, 10 );
+/** Today, as the guest's own calendar has it. */
+const today = () => toKey( startOfToday() );
 
-const addDays = ( date, days ) => {
-	const result = new Date( `${ date }T00:00:00` );
+/**
+ * A typed party size, held to what the apartment sleeps.
+ *
+ * The input's own `max` only binds its spinner — typing or pasting a larger
+ * number walks straight past it — so the value is clamped on the way in as
+ * well. The server refuses an oversized party regardless; this is what stops
+ * the guest reaching that refusal at all.
+ *
+ * @param {string} raw      What the field currently holds.
+ * @param {number} capacity The largest party the apartment takes, 0 if unset.
+ * @return {number|string} The clamped count, or '' while the field is empty.
+ */
+const clampGuests = ( raw, capacity ) => {
+	// Let the field be emptied while it is being retyped.
+	if ( '' === String( raw ).trim() ) {
+		return '';
+	}
 
-	result.setDate( result.getDate() + days );
+	const wanted = Number.parseInt( raw, 10 );
 
-	return result.toISOString().slice( 0, 10 );
+	if ( ! Number.isFinite( wanted ) ) {
+		return '';
+	}
+
+	const ceiling = capacity > 0 ? capacity : wanted;
+
+	return Math.max( 1, Math.min( ceiling, wanted ) );
 };
+
+/**
+ * Whether a slot finishes on a later date than it starts.
+ *
+ * @param {Object} slot The slot.
+ * @return {boolean} Whether it runs past midnight.
+ */
+const endsLater = ( slot ) =>
+	Boolean( slot.endsAt ) &&
+	Boolean( slot.startsAt ) &&
+	slot.endsAt.slice( 0, 10 ) !== slot.startsAt.slice( 0, 10 );
+
+/**
+ * When a slot ends, carrying the date whenever that is a later day.
+ *
+ * The long form, for the tooltip. The tile itself shows only the date — see
+ * endDate() below.
+ *
+ * @param {Object} slot The slot.
+ * @return {string} "02:00" for a same-day end, "02:00 on 16.09.2026" otherwise.
+ */
+const endLabel = ( slot ) =>
+	endsLater( slot )
+		? sprintf(
+				/* translators: 1: end time, 2: the date it falls on. */
+				__( '%1$s on %2$s', 'booking-suite' ),
+				formatWpTime( slot.end ),
+				formatWpDate( slot.endsAt.slice( 0, 10 ) )
+		  )
+		: formatWpTime( slot.end );
+
+/**
+ * The day a slot finishes on, for the tile.
+ *
+ * Only the date. The tile already has the start time in large type above it,
+ * and repeating a time underneath says nothing — on a 24-hour booking it is
+ * the very same figure twice, and the pair is wider than the tile. What the
+ * guest cannot work out for themselves is which day it runs into, so that is
+ * all this shows; the exact finishing time is in the tooltip.
+ *
+ * @param {Object} slot The slot.
+ * @return {string} The end date, formatted for the site.
+ */
+const endDate = ( slot ) => formatWpDate( slot.endsAt.slice( 0, 10 ) );
+
+/**
+ * `days` after a 'yyyy-mm-dd' date, as another such date.
+ *
+ * Goes through utils/date, which works in local time throughout. The version
+ * here built a local date and then read it back with toISOString(), which is
+ * UTC — so anywhere east of Greenwich, "tomorrow" came back as today. That put
+ * check-out on the same day as check-in for a one-night stay, and the guest was
+ * shown "Check-out must be after check-in." the instant they ticked Overnight.
+ *
+ * @param {string} key  A 'yyyy-mm-dd' date.
+ * @param {number} days Days to add.
+ * @return {string} The shifted date.
+ */
+const shiftKey = ( key, days ) =>
+	toKey( addDays( fromKey( key ) ?? startOfToday(), days ) );
 
 export default function StepWhen( {
 	stay,
@@ -32,6 +116,7 @@ export default function StepWhen( {
 	apartmentId,
 	currency,
 	overnightWindow,
+	onSwitchApartment,
 } ) {
 	const [ slotData, setSlotData ] = useState( null );
 
@@ -46,8 +131,24 @@ export default function StepWhen( {
 
 	const isOvernight = 'overnight' === stay.mode;
 
+	/*
+	 * The owner's own figure, not a constant: Settings → min_hours is what the
+	 * server enforces, and hard-coding three here would let the two drift the
+	 * first time it is changed.
+	 */
+	const minHours = Math.max(
+		1,
+		Number.parseInt( settings.minHours, 10 ) || 1
+	);
+
 	useEffect( () => {
-		if ( isOvernight || ! stay.date ) {
+		/*
+		 * Nothing is asked for until the length is one the guest may actually
+		 * book. Mid-edit the field holds a partial number — an empty string, or
+		 * the "1" of an intended "12" — and firing on those means a grid of
+		 * one-hour slots flickering past on the way to a valid figure.
+		 */
+		if ( isOvernight || ! stay.date || ! ( stay.hours >= minHours ) ) {
 			setStatus( 'idle' );
 			return undefined;
 		}
@@ -82,8 +183,23 @@ export default function StepWhen( {
 			} );
 
 		return () => controller.abort();
-	}, [ apartmentId, isOvernight, stay.date, stay.hours, stay.guests ] );
+	}, [
+		apartmentId,
+		isOvernight,
+		minHours,
+		stay.date,
+		stay.hours,
+		stay.guests,
+	] );
 
+	/*
+	 * Typing is left alone; the floor is applied when the field is left.
+	 *
+	 * Clamping on every keystroke fights the guest: with a minimum of three,
+	 * typing "10" passes through "1", which would be rewritten to 3 before the
+	 * 0 arrived, leaving 30. So the value is taken as typed and held to the
+	 * minimum on blur, which is the last moment it can still be wrong.
+	 */
 	const onDuration = ( value ) =>
 		onChange( {
 			...stay,
@@ -91,13 +207,25 @@ export default function StepWhen( {
 			startTime: '',
 		} );
 
+	const onDurationBlur = () => {
+		if ( isOvernight ) {
+			return;
+		}
+
+		const wanted = Number.parseInt( stay.hours, 10 );
+
+		if ( ! Number.isFinite( wanted ) || wanted < minHours ) {
+			onChange( { ...stay, hours: minHours, startTime: '' } );
+		}
+	};
+
 	const onOvernight = ( checked ) =>
 		onChange( {
 			...stay,
 			mode: checked ? 'overnight' : 'hourly',
 			startTime: '',
 			checkIn: stay.date || today(),
-			checkOut: addDays( stay.date || today(), stay.nights || 1 ),
+			checkOut: shiftKey( stay.date || today(), stay.nights || 1 ),
 		} );
 
 	const onDate = ( value ) =>
@@ -106,7 +234,7 @@ export default function StepWhen( {
 			date: value,
 			startTime: '',
 			checkIn: value,
-			checkOut: addDays( value, stay.nights || 1 ),
+			checkOut: shiftKey( value, stay.nights || 1 ),
 		} );
 
 	const onNights = ( value ) => {
@@ -115,7 +243,7 @@ export default function StepWhen( {
 		onChange( {
 			...stay,
 			nights,
-			checkOut: addDays( stay.date || today(), nights ),
+			checkOut: shiftKey( stay.date || today(), nights ),
 		} );
 	};
 
@@ -127,6 +255,15 @@ export default function StepWhen( {
 			hours: index + 1,
 			discount: 0,
 		} ) );
+
+	// Only bookable starts reach the grid; the rest are dropped rather than
+	// drawn struck through.
+	const freeSlots =
+		'ready' === status
+			? ( slotData?.slots ?? [] ).filter( ( slot ) => slot.available )
+			: [];
+
+	const hasFree = freeSlots.length > 0;
 
 	// The billing break means some lengths cost less than the one below them.
 	const chosen = durations.find( ( option ) => option.hours === stay.hours );
@@ -159,7 +296,7 @@ export default function StepWhen( {
 						id="bks-modal-duration"
 						type="number"
 						inputMode="numeric"
-						min="1"
+						min={ minHours }
 						step="1"
 						disabled={ isOvernight }
 						value={ isOvernight ? '' : stay.hours }
@@ -167,9 +304,24 @@ export default function StepWhen( {
 						onChange={ ( event ) =>
 							onDuration( event.target.value )
 						}
+						onBlur={ onDurationBlur }
 					/>
 					{ saving && (
 						<span className="bks-field__hint">{ saving }</span>
+					) }
+					{ ! isOvernight && ! saving && (
+						<span className="bks-field__note">
+							{ sprintf(
+								/* translators: %d: the shortest bookable length, in hours. */
+								_n(
+									'From %d hour.',
+									'From %d hours.',
+									minHours,
+									'booking-suite'
+								),
+								minHours
+							) }
+						</span>
 					) }
 				</div>
 
@@ -212,23 +364,27 @@ export default function StepWhen( {
 						type="number"
 						inputMode="numeric"
 						min="1"
+						max={ capacity > 0 ? capacity : undefined }
 						step="1"
 						value={ stay.guests }
 						onChange={ ( event ) =>
 							onChange( {
 								...stay,
-								guests:
-									Number.parseInt( event.target.value, 10 ) ||
-									'',
+								guests: clampGuests(
+									event.target.value,
+									capacity
+								),
 							} )
 						}
 					/>
-					{ capacity > 0 && stay.guests > capacity && (
+					{ capacity > 0 && (
 						<span className="bks-field__note">
 							{ sprintf(
-								/* translators: %d: the apartment's usual capacity. */
-								__(
-									'Usually sleeps %d — we will confirm the extra beds with you.',
+								/* translators: %d: the largest party the apartment takes. */
+								_n(
+									'Up to %d guest.',
+									'Up to %d guests.',
+									capacity,
 									'booking-suite'
 								),
 								capacity
@@ -298,55 +454,62 @@ export default function StepWhen( {
 						</p>
 					) }
 
-					{ 'ready' === status &&
-						! slotData?.slots?.some(
-							( slot ) => slot.available
-						) && (
-							<p className="bks-step__unavailable">
-								{ __(
-									'Nothing free that day for this length. Try another date or a shorter booking.',
-									'booking-suite'
-								) }
-							</p>
-						) }
+					{ 'ready' === status && ! hasFree && (
+						<Alternatives
+							date={ stay.date }
+							alternatives={ slotData?.alternatives }
+							currency={ currency }
+							onPick={ ( pick ) =>
+								onChange( {
+									...stay,
+									date: pick.date,
+									startTime: pick.start,
+								} )
+							}
+							onSwitch={ onSwitchApartment }
+						/>
+					) }
 
+					{ /*
+					 * Only the times that can actually be booked. A grid of
+					 * struck-through tiles is mostly noise — on a busy day it
+					 * pushed the handful of real options off the screen — and
+					 * a guest cannot act on a time that is gone.
+					 */ }
 					<div className="bks-slots">
-						{ ( 'ready' === status
-							? slotData?.slots ?? []
-							: []
-						).map( ( slot ) => (
+						{ freeSlots.map( ( slot ) => (
 							<button
-								key={ slot.start }
+								key={ slot.startsAt }
 								type="button"
-								disabled={ ! slot.available }
 								className={ `bks-slots__slot${
 									stay.startTime === slot.start
 										? ' is-selected'
 										: ''
-								}${ slot.available ? '' : ' is-taken' }` }
+								}` }
 								onClick={ () =>
 									onChange( {
 										...stay,
 										startTime: slot.start,
 									} )
 								}
-								title={
-									slot.available
-										? sprintf(
-												/* translators: %s: end time. */
-												__(
-													'until %s',
-													'booking-suite'
-												),
-												formatWpTime( slot.end )
-										  )
-										: __(
-												'Already booked',
-												'booking-suite'
-										  )
-								}
+								title={ sprintf(
+									/* translators: %s: when the booking ends, with the day if it is a later one. */
+									__( 'until %s', 'booking-suite' ),
+									endLabel( slot )
+								) }
 							>
 								{ formatWpTime( slot.start ) }
+
+								{ /*
+								 * A booking long enough to run past midnight
+								 * ends on a different date, and a tile showing
+								 * only "02:00" reads as ending before it
+								 * started. The day is spelled out whenever it
+								 * is not the one the guest picked.
+								 */ }
+								{ endsLater( slot ) && (
+									<span>{ endDate( slot ) }</span>
+								) }
 							</button>
 						) ) }
 					</div>

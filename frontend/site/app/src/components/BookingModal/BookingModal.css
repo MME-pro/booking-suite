@@ -665,6 +665,16 @@
 	-webkit-text-fill-color: var(--bks-site-text-muted, #475569) !important;
 	font-size: 12px;
 	font-weight: 400;
+
+	/*
+	 * The sub-label is the widest thing a tile can hold, and a tile is sized by
+	 * the grid rather than by its contents. Left unconstrained it spilled over
+	 * the neighbouring tile instead of the tile growing to fit it.
+	 */
+	max-width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .bks-slots__slot.is-selected {
@@ -1747,6 +1757,91 @@
 		min-height: 44px !important;
 	}
 }
+
+/* ═══════════════════════════════════════════════
+   Alternatives — what to offer when the day is full
+   ═══════════════════════════════════════════════
+
+   The empty state is the most dangerous screen in the flow: a guest told
+   "nothing free" closes the tab. So it is built as a set of live options
+   rather than a message, and every group is labelled with the day and the
+   apartment it belongs to — the one way to make this worse than a dead end is
+   to let someone book a date they did not think they were looking at. */
+
+.bks-alt {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.bks-alt__group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding-top: 16px;
+	border-top: 1px solid var(--bks-site-border);
+}
+
+.bks-alt__title {
+	margin: 0;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.35;
+	color: var(--bks-site-text);
+}
+
+.bks-alt__note {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.5;
+	color: var(--bks-site-text-muted);
+}
+
+.bks-alt__other {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 14px 16px;
+	border: 1.5px solid var(--bks-site-border);
+	border-radius: var(--bks-site-radius-xs);
+	background: var(--bks-site-surface);
+}
+
+.bks-alt__other-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 8px;
+	margin: 0;
+	font-size: 14px;
+	color: var(--bks-site-text);
+}
+
+.bks-alt__other-date {
+	font-size: 13px;
+	color: var(--bks-site-text-muted);
+}
+
+/*
+ * Tighter than the main grid. These are a secondary offer sitting below the
+ * one the guest actually asked for, and at the full tile size the panel ran
+ * past the fold on a phone before the second apartment was even visible.
+ */
+.bks-alt__slots {
+	grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+	gap: 8px;
+}
+
+.bks-alt .bks-alt__slots .bks-slots__slot {
+	padding: 9px 6px;
+	font-size: 14px;
+}
+
+.bks-alt .bks-alt__slots .bks-slots__slot span {
+	font-size: 11px;
+}
+
 
 /* ═══════════════════════════════════════════════
    Override armour
