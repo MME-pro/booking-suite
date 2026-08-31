@@ -645,6 +645,9 @@ return array(
 	'Saving…'                     => 'Wird gespeichert …',
 	'Schema v%1$d, expected v%2$d' => 'Schema v%1$d, erwartet v%2$d',
 	'Search'                      => 'Suchen',
+
+	// The count under a paged list: "Showing 26–50 of 312".
+	'Showing %1$d–%2$d of %3$d'   => '%1$d–%2$d von %3$d',
 	'Search Apartments'           => 'Apartments suchen',
 	'Search apartments'           => 'Apartments suchen',
 	'Search bookings'             => 'Buchungen suchen',

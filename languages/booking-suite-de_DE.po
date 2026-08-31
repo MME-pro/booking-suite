@@ -61,7 +61,7 @@ msgid "%1$d of %2$d templates on"
 msgstr "%1$d von %2$d Vorlagen aktiv"
 
 #. translators: 1: booking reference, 2: guest name.
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:256
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:264
 msgid "%1$s (%2$s) will be erased for good, together with its payments and invoices. Nothing is kept and this cannot be undone. To free the dates without losing the booking, release it instead."
 msgstr "%1$s (%2$s) wird endgültig gelöscht, zusammen mit allen Zahlungen und Rechnungen. Es bleibt nichts erhalten und das kann nicht rückgängig gemacht werden. Um nur die Termine freizugeben, ohne die Buchung zu verlieren, geben Sie sie stattdessen frei."
 
@@ -153,7 +153,7 @@ msgstr[1] "%d verfügbar"
 #. translators: %d: number of bookings shown.
 #. translators: %d: number of bookings on this day.
 #. translators: %d: number of bookings.
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:519 frontend/admin/app/src/pages/Calendar/components/MonthGrid/MonthGrid.jsx:256 frontend/admin/app/src/pages/Customers/components/CustomerCard/CustomerCard.jsx:81 frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:195
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:527 frontend/admin/app/src/pages/Calendar/components/MonthGrid/MonthGrid.jsx:256 frontend/admin/app/src/pages/Customers/components/CustomerCard/CustomerCard.jsx:81 frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:195
 msgid "%d booking"
 msgid_plural "%d bookings"
 msgstr[0] "%d Buchung"
@@ -236,7 +236,7 @@ msgid "%d left"
 msgstr "noch %d"
 
 #. translators: %d: number of locks.
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:448
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:457
 msgid "%d lock in place"
 msgid_plural "%d locks in place"
 msgstr[0] "%d Sperre aktiv"
@@ -272,7 +272,7 @@ msgid "%d nights"
 msgstr "%d Nächte"
 
 #. translators: %d: locks on the selected day.
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:463
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:472
 msgid "%d on the selected day"
 msgstr "%d am gewählten Tag"
 
@@ -501,7 +501,7 @@ msgstr "Kontoinhaber"
 msgid "Across every booking"
 msgstr "Über alle Buchungen"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:317
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:325
 msgid "Across every booking listed"
 msgstr "Über alle aufgeführten Buchungen"
 
@@ -542,7 +542,7 @@ msgstr "Aktiv — Gäste können dieses Apartment buchen"
 msgid "Add Apartment"
 msgstr "Apartment hinzufügen"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:508 frontend/admin/app/src/pages/Dashboard/components/QuickActions/QuickActions.jsx:24
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:516 frontend/admin/app/src/pages/Dashboard/components/QuickActions/QuickActions.jsx:24
 msgid "Add Booking"
 msgstr "Buchung hinzufügen"
 
@@ -562,7 +562,7 @@ msgstr "Neues Extra hinzufügen"
 msgid "Add an extra — a breakfast, a parking space, a projector — and guests can add it while booking."
 msgstr "Legen Sie ein Extra an — ein Frühstück, einen Stellplatz, einen Beamer — und Gäste können es beim Buchen dazunehmen."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:378
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:393
 msgid "Add booking"
 msgstr "Buchung hinzufügen"
 
@@ -610,7 +610,7 @@ msgstr "Erwachsene"
 msgid "Ages 2 to 12"
 msgstr "2 bis 12 Jahre"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:791 frontend/admin/app/src/pages/Bookings/components/BookingForm/PriceBreakdown.jsx:173
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:806 frontend/admin/app/src/pages/Bookings/components/BookingForm/PriceBreakdown.jsx:173
 msgid "Agreed total"
 msgstr "Vereinbarter Gesamtbetrag"
 
@@ -657,7 +657,7 @@ msgid "All channels"
 msgstr "Alle Kanäle"
 
 #. translators: %d: total number of bookings
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:331 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:59
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:339 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:59
 msgid "All clear"
 msgstr "Alles frei"
 
@@ -687,11 +687,11 @@ msgstr "Bereits vorbei."
 msgid "Amount"
 msgstr "Betrag"
 
-#: backend/Support/BookingEmails.php:179
+#: backend/Support/BookingEmails.php:193
 msgid "Anna"
 msgstr "Anna"
 
-#: backend/Support/BookingEmails.php:178
+#: backend/Support/BookingEmails.php:192
 msgid "Anna Schmidt"
 msgstr "Anna Schmidt"
 
@@ -735,7 +735,7 @@ msgstr "Anzahl der Std."
 
 #. translators: 1: check-in date, 2: check-out date, 3: the overnight window.
 #: backend/PostTypes/ApartmentPostType.php:95 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:36 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:164 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:359
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:409 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:103 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:113 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:175
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:424 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:103 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:113 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:175
 #: frontend/site/app/src/components/BookingModal/StepReview.jsx:59
 msgid "Apartment"
 msgstr "Apartment"
@@ -793,7 +793,7 @@ msgid "Apartment: Price from"
 msgstr "Apartment: Preis ab"
 
 #: backend/PostTypes/ApartmentPostType.php:94 frontend/admin/Menu.php:155 frontend/admin/Menu.php:156 frontend/admin/Menu.php:253
-#: frontend/admin/Menu.php:254 frontend/admin/app/src/App.jsx:37 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:329 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:261
+#: frontend/admin/Menu.php:254 frontend/admin/app/src/App.jsx:37 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:338 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:261
 #: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:93
 msgid "Apartments"
 msgstr "Apartments"
@@ -894,7 +894,7 @@ msgstr "BIC"
 msgid "BIC: %s"
 msgstr "BIC: %s"
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:391 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:276 frontend/site/app/src/components/BookingModal/BookingModal.jsx:492
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:400 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:276 frontend/site/app/src/components/BookingModal/BookingModal.jsx:492
 msgid "Back"
 msgstr "Zurück"
 
@@ -1057,7 +1057,7 @@ msgstr "Buchungsanfrage eingegangen"
 msgid "Booking short link"
 msgstr "Buchungs-Kurzlink"
 
-#: backend/Repositories/EmailTemplatesRepository.php:123 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:565 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:625
+#: backend/Repositories/EmailTemplatesRepository.php:123 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:580 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:640
 msgid "Booking status"
 msgstr "Buchungsstatus"
 
@@ -1127,7 +1127,7 @@ msgstr "Beschriftung der Schaltfläche."
 msgid "Buttons, selected times and focus rings on the booking flow."
 msgstr "Schaltflächen, ausgewählte Zeiten und Fokusrahmen im Buchungsablauf."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:480 frontend/site/app/src/components/BookingModal/StepStay.jsx:83
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:495 frontend/site/app/src/components/BookingModal/StepStay.jsx:83
 msgid "By the hour"
 msgstr "Stundenweise"
 
@@ -1168,8 +1168,8 @@ msgstr "Kalender-Sync"
 
 #. translators: %s: apartment name.
 #. translators: %s: extra name.
-#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:359 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:580 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:376 frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:269
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:521 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:856 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:434 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:484
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:359 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:600 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:376 frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:277
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:521 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:871 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:434 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:484
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -1209,7 +1209,7 @@ msgstr "Wird für jede Stunde berechnet, die über die im Grundpreis enthaltenen
 msgid "Charges"
 msgstr "Positionen"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:190 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:524 frontend/site/app/src/components/BookingModal/StepStay.jsx:107
+#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:190 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:539 frontend/site/app/src/components/BookingModal/StepStay.jsx:107
 msgid "Check-in"
 msgstr "Anreise"
 
@@ -1221,7 +1221,7 @@ msgstr "Die Anreise kann nicht in der Vergangenheit liegen."
 msgid "Check-ins this week"
 msgstr "Anreisen diese Woche"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:197 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:546 frontend/site/app/src/components/BookingModal/StepStay.jsx:122
+#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:197 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:561 frontend/site/app/src/components/BookingModal/StepStay.jsx:122
 msgid "Check-out"
 msgstr "Abreise"
 
@@ -1293,7 +1293,7 @@ msgstr "Wählen Sie, zu welchem Apartment der Kalender gehört."
 msgid "Choose which apartment this calendar belongs to."
 msgstr "Wählen Sie, zu welchem Apartment dieser Kalender gehört."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:421
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:436
 msgid "Choose…"
 msgstr "Auswählen …"
 
@@ -1395,11 +1395,11 @@ msgstr "Ausführliche Auswertungen und Berichte zu Ihren Buchungen."
 msgid "Confirm"
 msgstr "Bestätigen"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:340 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:94 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:27 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:53
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:348 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:94 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:27 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:53
 msgid "Confirmed"
 msgstr "Bestätigt"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:335
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:343
 msgid "Confirmed Stays"
 msgstr "Bestätigte Aufenthalte"
 
@@ -1437,7 +1437,7 @@ msgstr "Konnte nicht geprüft werden"
 msgid "Could not copy automatically — select the link and copy it by hand."
 msgstr "Automatisches Kopieren nicht möglich – markieren Sie den Link und kopieren Sie ihn von Hand."
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:350
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:358
 msgid "Could not load bookings"
 msgstr "Buchungen konnten nicht geladen werden"
 
@@ -1524,7 +1524,7 @@ msgid "Database"
 msgstr "Datenbank"
 
 #. translators: %s: amount saved at this length.
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:583 frontend/site/app/src/components/BookingModal/StepStay.jsx:156 frontend/site/app/src/components/BookingModal/StepWhen.jsx:285 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:598 frontend/site/app/src/components/BookingModal/StepStay.jsx:156 frontend/site/app/src/components/BookingModal/StepWhen.jsx:285 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59
 msgid "Date"
 msgstr "Datum"
 
@@ -1578,7 +1578,7 @@ msgstr "Löschen"
 msgid "Delete %s"
 msgstr "%s löschen"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:275 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:317 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:321 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:286
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:283 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:317 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:321 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:286
 #: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:402
 msgid "Delete booking"
 msgstr "Buchung löschen"
@@ -1587,7 +1587,7 @@ msgstr "Buchung löschen"
 msgid "Delete this apartment?"
 msgstr "Dieses Apartment löschen?"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:250
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:258
 msgid "Delete this booking?"
 msgstr "Diese Buchung löschen?"
 
@@ -1629,7 +1629,7 @@ msgstr "Beschreiben Sie das Apartment …"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:303 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:673 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:376 frontend/site/app/src/components/BookingModal/BookingModal.jsx:288
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:303 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:688 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:376 frontend/site/app/src/components/BookingModal/BookingModal.jsx:288
 msgid "Details"
 msgstr "Details"
 
@@ -1701,7 +1701,7 @@ msgstr "Apartment bearbeiten"
 msgid "Edit Extra"
 msgstr "Extra bearbeiten"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:267 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:377
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:267 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:392
 msgid "Edit booking"
 msgstr "Buchung bearbeiten"
 
@@ -1709,7 +1709,7 @@ msgstr "Buchung bearbeiten"
 msgid "Edited"
 msgstr "Bearbeitet"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:692 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:114 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:583 frontend/site/app/src/components/BookingModal/StepDetails.jsx:25
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:707 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:114 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:583 frontend/site/app/src/components/BookingModal/StepDetails.jsx:25
 #: frontend/site/app/src/components/BookingModal/StepReview.jsx:77
 msgid "Email"
 msgstr "E-Mail"
@@ -1790,7 +1790,7 @@ msgstr "Alle 15 Minuten"
 msgid "Every 5 minutes"
 msgstr "Alle 5 Minuten"
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:480
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:489
 msgid "Every apartment is open for booking. Lock one for maintenance, or lock everything for a closure."
 msgstr "Alle Apartments sind buchbar. Sperren Sie einzelne für Wartungsarbeiten oder alle für eine Schließung."
 
@@ -1823,7 +1823,7 @@ msgstr "Export-Links (.ics)"
 msgid "Extra"
 msgstr "Extra"
 
-#: frontend/admin/Menu.php:191 frontend/admin/Menu.php:192 frontend/admin/app/src/App.jsx:65 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:333
+#: frontend/admin/Menu.php:191 frontend/admin/Menu.php:192 frontend/admin/app/src/App.jsx:65 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:342
 #: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:257 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:411 frontend/site/app/src/components/BookingModal/BookingModal.jsx:287 frontend/site/app/src/components/BookingModal/StepOptions.jsx:44
 msgid "Extras"
 msgstr "Extras"
@@ -1844,11 +1844,11 @@ msgstr "Filter"
 msgid "Filter by path or method…"
 msgstr "Nach Pfad oder Methode filtern …"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:393
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:401
 msgid "Filter by status"
 msgstr "Nach Status filtern"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:678 frontend/site/app/src/components/BookingModal/StepDetails.jsx:11
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:693 frontend/site/app/src/components/BookingModal/StepDetails.jsx:11
 msgid "First name"
 msgstr "Vorname"
 
@@ -1928,7 +1928,7 @@ msgstr "Geben Sie dem Apartment einen Namen."
 msgid "Google Calendar"
 msgstr "Google Kalender"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:320 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:68 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:169
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:328 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:68 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:169
 msgid "Gross"
 msgstr "Brutto"
 
@@ -1936,7 +1936,7 @@ msgstr "Brutto"
 msgid "Group by"
 msgstr "Gruppieren nach"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:263 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:107 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:314 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:100
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:271 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:107 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:314 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:100
 #: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:157 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:74 frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:275 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:116
 #: frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:176 frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:61 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:54 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:115
 #: frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:66
@@ -1957,7 +1957,7 @@ msgstr "Gast hat gezahlt am"
 
 #. translators: %d: number of nights.
 #: backend/PostTypes/ApartmentMetaBox.php:152 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:433 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:39 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:371 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:498 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:115 frontend/site/Shortcodes.php:1058
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:371 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:513 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:115 frontend/site/Shortcodes.php:1058
 #: frontend/site/app/src/components/BookingModal/StepReview.jsx:67 frontend/site/app/src/components/BookingModal/StepStay.jsx:137 frontend/site/app/src/components/BookingModal/StepStay.jsx:175 frontend/site/app/src/components/BookingModal/StepWhen.jsx:360
 #: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107
 msgid "Guests"
@@ -1992,7 +1992,7 @@ msgstr "Ausblenden"
 msgid "Hinweis:"
 msgstr "Hinweis:"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:605
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:620
 msgid "Hours"
 msgstr "Stunden"
 
@@ -2020,7 +2020,7 @@ msgstr "Wie Preise und der Buchungsablauf für Gäste dargestellt werden."
 msgid "How the apartments are sorted."
 msgstr "Wie die Apartments sortiert werden."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:713 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:730
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:728 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:745
 msgid "How the price is set"
 msgstr "Wie der Preis bestimmt wird"
 
@@ -2127,7 +2127,7 @@ msgstr "Letzte 7 Tage"
 msgid "Last Month"
 msgstr "Letzter Monat"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:686 frontend/site/app/src/components/BookingModal/StepDetails.jsx:18
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:701 frontend/site/app/src/components/BookingModal/StepDetails.jsx:18
 msgid "Last name"
 msgstr "Nachname"
 
@@ -2178,11 +2178,11 @@ msgstr "Wird geladen …"
 msgid "Lock"
 msgstr "Sperren"
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:413 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:174
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:422 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:174
 msgid "Lock Apartment"
 msgstr "Apartment sperren"
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:412 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:173
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:421 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:173
 msgid "Lock Extra"
 msgstr "Extra sperren"
 
@@ -2190,11 +2190,11 @@ msgstr "Extra sperren"
 msgid "Lock saved"
 msgstr "Sperre gespeichert"
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:305 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:518 frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:192
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:314 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:527 frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:192
 msgid "Locked"
 msgstr "Gesperrt"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:337
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:345
 msgid "Locked in and ready"
 msgstr "Fest gebucht und bereit"
 
@@ -2207,7 +2207,7 @@ msgstr "Gesperrt bis %s"
 msgid "Locking…"
 msgstr "Wird gesperrt …"
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:443
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:452
 msgid "Locks"
 msgstr "Sperren"
 
@@ -2262,15 +2262,15 @@ msgstr "Als erstattet markieren"
 msgid "Marked as free time, not a booking."
 msgstr "Als freie Zeit gekennzeichnet, keine Buchung."
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:421 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:170
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:430 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:170
 msgid "Master Lock"
 msgstr "Gesamtsperre"
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:291
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:300
 msgid "Master lock"
 msgstr "Gesamtsperre"
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:511
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:520
 msgid "Master lock — every apartment"
 msgstr "Gesamtsperre — alle Apartments"
 
@@ -2319,7 +2319,7 @@ msgid "Name, email, phone or city…"
 msgstr "Name, E-Mail, Telefon oder Stadt …"
 
 #. translators: %d: total number of bookings
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:330 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:58
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:338 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:58
 msgid "Needs action"
 msgstr "Aktion erforderlich"
 
@@ -2335,7 +2335,7 @@ msgstr "Netto:"
 msgid "New Apartment"
 msgstr "Neues Apartment"
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:403 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:288
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:412 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:288
 msgid "Next"
 msgstr "Weiter"
 
@@ -2393,7 +2393,7 @@ msgstr "Noch keine Apartments"
 msgid "No apartments yet."
 msgstr "Noch keine Apartments."
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:571
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:579
 msgid "No booking requests yet"
 msgstr "Noch keine Buchungsanfragen"
 
@@ -2405,7 +2405,7 @@ msgstr "Für die aktuell angezeigten Apartments gibt es an diesem Datum keine Bu
 msgid "No bookings in this window."
 msgstr "Keine Buchungen in diesem Zeitraum."
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:557
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:565
 msgid "No bookings match your filter"
 msgstr "Keine Buchungen passen zu Ihrem Filter"
 
@@ -2454,7 +2454,7 @@ msgstr "Keine Zahlungen passen zu Ihren Filtern"
 msgid "No payments yet"
 msgstr "Noch keine Zahlungen"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/SlotPicker.jsx:26
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/SlotPicker.jsx:30
 msgid "No start times for this date. Check the opening hours in Settings."
 msgstr "Keine Startzeiten für dieses Datum. Prüfen Sie die Öffnungszeiten in den Einstellungen."
 
@@ -2482,7 +2482,7 @@ msgstr "Noch nicht gelesen."
 msgid "Not yet"
 msgstr "Noch nicht"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:820 frontend/admin/app/src/pages/Guide/GuidePage.jsx:352
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:835 frontend/admin/app/src/pages/Guide/GuidePage.jsx:352
 msgid "Notes"
 msgstr "Anmerkungen"
 
@@ -2508,7 +2508,7 @@ msgstr "Am %s ist für diese Dauer nichts frei."
 msgid "Nothing free that day for this length. Try another date or a shorter booking."
 msgstr "An diesem Tag ist für diese Dauer nichts frei. Versuchen Sie ein anderes Datum oder eine kürzere Buchung."
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:477
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:486
 msgid "Nothing locked"
 msgstr "Nichts gesperrt"
 
@@ -2670,7 +2670,7 @@ msgstr "Nicht auf Lager"
 msgid "Outstanding"
 msgstr "Offen"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:474 frontend/site/app/src/components/BookingModal/StepStay.jsx:78
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:489 frontend/site/app/src/components/BookingModal/StepStay.jsx:78
 msgid "Overnight"
 msgstr "Übernachtung"
 
@@ -2777,7 +2777,7 @@ msgstr "Zahlung erhalten — {{reference}}"
 msgid "Payment received: {{amount_paid}} — {{reference}}"
 msgstr "Zahlung eingegangen: {{amount_paid}} – {{reference}}"
 
-#: backend/Repositories/EmailTemplatesRepository.php:124 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:777
+#: backend/Repositories/EmailTemplatesRepository.php:124 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:792
 msgid "Payment status"
 msgstr "Zahlungsstatus"
 
@@ -2801,7 +2801,7 @@ msgstr "Stärkste Buchungszeiten"
 msgid "Pending"
 msgstr "Ausstehend"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:324
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:332
 msgid "Pending Requests"
 msgstr "Offene Anfragen"
 
@@ -2826,7 +2826,7 @@ msgstr "Pro zusätzlicher Stunde"
 msgid "Percentage"
 msgstr "Prozent"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:698 frontend/site/app/src/components/BookingModal/StepDetails.jsx:33
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:713 frontend/site/app/src/components/BookingModal/StepDetails.jsx:33
 msgid "Phone"
 msgstr "Telefon"
 
@@ -2926,7 +2926,7 @@ msgstr "Vorheriger Monat"
 msgid "Previous photo"
 msgstr "Vorheriges Foto"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:705 frontend/admin/app/src/pages/Extras/components/ExtraCard/ExtraCard.jsx:79 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:287 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:64
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:720 frontend/admin/app/src/pages/Extras/components/ExtraCard/ExtraCard.jsx:79 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:287 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:64
 msgid "Price"
 msgstr "Preis"
 
@@ -3042,15 +3042,15 @@ msgstr "Wiederkehrende Kunden"
 msgid "Reference"
 msgstr "Buchungsnummer"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:473
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:481
 msgid "Reference, guest, email…"
 msgstr "Buchungsnummer, Gast, E-Mail …"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:497
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:505
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:486
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:494
 msgid "Refresh bookings list"
 msgstr "Buchungsliste aktualisieren"
 
@@ -3062,7 +3062,7 @@ msgstr "Erstattet"
 msgid "Refunds excluded"
 msgstr "Ohne Erstattungen"
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:537 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:583
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:546 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:603
 msgid "Release"
 msgstr "Freigeben"
 
@@ -3074,7 +3074,7 @@ msgstr "Zeitraum freigeben"
 msgid "Release it on the Availability screen."
 msgstr "Auf der Seite „Verfügbarkeit“ freigeben."
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:569
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:589
 msgid "Release this lock?"
 msgstr "Diese Sperre aufheben?"
 
@@ -3122,7 +3122,7 @@ msgstr "Die Anfrage ist fehlgeschlagen."
 msgid "Request received"
 msgstr "Anfrage eingegangen"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:575
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:583
 msgid "Requests made through the booking form on your site will appear here."
 msgstr "Anfragen über das Buchungsformular Ihrer Website erscheinen hier."
 
@@ -3138,7 +3138,7 @@ msgstr "Reserviert"
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:238 frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:359 frontend/admin/app/src/pages/Customers/CustomersPage.jsx:155 frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:120
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:238 frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:367 frontend/admin/app/src/pages/Customers/CustomersPage.jsx:155 frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:120
 #: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:259 frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:237
 msgid "Retry"
 msgstr "Erneut versuchen"
@@ -3192,7 +3192,7 @@ msgstr "Apartment speichern"
 msgid "Save Extra"
 msgstr "Extra speichern"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:865
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:880
 msgid "Save booking"
 msgstr "Buchung speichern"
 
@@ -3208,7 +3208,7 @@ msgstr "Speichern Sie das Apartment zuerst – die Export-Links können erstellt
 msgid "Saved with the apartment, then read on the next scheduled sync."
 msgstr "Wird mit dem Apartment gespeichert und beim nächsten planmäßigen Abgleich gelesen."
 
-#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:729 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:302 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:864 frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:196
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:729 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:302 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:879 frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:196
 #: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:491 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:738
 msgid "Saving…"
 msgstr "Wird gespeichert …"
@@ -3234,7 +3234,7 @@ msgstr "Apartments suchen"
 msgid "Search apartments"
 msgstr "Apartments suchen"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:469
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:477
 msgid "Search bookings"
 msgstr "Buchungen suchen"
 
@@ -3371,6 +3371,11 @@ msgstr "Den „ab“-Preis pro Nacht anzeigen."
 msgid "Show the search bar: arrival date, duration and guests. Searching filters the grid by party size and opens the booking modal on the dates chosen."
 msgstr "Die Suchleiste anzeigen: Anreisedatum, Dauer und Gäste. Die Suche filtert das Raster nach Gruppengröße und öffnet das Buchungsfenster mit dem gewählten Zeitraum."
 
+#. translators: 1: first row shown, 2: last row shown, 3: rows in total.
+#: frontend/admin/app/src/components/ListPager/ListPager.jsx:91
+msgid "Showing %1$d–%2$d of %3$d"
+msgstr "%1$d–%2$d von %3$d"
+
 #: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:652
 msgid "Shown to guests on the website."
 msgstr "Wird Gästen auf der Website angezeigt."
@@ -3380,7 +3385,7 @@ msgid "Some hidden"
 msgstr "Teilweise ausgeblendet"
 
 #. translators: %d: number of failed payments.
-#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:229 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:342 frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:164 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:250
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:229 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:351 frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:164 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:250
 #: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:228
 msgid "Something went wrong"
 msgstr "Etwas ist schiefgelaufen"
@@ -3407,7 +3412,7 @@ msgid "Source"
 msgstr "Quelle"
 
 #. translators: %s: amount saved.
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:654 frontend/admin/app/src/pages/Bookings/components/BookingForm/SlotPicker.jsx:42 frontend/site/app/src/components/BookingModal/StepStay.jsx:254
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:669 frontend/admin/app/src/pages/Bookings/components/BookingForm/SlotPicker.jsx:46 frontend/site/app/src/components/BookingModal/StepStay.jsx:254
 msgid "Start time"
 msgstr "Startzeit"
 
@@ -3417,7 +3422,7 @@ msgstr "Startzeit"
 msgid "Status"
 msgstr "Status"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:353 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:401 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:122 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:181
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:353 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:416 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:122 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:181
 msgid "Stay"
 msgstr "Aufenthalt"
 
@@ -3459,7 +3464,7 @@ msgstr "Bestandsgeführt und leer"
 msgid "Stretch to the width of its container."
 msgstr "Auf die Breite des Containers strecken."
 
-#: backend/Support/BookingEmails.php:181
+#: backend/Support/BookingEmails.php:195
 msgid "Studio Rheinblick"
 msgstr "Studio Rheinblick"
 
@@ -3487,7 +3492,7 @@ msgstr "Jetzt synchronisieren"
 msgid "System"
 msgstr "System"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:381
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:396
 msgid "Taken by phone, email or at the door."
 msgstr "Telefonisch, per E-Mail oder vor Ort aufgenommen."
 
@@ -3845,7 +3850,7 @@ msgstr "Das ist ein anderer Tag als der von Ihnen gewählte. Wenn Sie eine Uhrze
 msgid "Those dates are already taken. Please try another window."
 msgstr "Dieser Zeitraum ist bereits vergeben. Bitte wählen Sie einen anderen."
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:572
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:592
 msgid "Those dates go back on the board and can be booked again."
 msgstr "Dieser Zeitraum wird wieder freigegeben und ist erneut buchbar."
 
@@ -3909,7 +3914,7 @@ msgstr "Gesamtumsatz"
 msgid "Total Stays"
 msgstr "Aufenthalte gesamt"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:315
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:323
 msgid "Total Value"
 msgstr "Gesamtwert"
 
@@ -3958,7 +3963,7 @@ msgstr "Versuchen Sie einen größeren Zeitraum oder setzen Sie die Filter zurü
 msgid "Try again"
 msgstr "Erneut versuchen"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:561
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:569
 msgid "Try another status, or clear the search to see all requests."
 msgstr "Versuchen Sie einen anderen Status oder setzen Sie die Suche zurück, um alle Anfragen zu sehen."
 
@@ -3970,7 +3975,7 @@ msgstr "Nach jedem Aufenthalt gesperrte Wechselzeit."
 msgid "Turnaround time is set per apartment. Open an apartment and choose its cleaning time — 30, 45 or 60 minutes — and that gap is kept free before and after every booking in it."
 msgstr "Die Pufferzeit wird je Wohnung festgelegt. Öffnen Sie eine Wohnung und wählen Sie dort die Reinigungszeit — 30, 45 oder 60 Minuten — dieser Abstand bleibt vor und nach jeder Buchung in dieser Wohnung frei."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:458
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:473
 msgid "Type"
 msgstr "Typ"
 
@@ -4116,7 +4121,7 @@ msgid "Vrbo"
 msgstr "Vrbo"
 
 #. translators: %d: total number of bookings
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:326 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:54
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:334 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:54
 msgid "Waiting on confirmation"
 msgstr "Wartet auf Bestätigung"
 
@@ -4145,7 +4150,7 @@ msgstr "Wochenendpreis (Fr/Sa)"
 msgid "Weekly"
 msgstr "Wöchentlich"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:805
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:820
 msgid "What the guest is charged, whatever the rates would give."
 msgstr "Was dem Gast berechnet wird, unabhängig von den Tarifen."
 

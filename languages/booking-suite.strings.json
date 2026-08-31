@@ -111,10 +111,10 @@
     },
     {
         "single": "%1$s (%2$s) will be erased for good, together with its payments and invoices. Nothing is kept and this cannot be undone. To free the dates without losing the booking, release it instead.",
-        "line": 256,
+        "line": 264,
         "comment": "translators: 1: booking reference, 2: guest name.",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:256"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:264"
         ],
         "comments": {
             "translators: 1: booking reference, 2: guest name.": true
@@ -293,10 +293,10 @@
     {
         "single": "%d booking",
         "plural": "%d bookings",
-        "line": 519,
+        "line": 527,
         "comment": "translators: %d: number of bookings shown.",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:519",
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:527",
             "frontend/admin/app/src/pages/Calendar/components/MonthGrid/MonthGrid.jsx:256",
             "frontend/admin/app/src/pages/Customers/components/CustomerCard/CustomerCard.jsx:81",
             "frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:195"
@@ -458,10 +458,10 @@
     {
         "single": "%d lock in place",
         "plural": "%d locks in place",
-        "line": 448,
+        "line": 457,
         "comment": "translators: %d: number of locks.",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:448"
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:457"
         ],
         "comments": {
             "translators: %d: number of locks.": true
@@ -529,10 +529,10 @@
     },
     {
         "single": "%d on the selected day",
-        "line": 463,
+        "line": 472,
         "comment": "translators: %d: locks on the selected day.",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:463"
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:472"
         ],
         "comments": {
             "translators: %d: locks on the selected day.": true
@@ -1030,10 +1030,10 @@
     },
     {
         "single": "Across every booking listed",
-        "line": 317,
+        "line": 325,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:317"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:325"
         ],
         "comments": []
     },
@@ -1132,10 +1132,10 @@
     },
     {
         "single": "Add Booking",
-        "line": 508,
+        "line": 516,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:508",
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:516",
             "frontend/admin/app/src/pages/Dashboard/components/QuickActions/QuickActions.jsx:24"
         ],
         "comments": []
@@ -1180,10 +1180,10 @@
     },
     {
         "single": "Add booking",
-        "line": 378,
+        "line": 393,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:378"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:393"
         ],
         "comments": []
     },
@@ -1289,10 +1289,10 @@
     },
     {
         "single": "Agreed total",
-        "line": 791,
+        "line": 806,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:791",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:806",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/PriceBreakdown.jsx:173"
         ],
         "comments": []
@@ -1398,10 +1398,10 @@
     },
     {
         "single": "All clear",
-        "line": 331,
+        "line": 339,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:331",
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:339",
             "frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:59"
         ],
         "comments": {
@@ -1472,19 +1472,19 @@
     },
     {
         "single": "Anna",
-        "line": 179,
+        "line": 193,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:179"
+            "backend/Support/BookingEmails.php:193"
         ],
         "comments": []
     },
     {
         "single": "Anna Schmidt",
-        "line": 178,
+        "line": 192,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:178"
+            "backend/Support/BookingEmails.php:192"
         ],
         "comments": []
     },
@@ -1581,7 +1581,7 @@
             "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:36",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:164",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:359",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:409",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:424",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:103",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:113",
             "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:175",
@@ -1721,7 +1721,7 @@
             "frontend/admin/Menu.php:253",
             "frontend/admin/Menu.php:254",
             "frontend/admin/app/src/App.jsx:37",
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:329",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:338",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:261",
             "frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:93"
         ],
@@ -1951,10 +1951,10 @@
     },
     {
         "single": "Back",
-        "line": 391,
+        "line": 400,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:391",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:400",
             "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:276",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:492"
         ],
@@ -2338,8 +2338,8 @@
         "comment": "",
         "refs": [
             "backend/Repositories/EmailTemplatesRepository.php:123",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:565",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:625"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:580",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:640"
         ],
         "comments": []
     },
@@ -2495,10 +2495,10 @@
     },
     {
         "single": "By the hour",
-        "line": 480,
+        "line": 495,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:480",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:495",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:83"
         ],
         "comments": []
@@ -2592,11 +2592,11 @@
         "comment": "translators: %s: apartment name.",
         "refs": [
             "frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:359",
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:580",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:600",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:376",
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:269",
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:277",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:521",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:856",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:871",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:434",
             "frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:484"
         ],
@@ -2694,7 +2694,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:190",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:524",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:539",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:107"
         ],
         "comments": []
@@ -2723,7 +2723,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:197",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:546",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:561",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:122"
         ],
         "comments": []
@@ -2887,10 +2887,10 @@
     },
     {
         "single": "Choose…",
-        "line": 421,
+        "line": 436,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:421"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:436"
         ],
         "comments": []
     },
@@ -3126,10 +3126,10 @@
     },
     {
         "single": "Confirmed",
-        "line": 340,
+        "line": 348,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:340",
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:348",
             "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:94",
             "frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:27",
             "frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:53"
@@ -3138,10 +3138,10 @@
     },
     {
         "single": "Confirmed Stays",
-        "line": 335,
+        "line": 343,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:335"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:343"
         ],
         "comments": []
     },
@@ -3225,10 +3225,10 @@
     },
     {
         "single": "Could not load bookings",
-        "line": 350,
+        "line": 358,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:350"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:358"
         ],
         "comments": []
     },
@@ -3426,10 +3426,10 @@
     },
     {
         "single": "Date",
-        "line": 583,
+        "line": 598,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:583",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:598",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:156",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:285",
             "frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59"
@@ -3556,10 +3556,10 @@
     },
     {
         "single": "Delete booking",
-        "line": 275,
+        "line": 283,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:275",
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:283",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:317",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:321",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:286",
@@ -3578,10 +3578,10 @@
     },
     {
         "single": "Delete this booking?",
-        "line": 250,
+        "line": 258,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:250"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:258"
         ],
         "comments": []
     },
@@ -3677,7 +3677,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:303",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:673",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:688",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:376",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:288"
         ],
@@ -3848,7 +3848,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:267",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:377"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:392"
         ],
         "comments": []
     },
@@ -3864,10 +3864,10 @@
     },
     {
         "single": "Email",
-        "line": 692,
+        "line": 707,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:692",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:707",
             "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:114",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:583",
             "frontend/site/app/src/components/BookingModal/StepDetails.jsx:25",
@@ -4054,10 +4054,10 @@
     },
     {
         "single": "Every apartment is open for booking. Lock one for maintenance, or lock everything for a closure.",
-        "line": 480,
+        "line": 489,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:480"
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:489"
         ],
         "comments": []
     },
@@ -4136,7 +4136,7 @@
             "frontend/admin/Menu.php:191",
             "frontend/admin/Menu.php:192",
             "frontend/admin/app/src/App.jsx:65",
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:333",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:342",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:257",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:411",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:287",
@@ -4182,19 +4182,19 @@
     },
     {
         "single": "Filter by status",
-        "line": 393,
+        "line": 401,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:393"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:401"
         ],
         "comments": []
     },
     {
         "single": "First name",
-        "line": 678,
+        "line": 693,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:678",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:693",
             "frontend/site/app/src/components/BookingModal/StepDetails.jsx:11"
         ],
         "comments": []
@@ -4374,10 +4374,10 @@
     },
     {
         "single": "Gross",
-        "line": 320,
+        "line": 328,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:320",
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:328",
             "frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:68",
             "frontend/admin/app/src/pages/Reports/ReportsPage.jsx:169"
         ],
@@ -4394,10 +4394,10 @@
     },
     {
         "single": "Guest",
-        "line": 263,
+        "line": 271,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:263",
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:271",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:107",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:314",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:100",
@@ -4451,7 +4451,7 @@
             "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:39",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:371",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:498",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:513",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:115",
             "frontend/site/Shortcodes.php:1058",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:67",
@@ -4531,10 +4531,10 @@
     },
     {
         "single": "Hours",
-        "line": 605,
+        "line": 620,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:605"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:620"
         ],
         "comments": []
     },
@@ -4594,11 +4594,11 @@
     },
     {
         "single": "How the price is set",
-        "line": 713,
+        "line": 728,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:713",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:730"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:728",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:745"
         ],
         "comments": []
     },
@@ -4839,10 +4839,10 @@
     },
     {
         "single": "Last name",
-        "line": 686,
+        "line": 701,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:686",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:701",
             "frontend/site/app/src/components/BookingModal/StepDetails.jsx:18"
         ],
         "comments": []
@@ -4961,20 +4961,20 @@
     },
     {
         "single": "Lock Apartment",
-        "line": 413,
+        "line": 422,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:413",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:422",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:174"
         ],
         "comments": []
     },
     {
         "single": "Lock Extra",
-        "line": 412,
+        "line": 421,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:412",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:421",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:173"
         ],
         "comments": []
@@ -4990,21 +4990,21 @@
     },
     {
         "single": "Locked",
-        "line": 305,
+        "line": 314,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:305",
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:518",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:314",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:527",
             "frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:192"
         ],
         "comments": []
     },
     {
         "single": "Locked in and ready",
-        "line": 337,
+        "line": 345,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:337"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:345"
         ],
         "comments": []
     },
@@ -5030,10 +5030,10 @@
     },
     {
         "single": "Locks",
-        "line": 443,
+        "line": 452,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:443"
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:452"
         ],
         "comments": []
     },
@@ -5156,29 +5156,29 @@
     },
     {
         "single": "Master Lock",
-        "line": 421,
+        "line": 430,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:421",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:430",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:170"
         ],
         "comments": []
     },
     {
         "single": "Master lock",
-        "line": 291,
+        "line": 300,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:291"
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:300"
         ],
         "comments": []
     },
     {
         "single": "Master lock — every apartment",
-        "line": 511,
+        "line": 520,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:511"
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:520"
         ],
         "comments": []
     },
@@ -5286,10 +5286,10 @@
     },
     {
         "single": "Needs action",
-        "line": 330,
+        "line": 338,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:330",
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:338",
             "frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:58"
         ],
         "comments": {
@@ -5325,10 +5325,10 @@
     },
     {
         "single": "Next",
-        "line": 403,
+        "line": 412,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:403",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:412",
             "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:288"
         ],
         "comments": []
@@ -5453,10 +5453,10 @@
     },
     {
         "single": "No booking requests yet",
-        "line": 571,
+        "line": 579,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:571"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:579"
         ],
         "comments": []
     },
@@ -5481,10 +5481,10 @@
     },
     {
         "single": "No bookings match your filter",
-        "line": 557,
+        "line": 565,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:557"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:565"
         ],
         "comments": []
     },
@@ -5591,10 +5591,10 @@
     },
     {
         "single": "No start times for this date. Check the opening hours in Settings.",
-        "line": 26,
+        "line": 30,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/SlotPicker.jsx:26"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/SlotPicker.jsx:30"
         ],
         "comments": []
     },
@@ -5655,10 +5655,10 @@
     },
     {
         "single": "Notes",
-        "line": 820,
+        "line": 835,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:820",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:835",
             "frontend/admin/app/src/pages/Guide/GuidePage.jsx:352"
         ],
         "comments": []
@@ -5714,10 +5714,10 @@
     },
     {
         "single": "Nothing locked",
-        "line": 477,
+        "line": 486,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:477"
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:486"
         ],
         "comments": []
     },
@@ -6082,10 +6082,10 @@
     },
     {
         "single": "Overnight",
-        "line": 474,
+        "line": 489,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:474",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:489",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:78"
         ],
         "comments": []
@@ -6339,7 +6339,7 @@
         "comment": "",
         "refs": [
             "backend/Repositories/EmailTemplatesRepository.php:124",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:777"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:792"
         ],
         "comments": []
     },
@@ -6394,10 +6394,10 @@
     },
     {
         "single": "Pending Requests",
-        "line": 324,
+        "line": 332,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:324"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:332"
         ],
         "comments": []
     },
@@ -6452,10 +6452,10 @@
     },
     {
         "single": "Phone",
-        "line": 698,
+        "line": 713,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:698",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:713",
             "frontend/site/app/src/components/BookingModal/StepDetails.jsx:33"
         ],
         "comments": []
@@ -6680,10 +6680,10 @@
     },
     {
         "single": "Price",
-        "line": 705,
+        "line": 720,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:705",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:720",
             "frontend/admin/app/src/pages/Extras/components/ExtraCard/ExtraCard.jsx:79",
             "frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:287",
             "frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:64"
@@ -6954,28 +6954,28 @@
     },
     {
         "single": "Reference, guest, email…",
-        "line": 473,
+        "line": 481,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:473"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:481"
         ],
         "comments": []
     },
     {
         "single": "Refresh",
-        "line": 497,
+        "line": 505,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:497"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:505"
         ],
         "comments": []
     },
     {
         "single": "Refresh bookings list",
-        "line": 486,
+        "line": 494,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:486"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:494"
         ],
         "comments": []
     },
@@ -6999,11 +6999,11 @@
     },
     {
         "single": "Release",
-        "line": 537,
+        "line": 546,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:537",
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:583"
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:546",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:603"
         ],
         "comments": []
     },
@@ -7027,10 +7027,10 @@
     },
     {
         "single": "Release this lock?",
-        "line": 569,
+        "line": 589,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:569"
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:589"
         ],
         "comments": []
     },
@@ -7142,10 +7142,10 @@
     },
     {
         "single": "Requests made through the booking form on your site will appear here.",
-        "line": 575,
+        "line": 583,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:575"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:583"
         ],
         "comments": []
     },
@@ -7186,7 +7186,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:238",
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:359",
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:367",
             "frontend/admin/app/src/pages/Customers/CustomersPage.jsx:155",
             "frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:120",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:259",
@@ -7308,10 +7308,10 @@
     },
     {
         "single": "Save booking",
-        "line": 865,
+        "line": 880,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:865"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:880"
         ],
         "comments": []
     },
@@ -7349,7 +7349,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:729",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:302",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:864",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:879",
             "frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:196",
             "frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:491",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:738"
@@ -7407,10 +7407,10 @@
     },
     {
         "single": "Search bookings",
-        "line": 469,
+        "line": 477,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:469"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:477"
         ],
         "comments": []
     },
@@ -7718,6 +7718,17 @@
         "comments": []
     },
     {
+        "single": "Showing %1$d–%2$d of %3$d",
+        "line": 91,
+        "comment": "translators: 1: first row shown, 2: last row shown, 3: rows in total.",
+        "refs": [
+            "frontend/admin/app/src/components/ListPager/ListPager.jsx:91"
+        ],
+        "comments": {
+            "translators: 1: first row shown, 2: last row shown, 3: rows in total.": true
+        }
+    },
+    {
         "single": "Shown to guests on the website.",
         "line": 652,
         "comment": "",
@@ -7741,7 +7752,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:229",
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:342",
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:351",
             "frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:164",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:250",
             "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:228"
@@ -7800,11 +7811,11 @@
     },
     {
         "single": "Start time",
-        "line": 654,
+        "line": 669,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:654",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/SlotPicker.jsx:42",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:669",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/SlotPicker.jsx:46",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:254"
         ],
         "comments": {
@@ -7834,7 +7845,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:353",
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:401",
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:416",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:122",
             "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:181"
         ],
@@ -7928,10 +7939,10 @@
     },
     {
         "single": "Studio Rheinblick",
-        "line": 181,
+        "line": 195,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:181"
+            "backend/Support/BookingEmails.php:195"
         ],
         "comments": []
     },
@@ -7992,10 +8003,10 @@
     },
     {
         "single": "Taken by phone, email or at the door.",
-        "line": 381,
+        "line": 396,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:381"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:396"
         ],
         "comments": []
     },
@@ -8797,10 +8808,10 @@
     },
     {
         "single": "Those dates go back on the board and can be booked again.",
-        "line": 572,
+        "line": 592,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:572"
+            "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:592"
         ],
         "comments": []
     },
@@ -8951,10 +8962,10 @@
     },
     {
         "single": "Total Value",
-        "line": 315,
+        "line": 323,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:315"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:323"
         ],
         "comments": []
     },
@@ -9061,10 +9072,10 @@
     },
     {
         "single": "Try another status, or clear the search to see all requests.",
-        "line": 561,
+        "line": 569,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:561"
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:569"
         ],
         "comments": []
     },
@@ -9088,10 +9099,10 @@
     },
     {
         "single": "Type",
-        "line": 458,
+        "line": 473,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:458"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:473"
         ],
         "comments": []
     },
@@ -9415,10 +9426,10 @@
     },
     {
         "single": "Waiting on confirmation",
-        "line": 326,
+        "line": 334,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:326",
+            "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:334",
             "frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:54"
         ],
         "comments": {
@@ -9485,10 +9496,10 @@
     },
     {
         "single": "What the guest is charged, whatever the rates would give.",
-        "line": 805,
+        "line": 820,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:805"
+            "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:820"
         ],
         "comments": []
     },
