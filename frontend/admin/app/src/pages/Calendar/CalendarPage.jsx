@@ -47,7 +47,6 @@ import {
 } from '@/components/ui/select';
 import { ListPager } from '@/components/ListPager';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { PAGE_SIZE, usePaged } from '@/hooks/usePaged';
 
 import { BookingDetail } from '../Bookings/components/BookingDetail';
@@ -588,32 +587,36 @@ export default function CalendarPage() {
 						{ /*
 						 * Month · Week · Day, in that order — widest span
 						 * first, the way every calendar application arranges
-						 * them, so the control is already familiar.
+						 * them.
+						 *
+						 * A dropdown rather than a row of buttons, and the
+						 * same control as the apartment filter beside it: two
+						 * choices sitting together in a header should be made
+						 * the same way. It also survives a phone, where three
+						 * buttons and a filter wrapped onto their own line.
 						 */ }
-						<ToggleGroup
-							type="single"
-							value={ view }
-							onValueChange={ ( next ) =>
-								next && changeView( next )
-							}
-							variant="outline"
-							size="sm"
-							aria-label={ __(
-								'Calendar view',
-								'booking-suite'
-							) }
-							className="gap-0 [&>*:not(:first-child)]:-ml-px [&>*:first-child]:rounded-r-none [&>*:last-child]:rounded-l-none [&>*:not(:first-child):not(:last-child)]:rounded-none"
-						>
-							{ VIEWS.map( ( option ) => (
-								<ToggleGroupItem
-									key={ option.value }
-									value={ option.value }
-									className="px-3"
-								>
-									{ option.label }
-								</ToggleGroupItem>
-							) ) }
-						</ToggleGroup>
+						<Select value={ view } onValueChange={ changeView }>
+							<SelectTrigger
+								className="w-full sm:w-36"
+								aria-label={ __(
+									'Calendar view',
+									'booking-suite'
+								) }
+							>
+								<SelectValue />
+							</SelectTrigger>
+
+							<SelectContent>
+								{ VIEWS.map( ( option ) => (
+									<SelectItem
+										key={ option.value }
+										value={ option.value }
+									>
+										{ option.label }
+									</SelectItem>
+								) ) }
+							</SelectContent>
+						</Select>
 
 						{ /*
 						 * The apartment filter. The swatch travels with the name

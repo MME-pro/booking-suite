@@ -49,6 +49,33 @@ export const UsersIcon = ( props ) => (
 	</Glyph>
 );
 
+export const HomeIcon = ( props ) => (
+	<Glyph { ...props }>
+		<path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19Z" />
+		<path d="M9.5 20.5v-6h5v6" />
+	</Glyph>
+);
+
+export const UserIcon = ( props ) => (
+	<Glyph { ...props }>
+		<circle cx="12" cy="8" r="4" />
+		<path d="M5 20.5v-1a4.5 4.5 0 0 1 4.5-4.5h5a4.5 4.5 0 0 1 4.5 4.5v1" />
+	</Glyph>
+);
+
+export const MailIcon = ( props ) => (
+	<Glyph { ...props }>
+		<rect x="3" y="5.5" width="18" height="13" rx="2.5" />
+		<path d="m3.8 7.5 7.3 5.2a1.5 1.5 0 0 0 1.8 0l7.3-5.2" />
+	</Glyph>
+);
+
+export const PhoneIcon = ( props ) => (
+	<Glyph { ...props }>
+		<path d="M7.5 3.5h-2A2.5 2.5 0 0 0 3 6.2C3.5 13.7 10.3 20.5 17.8 21a2.5 2.5 0 0 0 2.7-2.5v-2l-4.3-1.4-1.9 2.3a13.6 13.6 0 0 1-5.7-5.7l2.3-1.9Z" />
+	</Glyph>
+);
+
 export const CalendarIcon = ( props ) => (
 	<Glyph { ...props }>
 		<rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />

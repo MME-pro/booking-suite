@@ -128,6 +128,13 @@ final class EmailTemplatesRepository {
 			'{{guest_phone}}'     => __( "The guest's phone number", 'booking-suite' ),
 			'{{nights}}'          => __( 'Length of stay in nights', 'booking-suite' ),
 			/*
+			 * Place it yourself to control where the account appears. Leave it
+			 * out and any email about a booking with money still owing gets
+			 * the same block appended at the end, so a guest is never told
+			 * what they owe without being told where to send it.
+			 */
+			'{{bank_details}}'    => __( 'Your bank account, with a note on how to pay', 'booking-suite' ),
+			/*
 			 * Only filled in for the emails that have something to say with
 			 * them; elsewhere they resolve to nothing rather than printing the
 			 * token, so a stray one cannot reach a guest as {{otp_code}}.

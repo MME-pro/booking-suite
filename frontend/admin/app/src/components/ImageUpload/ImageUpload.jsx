@@ -6,10 +6,10 @@
  * handles the upload and hands back saved attachments.
  */
 
-import { useRef } from 'react';
 import { __, _n, sprintf } from '@wordpress/i18n';
 
 import { CloseIcon, CloudUploadIcon } from '../icons';
+import { openMediaLibrary } from '../../lib/media';
 import './ImageUpload.css';
 
 const toImage = ( attachment ) => ( {
@@ -27,48 +27,29 @@ export default function ImageUpload( {
 	hint = __( 'PNG, JPG, JPEG', 'booking-suite' ),
 	className = '',
 } ) {
-	const frameRef = useRef( null );
-
-	const openLibrary = () => {
-		const media = window.wp?.media;
-
-		if ( ! media ) {
-			// wp_enqueue_media() did not run — nothing sensible to fall back to.
-			return;
-		}
-
-		if ( ! frameRef.current ) {
-			frameRef.current = media( {
-				title: __( 'Apartment photos', 'booking-suite' ),
-				button: { text: __( 'Use these photos', 'booking-suite' ) },
-				library: { type: 'image' },
-				multiple: 'add',
-			} );
-
-			frameRef.current.on( 'select', () => {
-				onChange(
-					frameRef.current
-						.state()
-						.get( 'selection' )
-						.toJSON()
-						.map( toImage )
-				);
-			} );
-		}
-
-		// Re-select what is already chosen so the frame opens in sync.
-		frameRef.current.on( 'open', () => {
-			const selection = frameRef.current.state().get( 'selection' );
-
-			selection.reset(
-				images
-					.map( ( image ) => media.attachment( image.id ) )
-					.filter( Boolean )
-			);
+	/*
+	 * A fresh frame each time rather than one kept in a ref. The ref version
+	 * added an 'open' handler on every click and never removed one, so by the
+	 * fourth open the same reset ran four times; and a frame built while a
+	 * dialog was closed carried stale handlers into the next one.
+	 */
+	const openLibrary = () =>
+		openMediaLibrary( {
+			title: __( 'Apartment photos', 'booking-suite' ),
+			button: __( 'Use these photos', 'booking-suite' ),
+			multiple: 'add',
+			onSelect: ( attachments ) => onChange( attachments.map( toImage ) ),
+			// Re-select what is already chosen so the frame opens in sync.
+			onOpen: ( frame, media ) =>
+				frame
+					.state()
+					.get( 'selection' )
+					.reset(
+						images
+							.map( ( image ) => media.attachment( image.id ) )
+							.filter( Boolean )
+					),
 		} );
-
-		frameRef.current.open();
-	};
 
 	const remove = ( id ) =>
 		onChange( images.filter( ( image ) => image.id !== id ) );

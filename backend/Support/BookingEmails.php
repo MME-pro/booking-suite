@@ -67,9 +67,21 @@ final class BookingEmails {
 		}
 
 		$tokens = self::tokens( $booking );
+		$stored = (string) $definition['body'];
+
+		/*
+		 * If the template does not place the account itself, and the guest
+		 * still owes something, it goes on the end. Telling somebody what is
+		 * outstanding without telling them where to send it is the email they
+		 * have to reply to — and every one of those replies is the owner's
+		 * evening.
+		 */
+		if ( ! str_contains( $stored, '{{bank_details}}' ) && self::owes( $booking ) ) {
+			$stored .= "\n{{bank_details}}";
+		}
 
 		$subject = self::replace( (string) $definition['subject'], $tokens );
-		$body    = self::replace( (string) $definition['body'], $tokens );
+		$body    = self::replace( $stored, $tokens );
 
 		/**
 		 * Last chance to change or stop a guest email.
@@ -90,6 +102,104 @@ final class BookingEmails {
 		);
 
 		if ( empty( $mail['to'] ) || empty( $mail['subject'] ) ) {
+			return false;
+		}
+
+		$sent = self::deliver(
+			(string) $mail['to'],
+			(string) $mail['subject'],
+			(string) $mail['body'],
+			$attachments
+		);
+
+		/*
+		 * Recorded whether or not it went. "We emailed you on the 3rd" is the
+		 * claim an operator has to be able to stand behind, and a send that
+		 * wp_mail refused is the one case where knowing matters most — every
+		 * return above this point is a decision NOT to write to the guest, and
+		 * those are not history, they are configuration.
+		 */
+		if ( $booking_id > 0 ) {
+			BookingEventsRepository::record(
+				$booking_id,
+				BookingEventsTable::EMAIL_SENT,
+				array(
+					/*
+					 * The subject line, because that is the thing the guest
+					 * can be asked about — "you should have an email headed
+					 * this" beats a template key nobody outside the code has
+					 * ever seen. A send that went is one line and no detail; a
+					 * send that failed says so, because that is the one an
+					 * operator has to do something about.
+					 */
+					'note'    => (string) $mail['subject'],
+					'changes' => $sent
+						? array()
+						: array(
+							'delivery' => array(
+								'from' => '',
+								'to'   => 'failed',
+							),
+						),
+				)
+			);
+		}
+
+		return $sent;
+	}
+
+	/**
+	 * A one-time verification code, to an address with no booking behind it.
+	 *
+	 * Separate from send() because everything that function does first — find
+	 * the booking, resolve the guest, fill the placeholders from the stay — is
+	 * exactly what must NOT happen here. The address has not been proved yet,
+	 * so the message may be going to a stranger, and it carries the code and
+	 * nothing else. The stored template is written that way; this makes it
+	 * impossible for it to be otherwise.
+	 *
+	 * @param string $to      Where to send it.
+	 * @param string $code    The code the guest must type back.
+	 * @param int    $minutes How long it stays valid.
+	 *
+	 * @return bool Whether the mail was handed to wp_mail().
+	 */
+	public static function send_code( string $to, string $code, int $minutes ): bool {
+		if ( ! SettingsRepository::emails_enabled() || ! is_email( $to ) ) {
+			return false;
+		}
+
+		$definition = EmailTemplatesRepository::find( EmailTemplatesRepository::OTP_VERIFICATION );
+
+		if ( null === $definition || ! $definition['enabled'] ) {
+			return false;
+		}
+
+		$tokens = array(
+			'{{otp_code}}'    => $code,
+			'{{otp_minutes}}' => (string) $minutes,
+			'{{site_name}}'   => wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
+		);
+
+		return self::deliver(
+			$to,
+			self::replace( (string) $definition['subject'], $tokens ),
+			self::replace( (string) $definition['body'], $tokens )
+		);
+	}
+
+	/**
+	 * Wrap a message in the plugin's layout and hand it to wp_mail.
+	 *
+	 * @param string                $to          The recipient.
+	 * @param string                $subject     The subject line.
+	 * @param string                $body        The message, as stored.
+	 * @param array<string, string> $attachments Filename => bytes.
+	 *
+	 * @return bool Whether wp_mail accepted it.
+	 */
+	private static function deliver( string $to, string $subject, string $body, array $attachments = array() ): bool {
+		if ( '' === $to || '' === $subject ) {
 			return false;
 		}
 
@@ -114,7 +224,7 @@ final class BookingEmails {
 		 * before this was HTML is plain text and still works: EmailLayout runs
 		 * it through wpautop so its line breaks survive.
 		 */
-		$html = EmailLayout::wrap( (string) $mail['body'], (string) $mail['subject'] );
+		$html = EmailLayout::wrap( $body, $subject );
 
 		/*
 		 * A plain-text alternative rides along. Clients that refuse HTML show
@@ -142,8 +252,8 @@ final class BookingEmails {
 		add_action( 'phpmailer_init', $prepare, PHP_INT_MAX );
 
 		$sent = wp_mail(
-			(string) $mail['to'],
-			(string) $mail['subject'],
+			$to,
+			$subject,
 			$html,
 			array( 'Content-Type: text/html; charset=UTF-8' ),
 			$paths
@@ -154,33 +264,6 @@ final class BookingEmails {
 		// wp_mail has read them by now, whether or not it succeeded.
 		foreach ( $paths as $path ) {
 			wp_delete_file( $path );
-		}
-
-		/*
-		 * Recorded whether or not it went. "We emailed you on the 3rd" is the
-		 * claim an operator has to be able to stand behind, and a send that
-		 * wp_mail refused is the one case where knowing matters most — every
-		 * return above this point is a decision NOT to write to the guest, and
-		 * those are not history, they are configuration.
-		 */
-		if ( $booking_id > 0 ) {
-			BookingEventsRepository::record(
-				$booking_id,
-				BookingEventsTable::EMAIL_SENT,
-				array(
-					'note'    => (string) $mail['subject'],
-					'changes' => array(
-						'template' => array(
-							'from' => '',
-							'to'   => $template,
-						),
-						'delivery' => array(
-							'from' => '',
-							'to'   => $sent ? 'sent' : 'failed',
-						),
-					),
-				)
-			);
 		}
 
 		return $sent;
@@ -260,8 +343,13 @@ final class BookingEmails {
 		$invoice_no = (string) ( $pending['invoiceNo'] ?? '' );
 
 		return array(
-			'{{amount_paid}}' => self::money( $paid, $currency ),
-			'{{amount_due}}'  => self::money( $due, $currency ),
+			'{{amount_paid}}'  => self::money( $paid, $currency ),
+			'{{amount_due}}'   => self::money( $due, $currency ),
+			'{{bank_details}}' => self::bank_block(
+				self::money( $due, $currency ),
+				(string) ( $booking['reference'] ?? '' ),
+				$due > 0
+			),
 			'{{invoice_no}}'  => $invoice_no,
 			'{{guest_name}}'       => $name,
 			'{{guest_first_name}}' => '' !== $first ? $first : $name,
@@ -279,6 +367,103 @@ final class BookingEmails {
 			'{{site_name}}'        => (string) get_bloginfo( 'name' ),
 			'{{site_url}}'         => (string) home_url(),
 		);
+	}
+
+	/**
+	 * Whether this booking still has money owing on it.
+	 *
+	 * @param array<string, mixed> $booking The booking.
+	 */
+	private static function owes( array $booking ): bool {
+		$id = (int) ( $booking['id'] ?? 0 );
+
+		if ( ! $id ) {
+			return false;
+		}
+
+		$due = (float) ( $booking['total'] ?? 0 ) - PaymentsRepository::settled_for( $id );
+
+		return $due > 0.005;
+	}
+
+	/**
+	 * The account to pay into, worded for a guest who may already have paid.
+	 *
+	 * "If you have not paid yet" rather than "please pay": by the time most of
+	 * these emails go out the guest has already made the transfer and uploaded
+	 * the receipt, and being chased for money they have already sent is how a
+	 * stay starts badly. The condition does the work — someone who has paid
+	 * reads past it, someone who has not knows exactly what to do.
+	 *
+	 * @param string $due       The outstanding amount, already formatted.
+	 * @param string $reference The booking reference, for the payment note.
+	 * @param bool   $owing     Whether anything is actually outstanding.
+	 *
+	 * @return string HTML, or '' when there is no account to show.
+	 */
+	private static function bank_block( string $due, string $reference, bool $owing ): string {
+		$bank = SettingsRepository::bank_details();
+
+		if ( ! $bank['hasAccount'] ) {
+			return '';
+		}
+
+		$rows = array();
+
+		if ( '' !== $bank['holder'] ) {
+			$rows[] = array( __( 'Account holder', 'booking-suite' ), $bank['holder'] );
+		}
+
+		if ( '' !== $bank['bank'] ) {
+			$rows[] = array( __( 'Bank', 'booking-suite' ), $bank['bank'] );
+		}
+
+		$rows[] = array( __( 'IBAN', 'booking-suite' ), $bank['iban'] );
+
+		if ( '' !== $bank['bic'] ) {
+			$rows[] = array( __( 'BIC', 'booking-suite' ), $bank['bic'] );
+		}
+
+		if ( '' !== $reference ) {
+			$rows[] = array( __( 'Payment reference', 'booking-suite' ), $reference );
+		}
+
+		$html = "<h2>" . esc_html__( 'Bank details', 'booking-suite' ) . "</h2>\n";
+
+		$html .= '<p>' . esc_html(
+			$owing
+				? sprintf(
+					/* translators: %s: the amount still outstanding, with currency. */
+					__( 'If you have not paid yet, please transfer %s to the account below. Once it arrives we will confirm your booking by email.', 'booking-suite' ),
+					$due
+				)
+				: __( 'For your records, these are the account details your payment was made to.', 'booking-suite' )
+		) . "</p>\n";
+
+		$html .= '<table role="presentation" cellpadding="0" cellspacing="0"><tbody>';
+
+		foreach ( $rows as [ $label, $value ] ) {
+			$html .= '<tr><td><strong>' . esc_html( $label ) . '</strong></td><td>'
+				. esc_html( $value ) . "</td></tr>\n";
+		}
+
+		$html .= "</tbody></table>\n";
+
+		foreach ( $bank['notes'] as $note ) {
+			$html .= '<p>' . esc_html( $note ) . "</p>\n";
+		}
+
+		if ( '' !== $reference ) {
+			$html .= '<p>' . esc_html(
+				sprintf(
+					/* translators: %s: the booking reference. */
+					__( 'Please quote %s as the payment reference so we can match your transfer to your booking.', 'booking-suite' ),
+					$reference
+				)
+			) . "</p>\n";
+		}
+
+		return $html;
 	}
 
 	/**

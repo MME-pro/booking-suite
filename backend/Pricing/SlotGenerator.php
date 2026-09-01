@@ -220,6 +220,10 @@ final class SlotGenerator {
 					$picked[ $id ] = array(
 						'id'    => $id,
 						'name'  => (string) $row['name'],
+						// A name and a price is not an offer. Being sent to a
+						// different apartment than the one you came for is
+						// exactly the moment a guest wants to see it.
+						'image' => ApartmentsRepository::image( $row, 'medium' ),
 						'date'  => $day,
 						'slots' => $free,
 					);

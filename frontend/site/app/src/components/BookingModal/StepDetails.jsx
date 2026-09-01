@@ -1,5 +1,11 @@
 /**
  * Step 3 — who is staying.
+ *
+ * Name, email, phone, and anything the guest wants to tell us. No address:
+ * payment is by bank transfer and the invoice does not print one, so asking
+ * for a street, postcode, city and country was four fields that went into the
+ * database and were never read. Every field on a booking form is somewhere the
+ * guest can give up, and these were the ones earning the least.
  */
 
 import { __ } from '@wordpress/i18n';
@@ -36,42 +42,12 @@ const FIELDS = [
 	},
 ];
 
-const ADDRESS = [
-	{
-		key: 'postcode',
-		id: 'bks-modal-postcode',
-		label: __( 'Postcode', 'booking-suite' ),
-		autoComplete: 'postal-code',
-		narrow: true,
-	},
-	{
-		key: 'city',
-		id: 'bks-modal-city',
-		label: __( 'City', 'booking-suite' ),
-		autoComplete: 'address-level2',
-	},
-	{
-		key: 'country',
-		id: 'bks-modal-country',
-		label: __( 'Country', 'booking-suite' ),
-		autoComplete: 'country',
-		narrow: true,
-		maxLength: 2,
-		placeholder: 'DE',
-	},
-];
-
 export default function StepDetails( { guest, onChange } ) {
 	const set = ( key ) => ( event ) =>
 		onChange( { ...guest, [ key ]: event.target.value } );
 
 	const field = ( config ) => (
-		<div
-			key={ config.key }
-			className={ `bks-field${
-				config.narrow ? ' bks-field--narrow' : ''
-			}` }
-		>
+		<div key={ config.key } className="bks-field">
 			<label htmlFor={ config.id }>
 				{ config.label }
 				{ config.required && <em>*</em> }
@@ -80,8 +56,6 @@ export default function StepDetails( { guest, onChange } ) {
 				id={ config.id }
 				type={ config.type ?? 'text' }
 				autoComplete={ config.autoComplete }
-				maxLength={ config.maxLength }
-				placeholder={ config.placeholder }
 				value={ guest[ config.key ] }
 				onChange={ set( config.key ) }
 			/>
@@ -97,21 +71,6 @@ export default function StepDetails( { guest, onChange } ) {
 			<div className="bks-step__row">
 				{ FIELDS.slice( 2 ).map( field ) }
 			</div>
-
-			<div className="bks-field">
-				<label htmlFor="bks-modal-address">
-					{ __( 'Address', 'booking-suite' ) }
-				</label>
-				<input
-					id="bks-modal-address"
-					type="text"
-					autoComplete="street-address"
-					value={ guest.address }
-					onChange={ set( 'address' ) }
-				/>
-			</div>
-
-			<div className="bks-step__row">{ ADDRESS.map( field ) }</div>
 
 			<div className="bks-field">
 				<label htmlFor="bks-modal-notes">

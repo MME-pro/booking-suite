@@ -123,9 +123,29 @@ export default function Alternatives( {
 					{ others.map( ( other ) => (
 						<div key={ other.id } className="bks-alt__other">
 							<p className="bks-alt__other-head">
-								<strong>{ other.name }</strong>
-								<span className="bks-alt__other-date">
-									{ formatWpDate( other.date ) }
+								{ /*
+								 * The picture, because this is the one place
+								 * the guest is being offered somewhere they
+								 * did not come for. A name and a date asks
+								 * them to take it on trust; the photo is what
+								 * actually decides it. Absent only when the
+								 * apartment has no gallery and no featured
+								 * image at all.
+								 */ }
+								{ other.image && (
+									<img
+										className="bks-alt__other-image"
+										src={ other.image.url }
+										alt={ other.image.alt || '' }
+										loading="lazy"
+									/>
+								) }
+
+								<span className="bks-alt__other-name">
+									<strong>{ other.name }</strong>
+									<span className="bks-alt__other-date">
+										{ formatWpDate( other.date ) }
+									</span>
 								</span>
 							</p>
 

@@ -164,6 +164,18 @@ export default function MonthGrid( {
 				</span>
 
 				{ /*
+				 * Directly under the day number, and ABOVE the holiday label
+				 * rather than below it. A screen drawing its own content here
+				 * may need it at the same height in every cell — the
+				 * Availability board runs lock bars across several days at
+				 * once, and a holiday in the middle of a range would otherwise
+				 * push that one cell's rows down and break the line. Screens
+				 * that pass no content render nothing here, so this costs the
+				 * Calendar nothing.
+				 */ }
+				{ custom }
+
+				{ /*
 				 * Named, not just marked. "Fronleichnam" tells the owner why
 				 * the day is priced at the weekend rate; a coloured dot would
 				 * leave them guessing.
@@ -176,8 +188,6 @@ export default function MonthGrid( {
 						{ holiday }
 					</span>
 				) }
-
-				{ custom }
 
 				{ /*
 				 * Locks sit above the bookings, because a lock is the state of

@@ -105,7 +105,7 @@ final class PublicApartmentsController {
 			'excerpt'     => wp_trim_words( wp_strip_all_tags( (string) $apartment['description'] ), 28 ),
 			'capacity'    => (int) $apartment['capacity'],
 			'colour'      => $apartment['colour'],
-			'images'      => self::images( (array) $apartment['images'] ),
+			'images'      => self::images( ApartmentsRepository::image_ids( $apartment ) ),
 			'permalink'   => (string) ( $apartment['permalink'] ?? '' ),
 
 			// The short link wins when one is set; otherwise the card links to

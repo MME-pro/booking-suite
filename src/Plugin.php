@@ -33,6 +33,7 @@ use BookingSuite\Frontend\Admin\Assets as AdminAssets;
 use BookingSuite\Frontend\Admin\Menu as AdminMenu;
 use BookingSuite\Backend\APIs\PublicApartmentsController;
 use BookingSuite\Backend\APIs\PublicBookingController;
+use BookingSuite\Backend\APIs\PublicVerificationController;
 use BookingSuite\Backend\APIs\ReportsController;
 use BookingSuite\Backend\APIs\SettingsController;
 use BookingSuite\Backend\APIs\SystemController;
@@ -116,6 +117,7 @@ final class Plugin {
 		SystemController::register();
 		PublicApartmentsController::register();
 		PublicBookingController::register();
+		PublicVerificationController::register();
 
 		if ( is_admin() ) {
 			AdminMenu::register();

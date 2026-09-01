@@ -1577,4 +1577,50 @@ Gute Reise und bis bald.
 	'Bank transfer' => 'Überweisung',
 	'Cash' => 'Bar',
 	'Card' => 'Karte',
+
+	/*
+	 * The guest review step: one price for the apartment rather than a line
+	 * per night, and both ends of the booking spelled out.
+	 */
+	'Base price' => 'Grundpreis',
+	'includes %s off' => 'inkl. %s Rabatt',
+
+	/*
+	 * Email verification: the one-time code that proves a guest owns the
+	 * address they are booking with. Guest-facing, so formal "Sie".
+	 */
+	'Confirm your email' => 'E-Mail-Adresse bestätigen',
+	'Confirm' => 'Bestätigen',
+	'We have sent a six-digit code to %s. Enter it below to continue.' => 'Wir haben einen sechsstelligen Code an %s gesendet. Geben Sie ihn unten ein, um fortzufahren.',
+	'Verification code' => 'Bestätigungscode',
+	'Checking…' => 'Wird geprüft…',
+	'Email confirmed.' => 'E-Mail-Adresse bestätigt.',
+	'Send a new code' => 'Neuen Code senden',
+	'You can ask for another code in %d seconds.' => 'In %d Sekunden können Sie einen neuen Code anfordern.',
+	'Check your spam folder if it has not arrived. Nothing is booked until you finish.' => 'Schauen Sie bitte auch im Spam-Ordner nach. Es ist noch nichts gebucht, solange Sie nicht fertig sind.',
+	'That code is not right. Please check it and try again.' => 'Dieser Code stimmt nicht. Bitte prüfen Sie ihn und versuchen Sie es erneut.',
+	'That code has expired. Please ask for a new one.' => 'Dieser Code ist abgelaufen. Bitte fordern Sie einen neuen an.',
+	'Too many wrong codes. Please ask for a new one.' => 'Zu viele falsche Codes. Bitte fordern Sie einen neuen an.',
+	'A code was just sent. Please wait a moment before asking for another.' => 'Es wurde gerade ein Code gesendet. Bitte warten Sie einen Moment, bevor Sie einen neuen anfordern.',
+	'Too many codes have been sent to this address. Please try again later.' => 'An diese Adresse wurden zu viele Codes gesendet. Bitte versuchen Sie es später erneut.',
+	'The code could not be sent. Please check the address and try again.' => 'Der Code konnte nicht gesendet werden. Bitte prüfen Sie die Adresse und versuchen Sie es erneut.',
+	'Please confirm your email address before booking.' => 'Bitte bestätigen Sie Ihre E-Mail-Adresse, bevor Sie buchen.',
+
+	/*
+	 * Bank details: on the payment step of the booking modal, and appended to
+	 * any guest email about a booking with money still owing.
+	 *
+	 * "Falls Sie noch nicht überwiesen haben" rather than "Bitte überweisen
+	 * Sie": by the time most of these emails go out the guest has already
+	 * paid and uploaded the receipt, and being chased for money they have
+	 * already sent is how a stay starts badly.
+	 */
+	'Bank details' => 'Bankverbindung',
+	'Transfer the amount to' => 'Überweisen Sie den Betrag an',
+	'Payment reference' => 'Verwendungszweck',
+	'If you have not paid yet, please transfer %s to the account below. Once it arrives we will confirm your booking by email.' => 'Falls Sie noch nicht überwiesen haben, senden Sie den offenen Betrag von %s bitte an das unten stehende Konto. Sobald er bei uns eingegangen ist, bestätigen wir Ihre Buchung per E-Mail.',
+	'For your records, these are the account details your payment was made to.' => 'Zu Ihrer Information: Dies sind die Kontodaten, an die Ihre Zahlung gegangen ist.',
+	'Please quote %s as the payment reference so we can match your transfer to your booking.' => 'Bitte geben Sie %s als Verwendungszweck an, damit wir Ihre Überweisung Ihrer Buchung zuordnen können.',
+	'Please put your name in the payment reference. We will send you the booking number by email.' => 'Bitte geben Sie Ihren Namen als Verwendungszweck an. Die Buchungsnummer senden wir Ihnen per E-Mail.',
+	'Your bank account, with a note on how to pay' => 'Ihre Bankverbindung, mit einem Hinweis zur Zahlung',
 );

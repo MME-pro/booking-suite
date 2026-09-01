@@ -27,15 +27,21 @@ defined( 'ABSPATH' ) || exit;
 final class BookingEventsRepository {
 
 	/**
-	 * Booking columns worth remembering, and how to read each one back.
+	 * Booking columns worth remembering.
 	 *
-	 * Not every column: `updated_at` changes on every write and says nothing,
-	 * and `currency` cannot change. What is here is what a guest or an operator
-	 * might later disagree about.
+	 * Deliberately not every column. `updated_at` changes on every write and
+	 * says nothing. `currency` cannot change. And `customer_id` is an internal
+	 * foreign key: it moves when a guest record is merged or re-matched by
+	 * email, which is bookkeeping this system does to itself — "Guest 3 → 7"
+	 * is not something anyone can act on, and the guest's name is on the
+	 * booking either way.
+	 *
+	 * What is left is what a guest or an operator might actually disagree
+	 * about later: which apartment, which dates, how many people, what it
+	 * costs, where the booking stands, and what they wrote on it.
 	 */
 	private const TRACKED = array(
 		'room_id',
-		'customer_id',
 		'status',
 		'payment_status',
 		'guests',
@@ -225,19 +231,8 @@ final class BookingEventsRepository {
 	 */
 	private static function resolve( array $event ): array {
 		$resolvers = array(
-			'room_id'     => static fn( string $id ): string =>
+			'room_id' => static fn( string $id ): string =>
 				'' === $id ? '' : (string) ( get_the_title( (int) $id ) ?: $id ),
-			'customer_id' => static function ( string $id ): string {
-				if ( '' === $id ) {
-					return '';
-				}
-
-				$customer = CustomersRepository::find( (int) $id );
-
-				return $customer && '' !== trim( (string) $customer['name'] )
-					? (string) $customer['name']
-					: $id;
-			},
 		);
 
 		foreach ( $event['changes'] as $field => $change ) {

@@ -98,3 +98,34 @@
 	white-space: nowrap;
 	border: 0;
 }
+
+/*
+ * The WordPress media library, opened from inside a dialog.
+ *
+ * Radix locks the page behind an open dialog by putting `pointer-events: none`
+ * on the body and restoring them only inside its own portal. wp.media renders
+ * into the body, so it inherits the lock: the picker appears, and every click
+ * in it lands on nothing. This gives it back what the lock took away.
+ *
+ * The z-index is WordPress' own (160000) restated, because Tailwind's
+ * preflight and the dialog's z-50 both sit in the same stacking context here
+ * and the modal has to be above the dialog it was opened from.
+ *
+ * See lib/media.js: the CSS alone is not enough — the dialog also has to stop
+ * treating the picker as an outside click.
+ */
+.media-modal,
+.media-modal-backdrop,
+.media-frame,
+.ui-autocomplete {
+	pointer-events: auto !important;
+}
+
+.media-modal,
+.media-frame {
+	z-index: 160000;
+}
+
+.media-modal-backdrop {
+	z-index: 159900;
+}

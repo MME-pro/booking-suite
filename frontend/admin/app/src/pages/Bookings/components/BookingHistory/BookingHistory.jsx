@@ -60,10 +60,15 @@ const EVENTS = {
 	},
 };
 
-/** What each recorded field is called on screen. */
+/**
+ * What each recorded field is called on screen.
+ *
+ * Only the ones a guest could ask about. Anything the plugin does to itself —
+ * which record a booking is filed under, which template an email came from —
+ * is not recorded any more, so it does not need a name here either.
+ */
 const FIELDS = {
 	room_id: __( 'Apartment', 'booking-suite' ),
-	customer_id: __( 'Guest', 'booking-suite' ),
 	status: __( 'Status', 'booking-suite' ),
 	payment_status: __( 'Payment', 'booking-suite' ),
 	guests: __( 'Guests', 'booking-suite' ),
@@ -72,7 +77,6 @@ const FIELDS = {
 	total_amount: __( 'Total', 'booking-suite' ),
 	notes: __( 'Notes', 'booking-suite' ),
 	amount: __( 'Amount', 'booking-suite' ),
-	template: __( 'Template', 'booking-suite' ),
 	delivery: __( 'Delivery', 'booking-suite' ),
 };
 
@@ -100,9 +104,7 @@ const side = ( field, change, sideKey, currency ) => {
 	const raw = resolved ?? change[ sideKey ] ?? '';
 
 	if ( '' === String( raw ) ) {
-		// An empty side means the field had no value before — a payment being
-		// recorded for the first time, say. A dash reads better than a gap.
-		return '—';
+		return '';
 	}
 
 	if ( TIMES.includes( field ) ) {
@@ -181,44 +183,63 @@ export default function BookingHistory( { history = [], currency = 'EUR' } ) {
 									{ changes.length > 0 && (
 										<ul className="flex flex-col gap-0.5">
 											{ changes.map(
-												( [ field, change ] ) => (
-													<li
-														key={ field }
-														className="flex flex-wrap items-center gap-1.5 text-xs"
-													>
-														<span className="text-muted-foreground">
-															{ FIELDS[ field ] ??
-																field }
-														</span>
+												( [ field, change ] ) => {
+													const was = side(
+														field,
+														change,
+														'from',
+														currency
+													);
 
-														<span className="text-muted-foreground line-through">
-															{ clip(
-																side(
-																	field,
-																	change,
-																	'from',
-																	currency
-																)
+													const now = side(
+														field,
+														change,
+														'to',
+														currency
+													);
+
+													return (
+														<li
+															key={ field }
+															className="flex flex-wrap items-center gap-1.5 text-xs"
+														>
+															<span className="text-muted-foreground">
+																{ FIELDS[
+																	field
+																] ?? field }
+															</span>
+
+															{ /*
+															 * A first value is
+															 * stated, not
+															 * struck through
+															 * from nothing:
+															 * "Amount — →
+															 * €250" was three
+															 * symbols saying
+															 * "€250".
+															 */ }
+															{ '' !== was && (
+																<>
+																	<span className="text-muted-foreground line-through">
+																		{ clip(
+																			was
+																		) }
+																	</span>
+
+																	<ArrowRight
+																		aria-hidden="true"
+																		className="h-3 w-3 shrink-0 text-muted-foreground"
+																	/>
+																</>
 															) }
-														</span>
 
-														<ArrowRight
-															aria-hidden="true"
-															className="h-3 w-3 shrink-0 text-muted-foreground"
-														/>
-
-														<span className="font-medium text-card-foreground">
-															{ clip(
-																side(
-																	field,
-																	change,
-																	'to',
-																	currency
-																)
-															) }
-														</span>
-													</li>
-												)
+															<span className="font-medium text-card-foreground">
+																{ clip( now ) }
+															</span>
+														</li>
+													);
+												}
 											) }
 										</ul>
 									) }

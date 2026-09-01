@@ -1099,18 +1099,49 @@
 	gap: 22px;
 }
 
-.bks-review__facts {
+/* The three facts, side by side, each behind its own icon. */
+.bks-review__top {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 	gap: 16px;
 	margin: 0;
 	padding: 20px;
 	background: var(--bks-site-surface-muted);
 	border-radius: var(--bks-site-radius-xs);
 	border: 1px solid var(--bks-site-border);
+	list-style: none;
 }
 
-.bks-review__facts dt {
+.bks-review__top li {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	min-width: 0;
+}
+
+/*
+ * Icons inherit currentColor by design, so the block sets the colour once
+ * rather than every glyph carrying its own. `flex: none` keeps one from being
+ * squeezed to nothing beside a long apartment name.
+ */
+.bks-review__top svg,
+.bks-review__guest svg,
+.bks-review__range-length svg {
+	flex: none;
+	color: var(--bks-site-brand);
+}
+
+.bks-review__top > li > div {
+	min-width: 0;
+}
+
+/*
+ * A class rather than a bare `span`: the modal already styles `span` inside a
+ * selected slot chip, and an element selector here would sit below it in
+ * specificity while coming after it in the file.
+ */
+.bks-review__label {
+	display: block;
 	color: var(--bks-site-text-muted);
 	font-size: 11px;
 	font-weight: 700;
@@ -1118,11 +1149,84 @@
 	text-transform: uppercase;
 }
 
-.bks-review__facts dd {
-	margin: 4px 0 0;
+.bks-review__top strong {
+	display: block;
+	margin-top: 3px;
 	font-size: 16px;
 	font-weight: 600;
 	color: var(--bks-site-text);
+}
+
+/* Both ends of the booking, and how long it runs. */
+.bks-review__range {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 14px 18px;
+	padding: 18px 20px;
+	border: 1px solid var(--bks-site-border);
+	border-radius: var(--bks-site-radius-xs);
+}
+
+.bks-review__range-end {
+	min-width: 0;
+}
+
+.bks-review__range-end strong {
+	display: block;
+	margin-top: 3px;
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--bks-site-text);
+}
+
+.bks-review__range-end em {
+	display: block;
+	margin-top: 1px;
+	color: var(--bks-site-text-muted);
+	font-size: 14px;
+	font-style: normal;
+	font-variant-numeric: tabular-nums;
+}
+
+.bks-review__range-arrow {
+	color: var(--bks-site-text-muted);
+	font-size: 20px;
+	line-height: 1;
+}
+
+/* Pushed to the end of the row: it summarises the two dates beside it. */
+.bks-review__range-length {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin: 0 0 0 auto;
+	padding: 6px 12px;
+	border-radius: 999px;
+	background: var(--bks-site-brand-soft);
+	color: var(--bks-site-brand);
+	font-size: 13px;
+	font-weight: 600;
+}
+
+/* Name, email and phone as one group rather than three rows of a table. */
+.bks-review__guest {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px 22px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.bks-review__guest li {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+	color: var(--bks-site-text);
+	font-size: 15px;
+	overflow-wrap: anywhere;
 }
 
 .bks-review__lines {
@@ -1141,6 +1245,32 @@
 	justify-content: space-between;
 	gap: 16px;
 	font-size: 15px;
+}
+
+/* The label side: what it is, what it covers, and any saving in it. */
+.bks-review__lines li > span:first-child {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 4px 8px;
+	min-width: 0;
+}
+
+.bks-review__lines small {
+	color: var(--bks-site-text-muted);
+	font-size: 13px;
+}
+
+/*
+ * A saving is stated, not subtracted: the base price above it already has the
+ * discount in it, and a line that took it off again would undercharge on
+ * screen for a booking the guest is about to pay in full.
+ */
+.bks-review__saving {
+	color: var(--bks-site-success);
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 600;
 }
 
 .bks-review__tag {
@@ -1548,14 +1678,27 @@
 
 	/* Review ------------------------------------------------------------- */
 
-	.bks-review__facts {
+	.bks-review__top {
 		grid-template-columns: 1fr 1fr;
 		gap: 12px;
 		padding: 16px;
 	}
 
-	.bks-review__facts dd {
+	.bks-review__top strong {
 		font-size: 15px;
+	}
+
+	.bks-review__range {
+		gap: 12px 16px;
+		padding: 16px;
+	}
+
+	/*
+	 * The duration drops onto its own line rather than being wedged beside
+	 * two dates that have already had to wrap.
+	 */
+	.bks-review__range-length {
+		margin-left: 0;
 	}
 
 	/* A long line label and its amount, rather than one squeezing the other. */
@@ -1807,15 +1950,36 @@
 	background: var(--bks-site-surface);
 }
 
+/*
+ * `center` rather than `baseline` now the row can carry a photo: a 64px image
+ * aligned to the text baseline hangs most of its height below the line.
+ */
 .bks-alt__other-head {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 0;
+	font-size: 14px;
+	color: var(--bks-site-text);
+}
+
+.bks-alt__other-image {
+	flex: 0 0 auto;
+	width: 64px;
+	height: 48px;
+	border-radius: var(--bks-site-radius-xs);
+	object-fit: cover;
+}
+
+/* Name and date share the room left beside the photo. */
+.bks-alt__other-name {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
 	justify-content: space-between;
-	gap: 8px;
-	margin: 0;
-	font-size: 14px;
-	color: var(--bks-site-text);
+	gap: 4px 8px;
+	flex: 1 1 auto;
+	min-width: 0;
 }
 
 .bks-alt__other-date {
@@ -2107,4 +2271,183 @@
 .bks-booking a:not(.bks-booking__button) {
 	color: var(--bks-site-brand, #2563eb) !important;
 	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   Email verification
+   ═══════════════════════════════════════════════ */
+
+/*
+ * Centred and sparse on purpose. This step asks for one thing and the guest
+ * is reading a code off their phone while they do it — anything else in the
+ * panel is something to look past.
+ */
+.bks-verify {
+	align-items: center;
+	text-align: center;
+}
+
+.bks-verify__icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 52px;
+	height: 52px;
+	border-radius: 999px;
+	background: var(--bks-site-brand-soft);
+	color: var(--bks-site-brand);
+}
+
+.bks-verify__lede {
+	max-width: 42ch;
+	margin: 0;
+	color: var(--bks-site-text-muted);
+	font-size: 15px;
+
+	/* An address is one long unbreakable word to a layout engine. */
+	overflow-wrap: anywhere;
+}
+
+.bks-verify__field {
+	display: block;
+	margin: 4px 0;
+}
+
+/*
+ * One wide field rather than six boxes. Six is prettier and worse: it fights
+ * autofill, it fights paste, and on a phone it fights the keyboard. A single
+ * input with `one-time-code` is what iOS and Android actually offer to fill.
+ */
+.bks-verify__input {
+	width: 100%;
+	max-width: 260px;
+	padding: 14px 16px;
+	border: 1.5px solid var(--bks-site-border);
+	border-radius: var(--bks-site-radius-xs);
+	background: var(--bks-site-surface);
+	color: var(--bks-site-text);
+	font-size: 28px;
+	font-variant-numeric: tabular-nums;
+	font-weight: 700;
+	letter-spacing: 0.35em;
+
+	/* The letter-spacing pads the right of the last digit; this re-centres. */
+	text-indent: 0.35em;
+	text-align: center;
+}
+
+.bks-verify__input:focus-visible {
+	outline: none;
+	border-color: var(--bks-site-border-focus);
+}
+
+.bks-verify__input[aria-invalid="true"] {
+	border-color: var(--bks-site-danger);
+}
+
+.bks-verify__input:disabled {
+	opacity: 0.6;
+}
+
+.bks-verify__error {
+	margin: 0;
+	color: var(--bks-site-danger);
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.bks-verify__ok {
+	margin: 0;
+	color: var(--bks-site-success);
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.bks-verify__resend {
+	margin: 0;
+	color: var(--bks-site-text-muted);
+	font-size: 14px;
+}
+
+.bks-verify__resend-button {
+	padding: 0;
+	border: 0;
+	background: none;
+	color: var(--bks-site-brand);
+	font: inherit;
+	font-weight: 600;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.bks-verify__resend-button:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+
+/* ═══════════════════════════════════════════════
+   Bank details on the payment step
+   ═══════════════════════════════════════════════ */
+
+.bks-bank {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 18px 20px;
+	border: 1.5px solid var(--bks-site-border);
+	border-radius: var(--bks-site-radius-xs);
+	background: var(--bks-site-surface-muted);
+}
+
+.bks-bank__title {
+	margin: 0;
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--bks-site-text);
+}
+
+.bks-bank__rows {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 12px 20px;
+	margin: 0;
+}
+
+.bks-bank__rows dt {
+	color: var(--bks-site-text-muted);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.bks-bank__rows dd {
+	margin: 3px 0 0;
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--bks-site-text);
+
+	/* An IBAN is one long unbreakable token to a layout engine. */
+	overflow-wrap: anywhere;
+}
+
+/*
+ * Monospace so the digits line up in their groups of four. A guest reads this
+ * one character at a time into their banking app, and proportional figures are
+ * where they lose their place.
+ */
+.bks-bank__iban {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 15px;
+	letter-spacing: 0.02em;
+}
+
+.bks-bank__amount {
+	color: var(--bks-site-brand);
+}
+
+.bks-bank__note {
+	margin: 0;
+	color: var(--bks-site-text-muted);
+	font-size: 13px;
 }

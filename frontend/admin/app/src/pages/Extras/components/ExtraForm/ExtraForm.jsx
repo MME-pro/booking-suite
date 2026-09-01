@@ -39,6 +39,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
+import { dialogMediaProps, openMediaLibrary } from '../../../../lib/media';
 import { extraService } from '../../../../services';
 
 const MAX_LENGTH_191 = 191;
@@ -138,35 +139,19 @@ export default function ExtraForm( { extra = null, onClose, onSaved } ) {
 	const manageStock = form.watch( 'manageStock' );
 	const imageUrl = form.watch( 'imageUrl' );
 
-	/** Opens the WordPress media library; Assets.php already enqueued it. */
-	const pickImage = () => {
-		const media = window.wp?.media;
-
-		if ( ! media ) {
-			return;
-		}
-
-		const frame = media( {
+	/** Opens the WordPress media library; see lib/media.js for why via there. */
+	const pickImage = () =>
+		openMediaLibrary( {
 			title: __( 'Choose an image', 'booking-suite' ),
-			library: { type: 'image' },
-			multiple: false,
-			button: { text: __( 'Use this image', 'booking-suite' ) },
+			button: __( 'Use this image', 'booking-suite' ),
+			onSelect: ( [ attachment ] ) => {
+				if ( attachment?.url ) {
+					form.setValue( 'imageUrl', attachment.url, {
+						shouldDirty: true,
+					} );
+				}
+			},
 		} );
-
-		frame.on( 'select', () => {
-			const attachment = frame
-				.state()
-				.get( 'selection' )
-				.first()
-				.toJSON();
-
-			form.setValue( 'imageUrl', attachment.url, {
-				shouldDirty: true,
-			} );
-		} );
-
-		frame.open();
-	};
 
 	const save = async ( values ) => {
 		setError( null );
@@ -202,7 +187,10 @@ export default function ExtraForm( { extra = null, onClose, onSaved } ) {
 				}
 			} }
 		>
-			<DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
+			<DialogContent
+				className="max-h-[90vh] overflow-y-auto sm:max-w-xl"
+				{ ...dialogMediaProps }
+			>
 				<DialogHeader>
 					<DialogTitle>
 						{ isEdit

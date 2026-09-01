@@ -18,20 +18,57 @@ import StepOptions from './StepOptions';
 import StepDetails from './StepDetails';
 import StepPayment from './StepPayment';
 import StepReview from './StepReview';
+import StepVerify from './StepVerify';
 import StepDone from './StepDone';
 import './BookingModal.css';
 
-const STEPS = [ 'when', 'extras', 'details', 'payment', 'review' ];
+/**
+ * Every step, in order. `verify` is dropped when there is nothing to prove —
+ * the site has verification off, or this address was proved already — so the
+ * stepper never shows a number the guest will not be asked to walk through.
+ */
+const ALL_STEPS = [
+	'when',
+	'extras',
+	'details',
+	'verify',
+	'payment',
+	'review',
+];
+
+/**
+ * Where a proved address is remembered.
+ *
+ * sessionStorage, not local: "this session" is the tab the guest is booking
+ * in. Remembering it past that would leave a signed token on a shared machine
+ * long after they had gone, for the sake of saving a step they take once.
+ */
+const VERIFIED_KEY = 'bksVerifiedEmail';
+
+/**
+ * The address proved earlier in this session, if any.
+ *
+ * Wrapped, because a browser set to block site data throws on the accessor
+ * itself rather than returning nothing — and a booking form that will not open
+ * in private browsing is a worse bug than one that asks for a code twice.
+ *
+ * @return {{email: string, token: string}|null} What was proved.
+ */
+const rememberedVerification = () => {
+	try {
+		const stored = window.sessionStorage?.getItem( VERIFIED_KEY );
+
+		return stored ? JSON.parse( stored ) : null;
+	} catch ( error ) {
+		return null;
+	}
+};
 
 const emptyGuest = {
 	firstName: '',
 	lastName: '',
 	email: '',
 	phone: '',
-	address: '',
-	postcode: '',
-	city: '',
-	country: '',
 	notes: '',
 };
 
@@ -83,10 +120,12 @@ export default function BookingModal( {
 	const [ guest, setGuest ] = useState( emptyGuest );
 	const [ payment, setPayment ] = useState( () => ( {
 		method: 'transfer',
-		date: toKey( startOfToday() ),
 		proofName: '',
 		proofData: '',
 	} ) );
+
+	/** The address proved in this session, and the token that says so. */
+	const [ verified, setVerified ] = useState( rememberedVerification );
 
 	const dialogRef = useRef( null );
 
@@ -222,9 +261,9 @@ export default function BookingModal( {
 					...payload(),
 					...guest,
 					payment: payment.method || 'transfer',
-					paymentDate: payment.date,
 					paymentProof: payment.proofData,
 					paymentProofName: payment.proofName,
+					verificationToken: verified?.token ?? '',
 				} )
 			);
 			setDone( true );
@@ -235,15 +274,68 @@ export default function BookingModal( {
 		}
 	};
 
-	const index = STEPS.indexOf( step );
+	/*
+	 * The address as it will be compared: the server lowercases and trims
+	 * before signing, so anything else here would ask a guest to verify the
+	 * same address twice for a capital letter.
+	 */
+	const typedEmail = guest.email.trim().toLowerCase();
+
+	/** Whether this guest still has to prove the address they typed. */
+	const needsVerify =
+		Boolean( context?.verifyEmail ) &&
+		'' !== typedEmail &&
+		verified?.email !== typedEmail;
+
+	const steps = ALL_STEPS.filter(
+		( name ) => 'verify' !== name || needsVerify
+	);
+
+	const index = steps.indexOf( step );
+
+	/*
+	 * A guest who goes back and edits their address after verifying puts the
+	 * step back in front of them, and the step they are standing on may have
+	 * just disappeared from under them. Landing them on the verify step is the
+	 * right answer to both.
+	 */
+	useEffect( () => {
+		if ( -1 === index && ! isDone ) {
+			setStep( needsVerify ? 'verify' : 'details' );
+		}
+	}, [ index, needsVerify, isDone ] );
 
 	const go = ( direction ) => {
 		setError( null );
 		setStep(
-			STEPS[
-				Math.max( 0, Math.min( STEPS.length - 1, index + direction ) )
+			steps[
+				Math.max( 0, Math.min( steps.length - 1, index + direction ) )
 			]
 		);
+	};
+
+	/**
+	 * Remember a proved address for the rest of this tab's session.
+	 *
+	 * @param {string} token The signed token from the server.
+	 */
+	const onVerified = ( token ) => {
+		const proof = { email: typedEmail, token };
+
+		setVerified( proof );
+
+		try {
+			window.sessionStorage?.setItem(
+				VERIFIED_KEY,
+				JSON.stringify( proof )
+			);
+		} catch ( blocked ) {
+			// Private browsing, or site data turned off. The booking still
+			// works; the guest would just be asked again if they reopened the
+			// modal in this tab.
+		}
+
+		setStep( 'payment' );
 	};
 
 	const canContinue = () => {
@@ -266,7 +358,13 @@ export default function BookingModal( {
 		 * until one is attached. The server enforces the same rule.
 		 */
 		if ( 'payment' === step ) {
-			return Boolean( payment.proofData ) && Boolean( payment.date );
+			return Boolean( payment.proofData );
+		}
+
+		// The code moves the guest on by itself once it is accepted; there is
+		// nothing for Continue to do here but let them past unverified.
+		if ( 'verify' === step ) {
+			return false;
 		}
 
 		return true;
@@ -282,13 +380,17 @@ export default function BookingModal( {
 		  ) }`
 		: '';
 
-	const labels = [
-		__( 'When', 'booking-suite' ),
-		__( 'Extras', 'booking-suite' ),
-		__( 'Details', 'booking-suite' ),
-		__( 'Payment', 'booking-suite' ),
-		__( 'Review', 'booking-suite' ),
-	];
+	/* Keyed by step, so dropping the verify step drops its label with it. */
+	const LABELS = {
+		when: __( 'When', 'booking-suite' ),
+		extras: __( 'Extras', 'booking-suite' ),
+		details: __( 'Details', 'booking-suite' ),
+		verify: __( 'Confirm', 'booking-suite' ),
+		payment: __( 'Payment', 'booking-suite' ),
+		review: __( 'Review', 'booking-suite' ),
+	};
+
+	const labels = steps.map( ( name ) => LABELS[ name ] );
 
 	return (
 		<div
@@ -412,10 +514,27 @@ export default function BookingModal( {
 								/>
 							) }
 
+							{ 'verify' === step && (
+								<StepVerify
+									email={ typedEmail }
+									onVerified={ onVerified }
+								/>
+							) }
+
 							{ 'payment' === step && (
 								<StepPayment
 									payment={ payment }
 									onChange={ setPayment }
+									bank={ context?.bank }
+									total={
+										quote
+											? formatPrice(
+													quote.total,
+													currency,
+													settings.locale
+											  )
+											: ''
+									}
 								/>
 							) }
 
@@ -426,7 +545,8 @@ export default function BookingModal( {
 									guest={ guest }
 									quote={ quote }
 									currency={ currency }
-									overnightWindow={ overnightWindow }
+									checkInTime={ context?.checkIn }
+									checkOutTime={ context?.checkOut }
 								/>
 							) }
 						</>

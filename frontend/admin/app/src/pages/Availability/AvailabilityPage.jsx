@@ -44,7 +44,8 @@ import { cn } from '@/lib/utils';
 
 import { LockDialog } from './components/LockDialog';
 import { MonthGrid } from '../Calendar/components/MonthGrid';
-import { dayKey, toDate } from '../../lib/dates';
+import { assignLanes, buildCoverage, runFrom } from './data/lockBars';
+import { dayKey } from '../../lib/dates';
 import { blockService } from '../../services';
 import { settings } from '../../settings';
 import { formatDateTime } from '../Bookings/data/format';
@@ -146,44 +147,21 @@ export default function AvailabilityPage() {
 		);
 	}, [ blocks, visibleIds ] );
 
-	/** Day key → the locks covering that day. */
-	const byDay = useMemo( () => {
-		const days = new Map();
+	/*
+	 * Day coverage, bar rows and where each bar begins. All three come out of
+	 * data/lockBars.js, which is where the week-splitting is tested.
+	 */
+	const coverage = useMemo(
+		() => buildCoverage( visibleBlocks ),
+		[ visibleBlocks ]
+	);
 
-		for ( const block of visibleBlocks ) {
-			const start = toDate( block.startsAt );
-			const end = toDate( block.endsAt );
+	const byDay = coverage.days;
 
-			if ( ! start || ! end ) {
-				continue;
-			}
-
-			const cursor = new Date(
-				start.getFullYear(),
-				start.getMonth(),
-				start.getDate()
-			);
-
-			// Guarded: a bad timestamp must not spin here.
-			for ( let guard = 0; guard < 400; guard++ ) {
-				const key = dayKey( cursor );
-
-				if ( ! days.has( key ) ) {
-					days.set( key, [] );
-				}
-
-				days.get( key ).push( block );
-
-				cursor.setDate( cursor.getDate() + 1 );
-
-				if ( cursor > end ) {
-					break;
-				}
-			}
-		}
-
-		return days;
-	}, [ visibleBlocks ] );
+	const lanes = useMemo(
+		() => assignLanes( visibleBlocks, coverage.spans ),
+		[ visibleBlocks, coverage ]
+	);
 
 	/*
 	 * The lock list is paged; the calendar above it is not. A month of squares
@@ -256,6 +234,28 @@ export default function AvailabilityPage() {
 			? 'hsl(var(--destructive) / 0.22)'
 			: 'hsl(var(--muted-foreground) / 0.22)';
 
+		/*
+		 * One row per lock touching this day, in its month-wide lane, so a bar
+		 * keeps the same line all the way along. Rows a passing bar occupies
+		 * are held open with an empty spacer: the bar itself lives in the cell
+		 * it starts in and hangs over the ones after it, so without the spacer
+		 * a lock beginning here would be drawn straight through it.
+		 */
+		const rows = [];
+
+		for ( const lock of locks ) {
+			const lane = lanes.get( lock.id );
+
+			if ( undefined === lane ) {
+				continue;
+			}
+
+			rows[ lane ] = {
+				lock,
+				run: runFrom( coverage.spans, lock, date, dateLocale ),
+			};
+		}
+
 		return (
 			<>
 				{ /*
@@ -288,32 +288,92 @@ export default function AvailabilityPage() {
 					) }
 				</span>
 
-				{ /*
-				 * `relative` lifts the names clear of the hatch: an absolutely
-				 * positioned sibling paints over static ones whatever the DOM
-				 * order, which had the stripes running straight through the
-				 * text. The chips are opaque for the same reason.
-				 */ }
-				<span className="relative flex flex-col gap-0.5">
-					{ master && (
-						<span className="truncate rounded-sm border border-destructive/30 bg-card px-1.5 py-0.5 text-[11px] font-medium leading-tight text-destructive">
-							{ __( 'Master lock', 'booking-suite' ) }
-						</span>
-					) }
+				<span className="flex flex-col gap-0.5">
+					{ Array.from( rows, ( row, lane ) => {
+						if ( ! row ) {
+							// A lane nothing occupies today, below one that is.
+							return (
+								<span
+									key={ `gap-${ lane }` }
+									aria-hidden="true"
+									className="h-5"
+								/>
+							);
+						}
 
-					{ locks
-						.filter( ( lock ) => ! lock.isMaster )
-						.slice( 0, 2 )
-						.map( ( lock ) => (
+						const { lock, run } = row;
+
+						if ( ! run ) {
+							// A bar from an earlier day passes over this cell.
+							return (
+								<span
+									key={ `through-${ lock.id }` }
+									aria-hidden="true"
+									className="h-5"
+								/>
+							);
+						}
+
+						/*
+						 * The bar is as wide as the days it covers: each cell
+						 * is one `100%` plus the 1px border between them, less
+						 * a little at whichever end is a real edge rather than
+						 * a week break.
+						 */
+						const trim =
+							( run.isStart ? 3 : 0 ) + ( run.isEnd ? 3 : 0 );
+
+						return (
 							<span
 								key={ lock.id }
-								className="truncate rounded-sm border bg-card px-1.5 py-0.5 text-[11px] leading-tight text-card-foreground"
+								title={ lock.reason || undefined }
+								className={ cn(
+									/*
+									 * relative + z-20 so the bar paints over
+									 * the hatch of the cells it runs across:
+									 * those are later siblings, and would
+									 * otherwise cover it.
+									 */
+									'relative z-20 flex h-5 items-center gap-1 overflow-hidden border px-1.5 text-[11px] font-medium leading-none',
+									lock.isMaster
+										? 'border-destructive/30 bg-card text-destructive'
+										: 'border-border bg-card text-card-foreground',
+									// Square ends where the range carries on
+									// into the next week, rounded where it
+									// really begins or ends.
+									run.isStart ? 'rounded-l-sm' : 'border-l-0',
+									run.isEnd ? 'rounded-r-sm' : 'border-r-0'
+								) }
+								style={ {
+									marginLeft: run.isStart ? '3px' : 0,
+									width: `calc(${ run.length } * 100% + ${
+										run.length - 1
+									}px - ${ trim }px)`,
+								} }
 							>
-								{ lock.extraName ||
-									lock.apartmentName ||
-									__( 'Locked', 'booking-suite' ) }
+								{ run.isStart &&
+									( lock.isMaster ? (
+										<ShieldAlert className="h-3 w-3 shrink-0" />
+									) : (
+										<Lock className="h-3 w-3 shrink-0" />
+									) ) }
+
+								{ /*
+								 * Named on every week the range runs through,
+								 * not only the first: a bar entering a row
+								 * with no label on it says a date is closed
+								 * without saying what is closed.
+								 */ }
+								<span className="truncate">
+									{ lock.isMaster
+										? __( 'Master lock', 'booking-suite' )
+										: lock.extraName ||
+										  lock.apartmentName ||
+										  __( 'Locked', 'booking-suite' ) }
+								</span>
 							</span>
-						) ) }
+						);
+					} ) }
 				</span>
 			</>
 		);

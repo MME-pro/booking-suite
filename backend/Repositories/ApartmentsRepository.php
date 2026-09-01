@@ -406,6 +406,60 @@ final class ApartmentsRepository {
 	}
 
 	/**
+	 * Every picture of an apartment, best first.
+	 *
+	 * The gallery this plugin owns, and then the post's own featured image.
+	 * Both, because an apartment can be set up two ways: through the plugin,
+	 * which mirrors the first gallery photo onto the featured image, or in
+	 * WordPress by whoever built the page, which sets a featured image and
+	 * leaves the gallery empty. The second used to show no picture anywhere on
+	 * the site — the guest saw a name and a price and nothing to look at.
+	 *
+	 * Deduplicated, so a mirrored photo is not offered twice.
+	 *
+	 * @param array<string, mixed> $row An apartment from cast().
+	 *
+	 * @return int[] Attachment ids.
+	 */
+	public static function image_ids( array $row ): array {
+		$ids = array_values(
+			array_filter( array_map( 'absint', (array) ( $row['images'] ?? array() ) ) )
+		);
+
+		$featured = (int) get_post_thumbnail_id( (int) ( $row['id'] ?? 0 ) );
+
+		if ( $featured ) {
+			$ids[] = $featured;
+		}
+
+		return array_values( array_unique( $ids ) );
+	}
+
+	/**
+	 * The one picture to show for an apartment, resolved and ready to render.
+	 *
+	 * @param array<string, mixed> $row  An apartment from cast().
+	 * @param string               $size A registered image size.
+	 *
+	 * @return array{url: string, alt: string}|null The image, or null when the
+	 *                                              apartment has none at all.
+	 */
+	public static function image( array $row, string $size = 'medium_large' ): ?array {
+		foreach ( self::image_ids( $row ) as $attachment_id ) {
+			$url = wp_get_attachment_image_url( $attachment_id, $size );
+
+			if ( $url ) {
+				return array(
+					'url' => $url,
+					'alt' => (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
+				);
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * One joined row => the array shape the rest of the plugin expects.
 	 *
 	 * @param array<string, mixed> $row

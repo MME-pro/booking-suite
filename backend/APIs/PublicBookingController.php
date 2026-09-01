@@ -27,6 +27,7 @@ use BookingSuite\Backend\Pricing\SlotGenerator;
 use BookingSuite\Backend\Repositories\PriceRulesRepository;
 use BookingSuite\Backend\Repositories\PaymentsRepository;
 use BookingSuite\Backend\Repositories\SettingsRepository;
+use BookingSuite\Backend\Support\EmailVerification;
 use BookingSuite\Backend\Support\ProofUpload;
 use WP_Error;
 use WP_REST_Request;
@@ -118,14 +119,24 @@ final class PublicBookingController {
 					'name'      => $apartment['name'],
 					'capacity'  => (int) $apartment['capacity'],
 					'colour'    => $apartment['colour'],
-					'image'     => self::first_image( (array) $apartment['images'] ),
+					'image'     => ApartmentsRepository::image( $apartment ),
 					'priceFrom' => RateCalculator::lowest_rate( $apartment ) ?? $prices[ $id ] ?? null,
 					'permalink' => $apartment['permalink'],
 				),
 				'extras'    => ExtrasRepository::active( $id ),
 				'currency'  => SettingsRepository::currency(),
+				// Where the money goes. The payment step shows it, because a
+				// guest asked to prove a transfer needs somewhere to transfer to.
+				'bank'      => SettingsRepository::bank_details(),
 				'checkIn'   => self::check_in_time(),
 				'checkOut'  => self::check_out_time(),
+				/*
+				 * Whether the modal should ask the guest to prove their
+				 * address. Answered here rather than assumed, so turning the
+				 * verification email off takes the step off the form too
+				 * instead of leaving a wall nobody can get past.
+				 */
+				'verifyEmail' => EmailVerification::is_enabled(),
 			),
 			200
 		);
@@ -220,6 +231,28 @@ final class PublicBookingController {
 
 		if ( ! is_email( $email ) ) {
 			return self::error( 'booking_suite_invalid_field', __( 'Please give a valid email address.', 'booking-suite' ), 400, 'email' );
+		}
+
+		/*
+		 * The address has to have been proved. Checked HERE and not only in
+		 * the modal, because the modal is JavaScript on the guest's machine
+		 * and this endpoint is open to anyone: a form that asks for a code but
+		 * an API that does not want one is not verification, it is a delay.
+		 *
+		 * The token is signed and carries its own expiry, so nothing has to be
+		 * remembered between the two requests.
+		 */
+		if ( EmailVerification::is_enabled() ) {
+			$token = (string) $request->get_param( 'verificationToken' );
+
+			if ( ! EmailVerification::is_verified( $email, $token ) ) {
+				return self::error(
+					'booking_suite_unverified',
+					__( 'Please confirm your email address before booking.', 'booking-suite' ),
+					403,
+					'email'
+				);
+			}
 		}
 
 		$quote = self::price( $parsed );
@@ -650,26 +683,6 @@ final class PublicBookingController {
 		[ $year, $month, $day ] = array_map( 'intval', explode( '-', $value ) );
 
 		return checkdate( $month, $day, $year ) ? $value : null;
-	}
-
-	/**
-	 * @param int[] $ids
-	 *
-	 * @return array{url: string, alt: string}|null
-	 */
-	private static function first_image( array $ids ): ?array {
-		foreach ( $ids as $attachment_id ) {
-			$url = wp_get_attachment_image_url( (int) $attachment_id, 'medium_large' );
-
-			if ( $url ) {
-				return array(
-					'url' => $url,
-					'alt' => (string) get_post_meta( (int) $attachment_id, '_wp_attachment_image_alt', true ),
-				);
-			}
-		}
-
-		return null;
 	}
 
 	private static function error( string $code, string $message, int $status, string $field = '' ): WP_Error {

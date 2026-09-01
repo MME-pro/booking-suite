@@ -57,4 +57,33 @@ export const bookingService = {
 
 	book: ( payload, signal ) =>
 		request( 'public/bookings', { method: 'POST', body: payload, signal } ),
+
+	/**
+	 * Post a one-time code to an address the guest has just typed.
+	 *
+	 * @param {string}      email    Where to send it.
+	 * @param {AbortSignal} [signal] Cancels the request.
+	 * @return {Promise<Object>} { sent, expiresIn, resendIn }.
+	 */
+	requestCode: ( email, signal ) =>
+		request( 'public/verify', {
+			method: 'POST',
+			body: { email },
+			signal,
+		} ),
+
+	/**
+	 * Hand the code back; the reply carries the token the booking needs.
+	 *
+	 * @param {string}      email    The address being proved.
+	 * @param {string}      code     What the guest typed.
+	 * @param {AbortSignal} [signal] Cancels the request.
+	 * @return {Promise<Object>} { verified, token, expiresIn }.
+	 */
+	confirmCode: ( email, code, signal ) =>
+		request( 'public/verify/confirm', {
+			method: 'POST',
+			body: { email, code },
+			signal,
+		} ),
 };

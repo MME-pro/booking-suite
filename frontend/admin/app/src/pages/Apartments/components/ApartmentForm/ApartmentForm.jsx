@@ -58,6 +58,7 @@ import {
 
 import { ImageUpload } from '../../../../components';
 import { settings } from '../../../../settings';
+import { dialogMediaProps } from '../../../../lib/media';
 import { apartmentService } from '../../../../services';
 import ExportLinks from './ExportLinks';
 import {
@@ -270,7 +271,10 @@ export default function ApartmentForm( {
 				}
 			} }
 		>
-			<DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
+			<DialogContent
+				className="max-h-[90vh] overflow-y-auto sm:max-w-3xl"
+				{ ...dialogMediaProps }
+			>
 				<DialogHeader>
 					<DialogTitle>
 						{ isEdit

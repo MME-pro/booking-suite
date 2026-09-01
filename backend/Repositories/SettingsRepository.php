@@ -349,6 +349,45 @@ final class SettingsRepository {
 	}
 
 	/**
+	 * The account, as separate fields rather than a block of lines.
+	 *
+	 * bank_lines() below flattens the same settings for the invoice, which
+	 * prints them one under another. A screen can do better than that: an IBAN
+	 * wants monospace and room to be copied, a holder does not, and neither
+	 * wants a label guessed at from its position in a list.
+	 *
+	 * @return array{holder: string, bank: string, iban: string, bic: string, notes: string[], hasAccount: bool}
+	 */
+	public static function bank_details(): array {
+		$iban = trim( self::get( self::BANK_IBAN ) );
+
+		$notes = array();
+
+		foreach ( preg_split( '/\R/', self::get( self::BANK_DETAILS ) ) ?: array() as $extra ) {
+			$extra = trim( $extra );
+
+			if ( '' !== $extra ) {
+				$notes[] = $extra;
+			}
+		}
+
+		return array(
+			'holder' => trim( self::get( self::BANK_HOLDER ) ),
+			'bank'   => trim( self::get( self::BANK_NAME ) ),
+			'iban'   => '' === $iban ? '' : self::format_iban( $iban ),
+			'bic'    => strtoupper( trim( self::get( self::BANK_BIC ) ) ),
+			'notes'  => $notes,
+
+			/*
+			 * The IBAN is what makes an account payable. Without one, the rest
+			 * is a name and a note — so nothing that would tell a guest "send
+			 * the money here" should be shown at all.
+			 */
+			'hasAccount' => '' !== $iban,
+		);
+	}
+
+	/**
 	 * The bank block for the invoice, one entry per line.
 	 *
 	 * The IBAN is printed in groups of four, the way it is written on a bank
