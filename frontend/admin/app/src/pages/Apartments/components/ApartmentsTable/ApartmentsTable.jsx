@@ -2,8 +2,9 @@
  * ApartmentsTable — the apartments list, on the shadcn/ui Table primitives.
  */
 
+import { useState } from 'react';
 import { __, sprintf } from '@wordpress/i18n';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Check, Copy, Pencil, Trash2 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -15,6 +16,75 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+
+import { copyToClipboard } from '../../../../lib/clipboard';
+import { settings } from '../../../../settings';
+
+/**
+ * One apartment's internal short link, with a button that copies it.
+ *
+ * Shown as the path rather than the whole URL — the host is the same on every
+ * row and repeating it seven times crowds out the part that differs. The copy
+ * button puts the FULL address on the clipboard, because that is what gets
+ * pasted into a newsletter or a message to a cleaner.
+ *
+ * @param {Object} props           Component props.
+ * @param {string} props.shortLink The stored slug, or '' when there is none.
+ * @return {JSX.Element} The cell's content.
+ */
+function ShortLink( { shortLink } ) {
+	const [ copied, setCopied ] = useState( false );
+
+	if ( ! shortLink ) {
+		/*
+		 * Only a draft should reach this: publishing mints one, and every
+		 * apartment that already existed was given one on upgrade.
+		 */
+		return (
+			<span className="text-xs text-muted-foreground">
+				{ __( 'Not published yet', 'booking-suite' ) }
+			</span>
+		);
+	}
+
+	const path = `/${ String( shortLink ).replace( /^\/+/, '' ) }`;
+	const url = `${ settings.siteUrl }${ path.slice( 1 ) }`;
+
+	const copy = async () => {
+		if ( await copyToClipboard( url ) ) {
+			setCopied( true );
+			window.setTimeout( () => setCopied( false ), 2000 );
+		}
+	};
+
+	return (
+		<span className="flex items-center gap-1">
+			<a
+				href={ url }
+				target="_blank"
+				rel="noreferrer"
+				title={ url }
+				className="truncate font-mono text-xs text-primary hover:underline"
+			>
+				{ path }
+			</a>
+
+			<Button
+				variant="ghost"
+				size="icon"
+				className="h-6 w-6 shrink-0"
+				onClick={ copy }
+				aria-label={ __( 'Copy short link', 'booking-suite' ) }
+			>
+				{ copied ? (
+					<Check className="h-3 w-3 text-success" />
+				) : (
+					<Copy className="h-3 w-3" />
+				) }
+			</Button>
+		</span>
+	);
+}
 
 export default function ApartmentsTable( {
 	apartments,
@@ -40,6 +110,9 @@ export default function ApartmentsTable( {
 						</TableHead>
 						<TableHead className="hidden text-center md:table-cell">
 							{ __( 'Cleaning', 'booking-suite' ) }
+						</TableHead>
+						<TableHead className="hidden w-[210px] lg:table-cell">
+							{ __( 'Short link', 'booking-suite' ) }
 						</TableHead>
 						<TableHead className="w-[130px]">
 							{ __( 'Status', 'booking-suite' ) }
@@ -98,6 +171,14 @@ export default function ApartmentsTable( {
 										__( '%d min', 'booking-suite' ),
 										apartment.cleaningMin
 									) }
+								</TableCell>
+
+								<TableCell className="hidden lg:table-cell">
+									<ShortLink
+										shortLink={
+											apartment.internalShortLink
+										}
+									/>
 								</TableCell>
 
 								<TableCell>

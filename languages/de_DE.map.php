@@ -1623,4 +1623,12 @@ Gute Reise und bis bald.
 	'Please quote %s as the payment reference so we can match your transfer to your booking.' => 'Bitte geben Sie %s als Verwendungszweck an, damit wir Ihre Überweisung Ihrer Buchung zuordnen können.',
 	'Please put your name in the payment reference. We will send you the booking number by email.' => 'Bitte geben Sie Ihren Namen als Verwendungszweck an. Die Buchungsnummer senden wir Ihnen per E-Mail.',
 	'Your bank account, with a note on how to pay' => 'Ihre Bankverbindung, mit einem Hinweis zur Zahlung',
+
+	/*
+	 * The apartments list gained a short-link column; the link itself is now
+	 * minted when an apartment is published.
+	 */
+	'Short link' => 'Kurzlink',
+	'Copy short link' => 'Kurzlink kopieren',
+	'Not published yet' => 'Noch nicht veröffentlicht',
 );

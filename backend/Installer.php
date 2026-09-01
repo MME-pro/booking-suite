@@ -20,7 +20,7 @@ final class Installer {
 	/**
 	 * Bump whenever any table definition changes.
 	 */
-	public const DB_VERSION = 12;
+	public const DB_VERSION = 13;
 
 	private const VERSION_OPTION = 'bksuite_db_version';
 
@@ -39,7 +39,46 @@ final class Installer {
 			dbDelta( $class::definition() );
 		}
 
+		self::backfill_short_links();
+
 		update_option( self::VERSION_OPTION, self::DB_VERSION, false );
+	}
+
+	/**
+	 * Give every published apartment its internal short link.
+	 *
+	 * New apartments get one when they are published. Every apartment that
+	 * already existed has an empty field, because until now the only way to
+	 * fill it was to type one — so without this the column an owner is about
+	 * to be shown would be blank for their whole property until they went
+	 * through and edited each one.
+	 *
+	 * Only fills blanks, so a link somebody chose by hand is left alone, and
+	 * running it twice does nothing the second time.
+	 */
+	private static function backfill_short_links(): void {
+		global $wpdb;
+
+		require_once PLUGIN_DIR . 'backend/schemas/mmebk_apartments.php';
+
+		$table = Schemas\ApartmentsTable::table();
+
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) {
+			return;
+		}
+
+		$ids = $wpdb->get_col(
+			"SELECT post_id FROM $table
+				WHERE internal_short_link IS NULL OR internal_short_link = ''"
+		) ?: array();
+
+		foreach ( $ids as $post_id ) {
+			$post = get_post( (int) $post_id );
+
+			if ( $post instanceof \WP_Post && 'publish' === $post->post_status ) {
+				Repositories\ApartmentsRepository::ensure_short_link( (int) $post_id );
+			}
+		}
 	}
 
 	/**

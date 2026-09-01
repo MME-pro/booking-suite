@@ -92,6 +92,12 @@ final class Assets {
 				'view'       => $view,
 				'version'    => VERSION,
 				'adminUrl'   => admin_url(),
+				/*
+				 * The public site root. The apartments list builds each short
+				 * link against it, and a short link the operator cannot see in
+				 * full is one they cannot paste anywhere.
+				 */
+				'siteUrl'    => trailingslashit( home_url() ),
 				'menuSlug'      => Menu::SLUG_DASHBOARD,
 				/*
 				 * Screen URLs are built here rather than in JavaScript, so the

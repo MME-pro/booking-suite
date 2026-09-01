@@ -9,6 +9,7 @@ const defaults = {
 	view: '',
 	version: '',
 	adminUrl: '',
+	siteUrl: '',
 	menuSlug: 'booking-suite',
 	apartmentsUrl: '',
 	restUrl: '',

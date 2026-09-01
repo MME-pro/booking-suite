@@ -447,10 +447,10 @@
     },
     {
         "single": "%d min",
-        "line": 98,
+        "line": 171,
         "comment": "translators: %d: turnaround time in minutes.",
         "refs": [
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:98"
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:171"
         ],
         "comments": {
             "translators: %d: turnaround time in minutes.": true
@@ -1029,10 +1029,10 @@
     },
     {
         "single": "Actions",
-        "line": 49,
+        "line": 122,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:49",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:122",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:127",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:135",
             "frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:87",
@@ -1068,7 +1068,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:390",
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:113",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:194",
             "frontend/admin/app/src/pages/Apartments/components/ApartmentsToolbar/ApartmentsToolbar.jsx:14",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:44",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:211",
@@ -1109,10 +1109,10 @@
     },
     {
         "single": "Add Apartment",
-        "line": 96,
+        "line": 207,
         "comment": "",
         "refs": [
-            "backend/PostTypes/ApartmentPostType.php:96",
+            "backend/PostTypes/ApartmentPostType.php:207",
             "frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:316",
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:282",
             "frontend/admin/app/src/pages/Apartments/components/ApartmentsToolbar/ApartmentsToolbar.jsx:68",
@@ -1317,10 +1317,10 @@
     },
     {
         "single": "All Apartments",
-        "line": 102,
+        "line": 213,
         "comment": "",
         "refs": [
-            "backend/PostTypes/ApartmentPostType.php:102"
+            "backend/PostTypes/ApartmentPostType.php:213"
         ],
         "comments": []
     },
@@ -1576,11 +1576,11 @@
     },
     {
         "single": "Apartment",
-        "line": 95,
+        "line": 206,
         "comment": "",
         "refs": [
-            "backend/PostTypes/ApartmentPostType.php:95",
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:36",
+            "backend/PostTypes/ApartmentPostType.php:206",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:106",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:164",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:364",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:424",
@@ -1713,10 +1713,10 @@
     },
     {
         "single": "Apartments",
-        "line": 94,
+        "line": 205,
         "comment": "",
         "refs": [
-            "backend/PostTypes/ApartmentPostType.php:94",
+            "backend/PostTypes/ApartmentPostType.php:205",
             "frontend/admin/Menu.php:155",
             "frontend/admin/Menu.php:156",
             "frontend/admin/Menu.php:253",
@@ -2245,10 +2245,10 @@
     },
     {
         "single": "Booking Suite: the admin interface has not been built yet.",
-        "line": 176,
+        "line": 182,
         "comment": "",
         "refs": [
-            "frontend/admin/Assets.php:176"
+            "frontend/admin/Assets.php:182"
         ],
         "comments": []
     },
@@ -3000,10 +3000,10 @@
     },
     {
         "single": "Cleaning",
-        "line": 42,
+        "line": 112,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:42"
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:112"
         ],
         "comments": []
     },
@@ -3286,6 +3286,15 @@
         "comments": {
             "translators: %s: which feed, e.g. \"For Airbnb\".": true
         }
+    },
+    {
+        "single": "Copy short link",
+        "line": 77,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:77"
+        ],
+        "comments": []
     },
     {
         "single": "Copy to clipboard",
@@ -3641,7 +3650,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:365",
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:164",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:245",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:440",
             "frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:287"
         ],
@@ -3652,10 +3661,10 @@
     },
     {
         "single": "Delete %s",
-        "line": 151,
+        "line": 232,
         "comment": "translators: %s: apartment name.",
         "refs": [
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:151",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:232",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:411",
             "frontend/admin/app/src/pages/Extras/components/ExtraCard/ExtraCard.jsx:197",
             "frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:274"
@@ -3726,10 +3735,10 @@
     },
     {
         "single": "Deleting…",
-        "line": 160,
+        "line": 241,
         "comment": "translators: %s: apartment name.",
         "refs": [
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:160",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:241",
             "frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:283"
         ],
         "comments": {
@@ -3909,10 +3918,10 @@
     },
     {
         "single": "Edit",
-        "line": 140,
+        "line": 221,
         "comment": "translators: %s: apartment name.",
         "refs": [
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:140",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:221",
             "frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:114",
             "frontend/admin/app/src/pages/Extras/components/ExtraCard/ExtraCard.jsx:185",
             "frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:260"
@@ -3924,10 +3933,10 @@
     },
     {
         "single": "Edit %s",
-        "line": 132,
+        "line": 213,
         "comment": "translators: %s: apartment name.",
         "refs": [
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:132",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:213",
             "frontend/admin/app/src/pages/Extras/components/ExtraCard/ExtraCard.jsx:179",
             "frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:252"
         ],
@@ -3938,10 +3947,10 @@
     },
     {
         "single": "Edit Apartment",
-        "line": 97,
+        "line": 208,
         "comment": "",
         "refs": [
-            "backend/PostTypes/ApartmentPostType.php:97",
+            "backend/PostTypes/ApartmentPostType.php:208",
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:281"
         ],
         "comments": []
@@ -4599,7 +4608,7 @@
         "refs": [
             "backend/PostTypes/ApartmentMetaBox.php:152",
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:437",
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:39",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:109",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:376",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:513",
@@ -4843,10 +4852,10 @@
     },
     {
         "single": "Inactive",
-        "line": 114,
+        "line": 195,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:114",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:195",
             "frontend/admin/app/src/pages/Apartments/components/ApartmentsToolbar/ApartmentsToolbar.jsx:15",
             "frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:212",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:45",
@@ -5507,10 +5516,10 @@
     },
     {
         "single": "New Apartment",
-        "line": 98,
+        "line": 209,
         "comment": "",
         "refs": [
-            "backend/PostTypes/ApartmentPostType.php:98"
+            "backend/PostTypes/ApartmentPostType.php:209"
         ],
         "comments": []
     },
@@ -5598,10 +5607,10 @@
     },
     {
         "single": "No apartments found.",
-        "line": 101,
+        "line": 212,
         "comment": "",
         "refs": [
-            "backend/PostTypes/ApartmentPostType.php:101"
+            "backend/PostTypes/ApartmentPostType.php:212"
         ],
         "comments": []
     },
@@ -5805,6 +5814,16 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepOptions.jsx:93"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Not published yet",
+        "line": 109,
+        "comment": "",
+        "refs": [
+            "backend/PostTypes/ApartmentPostType.php:109",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:45"
         ],
         "comments": []
     },
@@ -7650,10 +7669,10 @@
     },
     {
         "single": "Search Apartments",
-        "line": 100,
+        "line": 211,
         "comment": "",
         "refs": [
-            "backend/PostTypes/ApartmentPostType.php:100"
+            "backend/PostTypes/ApartmentPostType.php:211"
         ],
         "comments": []
     },
@@ -7910,6 +7929,18 @@
         "comments": []
     },
     {
+        "single": "Short link",
+        "line": 73,
+        "comment": "",
+        "refs": [
+            "backend/PostTypes/ApartmentPostType.php:73",
+            "backend/PostTypes/ApartmentPostType.php:82",
+            "backend/PostTypes/ApartmentPostType.php:130",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:115"
+        ],
+        "comments": []
+    },
+    {
         "single": "Short links",
         "line": 605,
         "comment": "",
@@ -8099,10 +8130,10 @@
     },
     {
         "single": "Status",
-        "line": 45,
+        "line": 118,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:45",
+            "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:118",
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:72",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:121",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:81",
@@ -9692,10 +9723,10 @@
     },
     {
         "single": "View Apartment",
-        "line": 99,
+        "line": 210,
         "comment": "",
         "refs": [
-            "backend/PostTypes/ApartmentPostType.php:99"
+            "backend/PostTypes/ApartmentPostType.php:210"
         ],
         "comments": []
     },

@@ -157,6 +157,14 @@ final class ApartmentsRepository {
 		self::ensure_row( (int) $id );
 		self::write( (int) $id, $data );
 
+		/*
+		 * After write(), not before. The publish hook already minted a link
+		 * while wp_insert_post was running, and write() then blanked it again
+		 * — the create form posts an empty short-link field, and an empty
+		 * short link is stored as NULL. Filling it here is the last word.
+		 */
+		self::ensure_short_link( (int) $id );
+
 		return (int) $id;
 	}
 
@@ -317,6 +325,82 @@ final class ApartmentsRepository {
 		);
 
 		return null === $post_id ? null : (int) $post_id;
+	}
+
+	/**
+	 * Give a published apartment its internal short link, if it has none.
+	 *
+	 * The field has always existed and always been left empty, because typing
+	 * a slug for every apartment is the kind of chore that never gets done —
+	 * so the link an owner is supposed to paste into a newsletter or hand to a
+	 * cleaner did not exist for any of them.
+	 *
+	 * Derived from the post slug, which WordPress has already made unique,
+	 * lowercase and URL-safe for this exact purpose. Deduplicated anyway,
+	 * because the column carries a UNIQUE key and two apartments can reach the
+	 * same slug across a rename.
+	 *
+	 * Only ever fills a blank. An owner who set their own link keeps it, and
+	 * one who renames the apartment keeps the link they have already given
+	 * out — a short link that moved when a title was edited would break every
+	 * place it had been pasted.
+	 *
+	 * @param int $post_id The apartment.
+	 *
+	 * @return string The link it now has, or '' when one could not be made.
+	 */
+	public static function ensure_short_link( int $post_id ): string {
+		global $wpdb;
+
+		$table = ApartmentsTable::table();
+
+		$current = (string) $wpdb->get_var(
+			$wpdb->prepare( "SELECT internal_short_link FROM $table WHERE post_id = %d", $post_id )
+		);
+
+		if ( '' !== trim( $current ) ) {
+			return $current;
+		}
+
+		$post = get_post( $post_id );
+
+		if ( ! $post instanceof \WP_Post ) {
+			return '';
+		}
+
+		// post_name is empty on a draft that has never been published; the
+		// title is the only thing to go on then.
+		$base = sanitize_title( '' !== $post->post_name ? $post->post_name : $post->post_title );
+
+		if ( '' === $base ) {
+			return '';
+		}
+
+		$link  = $base;
+		$guard = 2;
+
+		while ( self::short_link_taken( 'internal_short_link', $link, $post_id ) ) {
+			$link = $base . '-' . $guard;
+
+			// A property with a hundred apartments sharing one title is not a
+			// thing; a loop that could not end is.
+			if ( ++$guard > 100 ) {
+				return '';
+			}
+		}
+
+		$wpdb->update(
+			$table,
+			array(
+				'internal_short_link' => $link,
+				'updated_at'          => current_time( 'mysql', true ),
+			),
+			array( 'post_id' => $post_id ),
+			array( '%s', '%s' ),
+			array( '%d' )
+		);
+
+		return $link;
 	}
 
 	/**
