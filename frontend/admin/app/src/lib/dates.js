@@ -7,6 +7,8 @@
  * day a booking belongs to.
  */
 
+import { settings } from '../settings';
+
 /**
  * @param {string} value A 'Y-m-d H:i:s' UTC timestamp.
  * @return {Date|null} The parsed date, or null when unparseable.
@@ -48,4 +50,32 @@ export function dayOffset( offset ) {
 	date.setDate( date.getDate() + offset );
 
 	return date;
+}
+
+/**
+ * A timestamp as a 24-hour local clock time.
+ *
+ * 24-hour throughout, per the plugin's own convention — an 11:00 checkout read
+ * as "11:00 PM" is a whole day's difference to whoever is cleaning.
+ *
+ * @param {string} value A 'Y-m-d H:i:s' UTC timestamp.
+ * @return {string} The local time as HH:MM, or '' when unparseable.
+ */
+export function formatTime( value ) {
+	const date = toDate( value );
+
+	return date ? formatClock( date ) : '';
+}
+
+/**
+ * A Date as a 24-hour local clock time.
+ *
+ * @param {Date} date The moment to format.
+ * @return {string} The time as HH:MM.
+ */
+export function formatClock( date ) {
+	return new Intl.DateTimeFormat(
+		String( settings.locale || 'de_DE' ).replace( '_', '-' ),
+		{ hour: '2-digit', minute: '2-digit', hour12: false }
+	).format( date );
 }

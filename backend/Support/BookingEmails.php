@@ -17,10 +17,12 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\Support;
 
+use BookingSuite\Backend\Repositories\BookingEventsRepository;
 use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Repositories\EmailTemplatesRepository;
 use BookingSuite\Backend\Repositories\PaymentsRepository;
 use BookingSuite\Backend\Repositories\SettingsRepository;
+use BookingSuite\Backend\Schemas\BookingEventsTable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -152,6 +154,33 @@ final class BookingEmails {
 		// wp_mail has read them by now, whether or not it succeeded.
 		foreach ( $paths as $path ) {
 			wp_delete_file( $path );
+		}
+
+		/*
+		 * Recorded whether or not it went. "We emailed you on the 3rd" is the
+		 * claim an operator has to be able to stand behind, and a send that
+		 * wp_mail refused is the one case where knowing matters most — every
+		 * return above this point is a decision NOT to write to the guest, and
+		 * those are not history, they are configuration.
+		 */
+		if ( $booking_id > 0 ) {
+			BookingEventsRepository::record(
+				$booking_id,
+				BookingEventsTable::EMAIL_SENT,
+				array(
+					'note'    => (string) $mail['subject'],
+					'changes' => array(
+						'template' => array(
+							'from' => '',
+							'to'   => $template,
+						),
+						'delivery' => array(
+							'from' => '',
+							'to'   => $sent ? 'sent' : 'failed',
+						),
+					),
+				)
+			);
 		}
 
 		return $sent;

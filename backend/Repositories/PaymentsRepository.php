@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\Repositories;
 
+use BookingSuite\Backend\Schemas\BookingEventsTable;
 use BookingSuite\Backend\Schemas\BookingsTable;
 use BookingSuite\Backend\Schemas\CustomersTable;
 use BookingSuite\Backend\Schemas\PaymentsTable;
@@ -47,7 +48,32 @@ final class PaymentsRepository {
 			array( '%d', '%s', '%s', '%f', '%s', '%d', '%s', '%s', '%s', '%s', '%s' )
 		);
 
-		return false === $inserted ? null : (int) $wpdb->insert_id;
+		if ( false === $inserted ) {
+			return null;
+		}
+
+		$id = (int) $wpdb->insert_id;
+
+		BookingEventsRepository::record(
+			(int) $data['booking_id'],
+			BookingEventsTable::PAYMENT_RECORDED,
+			array(
+				'payment_id' => $id,
+				'changes'    => array(
+					'amount' => array(
+						'from' => '',
+						'to'   => number_format( (float) ( $data['amount'] ?? 0 ), 2, '.', '' ),
+					),
+					'status' => array(
+						'from' => '',
+						'to'   => (string) ( $data['status'] ?? 'pending' ),
+					),
+				),
+				'note'       => (string) ( $data['notes'] ?? '' ),
+			)
+		);
+
+		return $id;
 	}
 
 	/**
@@ -144,6 +170,22 @@ final class PaymentsRepository {
 
 		$wpdb->update( PaymentsTable::table(), $data, array( 'id' => $id ) );
 
+		if ( $status !== (string) $existing['status'] ) {
+			BookingEventsRepository::record(
+				(int) $existing['bookingId'],
+				BookingEventsTable::PAYMENT_STATUS,
+				array(
+					'payment_id' => $id,
+					'changes'    => array(
+						'status' => array(
+							'from' => (string) $existing['status'],
+							'to'   => $status,
+						),
+					),
+				)
+			);
+		}
+
 		return self::find( $id );
 	}
 
@@ -186,9 +228,17 @@ final class PaymentsRepository {
 
 	/**
 	 * Change what an unsettled payment asks for.
+	 *
+	 * This rewrites the row in place, on purpose: the guest is being asked for
+	 * one amount, not handed a second request beside the first. But it means
+	 * the figure they were originally quoted exists nowhere afterwards, which
+	 * is exactly the sort of thing they ring up about — so the old amount goes
+	 * into the history on the way past.
 	 */
 	public static function set_amount( int $id, float $amount ): void {
 		global $wpdb;
+
+		$existing = self::find( $id );
 
 		$wpdb->update(
 			PaymentsTable::table(),
@@ -200,6 +250,25 @@ final class PaymentsRepository {
 			array( '%f', '%s' ),
 			array( '%d' )
 		);
+
+		$was = null === $existing ? null : number_format( (float) $existing['amount'], 2, '.', '' );
+		$now = number_format( round( $amount, 2 ), 2, '.', '' );
+
+		if ( null !== $existing && $was !== $now ) {
+			BookingEventsRepository::record(
+				(int) $existing['bookingId'],
+				BookingEventsTable::PAYMENT_AMENDED,
+				array(
+					'payment_id' => $id,
+					'changes'    => array(
+						'amount' => array(
+							'from' => $was,
+							'to'   => $now,
+						),
+					),
+				)
+			);
+		}
 	}
 
 	/**
@@ -265,6 +334,15 @@ final class PaymentsRepository {
 				'updated_at' => current_time( 'mysql', true ),
 			),
 			array( 'id' => $id )
+		);
+
+		BookingEventsRepository::record(
+			(int) $existing['bookingId'],
+			BookingEventsTable::INVOICE_ISSUED,
+			array(
+				'payment_id' => $id,
+				'note'       => $number,
+			)
 		);
 
 		return $number;

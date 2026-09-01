@@ -13,15 +13,28 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
-/** How many rows a page holds before one is worth having at all. */
-export const PAGE_SIZE = 25;
+/**
+ * How many rows a page holds.
+ *
+ * Ten rather than twenty-five, because these lists are read on a phone as often
+ * as at a desk: the cards each row becomes below `lg` are tall, and
+ * twenty-five of them is a screen and a half of scrolling before the pager is
+ * even reachable.
+ */
+export const PAGE_SIZE = 10;
 
 /**
- * @param {Array}  rows   The full, already-filtered list.
- * @param {number} [size] Rows per page.
+ * @param {Array}         rows       The full, already-filtered list.
+ * @param {number}        [size]     Rows per page.
+ * @param {string|number} [resetKey] Changing this returns to page one. For a
+ *                                   list that swaps its contents wholesale
+ *                                   rather than filtering them down — the
+ *                                   calendar's day list, when the day changes —
+ *                                   where the snap-back below cannot help
+ *                                   because the list did not get shorter.
  * @return {Object} `{ page, setPage, pageCount, rows, from, to, total }`.
  */
-export function usePaged( rows, size = PAGE_SIZE ) {
+export function usePaged( rows, size = PAGE_SIZE, resetKey = null ) {
 	const [ page, setPage ] = useState( 1 );
 
 	const total = rows.length;
@@ -31,6 +44,12 @@ export function usePaged( rows, size = PAGE_SIZE ) {
 	useEffect( () => {
 		setPage( ( current ) => Math.min( current, pageCount ) );
 	}, [ pageCount ] );
+
+	useEffect( () => {
+		if ( null !== resetKey ) {
+			setPage( 1 );
+		}
+	}, [ resetKey ] );
 
 	const visible = useMemo( () => {
 		const start = ( Math.min( page, pageCount ) - 1 ) * size;

@@ -1542,4 +1542,39 @@ Gute Reise und bis bald.
 	 * and the responsive card layouts added alongside them.
 	 */
 	'The update could not be downloaded (HTTP %d). Check the GitHub token in Settings.' => 'Das Update konnte nicht heruntergeladen werden (HTTP %d). Prüfen Sie den GitHub-Token in den Einstellungen.',
+
+	/*
+	 * Calendar: the Month / Week / Day view switcher and the hour grid the
+	 * week and day views are drawn on.
+	 */
+	'Calendar view' => 'Kalenderansicht',
+	'Month' => 'Monat',
+	'Week' => 'Woche',
+	'Day' => 'Tag',
+	'All day' => 'Ganztägig',
+
+	/*
+	 * The booking history: what was changed on a booking, by whom and when,
+	 * and the full payment ledger beside it.
+	 */
+	'History' => 'Verlauf',
+	'Booking created' => 'Buchung erstellt',
+	'Booking changed' => 'Buchung geändert',
+	'Payment recorded' => 'Zahlung erfasst',
+	'Payment amount changed' => 'Zahlungsbetrag geändert',
+	'Payment status changed' => 'Zahlungsstatus geändert',
+	'Invoice issued' => 'Rechnung erstellt',
+	'Email sent to the guest' => 'E-Mail an den Gast gesendet',
+	'Template' => 'Vorlage',
+	'Delivery' => 'Zustellung',
+	'Scheduled task' => 'Geplante Aufgabe',
+	'Website' => 'Website',
+	'%1$s · %2$s' => '%1$s · %2$s',
+	'Payment history' => 'Zahlungsverlauf',
+	'Awaiting payment' => 'Zahlung ausstehend',
+	'Failed' => 'Fehlgeschlagen',
+	'Still outstanding' => 'Noch offen',
+	'Bank transfer' => 'Überweisung',
+	'Cash' => 'Bar',
+	'Card' => 'Karte',
 );

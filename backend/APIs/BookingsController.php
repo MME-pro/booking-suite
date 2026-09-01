@@ -18,6 +18,7 @@ namespace BookingSuite\Backend\APIs;
 use BookingSuite\Backend\Pricing\RateCalculator;
 use BookingSuite\Backend\Pricing\SlotGenerator;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
+use BookingSuite\Backend\Repositories\BookingEventsRepository;
 use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Repositories\CustomersRepository;
 use BookingSuite\Backend\Repositories\EmailTemplatesRepository;
@@ -352,6 +353,7 @@ final class BookingsController {
 		$booking             = BookingsRepository::find( $id );
 		$booking['extras']   = BookingsRepository::extras_for( $id );
 		$booking['payments'] = PaymentsRepository::for_booking( $id );
+		$booking['history']  = BookingEventsRepository::for_booking( $id );
 
 		return new WP_REST_Response( $booking, 200 );
 	}
@@ -576,14 +578,16 @@ final class BookingsController {
 	/**
 	 * Set the booking's payment status from what has actually been settled.
 	 *
-	 * Written straight to the table rather than through the update above,
-	 * because it has to beat the value the form posted: a screen that opened on
-	 * a settled booking sends 'paid', and after the price rises that is simply
-	 * untrue.
+	 * Runs after the update above rather than as part of it, because it has to
+	 * beat the value the form posted: a screen that opened on a settled booking
+	 * sends 'paid', and after the price rises that is simply untrue.
+	 *
+	 * It goes through the repository rather than writing the column itself.
+	 * That used to be a direct $wpdb->update, which made it the one change to a
+	 * booking that left no trace — a booking could go from paid to unpaid with
+	 * nothing anywhere saying when, or why.
 	 */
 	private static function sync_payment_status( int $id, float $total, float $paid ): void {
-		global $wpdb;
-
 		if ( $paid + 0.005 >= $total ) {
 			$status = 'paid';
 		} elseif ( $paid > 0.005 ) {
@@ -592,16 +596,7 @@ final class BookingsController {
 			$status = 'unpaid';
 		}
 
-		$wpdb->update(
-			BookingsTable::table(),
-			array(
-				'payment_status' => $status,
-				'updated_at'     => current_time( 'mysql', true ),
-			),
-			array( 'id' => $id ),
-			array( '%s', '%s' ),
-			array( '%d' )
-		);
+		BookingsRepository::update( $id, array( 'payment_status' => $status ) );
 	}
 
 	/**
@@ -652,6 +647,7 @@ final class BookingsController {
 
 		$booking['extras']   = BookingsRepository::extras_for( $id );
 		$booking['payments'] = PaymentsRepository::for_booking( $id );
+		$booking['history']  = BookingEventsRepository::for_booking( $id );
 
 		return new WP_REST_Response( $booking, 200 );
 	}

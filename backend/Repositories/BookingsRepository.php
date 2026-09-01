@@ -11,6 +11,7 @@ namespace BookingSuite\Backend\Repositories;
 
 use BookingSuite\Backend\Pricing\RateCalculator;
 use BookingSuite\Backend\Schemas\ApartmentsTable;
+use BookingSuite\Backend\Schemas\BookingEventsTable;
 use BookingSuite\Backend\Schemas\BlocksTable;
 use BookingSuite\Backend\Schemas\BookingsTable;
 use BookingSuite\Backend\Schemas\CustomersTable;
@@ -312,7 +313,15 @@ final class BookingsRepository {
 			array( '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%f', '%s', '%s', '%s', '%s', '%s' )
 		);
 
-		return false === $inserted ? null : (int) $wpdb->insert_id;
+		if ( false === $inserted ) {
+			return null;
+		}
+
+		$id = (int) $wpdb->insert_id;
+
+		BookingEventsRepository::record( $id, BookingEventsTable::CREATED );
+
+		return $id;
 	}
 
 	/**
@@ -369,16 +378,55 @@ final class BookingsRepository {
 			return true;
 		}
 
+		/*
+		 * Read before writing. This is the only moment the old values still
+		 * exist anywhere — a second later the row holds the new ones and what
+		 * the booking used to say is gone for good.
+		 */
+		$before = self::raw( $id );
+
 		$fields['updated_at'] = current_time( 'mysql', true );
 		$formats[]            = '%s';
 
-		return false !== $wpdb->update(
+		$written = false !== $wpdb->update(
 			BookingsTable::table(),
 			$fields,
 			array( 'id' => $id ),
 			$formats,
 			array( '%d' )
 		);
+
+		if ( $written && null !== $before ) {
+			BookingEventsRepository::record(
+				$id,
+				BookingEventsTable::UPDATED,
+				array( 'changes' => BookingEventsRepository::diff( $before, $fields ) )
+			);
+		}
+
+		return $written;
+	}
+
+	/**
+	 * A booking's own columns, unjoined and uncast.
+	 *
+	 * find() resolves the guest and the apartment and renames everything into
+	 * camelCase, which is right for the API and wrong for a diff: the history
+	 * compares against the columns an update actually writes.
+	 *
+	 * @return array<string, mixed>|null
+	 */
+	private static function raw( int $id ): ?array {
+		global $wpdb;
+
+		$table = BookingsTable::table();
+
+		$row = $wpdb->get_row(
+			$wpdb->prepare( "SELECT * FROM $table WHERE id = %d", $id ),
+			ARRAY_A
+		);
+
+		return $row ?: null;
 	}
 
 	/**
@@ -393,10 +441,11 @@ final class BookingsRepository {
 	/**
 	 * Erase a booking and everything hanging off it.
 	 *
-	 * A hard delete, by design. There is no cancelled status to park a booking
-	 * in — releasing one sends it back to pending, which keeps it on the list —
-	 * so a test booking, a duplicate or a request that was never real has no
-	 * other way out, and an operator who asks for this has already been asked
+	 * A hard delete, by design, and the only one in the plugin. A booking that
+	 * happened and then fell through is CANCELLED, which keeps the record and
+	 * frees the dates; this is for the ones that were never real — a test
+	 * booking, a duplicate, a request typed in twice — where there is nothing
+	 * worth keeping and an operator who asks for it has already been asked
 	 * whether they mean it.
 	 *
 	 * The extras lines and the payments go with it. Both are read through the
@@ -408,9 +457,15 @@ final class BookingsRepository {
 	 * The uploaded receipt is left in the media library. It is an attachment
 	 * like any other, it may be in use elsewhere, and removing files from under
 	 * the library is not something a booking should decide.
+	 *
+	 * The history goes too. It is a record of what happened to THIS booking,
+	 * and once the booking is gone there is no screen that could reach it and
+	 * nothing it could be read against.
 	 */
 	public static function delete( int $id ): bool {
 		global $wpdb;
+
+		BookingEventsRepository::delete_for_booking( $id );
 
 		$wpdb->delete( ExtraBookingTable::table(), array( 'booking_id' => $id ), array( '%d' ) );
 		$wpdb->delete( PaymentsTable::table(), array( 'booking_id' => $id ), array( '%d' ) );

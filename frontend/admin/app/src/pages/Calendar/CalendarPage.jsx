@@ -1,14 +1,22 @@
 /**
- * CalendarPage — the full-width month view of the whole estate.
+ * CalendarPage — the full-width calendar of the whole estate.
  *
- * Every day cell lists the bookings that touch it. A booking's COLOUR is its
+ * Three views over the same bookings, the way a calendar application offers
+ * them: a month of day cells, a week of hour columns, and one day split by
+ * apartment. The month answers "how full is the season"; the week and day
+ * answer "what happens at what time", which the month cannot — a chip in a box
+ * has no top or bottom edge, so a 15:00 check-in and an 11:00 check-out are
+ * text on it rather than a shape. The two time views draw the same stay as a
+ * block on an hour ruler, clipped to the day it is being drawn in.
+ *
+ * Every month day cell lists the bookings that touch it. A booking's COLOUR is its
  * apartment's own colour (the same one shown on the apartments list) and the
  * chip's fill carries the booking status, so identity and state are two
  * separate channels. Picking a day lists that day's bookings in the table
  * underneath.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { __, sprintf, _n } from '@wordpress/i18n';
 import {
 	AlertCircle,
@@ -17,6 +25,7 @@ import {
 	ChevronRight,
 } from 'lucide-react';
 
+import { addDays, isSameDay, isSameMonth } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -36,7 +45,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { ListPager } from '@/components/ListPager';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { PAGE_SIZE, usePaged } from '@/hooks/usePaged';
 
 import { BookingDetail } from '../Bookings/components/BookingDetail';
 
@@ -44,6 +56,7 @@ import { chipStyle } from './components/BookingChip';
 import { DayBookingsTable } from './components/DayBookingsTable';
 import { LockChip, isImported, lockStyle } from './components/LockChip';
 import { MonthGrid } from './components/MonthGrid';
+import { TimeGrid } from './components/TimeGrid';
 import {
 	ARRIVAL,
 	DEPARTURE,
@@ -52,7 +65,9 @@ import {
 	buildOccupancy,
 	entriesForDay,
 } from './data/occupancy';
+import { daySegments, weekDays } from './data/segments';
 import { apartmentService, blockService, bookingService } from '../../services';
+import { dayKey } from '../../lib/dates';
 import { settings } from '../../settings';
 
 const toBcp47 = ( locale ) => String( locale || 'de_DE' ).replace( '_', '-' );
@@ -81,6 +96,80 @@ const formatSelectedDay = ( date ) =>
 		year: 'numeric',
 	} ).format( date );
 
+/**
+ * The week's span as one label — "1.–7. September 2026".
+ *
+ * @param {Date} from The first day of the week.
+ * @param {Date} to   The last day of the week.
+ * @return {string} The label.
+ */
+const formatWeek = ( from, to ) => {
+	const format = new Intl.DateTimeFormat( toBcp47( settings.locale ), {
+		day: 'numeric',
+		month: 'long',
+		year: 'numeric',
+	} );
+
+	// formatRange collapses the parts the two dates share, which is what makes
+	// the label short; older engines without it get the long form instead.
+	return format.formatRange
+		? format.formatRange( from, to )
+		: `${ format.format( from ) } – ${ format.format( to ) }`;
+};
+
+/**
+ * A week column's heading — "Mon", "Di".
+ *
+ * @param {Date} date The day.
+ * @return {string} The abbreviated weekday name.
+ */
+const formatWeekday = ( date ) =>
+	new Intl.DateTimeFormat( toBcp47( settings.locale ), {
+		weekday: 'short',
+	} ).format( date );
+
+const MONTH = 'month';
+const WEEK = 'week';
+const DAY = 'day';
+
+const VIEWS = [
+	{ value: MONTH, label: __( 'Month', 'booking-suite' ) },
+	{ value: WEEK, label: __( 'Week', 'booking-suite' ) },
+	{ value: DAY, label: __( 'Day', 'booking-suite' ) },
+];
+
+/** Tailwind's `md`, and the same edge hooks/use-mobile.jsx calls a phone. */
+const MOBILE_BREAKPOINT = 768;
+
+/**
+ * The phone-width media query, or null where there is no matchMedia to ask.
+ *
+ * @return {MediaQueryList|null} The query.
+ */
+const phoneQuery = () =>
+	( 'undefined' !== typeof window &&
+		window.matchMedia?.( `(max-width: ${ MOBILE_BREAKPOINT - 1 }px)` ) ) ||
+	null;
+
+/**
+ * Which view the screen opens on.
+ *
+ * A month on a phone is forty-two cells across four inches: the chips fall
+ * back to coloured dots, and nothing in them can be read without tapping a day
+ * to find out what is in it. The day view is the one that survives that width —
+ * one apartment per column, at real times — so a phone opens on it and a
+ * desktop still opens on the month.
+ *
+ * Read synchronously as the initial state, so a phone paints the day view
+ * straight away rather than rendering the month and visibly jumping. The
+ * width is then WATCHED as well — see the effect in the component — because a
+ * desktop window dragged narrow, a tablet turned sideways and a browser's
+ * device-emulation toolbar all change the answer after this has run.
+ *
+ * @return {string} The view to start in.
+ */
+const initialView = () => ( phoneQuery()?.matches ? DAY : MONTH );
+
 /*
  * The legend swatches need a real hex: chipStyle() tints by appending an alpha
  * channel, so a CSS variable would come back with no fill and the legend would
@@ -104,6 +193,56 @@ export default function CalendarPage() {
 	const [ error, setError ] = useState( null );
 	const [ selected, setSelected ] = useState( () => new Date() );
 	const [ month, setMonth ] = useState( () => new Date() );
+
+	/**
+	 * Which view is on screen: the month, a week of hours, or one day.
+	 *
+	 * `selected` is the cursor for all three — the day the week is drawn
+	 * around, the day the day view draws, and the day whose bookings are
+	 * listed underneath. `month` only ever moves the month grid, and is kept
+	 * in step whenever the cursor moves, so switching views never lands the
+	 * operator somewhere they did not navigate to.
+	 *
+	 * Which one it starts in depends on the screen; see initialView().
+	 */
+	const [ view, setView ] = useState( initialView );
+
+	/**
+	 * Whether the operator has picked a view themselves.
+	 *
+	 * Until they do, the view belongs to the screen: a window dragged down to
+	 * phone width switches to the day, and dragged back out returns to the
+	 * month. The moment they touch the switcher it becomes theirs, and no
+	 * amount of resizing takes it off them again — a rotation that silently
+	 * threw away the week you had chosen would be its own bug.
+	 */
+	const chosen = useRef( false );
+
+	useEffect( () => {
+		const query = phoneQuery();
+
+		if ( ! query ) {
+			return undefined;
+		}
+
+		const apply = () => {
+			if ( ! chosen.current ) {
+				setView( query.matches ? DAY : MONTH );
+			}
+		};
+
+		/*
+		 * Once immediately as well as on change: the width can already have
+		 * moved between the first render and this effect — which is exactly
+		 * what a device-emulation toolbar does — and the initial state would
+		 * then be answering a question about the wrong viewport.
+		 */
+		apply();
+
+		query.addEventListener( 'change', apply );
+
+		return () => query.removeEventListener( 'change', apply );
+	}, [] );
 
 	/**
 	 * Which apartment the calendar is showing: an id, or 'all'.
@@ -206,6 +345,15 @@ export default function CalendarPage() {
 		[ blockDays, selected, visibleIds ]
 	);
 
+	/*
+	 * Usually short — a day holds as many bookings as the estate has
+	 * apartments. But an hourly property sells the same apartment several times
+	 * in a day, and the counts above the table are taken from the whole day
+	 * either way, so what is on screen can be paged without the arrivals and
+	 * departures tallies changing under it.
+	 */
+	const pagedEntries = usePaged( dayEntries, PAGE_SIZE, dayKey( selected ) );
+
 	const counts = useMemo( () => {
 		let arrivals = 0;
 		let departures = 0;
@@ -225,18 +373,153 @@ export default function CalendarPage() {
 		};
 	}, [ dayEntries ] );
 
-	const shiftMonth = ( delta ) =>
-		setMonth(
-			( current ) =>
-				new Date( current.getFullYear(), current.getMonth() + delta, 1 )
-		);
+	/**
+	 * Move the cursor and keep the month grid pointing at the same place.
+	 *
+	 * @param {Date} date The day to move to.
+	 */
+	const goTo = ( date ) => {
+		setSelected( date );
+		setMonth( date );
+	};
 
-	const goToToday = () => {
+	/**
+	 * One step back or forward, in whatever unit the current view is made of.
+	 *
+	 * @param {number} delta -1 for back, 1 for forward.
+	 */
+	const shift = ( delta ) => {
+		if ( MONTH === view ) {
+			setMonth(
+				( current ) =>
+					new Date(
+						current.getFullYear(),
+						current.getMonth() + delta,
+						1
+					)
+			);
+
+			return;
+		}
+
+		goTo( addDays( selected, ( WEEK === view ? 7 : 1 ) * delta ) );
+	};
+
+	const goToToday = () => goTo( new Date() );
+
+	/**
+	 * Switching view keeps the day in view rather than the month.
+	 *
+	 * Paging three months forward and then asking for the week would otherwise
+	 * jump back to whatever week `selected` was last left on, which is not
+	 * where the operator is looking.
+	 *
+	 * @param {string} next The view being switched to.
+	 */
+	const changeView = ( next ) => {
+		// From here on the view is the operator's, not the viewport's.
+		chosen.current = true;
+
+		// Leaving a month that was paged away from the cursor: take the first
+		// of that month with us, so the week or day shown is one that was on
+		// screen rather than one three months behind it.
+		if ( MONTH === view && ! isSameMonth( month, selected ) ) {
+			setSelected( new Date( month.getFullYear(), month.getMonth(), 1 ) );
+		}
+
+		setView( next );
+	};
+
+	/** The label over the navigation, in the unit the view is made of. */
+	const week = useMemo(
+		() => weekDays( selected, dateLocale ),
+		[ selected ]
+	);
+
+	const heading = useMemo( () => {
+		if ( MONTH === view ) {
+			return formatMonth( month );
+		}
+
+		return WEEK === view
+			? formatWeek( week[ 0 ], week[ 6 ] )
+			: formatSelectedDay( selected );
+	}, [ view, month, week, selected ] );
+
+	/*
+	 * The week's seven columns. Each is a day: its own segments, clipped to it,
+	 * and the portal locks sitting over it.
+	 */
+	const weekColumns = useMemo( () => {
+		if ( WEEK !== view ) {
+			return [];
+		}
+
 		const today = new Date();
 
-		setSelected( today );
-		setMonth( today );
-	};
+		return week.map( ( date ) => ( {
+			key: dayKey( date ),
+			date,
+			title: formatWeekday( date ),
+			subtitle: String( date.getDate() ),
+			isToday: isSameDay( date, today ),
+			isSelected: isSameDay( date, selected ),
+			segments: daySegments( bookings, date, visibleIds ),
+			locks: blocksForDay( blockDays, date, visibleIds ),
+		} ) );
+	}, [ view, week, selected, bookings, visibleIds, blockDays ] );
+
+	/*
+	 * The day view splits one day by APARTMENT rather than showing a single
+	 * column of everything. On a day with four apartments occupied, one column
+	 * would be four blocks squeezed side by side with nothing saying which is
+	 * which; a column each puts every apartment's day under its own name, in
+	 * its own colour, which is what the operator is actually comparing.
+	 */
+	const dayColumns = useMemo( () => {
+		if ( DAY !== view ) {
+			return [];
+		}
+
+		const shown = selectedApartment ? [ selectedApartment ] : apartments;
+
+		// Before any apartment exists there is still a day to draw, and it
+		// should not be a blank strip.
+		if ( 0 === shown.length ) {
+			return [
+				{
+					key: 'estate',
+					date: selected,
+					title: __( 'All apartments', 'booking-suite' ),
+					segments: daySegments( bookings, selected, visibleIds ),
+					locks: blocksForDay( blockDays, selected, visibleIds ),
+				},
+			];
+		}
+
+		return shown.map( ( apartment ) => {
+			const only = new Set( [ apartment.id ] );
+
+			return {
+				key: `apartment-${ apartment.id }`,
+				date: selected,
+				title: apartment.name,
+				colour: apartment.colour,
+				segments: daySegments( bookings, selected, only ),
+				// An estate-wide lock closes this apartment too, so
+				// blocksForDay keeps it whatever the filter says.
+				locks: blocksForDay( blockDays, selected, only ),
+			};
+		} );
+	}, [
+		view,
+		selected,
+		apartments,
+		selectedApartment,
+		bookings,
+		visibleIds,
+		blockDays,
+	] );
 
 	if ( isLoading ) {
 		return (
@@ -260,30 +543,33 @@ export default function CalendarPage() {
 			) }
 
 			{ /*
-			 * The whole calendar is one panel: its own month nav and apartment
-			 * filter across the top, then the grid. The date picker's built-in
-			 * caption and arrows are hidden in MonthGrid in favour of this.
+			 * The whole calendar is one panel: its own navigation, view
+			 * switcher and apartment filter across the top, then whichever
+			 * grid the view asks for. The date picker's built-in caption and
+			 * arrows are hidden in MonthGrid in favour of this.
 			 */ }
 			<Card className="overflow-hidden">
 				<div className="flex flex-wrap items-center justify-between gap-4 border-b px-4 py-3">
 					<div className="flex flex-wrap items-center gap-2">
+						{ /* One step in whatever the view is made of: a
+						   month, a week, or a day. */ }
 						<Button
 							variant="outline"
 							size="sm"
-							onClick={ () => shiftMonth( -1 ) }
+							onClick={ () => shift( -1 ) }
 						>
 							<ChevronLeft className="h-4 w-4" />
 							{ __( 'Back', 'booking-suite' ) }
 						</Button>
 
 						<h2 className="px-2 text-lg font-semibold tracking-tight text-card-foreground">
-							{ formatMonth( month ) }
+							{ heading }
 						</h2>
 
 						<Button
 							variant="outline"
 							size="sm"
-							onClick={ () => shiftMonth( 1 ) }
+							onClick={ () => shift( 1 ) }
 						>
 							{ __( 'Next', 'booking-suite' ) }
 							<ChevronRight className="h-4 w-4" />
@@ -298,87 +584,146 @@ export default function CalendarPage() {
 						</Button>
 					</div>
 
-					{ /*
-					 * The apartment filter. The swatch travels with the name
-					 * into the closed trigger, so the colour the chips in the
-					 * grid are drawn in is named right where the choice is
-					 * made — the legend the toggle row used to be, folded into
-					 * the control that replaced it.
-					 */ }
-					<Select
-						value={ apartmentFilter }
-						onValueChange={ setApartmentFilter }
-					>
-						<SelectTrigger
-							className="w-full sm:w-64"
+					<div className="flex flex-wrap items-center gap-2">
+						{ /*
+						 * Month · Week · Day, in that order — widest span
+						 * first, the way every calendar application arranges
+						 * them, so the control is already familiar.
+						 */ }
+						<ToggleGroup
+							type="single"
+							value={ view }
+							onValueChange={ ( next ) =>
+								next && changeView( next )
+							}
+							variant="outline"
+							size="sm"
 							aria-label={ __(
-								'Show one apartment',
+								'Calendar view',
 								'booking-suite'
 							) }
+							className="gap-0 [&>*:not(:first-child)]:-ml-px [&>*:first-child]:rounded-r-none [&>*:last-child]:rounded-l-none [&>*:not(:first-child):not(:last-child)]:rounded-none"
 						>
-							<SelectValue>
-								<span className="flex min-w-0 items-center gap-2">
-									{ selectedApartment && (
-										<span
-											aria-hidden="true"
-											className="h-3 w-3 shrink-0 rounded-sm"
-											style={ {
-												backgroundColor:
-													selectedApartment.colour,
-											} }
-										/>
-									) }
-									<span className="truncate">
-										{ selectedApartment
-											? selectedApartment.name
-											: __(
-													'All apartments',
-													'booking-suite'
-											  ) }
-									</span>
-								</span>
-							</SelectValue>
-						</SelectTrigger>
-
-						<SelectContent>
-							<SelectItem value="all">
-								{ __( 'All apartments', 'booking-suite' ) }
-							</SelectItem>
-
-							{ apartments.map( ( apartment ) => (
-								<SelectItem
-									key={ apartment.id }
-									value={ String( apartment.id ) }
+							{ VIEWS.map( ( option ) => (
+								<ToggleGroupItem
+									key={ option.value }
+									value={ option.value }
+									className="px-3"
 								>
-									<span className="flex items-center gap-2">
-										<span
-											aria-hidden="true"
-											className="h-3 w-3 shrink-0 rounded-sm"
-											style={ {
-												backgroundColor:
-													apartment.colour,
-											} }
-										/>
-										{ apartment.name }
-									</span>
-								</SelectItem>
+									{ option.label }
+								</ToggleGroupItem>
 							) ) }
-						</SelectContent>
-					</Select>
+						</ToggleGroup>
+
+						{ /*
+						 * The apartment filter. The swatch travels with the name
+						 * into the closed trigger, so the colour the chips in the
+						 * grid are drawn in is named right where the choice is
+						 * made — the legend the apartment toggle row used to be, folded into
+						 * the control that replaced it.
+						 */ }
+						<Select
+							value={ apartmentFilter }
+							onValueChange={ setApartmentFilter }
+						>
+							<SelectTrigger
+								className="w-full sm:w-64"
+								aria-label={ __(
+									'Show one apartment',
+									'booking-suite'
+								) }
+							>
+								<SelectValue>
+									<span className="flex min-w-0 items-center gap-2">
+										{ selectedApartment && (
+											<span
+												aria-hidden="true"
+												className="h-3 w-3 shrink-0 rounded-sm"
+												style={ {
+													backgroundColor:
+														selectedApartment.colour,
+												} }
+											/>
+										) }
+										<span className="truncate">
+											{ selectedApartment
+												? selectedApartment.name
+												: __(
+														'All apartments',
+														'booking-suite'
+												  ) }
+										</span>
+									</span>
+								</SelectValue>
+							</SelectTrigger>
+
+							<SelectContent>
+								<SelectItem value="all">
+									{ __( 'All apartments', 'booking-suite' ) }
+								</SelectItem>
+
+								{ apartments.map( ( apartment ) => (
+									<SelectItem
+										key={ apartment.id }
+										value={ String( apartment.id ) }
+									>
+										<span className="flex items-center gap-2">
+											<span
+												aria-hidden="true"
+												className="h-3 w-3 shrink-0 rounded-sm"
+												style={ {
+													backgroundColor:
+														apartment.colour,
+												} }
+											/>
+											{ apartment.name }
+										</span>
+									</SelectItem>
+								) ) }
+							</SelectContent>
+						</Select>
+					</div>
 				</div>
 
-				<MonthGrid
-					month={ month }
-					onMonthChange={ setMonth }
-					selected={ selected }
-					onSelect={ setSelected }
-					occupancy={ occupancy }
-					blockDays={ blockDays }
-					visibleIds={ visibleIds }
-					apartmentsById={ apartmentsById }
-					locale={ dateLocale }
-					onSelectBooking={ setSelectedBooking }
-				/>
+				{ MONTH === view && (
+					<MonthGrid
+						month={ month }
+						onMonthChange={ setMonth }
+						selected={ selected }
+						onSelect={ setSelected }
+						occupancy={ occupancy }
+						blockDays={ blockDays }
+						visibleIds={ visibleIds }
+						apartmentsById={ apartmentsById }
+						locale={ dateLocale }
+						onSelectBooking={ setSelectedBooking }
+					/>
+				) }
+
+				{ /*
+				 * Both time views are the same grid with different columns —
+				 * seven days, or one day split by apartment. Clicking a week's
+				 * column heading moves the cursor to that day, which is what
+				 * fills the list underneath.
+				 */ }
+				{ WEEK === view && (
+					<TimeGrid
+						columns={ weekColumns }
+						anchor={ selected }
+						apartmentsById={ apartmentsById }
+						onSelectBooking={ setSelectedBooking }
+						onSelectDay={ goTo }
+					/>
+				) }
+
+				{ DAY === view && (
+					<TimeGrid
+						columns={ dayColumns }
+						anchor={ selected }
+						apartmentsById={ apartmentsById }
+						onSelectBooking={ setSelectedBooking }
+					/>
+				) }
 			</Card>
 
 			{ /* Status treatment, kept out of the panel so it stays quiet. */ }
@@ -520,11 +865,24 @@ export default function CalendarPage() {
 					) }
 
 					{ dayEntries.length > 0 ? (
-						<DayBookingsTable
-							entries={ dayEntries }
-							apartmentsById={ apartmentsById }
-							onSelectBooking={ setSelectedBooking }
-						/>
+						<>
+							<DayBookingsTable
+								entries={ pagedEntries.rows }
+								apartmentsById={ apartmentsById }
+								onSelectBooking={ setSelectedBooking }
+							/>
+
+							<div className="px-5 pb-1">
+								<ListPager
+									page={ pagedEntries.page }
+									pageCount={ pagedEntries.pageCount }
+									onPage={ pagedEntries.setPage }
+									from={ pagedEntries.from }
+									to={ pagedEntries.to }
+									total={ pagedEntries.total }
+								/>
+							</div>
+						</>
 					) : (
 						<div className="flex flex-col items-center gap-2 px-6 py-12 text-center">
 							<span className="flex h-12 w-12 items-center justify-center rounded-full bg-muted text-muted-foreground">

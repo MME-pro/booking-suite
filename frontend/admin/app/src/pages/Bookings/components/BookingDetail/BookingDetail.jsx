@@ -1,8 +1,9 @@
 /**
  * BookingDetail — one booking, in full.
  *
- * The row handed in from the list is shown immediately; the full record, with
- * its extras, is fetched behind that so the page never opens empty.
+ * The row handed in from the list is shown immediately; the full record — its
+ * extras, every payment against it, and the history of what has been changed on
+ * it — is fetched behind that so the page never opens empty.
  *
  * Built on shadcn/ui. "Release dates" confirms through an AlertDialog rather
  * than window.confirm(), matching the delete flow on the Apartments screen.
@@ -29,6 +30,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 import { bookingService } from '../../../../services';
+import { BookingHistory } from '../BookingHistory';
+import { BookingPayments } from '../BookingPayments';
 import { formatDateTime, formatMoney } from '../../data/format';
 import './BookingDetail.css';
 
@@ -144,10 +147,12 @@ export default function BookingDetail( {
 	}, [ initial ] );
 
 	const extras = booking.extras ?? [];
+	const payments = booking.payments ?? [];
+	const history = booking.history ?? [];
 
 	// The list row carries the receipt; the detail fetch adds the payment row
 	// it belongs to, which knows when the guest says they paid.
-	const payment = ( booking.payments ?? [] ).find( ( row ) => row.proof );
+	const payment = payments.find( ( row ) => row.proof );
 	const proof = payment?.proof ?? booking.paymentProof ?? null;
 
 	const extrasTotal = extras.reduce(
@@ -439,6 +444,11 @@ export default function BookingDetail( {
 				</CardContent>
 			</Card>
 
+			<BookingPayments
+				payments={ payments }
+				currency={ booking.currency }
+			/>
+
 			{ proof && (
 				<Card>
 					<CardHeader className="pb-3">
@@ -502,6 +512,8 @@ export default function BookingDetail( {
 					</CardContent>
 				</Card>
 			) }
+
+			<BookingHistory history={ history } currency={ booking.currency } />
 
 			<AlertDialog
 				open={ null !== pendingAction }

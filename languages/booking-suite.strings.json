@@ -154,6 +154,17 @@
         }
     },
     {
+        "single": "%1$s · %2$s",
+        "line": 235,
+        "comment": "translators: 1: who made the change, 2: when.",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:235"
+        ],
+        "comments": {
+            "translators: 1: who made the change, 2: when.": true
+        }
+    },
+    {
         "single": "%1$s → %2$s · %3$s",
         "line": 49,
         "comment": "translators: 1: check-in date, 2: check-out date, 3: the overnight window.",
@@ -246,10 +257,10 @@
     {
         "single": "%d apartment blocked by a portal",
         "plural": "%d apartments blocked by a portal",
-        "line": 494,
+        "line": 839,
         "comment": "translators: %d: number of apartments blocked by a portal.",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:494"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:839"
         ],
         "comments": {
             "translators: %d: number of apartments blocked by a portal.": true
@@ -269,10 +280,10 @@
     },
     {
         "single": "%d arriving",
-        "line": 456,
+        "line": 801,
         "comment": "translators: %d: number of arrivals.",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:456"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:801"
         ],
         "comments": {
             "translators: %d: number of arrivals.": true
@@ -310,10 +321,10 @@
     {
         "single": "%d booking on this day",
         "plural": "%d bookings on this day",
-        "line": 437,
+        "line": 782,
         "comment": "translators: %d: number of bookings on the selected day.",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:437"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:782"
         ],
         "comments": {
             "translators: %d: number of bookings on the selected day.": true
@@ -345,10 +356,10 @@
     },
     {
         "single": "%d departing",
-        "line": 473,
+        "line": 818,
         "comment": "translators: %d: number of departures.",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:473"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:818"
         ],
         "comments": {
             "translators: %d: number of departures.": true
@@ -379,10 +390,10 @@
     },
     {
         "single": "%d failed",
-        "line": 216,
+        "line": 225,
         "comment": "translators: %d: number of failed payments.",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:216"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:225"
         ],
         "comments": {
             "translators: %d: number of failed payments.": true
@@ -391,10 +402,10 @@
     {
         "single": "%d guest",
         "plural": "%d guests",
-        "line": 205,
+        "line": 182,
         "comment": "translators: %d: number of guests.",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:205",
+            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:182",
             "frontend/site/Shortcodes.php:1658",
             "frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:34"
         ],
@@ -422,10 +433,10 @@
     },
     {
         "single": "%d in house",
-        "line": 463,
+        "line": 808,
         "comment": "translators: %d: number of guests in house.",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:463"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:808"
         ],
         "comments": {
             "translators: %d: number of guests in house.": true
@@ -505,10 +516,10 @@
     {
         "single": "%d night",
         "plural": "%d nights",
-        "line": 164,
+        "line": 141,
         "comment": "translators: %d: number of nights.",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:164",
+            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:457",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:344"
         ],
@@ -540,10 +551,10 @@
     },
     {
         "single": "%d paid",
-        "line": 181,
+        "line": 190,
         "comment": "translators: %d: number of settled payments.",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:181"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:190"
         ],
         "comments": {
             "translators: %d: number of settled payments.": true
@@ -552,10 +563,10 @@
     {
         "single": "%d payment",
         "plural": "%d payments",
-        "line": 274,
+        "line": 283,
         "comment": "translators: %d: number of payments shown.",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:274"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:283"
         ],
         "comments": {
             "translators: %d: number of payments shown.": true
@@ -563,10 +574,10 @@
     },
     {
         "single": "%d pending",
-        "line": 194,
+        "line": 203,
         "comment": "translators: %d: number of pending payments.",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:194"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:203"
         ],
         "comments": {
             "translators: %d: number of pending payments.": true
@@ -653,10 +664,10 @@
     },
     {
         "single": "%dN",
-        "line": 159,
+        "line": 136,
         "comment": "translators: %d: number of nights, compact form.",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:159"
+            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:136"
         ],
         "comments": {
             "translators: %d: number of nights, compact form.": true
@@ -710,10 +721,10 @@
     },
     {
         "single": "%s hours",
-        "line": 180,
+        "line": 157,
         "comment": "translators: %s: number of hours.",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:180"
+            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:157"
         ],
         "comments": {
             "translators: %s: number of hours.": true
@@ -754,10 +765,10 @@
     },
     {
         "single": "%sh",
-        "line": 175,
+        "line": 152,
         "comment": "translators: %s: number of hours, compact form.",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:175"
+            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:152"
         ],
         "comments": {
             "translators: %s: number of hours, compact form.": true
@@ -1355,11 +1366,12 @@
     },
     {
         "single": "All apartments",
-        "line": 334,
+        "line": 493,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:334",
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:345",
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:493",
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:651",
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:662",
             "frontend/admin/app/src/pages/Calendar/components/LockChip/LockChip.jsx:121",
             "frontend/admin/app/src/pages/Calendar/components/LockChip/LockChip.jsx:167"
         ],
@@ -1409,6 +1421,16 @@
         }
     },
     {
+        "single": "All day",
+        "line": 94,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Calendar/components/TimeGrid/TimeGrid.jsx:94",
+            "frontend/admin/app/src/pages/Calendar/components/TimeGrid/TimeGrid.jsx:324"
+        ],
+        "comments": []
+    },
+    {
         "single": "All live",
         "line": 218,
         "comment": "",
@@ -1435,7 +1457,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Customers/CustomersPage.jsx:97",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:228",
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:205"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:214"
         ],
         "comments": {
             "translators: %d: number of pending payments.": true
@@ -1461,9 +1483,10 @@
     },
     {
         "single": "Amount",
-        "line": 134,
+        "line": 74,
         "comment": "",
         "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:74",
             "frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:134",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:70",
             "frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:75"
@@ -1472,19 +1495,19 @@
     },
     {
         "single": "Anna",
-        "line": 193,
+        "line": 222,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:193"
+            "backend/Support/BookingEmails.php:222"
         ],
         "comments": []
     },
     {
         "single": "Anna Schmidt",
-        "line": 192,
+        "line": 221,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:192"
+            "backend/Support/BookingEmails.php:221"
         ],
         "comments": []
     },
@@ -1500,19 +1523,19 @@
     },
     {
         "single": "Another booking already holds those dates.",
-        "line": 908,
+        "line": 904,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:908"
+            "backend/APIs/BookingsController.php:904"
         ],
         "comments": []
     },
     {
         "single": "Another booking already holds those dates. Cancel that one first.",
-        "line": 252,
+        "line": 253,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:252"
+            "backend/APIs/BookingsController.php:253"
         ],
         "comments": []
     },
@@ -1580,8 +1603,9 @@
             "backend/PostTypes/ApartmentPostType.php:95",
             "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:36",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:164",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:359",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:364",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:424",
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:65",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:103",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:113",
             "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:175",
@@ -1751,7 +1775,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:269",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:70"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:73"
         ],
         "comments": []
     },
@@ -1777,10 +1801,11 @@
     },
     {
         "single": "Arrival",
-        "line": 363,
+        "line": 368,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:363",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:368",
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:70",
             "frontend/site/Shortcodes.php:1172"
         ],
         "comments": []
@@ -1920,14 +1945,23 @@
     },
     {
         "single": "Awaiting Payment",
-        "line": 187,
+        "line": 196,
         "comment": "translators: %d: number of settled payments.",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:187"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:196"
         ],
         "comments": {
             "translators: %d: number of settled payments.": true
         }
+    },
+    {
+        "single": "Awaiting payment",
+        "line": 34,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:34"
+        ],
+        "comments": []
     },
     {
         "single": "BIC",
@@ -1955,26 +1989,26 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:400",
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:276",
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:562",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:492"
         ],
         "comments": []
     },
     {
         "single": "Back to bookings",
-        "line": 198,
+        "line": 203,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:198"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:203"
         ],
         "comments": []
     },
     {
         "single": "Balance after the booking was changed.",
-        "line": 482,
+        "line": 484,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:482"
+            "backend/APIs/BookingsController.php:484"
         ],
         "comments": []
     },
@@ -1993,6 +2027,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:409"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Bank transfer",
+        "line": 42,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:42"
         ],
         "comments": []
     },
@@ -2056,10 +2099,10 @@
     },
     {
         "single": "Blocked by a portal (Airbnb, Booking.com)",
-        "line": 412,
+        "line": 757,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:412"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:757"
         ],
         "comments": []
     },
@@ -2158,10 +2201,10 @@
     },
     {
         "single": "Booking",
-        "line": 567,
+        "line": 925,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:567",
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:925",
             "frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:63",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:70",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:361"
@@ -2240,6 +2283,15 @@
         "comments": []
     },
     {
+        "single": "Booking changed",
+        "line": 39,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:39"
+        ],
+        "comments": []
+    },
+    {
         "single": "Booking confirmed",
         "line": 177,
         "comment": "",
@@ -2267,6 +2319,15 @@
         "comments": []
     },
     {
+        "single": "Booking created",
+        "line": 35,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:35"
+        ],
+        "comments": []
+    },
+    {
         "single": "Booking details",
         "line": 369,
         "comment": "",
@@ -2287,10 +2348,10 @@
     },
     {
         "single": "Booking not found.",
-        "line": 919,
+        "line": 915,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:919"
+            "backend/APIs/BookingsController.php:915"
         ],
         "comments": []
     },
@@ -2300,7 +2361,7 @@
         "comment": "",
         "refs": [
             "backend/Repositories/EmailTemplatesRepository.php:114",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:233"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:238"
         ],
         "comments": []
     },
@@ -2587,6 +2648,15 @@
         "comments": []
     },
     {
+        "single": "Calendar view",
+        "line": 601,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:601"
+        ],
+        "comments": []
+    },
+    {
         "single": "Cancel",
         "line": 359,
         "comment": "translators: %s: apartment name.",
@@ -2595,7 +2665,7 @@
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:600",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:376",
             "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:277",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:521",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:533",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:871",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:434",
             "frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:484"
@@ -2616,10 +2686,10 @@
     },
     {
         "single": "Cancelled",
-        "line": 96,
+        "line": 185,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:96",
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:185",
             "frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:29",
             "frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:55"
         ],
@@ -2644,11 +2714,29 @@
         "comments": []
     },
     {
+        "single": "Card",
+        "line": 44,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:44"
+        ],
+        "comments": []
+    },
+    {
         "single": "Carries the one-time code that proves the guest owns the address they booked with.",
         "line": 280,
         "comment": "",
         "refs": [
             "backend/Repositories/EmailTemplatesRepository.php:280"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Cash",
+        "line": 43,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:43"
         ],
         "comments": []
     },
@@ -2681,10 +2769,10 @@
     },
     {
         "single": "Charges",
-        "line": 386,
+        "line": 391,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:386"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:391"
         ],
         "comments": []
     },
@@ -2805,10 +2893,10 @@
     },
     {
         "single": "Choose an apartment.",
-        "line": 670,
+        "line": 666,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:670",
+            "backend/APIs/BookingsController.php:666",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:88"
         ],
         "comments": []
@@ -3097,10 +3185,10 @@
     },
     {
         "single": "Completed",
-        "line": 95,
+        "line": 184,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:95",
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:184",
             "frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:28",
             "frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:54"
         ],
@@ -3117,10 +3205,10 @@
     },
     {
         "single": "Confirm",
-        "line": 532,
+        "line": 544,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:532"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:544"
         ],
         "comments": []
     },
@@ -3130,7 +3218,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:348",
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:94",
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:183",
             "frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:27",
             "frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:53"
         ],
@@ -3254,10 +3342,10 @@
     },
     {
         "single": "Could not load the calendar",
-        "line": 256,
+        "line": 539,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:256"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:539"
         ],
         "comments": []
     },
@@ -3476,6 +3564,15 @@
         "comments": []
     },
     {
+        "single": "Day",
+        "line": 138,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:138"
+        ],
+        "comments": []
+    },
+    {
         "single": "Days from the invoice date to the due date.",
         "line": 699,
         "comment": "",
@@ -3562,7 +3659,7 @@
             "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:283",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:317",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:321",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:286",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:291",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:402"
         ],
         "comments": []
@@ -3626,6 +3723,15 @@
         }
     },
     {
+        "single": "Delivery",
+        "line": 76,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:76"
+        ],
+        "comments": []
+    },
+    {
         "single": "Departs",
         "line": 55,
         "comment": "",
@@ -3636,10 +3742,11 @@
     },
     {
         "single": "Departure",
-        "line": 367,
+        "line": 372,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:367"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:372",
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:71"
         ],
         "comments": []
     },
@@ -3844,10 +3951,10 @@
     },
     {
         "single": "Edit booking",
-        "line": 267,
+        "line": 272,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:267",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:272",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:392"
         ],
         "comments": []
@@ -3910,6 +4017,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:456"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Email sent to the guest",
+        "line": 59,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:59"
         ],
         "comments": []
     },
@@ -4138,7 +4254,7 @@
             "frontend/admin/app/src/App.jsx:65",
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:342",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:257",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:411",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:287",
             "frontend/site/app/src/components/BookingModal/StepOptions.jsx:44"
         ],
@@ -4150,6 +4266,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:213"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Failed",
+        "line": 36,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:36"
         ],
         "comments": []
     },
@@ -4300,19 +4425,19 @@
     },
     {
         "single": "Give a date, a start time and a length.",
-        "line": 688,
+        "line": 684,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:688"
+            "backend/APIs/BookingsController.php:684"
         ],
         "comments": []
     },
     {
         "single": "Give a date.",
-        "line": 751,
+        "line": 747,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:751"
+            "backend/APIs/BookingsController.php:747"
         ],
         "comments": []
     },
@@ -4336,10 +4461,10 @@
     },
     {
         "single": "Give an arrival and a departure date.",
-        "line": 705,
+        "line": 701,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:705"
+            "backend/APIs/BookingsController.php:701"
         ],
         "comments": []
     },
@@ -4399,13 +4524,16 @@
         "refs": [
             "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:271",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:107",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:314",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:319",
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:66",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:100",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:157",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:74",
-            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:275",
+            "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:252",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:116",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:176",
+            "frontend/admin/app/src/pages/Calendar/components/TimeGrid/TimeGrid.jsx:119",
+            "frontend/admin/app/src/pages/Calendar/components/TimeGrid/TimeGrid.jsx:137",
             "frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:61",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:54",
             "frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:66",
@@ -4424,19 +4552,19 @@
     },
     {
         "single": "Guest notes",
-        "line": 495,
+        "line": 505,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:495"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:505"
         ],
         "comments": []
     },
     {
         "single": "Guest paid on",
-        "line": 483,
+        "line": 493,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:483",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:493",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:105"
         ],
         "comments": []
@@ -4450,8 +4578,9 @@
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:433",
             "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:39",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:371",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:376",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:513",
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:69",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:115",
             "frontend/site/Shortcodes.php:1058",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:67",
@@ -4493,10 +4622,10 @@
     },
     {
         "single": "Hesse public holiday",
-        "line": 424,
+        "line": 769,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:424"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:769"
         ],
         "comments": []
     },
@@ -4526,6 +4655,15 @@
         "comment": "",
         "refs": [
             "backend/Support/Invoice.php:583"
+        ],
+        "comments": []
+    },
+    {
+        "single": "History",
+        "line": 141,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:141"
         ],
         "comments": []
     },
@@ -4733,6 +4871,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:659"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Invoice issued",
+        "line": 55,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:55"
         ],
         "comments": []
     },
@@ -5086,10 +5233,10 @@
     },
     {
         "single": "Mark as paid",
-        "line": 88,
+        "line": 91,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:88",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:91",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:321",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:190",
             "frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:158",
@@ -5100,10 +5247,10 @@
     },
     {
         "single": "Mark completed",
-        "line": 79,
+        "line": 82,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:79"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:82"
         ],
         "comments": []
     },
@@ -5255,6 +5402,15 @@
         }
     },
     {
+        "single": "Month",
+        "line": 136,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:136"
+        ],
+        "comments": []
+    },
+    {
         "single": "Monthly",
         "line": 307,
         "comment": "",
@@ -5329,7 +5485,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:412",
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:288"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:574"
         ],
         "comments": []
     },
@@ -5462,10 +5618,10 @@
     },
     {
         "single": "No booking touches this date for the apartments currently shown.",
-        "line": 542,
+        "line": 900,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:542"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:900"
         ],
         "comments": []
     },
@@ -5537,10 +5693,10 @@
     },
     {
         "single": "No extras were booked. The total is accommodation and any guest charge.",
-        "line": 433,
+        "line": 438,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:433"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:438"
         ],
         "comments": []
     },
@@ -5564,28 +5720,28 @@
     },
     {
         "single": "No name given",
-        "line": 325,
+        "line": 330,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:325"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:330"
         ],
         "comments": []
     },
     {
         "single": "No payments match your filters",
-        "line": 324,
+        "line": 342,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:324"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:342"
         ],
         "comments": []
     },
     {
         "single": "No payments yet",
-        "line": 325,
+        "line": 343,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:325"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:343"
         ],
         "comments": []
     },
@@ -5659,16 +5815,17 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:835",
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:73",
             "frontend/admin/app/src/pages/Guide/GuidePage.jsx:352"
         ],
         "comments": []
     },
     {
         "single": "Nothing booked",
-        "line": 534,
+        "line": 892,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:534"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:892"
         ],
         "comments": []
     },
@@ -5685,10 +5842,10 @@
     },
     {
         "single": "Nothing booked here — but a portal has the apartments above, so this date is not free.",
-        "line": 538,
+        "line": 896,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:538"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:896"
         ],
         "comments": []
     },
@@ -5723,10 +5880,10 @@
     },
     {
         "single": "Nothing to change.",
-        "line": 264,
+        "line": 265,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:264"
+            "backend/APIs/BookingsController.php:265"
         ],
         "comments": []
     },
@@ -5970,10 +6127,10 @@
     },
     {
         "single": "Open uploaded receipt",
-        "line": 473,
+        "line": 483,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:473",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:483",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:159",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:168"
         ],
@@ -6132,10 +6289,10 @@
     },
     {
         "single": "Paid, net of refunds",
-        "line": 176,
+        "line": 185,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:176"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:185"
         ],
         "comments": []
     },
@@ -6206,6 +6363,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:212",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:298",
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:68",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:124",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:69",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:128",
@@ -6227,6 +6385,24 @@
         "comments": []
     },
     {
+        "single": "Payment amount changed",
+        "line": 47,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:47"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Payment history",
+        "line": 64,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:64"
+        ],
+        "comments": []
+    },
+    {
         "single": "Payment method",
         "line": 93,
         "comment": "",
@@ -6237,10 +6413,10 @@
     },
     {
         "single": "Payment proof",
-        "line": 446,
+        "line": 456,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:446",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:456",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:117",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:130"
         ],
@@ -6288,10 +6464,10 @@
     },
     {
         "single": "Payment receipt uploaded by the guest",
-        "line": 459,
+        "line": 469,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:459",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:469",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:142",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:151"
         ],
@@ -6334,12 +6510,30 @@
         "comments": []
     },
     {
+        "single": "Payment recorded",
+        "line": 43,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:43"
+        ],
+        "comments": []
+    },
+    {
         "single": "Payment status",
         "line": 124,
         "comment": "",
         "refs": [
             "backend/Repositories/EmailTemplatesRepository.php:124",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:792"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Payment status changed",
+        "line": 51,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:51"
         ],
         "comments": []
     },
@@ -6365,10 +6559,10 @@
     },
     {
         "single": "Payments appear here as bookings are taken through the site.",
-        "line": 333,
+        "line": 351,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:333"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:351"
         ],
         "comments": []
     },
@@ -6383,10 +6577,10 @@
     },
     {
         "single": "Pending",
-        "line": 92,
+        "line": 181,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:92",
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:181",
             "frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:25",
             "frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:51"
         ],
@@ -6854,10 +7048,10 @@
     },
     {
         "single": "Received",
-        "line": 239,
+        "line": 244,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:239",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:244",
             "frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:121",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:105",
             "frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:72"
@@ -6893,19 +7087,20 @@
     },
     {
         "single": "Recorded",
-        "line": 113,
+        "line": 115,
         "comment": "",
         "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:115",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:113"
         ],
         "comments": []
     },
     {
         "single": "Recorded all time",
-        "line": 202,
+        "line": 211,
         "comment": "translators: %d: number of pending payments.",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:202"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:211"
         ],
         "comments": {
             "translators: %d: number of pending payments.": true
@@ -6913,19 +7108,19 @@
     },
     {
         "single": "Recorded from the booking, which was already marked paid.",
-        "line": 547,
+        "line": 549,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:547"
+            "backend/APIs/BookingsController.php:549"
         ],
         "comments": []
     },
     {
         "single": "Recorded when the booking was marked paid.",
-        "line": 399,
+        "line": 401,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:399"
+            "backend/APIs/BookingsController.php:401"
         ],
         "comments": []
     },
@@ -6981,10 +7176,11 @@
     },
     {
         "single": "Refunded",
-        "line": 209,
+        "line": 37,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:209"
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:37",
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:218"
         ],
         "comments": []
     },
@@ -7009,10 +7205,10 @@
     },
     {
         "single": "Release dates",
-        "line": 104,
+        "line": 107,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:104"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:107"
         ],
         "comments": []
     },
@@ -7151,10 +7347,10 @@
     },
     {
         "single": "Reserve",
-        "line": 61,
+        "line": 64,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:61"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:64"
         ],
         "comments": []
     },
@@ -7164,7 +7360,7 @@
         "comment": "",
         "refs": [
             "backend/Support/IcalExporter.php:256",
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:93",
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:182",
             "frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:26",
             "frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:52"
         ],
@@ -7190,7 +7386,7 @@
             "frontend/admin/app/src/pages/Customers/CustomersPage.jsx:155",
             "frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:120",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:259",
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:237"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:246"
         ],
         "comments": []
     },
@@ -7348,11 +7544,20 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:729",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:302",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:307",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:879",
             "frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:196",
             "frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:491",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:738"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Scheduled task",
+        "line": 124,
+        "comment": "",
+        "refs": [
+            "backend/Repositories/BookingEventsRepository.php:124"
         ],
         "comments": []
     },
@@ -7498,10 +7703,10 @@
     },
     {
         "single": "Send this booking back to pending? The dates become bookable again.",
-        "line": 106,
+        "line": 109,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:106"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:109"
         ],
         "comments": []
     },
@@ -7516,10 +7721,10 @@
     },
     {
         "single": "Sent back to guests",
-        "line": 211,
+        "line": 220,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:211"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:220"
         ],
         "comments": []
     },
@@ -7617,11 +7822,14 @@
     },
     {
         "single": "Settled",
-        "line": 80,
+        "line": 35,
         "comment": "",
         "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:35",
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:121",
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:146",
             "frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:80",
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:174"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:183"
         ],
         "comments": []
     },
@@ -7683,10 +7891,10 @@
     },
     {
         "single": "Show one apartment",
-        "line": 314,
+        "line": 631,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:314"
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:631"
         ],
         "comments": []
     },
@@ -7755,7 +7963,7 @@
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:351",
             "frontend/admin/app/src/pages/EmailTemplates/EmailTemplatesPage.jsx:164",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:250",
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:228"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:237"
         ],
         "comments": {
             "translators: %d: number of failed payments.": true
@@ -7802,10 +8010,10 @@
     },
     {
         "single": "Source",
-        "line": 375,
+        "line": 380,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:375"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:380"
         ],
         "comments": []
     },
@@ -7828,6 +8036,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:45",
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:67",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:121",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:81",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:125",
@@ -7841,10 +8050,10 @@
     },
     {
         "single": "Stay",
-        "line": 353,
+        "line": 358,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:353",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:358",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:416",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:122",
             "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:181"
@@ -7881,11 +8090,20 @@
         }
     },
     {
+        "single": "Still outstanding",
+        "line": 156,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:156"
+        ],
+        "comments": []
+    },
+    {
         "single": "Still to collect",
-        "line": 189,
+        "line": 198,
         "comment": "translators: %d: number of settled payments.",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:189"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:198"
         ],
         "comments": {
             "translators: %d: number of settled payments.": true
@@ -7939,10 +8157,10 @@
     },
     {
         "single": "Studio Rheinblick",
-        "line": 195,
+        "line": 224,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:195"
+            "backend/Support/BookingEmails.php:224"
         ],
         "comments": []
     },
@@ -7994,12 +8212,15 @@
     },
     {
         "single": "System",
-        "line": 101,
-        "comment": "",
+        "line": 240,
+        "comment": "translators: 1: who made the change, 2: when.",
         "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:240",
             "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:101"
         ],
-        "comments": []
+        "comments": {
+            "translators: 1: who made the change, 2: when.": true
+        }
     },
     {
         "single": "Taken by phone, email or at the door.",
@@ -8123,6 +8344,15 @@
         "comments": []
     },
     {
+        "single": "Template",
+        "line": 75,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:75"
+        ],
+        "comments": []
+    },
+    {
         "single": "Template restored to the original text.",
         "line": 239,
         "comment": "",
@@ -8187,10 +8417,10 @@
     },
     {
         "single": "That apartment does not exist.",
-        "line": 741,
+        "line": 737,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:741"
+            "backend/APIs/BookingsController.php:737"
         ],
         "comments": []
     },
@@ -8390,29 +8620,29 @@
     },
     {
         "single": "The booking could not be deleted.",
-        "line": 627,
+        "line": 622,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:627"
+            "backend/APIs/BookingsController.php:622"
         ],
         "comments": []
     },
     {
         "single": "The booking could not be saved.",
-        "line": 212,
+        "line": 213,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:212",
+            "backend/APIs/BookingsController.php:213",
             "backend/APIs/PublicBookingController.php:300"
         ],
         "comments": []
     },
     {
         "single": "The booking could not be updated.",
-        "line": 308,
+        "line": 309,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:308"
+            "backend/APIs/BookingsController.php:309"
         ],
         "comments": []
     },
@@ -8864,10 +9094,10 @@
     },
     {
         "single": "Today",
-        "line": 297,
+        "line": 583,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:297",
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:583",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:119"
         ],
         "comments": []
@@ -8887,9 +9117,10 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:205",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:246",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:425",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:251",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:430",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/PriceBreakdown.jsx:174",
+            "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:72",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:118",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:95",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:131",
@@ -8989,10 +9220,10 @@
     },
     {
         "single": "Transactions",
-        "line": 200,
+        "line": 209,
         "comment": "translators: %d: number of pending payments.",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:200"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:209"
         ],
         "comments": {
             "translators: %d: number of pending payments.": true
@@ -9054,10 +9285,10 @@
     },
     {
         "single": "Try a wider date range, or clear the filters to see everything.",
-        "line": 329,
+        "line": 347,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:329"
+            "frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:347"
         ],
         "comments": []
     },
@@ -9462,6 +9693,24 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepDetails.jsx:129"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Website",
+        "line": 125,
+        "comment": "",
+        "refs": [
+            "backend/Repositories/BookingEventsRepository.php:125"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Week",
+        "line": 137,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:137"
         ],
         "comments": []
     },

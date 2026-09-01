@@ -13,7 +13,9 @@ import { AlertCircle, BadgeEuro, Clock, Receipt, Wallet } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { ListPager } from '@/components/ListPager';
 import { Skeleton } from '@/components/ui/skeleton';
+import { usePaged } from '@/hooks/usePaged';
 
 import { StatCard } from '../../components/StatCard';
 import { paymentService } from '../../services';
@@ -134,6 +136,13 @@ export default function PaymentsPage() {
 				.some( ( field ) => field.toLowerCase().includes( term ) );
 		} );
 	}, [ payments, applied ] );
+
+	/*
+	 * A ledger only grows. The count above the table and the figures in the
+	 * stat cards stay drawn from the whole filtered set — an operator checking
+	 * what is outstanding wants the total, not the total on this page.
+	 */
+	const paged = usePaged( visible );
 
 	const setStatus = async ( payment, status ) => {
 		setBusyId( payment.id );
@@ -288,7 +297,7 @@ export default function PaymentsPage() {
 					 * the empty state instead.
 					 */ }
 					<PaymentsTable
-						payments={ visible }
+						payments={ paged.rows }
 						busyId={ busyId }
 						onView={ setViewing }
 						onMarkPaid={ ( payment ) =>
@@ -297,6 +306,15 @@ export default function PaymentsPage() {
 						emptyContent={
 							<EmptyPayments hasAny={ payments.length > 0 } />
 						}
+					/>
+
+					<ListPager
+						page={ paged.page }
+						pageCount={ paged.pageCount }
+						onPage={ paged.setPage }
+						from={ paged.from }
+						to={ paged.to }
+						total={ paged.total }
 					/>
 				</>
 			) }

@@ -11,8 +11,7 @@ import { __, sprintf, _n } from '@wordpress/i18n';
 
 import { cn } from '@/lib/utils';
 
-import { toDate } from '../../../../lib/dates';
-import { settings } from '../../../../settings';
+import { formatTime, toDate } from '../../../../lib/dates';
 import { formatDateTime, formatMoney } from '../../../Bookings/data/format';
 import { ARRIVAL, DEPARTURE } from '../../data/occupancy';
 
@@ -100,28 +99,6 @@ const marker = ( role ) => {
 
 	return null;
 };
-
-/**
- * 24-hour clock, matching the rest of the admin.
- *
- * @param {string} value A 'Y-m-d H:i:s' UTC timestamp.
- * @return {string} The local time, or '' when unparseable.
- */
-const time = ( value ) => {
-	const date = toDate( value );
-
-	if ( ! date ) {
-		return '';
-	}
-
-	return new Intl.DateTimeFormat( toBcp47( settings.locale ), {
-		hour: '2-digit',
-		minute: '2-digit',
-		hour12: false,
-	} ).format( date );
-};
-
-const toBcp47 = ( locale ) => String( locale || 'de_DE' ).replace( '_', '-' );
 
 /**
  * How long the stay runs.
@@ -234,7 +211,7 @@ export default function BookingChip( { booking, role, colour, onSelect } ) {
 		[ DEPARTURE ]: booking.endsAt,
 	};
 
-	const stamp = stamps[ role ] ? time( stamps[ role ] ) : '';
+	const stamp = stamps[ role ] ? formatTime( stamps[ role ] ) : '';
 
 	/** Compact in the cell; the tooltip spells it out. */
 	const stay = duration( booking, true );
