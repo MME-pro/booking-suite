@@ -44,17 +44,6 @@
         }
     },
     {
-        "single": "%1$d extra guests × %2$s",
-        "line": 267,
-        "comment": "translators: 1: number of extra guests, 2: price per guest.",
-        "refs": [
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:267"
-        ],
-        "comments": {
-            "translators: 1: number of extra guests, 2: price per guest.": true
-        }
-    },
-    {
         "single": "%1$d further h at %2$s",
         "line": 72,
         "comment": "translators: 1: extra hours, 2: price per hour.",
@@ -155,10 +144,10 @@
     },
     {
         "single": "%d B",
-        "line": 37,
+        "line": 130,
         "comment": "translators: %d: a file size in bytes.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:37"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:130"
         ],
         "comments": {
             "translators: %d: a file size in bytes.": true
@@ -166,10 +155,10 @@
     },
     {
         "single": "%d KB",
-        "line": 45,
+        "line": 138,
         "comment": "translators: %d: a file size in kilobytes.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:45"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:138"
         ],
         "comments": {
             "translators: %d: a file size in kilobytes.": true
@@ -374,6 +363,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:182",
             "frontend/site/Shortcodes.php:1658",
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:176",
             "frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:34"
         ],
         "comments": {
@@ -390,7 +380,7 @@
             "frontend/site/Shortcodes.php:1096",
             "frontend/site/Shortcodes.php:1585",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:565",
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:118",
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:117",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:217",
             "frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:26"
         ],
@@ -488,7 +478,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:577",
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:123",
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:122",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:344"
         ],
         "comments": {
@@ -656,10 +646,10 @@
     },
     {
         "single": "%s MB",
-        "line": 52,
+        "line": 145,
         "comment": "translators: %s: a file size in megabytes, to one decimal.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:52"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:145"
         ],
         "comments": {
             "translators: %s: a file size in megabytes, to one decimal.": true
@@ -674,6 +664,17 @@
         ],
         "comments": {
             "translators: %s: number of hours, to two decimals.": true
+        }
+    },
+    {
+        "single": "%s each",
+        "line": 291,
+        "comment": "translators: %s: price per additional guest.",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:291"
+        ],
+        "comments": {
+            "translators: %s: price per additional guest.": true
         }
     },
     {
@@ -937,10 +938,10 @@
     },
     {
         "single": "A screenshot or receipt of your transfer is required before you can continue.",
-        "line": 379,
+        "line": 482,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:379"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:482"
         ],
         "comments": []
     },
@@ -1005,7 +1006,7 @@
         "refs": [
             "backend/Support/BookingEmails.php:414",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:400",
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:153"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:251"
         ],
         "comments": []
     },
@@ -1230,6 +1231,18 @@
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:440"
         ],
         "comments": []
+    },
+    {
+        "single": "Additional guest (%d)",
+        "plural": "Additional guests (%d)",
+        "line": 280,
+        "comment": "translators: %d: number of guests above the included party size.",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:280"
+        ],
+        "comments": {
+            "translators: %d: number of guests above the included party size.": true
+        }
     },
     {
         "single": "Address",
@@ -1468,7 +1481,7 @@
             "frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:134",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:70",
             "frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:75",
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:182"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:284"
         ],
         "comments": []
     },
@@ -1587,8 +1600,7 @@
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:71",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:103",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:113",
-            "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:175",
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:164"
+            "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:175"
         ],
         "comments": []
     },
@@ -1947,7 +1959,7 @@
         "refs": [
             "backend/Support/BookingEmails.php:424",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:430",
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:175"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:276"
         ],
         "comments": []
     },
@@ -2007,7 +2019,7 @@
         "refs": [
             "backend/Support/BookingEmails.php:418",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:409",
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:161"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:261"
         ],
         "comments": []
     },
@@ -2044,15 +2056,6 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Guide/GuidePage.jsx:151"
-        ],
-        "comments": []
-    },
-    {
-        "single": "Base price",
-        "line": 247,
-        "comment": "",
-        "refs": [
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:247"
         ],
         "comments": []
     },
@@ -2389,6 +2392,15 @@
             "backend/Repositories/EmailTemplatesRepository.php:123",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:580",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:640"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Booking summary",
+        "line": 244,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:244"
         ],
         "comments": []
     },
@@ -3076,10 +3088,10 @@
     },
     {
         "single": "Click or drop your payment screenshot here",
-        "line": 329,
+        "line": 432,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:329"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:432"
         ],
         "comments": []
     },
@@ -3267,13 +3279,38 @@
         "comments": []
     },
     {
+        "single": "Copied",
+        "line": 107,
+        "comment": "translators: %s: the field being copied, e.g. IBAN.",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:107"
+        ],
+        "comments": {
+            "translators: %s: the field being copied, e.g. IBAN.": true
+        }
+    },
+    {
         "single": "Copy",
         "line": 435,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Guide/GuidePage.jsx:435"
+            "frontend/admin/app/src/pages/Guide/GuidePage.jsx:435",
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:108"
         ],
-        "comments": []
+        "comments": {
+            "translators: %s: the field being copied, e.g. IBAN.": true
+        }
+    },
+    {
+        "single": "Copy %s",
+        "line": 96,
+        "comment": "translators: %s: the field being copied, e.g. IBAN.",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:96"
+        ],
+        "comments": {
+            "translators: %s: the field being copied, e.g. IBAN.": true
+        }
     },
     {
         "single": "Copy link",
@@ -3547,15 +3584,6 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Reports/ReportsPage.jsx:241"
-        ],
-        "comments": []
-    },
-    {
-        "single": "Dates",
-        "line": 173,
-        "comment": "",
-        "refs": [
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:173"
         ],
         "comments": []
     },
@@ -4279,7 +4307,8 @@
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:257",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:386",
-            "frontend/site/app/src/components/BookingModal/StepOptions.jsx:44"
+            "frontend/site/app/src/components/BookingModal/StepOptions.jsx:44",
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:308"
         ],
         "comments": []
     },
@@ -4394,7 +4423,7 @@
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:332",
             "frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:127",
             "frontend/admin/app/src/pages/Reports/ReportsPage.jsx:264",
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:197"
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:191"
         ],
         "comments": []
     },
@@ -4615,7 +4644,6 @@
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:74",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:115",
             "frontend/site/Shortcodes.php:1058",
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:186",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:137",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:175",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:360",
@@ -4797,7 +4825,7 @@
         "refs": [
             "backend/Support/BookingEmails.php:421",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:419",
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:167"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:269"
         ],
         "comments": []
     },
@@ -4966,10 +4994,10 @@
     },
     {
         "single": "JPG, PNG, WEBP or PDF · up to %s",
-        "line": 338,
+        "line": 441,
         "comment": "translators: %s: the largest allowed file size.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:338"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:441"
         ],
         "comments": {
             "translators: %s: the largest allowed file size.": true
@@ -6480,10 +6508,10 @@
     },
     {
         "single": "Payment receipt",
-        "line": 248,
+        "line": 351,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:248"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:351"
         ],
         "comments": []
     },
@@ -6856,10 +6884,10 @@
     },
     {
         "single": "Please put your name in the payment reference. We will send you the booking number by email.",
-        "line": 202,
+        "line": 305,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:202"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:305"
         ],
         "comments": []
     },
@@ -6980,6 +7008,17 @@
         "comments": []
     },
     {
+        "single": "Prices include statutory VAT (%s).",
+        "line": 339,
+        "comment": "translators: %s: the VAT rate, already formatted.",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:339"
+        ],
+        "comments": {
+            "translators: %s: the VAT rate, already formatted.": true
+        }
+    },
+    {
         "single": "Print Report",
         "line": 214,
         "comment": "",
@@ -7080,10 +7119,10 @@
     },
     {
         "single": "Ready",
-        "line": 271,
+        "line": 374,
         "comment": "translators: %s: a file size such as \"420 KB\".",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:271"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:374"
         ],
         "comments": {
             "translators: %s: a file size such as \"420 KB\".": true
@@ -7091,10 +7130,10 @@
     },
     {
         "single": "Ready · %s",
-        "line": 268,
+        "line": 371,
         "comment": "translators: %s: a file size such as \"420 KB\".",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:268"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:371"
         ],
         "comments": {
             "translators: %s: a file size such as \"420 KB\".": true
@@ -7311,7 +7350,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/InvoiceLogoField.jsx:80",
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:288"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:391"
         ],
         "comments": []
     },
@@ -7355,10 +7394,10 @@
     },
     {
         "single": "Replace",
-        "line": 281,
+        "line": 384,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:281"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:384"
         ],
         "comments": []
     },
@@ -8592,7 +8631,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/services/icalService.js:79",
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:106"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:199"
         ],
         "comments": []
     },
@@ -8617,10 +8656,10 @@
     },
     {
         "single": "That file is too large. The most we can take is %s.",
-        "line": 82,
+        "line": 175,
         "comment": "translators: %s: the largest allowed file size.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:82"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:175"
         ],
         "comments": {
             "translators: %s: the largest allowed file size.": true
@@ -8628,10 +8667,10 @@
     },
     {
         "single": "That file type is not supported. Use a JPG, PNG, WEBP or PDF.",
-        "line": 70,
+        "line": 163,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:70"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:163"
         ],
         "comments": []
     },
@@ -8957,10 +8996,10 @@
     },
     {
         "single": "The payment receipt you uploaded",
-        "line": 230,
+        "line": 333,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:230"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:333"
         ],
         "comments": []
     },
@@ -9196,7 +9235,7 @@
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:338",
             "frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:145",
             "frontend/admin/app/src/pages/Reports/ReportsPage.jsx:274",
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:209"
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:206"
         ],
         "comments": []
     },
@@ -9262,7 +9301,7 @@
             "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:190",
             "frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:125",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:33",
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:288"
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:326"
         ],
         "comments": []
     },
@@ -9366,10 +9405,10 @@
     },
     {
         "single": "Transfer the amount to",
-        "line": 146,
+        "line": 239,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:146"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:239"
         ],
         "comments": []
     },
@@ -9628,10 +9667,10 @@
     },
     {
         "single": "Upload Payment Screenshot / Receipt",
-        "line": 212,
+        "line": 315,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:212"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:315"
         ],
         "comments": []
     },
@@ -9646,10 +9685,10 @@
     },
     {
         "single": "Upload payment proof",
-        "line": 308,
+        "line": 411,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:308"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:411"
         ],
         "comments": []
     },
@@ -10010,10 +10049,10 @@
     },
     {
         "single": "Working out the price…",
-        "line": 102,
+        "line": 101,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:102"
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:101"
         ],
         "comments": []
     },
@@ -10057,10 +10096,10 @@
     },
     {
         "single": "Your booking will be verified once your payment proof is confirmed.",
-        "line": 375,
+        "line": 478,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:375"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:478"
         ],
         "comments": []
     },
@@ -10141,10 +10180,10 @@
     },
     {
         "single": "includes %s off",
-        "line": 253,
+        "line": 263,
         "comment": "translators: %s: the amount saved.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:253"
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:263"
         ],
         "comments": {
             "translators: %s: the amount saved.": true
@@ -10176,10 +10215,10 @@
     },
     {
         "single": "required",
-        "line": 218,
+        "line": 321,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:218"
+            "frontend/site/app/src/components/BookingModal/StepPayment.jsx:321"
         ],
         "comments": []
     },

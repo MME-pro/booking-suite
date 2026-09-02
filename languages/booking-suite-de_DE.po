@@ -30,11 +30,6 @@ msgstr "%1$d hinzugefügt, %2$d geändert, %3$d freigegeben."
 msgid "%1$d extra guests at %2$s"
 msgstr "%1$d zusätzliche Gäste à %2$s"
 
-#. translators: 1: number of extra guests, 2: price per guest.
-#: frontend/site/app/src/components/BookingModal/StepReview.jsx:267
-msgid "%1$d extra guests × %2$s"
-msgstr "%1$d zusätzliche Gäste × %2$s"
-
 #. translators: 1: extra hours, 2: price per hour.
 #: frontend/admin/app/src/pages/Bookings/components/BookingForm/PriceBreakdown.jsx:72
 msgid "%1$d further h at %2$s"
@@ -81,12 +76,12 @@ msgid "%1$s, %2$s"
 msgstr "%1$s, %2$s"
 
 #. translators: %d: a file size in bytes.
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:37
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:130
 msgid "%d B"
 msgstr "%d B"
 
 #. translators: %d: a file size in kilobytes.
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:45
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:138
 msgid "%d KB"
 msgstr "%d KB"
 
@@ -194,14 +189,14 @@ msgstr "%d fehlgeschlagen"
 
 #. translators: %d: number of guests.
 #. translators: %d: maximum number of guests.
-#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:182 frontend/site/Shortcodes.php:1658 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:34
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:182 frontend/site/Shortcodes.php:1658 frontend/site/app/src/components/BookingModal/StepReview.jsx:176 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:34
 msgid "%d guest"
 msgid_plural "%d guests"
 msgstr[0] "%d Gast"
 msgstr[1] "%d Gäste"
 
 #. translators: %d: number of hours.
-#: frontend/site/Shortcodes.php:1096 frontend/site/Shortcodes.php:1585 frontend/site/app/src/components/BookingModal/BookingModal.jsx:565 frontend/site/app/src/components/BookingModal/StepReview.jsx:118
+#: frontend/site/Shortcodes.php:1096 frontend/site/Shortcodes.php:1585 frontend/site/app/src/components/BookingModal/BookingModal.jsx:565 frontend/site/app/src/components/BookingModal/StepReview.jsx:117
 #: frontend/site/app/src/components/BookingModal/StepStay.jsx:217 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:26
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -250,7 +245,7 @@ msgid "%d minutes"
 msgstr "%d Minuten"
 
 #. translators: %d: number of nights.
-#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:577 frontend/site/app/src/components/BookingModal/StepReview.jsx:123 frontend/site/app/src/components/BookingModal/StepWhen.jsx:344
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:577 frontend/site/app/src/components/BookingModal/StepReview.jsx:122 frontend/site/app/src/components/BookingModal/StepWhen.jsx:344
 msgid "%d night"
 msgid_plural "%d nights"
 msgstr[0] "%d Nacht"
@@ -334,7 +329,7 @@ msgid "%dx"
 msgstr "%dx"
 
 #. translators: %s: a file size in megabytes, to one decimal.
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:52
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:145
 msgid "%s MB"
 msgstr "%s MB"
 
@@ -342,6 +337,11 @@ msgstr "%s MB"
 #: backend/Support/Invoice.php:390
 msgid "%s Std."
 msgstr "%s Std."
+
+#. translators: %s: price per additional guest.
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:291
+msgid "%s each"
+msgstr "je %s"
 
 #. translators: %s: the apartment's name.
 #: backend/Support/Invoice.php:381
@@ -459,7 +459,7 @@ msgstr "Eine Nachricht an den Gast kurz vor der Anreise, mit allen praktischen A
 msgid "A photo grid of the apartments with a \"Book now\" button on each card, for the homepage. Rendered by the server, so it is visible to search engines and needs no search bar. Use the apartment list instead when guests should filter by date first."
 msgstr "Ein Fotoraster der Apartments mit einer „Jetzt buchen“-Schaltfläche auf jeder Karte, für die Startseite. Es wird auf dem Server erzeugt, ist damit für Suchmaschinen sichtbar und braucht keine Suchleiste. Verwenden Sie die Apartment-Liste, wenn Gäste zuerst nach Datum filtern sollen."
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:379
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:482
 msgid "A screenshot or receipt of your transfer is required before you can continue."
 msgstr "Ein Screenshot oder Beleg Ihrer Überweisung ist erforderlich, bevor Sie fortfahren können."
 
@@ -487,7 +487,7 @@ msgstr "Akzentfarbe als Hex-Wert"
 msgid "Access"
 msgstr "Zugriff"
 
-#: backend/Support/BookingEmails.php:414 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:400 frontend/site/app/src/components/BookingModal/StepPayment.jsx:153
+#: backend/Support/BookingEmails.php:414 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:400 frontend/site/app/src/components/BookingModal/StepPayment.jsx:251
 msgid "Account holder"
 msgstr "Kontoinhaber"
 
@@ -583,6 +583,13 @@ msgstr "Legen Sie Ihr erstes Apartment an, um Buchungen dafür anzunehmen."
 #: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:440
 msgid "Additional details"
 msgstr "Weitere Angaben"
+
+#. translators: %d: number of guests above the included party size.
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:280
+msgid "Additional guest (%d)"
+msgid_plural "Additional guests (%d)"
+msgstr[0] "Zusätzlicher Gast (%d)"
+msgstr[1] "Zusätzliche Gäste (%d)"
 
 #: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:561
 msgid "Address"
@@ -683,7 +690,7 @@ msgid "Already over."
 msgstr "Bereits vorbei."
 
 #: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:79 frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:134 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:70 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:75
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:182
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:284
 msgid "Amount"
 msgstr "Betrag"
 
@@ -735,7 +742,7 @@ msgstr "Anzahl der Std."
 
 #: backend/PostTypes/ApartmentPostType.php:206 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:106 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:164 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:364
 #: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:424 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:71 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:103 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:113
-#: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:175 frontend/site/app/src/components/BookingModal/StepReview.jsx:164
+#: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:175
 msgid "Apartment"
 msgstr "Apartment"
 
@@ -888,7 +895,7 @@ msgstr "Zahlung ausstehend"
 msgid "Awaiting payment"
 msgstr "Zahlung ausstehend"
 
-#: backend/Support/BookingEmails.php:424 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:430 frontend/site/app/src/components/BookingModal/StepPayment.jsx:175
+#: backend/Support/BookingEmails.php:424 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:430 frontend/site/app/src/components/BookingModal/StepPayment.jsx:276
 msgid "BIC"
 msgstr "BIC"
 
@@ -913,7 +920,7 @@ msgstr "Restbetrag nach Änderung der Buchung."
 msgid "Balance due"
 msgstr "Offener Betrag"
 
-#: backend/Support/BookingEmails.php:418 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:409 frontend/site/app/src/components/BookingModal/StepPayment.jsx:161
+#: backend/Support/BookingEmails.php:418 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:409 frontend/site/app/src/components/BookingModal/StepPayment.jsx:261
 msgid "Bank"
 msgstr "Bank"
 
@@ -932,10 +939,6 @@ msgstr "Bankverbindung:"
 #: frontend/admin/app/src/pages/Guide/GuidePage.jsx:151
 msgid "Base URL"
 msgstr "Basis-URL"
-
-#: frontend/site/app/src/components/BookingModal/StepReview.jsx:247
-msgid "Base price"
-msgstr "Grundpreis"
 
 #. translators: %d: hours the base rate covers.
 #: frontend/admin/app/src/pages/Bookings/components/BookingForm/PriceBreakdown.jsx:61
@@ -1078,6 +1081,10 @@ msgstr "Buchungs-Kurzlink"
 #: backend/Repositories/EmailTemplatesRepository.php:123 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:580 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:640
 msgid "Booking status"
 msgstr "Buchungsstatus"
+
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:244
+msgid "Booking summary"
+msgstr "Buchungsübersicht"
 
 #: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:76
 msgid "Booking total"
@@ -1372,7 +1379,7 @@ msgstr "Datum zurücksetzen"
 msgid "Clear search"
 msgstr "Suche zurücksetzen"
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:329
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:432
 msgid "Click or drop your payment screenshot here"
 msgstr "Zahlungsbeleg hier ablegen oder klicken"
 
@@ -1453,9 +1460,20 @@ msgstr "Kontakt"
 msgid "Continue"
 msgstr "Weiter"
 
-#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:435
+#. translators: %s: the field being copied, e.g. IBAN.
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:107
+msgid "Copied"
+msgstr "Kopiert"
+
+#. translators: %s: the field being copied, e.g. IBAN.
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:435 frontend/site/app/src/components/BookingModal/StepPayment.jsx:108
 msgid "Copy"
 msgstr "Kopieren"
+
+#. translators: %s: the field being copied, e.g. IBAN.
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:96
+msgid "Copy %s"
+msgstr "%s kopieren"
 
 #. translators: %s: which feed, e.g. "For Airbnb".
 #: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:128 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:136
@@ -1572,10 +1590,6 @@ msgstr "Datum"
 
 #: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:241
 msgid "Date Range"
-msgstr "Zeitraum"
-
-#: frontend/site/app/src/components/BookingModal/StepReview.jsx:173
-msgid "Dates"
 msgstr "Zeitraum"
 
 #: backend/PostTypes/ApartmentMetaBox.php:383 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:838
@@ -1882,6 +1896,7 @@ msgstr "Extra"
 
 #: frontend/admin/Menu.php:191 frontend/admin/Menu.php:192 frontend/admin/app/src/App.jsx:65 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402
 #: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:257 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416 frontend/site/app/src/components/BookingModal/BookingModal.jsx:386 frontend/site/app/src/components/BookingModal/StepOptions.jsx:44
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:308
 msgid "Extras"
 msgstr "Extras"
 
@@ -1930,7 +1945,7 @@ msgstr "Zu Ihrer Information: Dies sind die Kontodaten, an die Ihre Zahlung gega
 msgid "Free"
 msgstr "Frei"
 
-#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:332 frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:127 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:264 frontend/site/app/src/components/BookingModal/StepReview.jsx:197
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:332 frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:127 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:264 frontend/site/app/src/components/BookingModal/StepReview.jsx:191
 msgid "From"
 msgstr "Von"
 
@@ -2023,8 +2038,8 @@ msgstr "Gast hat gezahlt am"
 #. translators: %d: number of nights.
 #: backend/PostTypes/ApartmentMetaBox.php:152 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:437 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:109 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177
 #: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:376 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:513 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:74 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:115
-#: frontend/site/Shortcodes.php:1058 frontend/site/app/src/components/BookingModal/StepReview.jsx:186 frontend/site/app/src/components/BookingModal/StepStay.jsx:137 frontend/site/app/src/components/BookingModal/StepStay.jsx:175
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:360 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107
+#: frontend/site/Shortcodes.php:1058 frontend/site/app/src/components/BookingModal/StepStay.jsx:137 frontend/site/app/src/components/BookingModal/StepStay.jsx:175 frontend/site/app/src/components/BookingModal/StepWhen.jsx:360
+#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107
 msgid "Guests"
 msgstr "Gäste"
 
@@ -2101,7 +2116,7 @@ msgstr "Wie sich der Zeitraum über die Buchungsphasen verteilt."
 msgid "How this apartment is identified across the calendar and the website."
 msgstr "Wie dieses Apartment im Kalender und auf der Website erkennbar ist."
 
-#: backend/Support/BookingEmails.php:421 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:419 frontend/site/app/src/components/BookingModal/StepPayment.jsx:167
+#: backend/Support/BookingEmails.php:421 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:419 frontend/site/app/src/components/BookingModal/StepPayment.jsx:269
 msgid "IBAN"
 msgstr "IBAN"
 
@@ -2177,7 +2192,7 @@ msgid "Items offered at booking"
 msgstr "Beim Buchen angebotene Positionen"
 
 #. translators: %s: the largest allowed file size.
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:338
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:441
 msgid "JPG, PNG, WEBP or PDF · up to %s"
 msgstr "JPG, PNG, WEBP oder PDF · bis %s"
 
@@ -2835,7 +2850,7 @@ msgstr "Zahlungsnachweis"
 msgid "Payment proof for %s"
 msgstr "Zahlungsnachweis für %s"
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:248
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:351
 msgid "Payment receipt"
 msgstr "Zahlungsbeleg"
 
@@ -2996,7 +3011,7 @@ msgstr "Bitte geben Sie eine gültige E-Mail-Adresse an."
 msgid "Please give your first and last name."
 msgstr "Bitte geben Sie Vor- und Nachnamen an."
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:202
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:305
 msgid "Please put your name in the payment reference. We will send you the booking number by email."
 msgstr "Bitte geben Sie Ihren Namen als Verwendungszweck an. Die Buchungsnummer senden wir Ihnen per E-Mail."
 
@@ -3049,6 +3064,11 @@ msgstr "Preisaufstellung"
 msgid "Price on request"
 msgstr "Preis auf Anfrage"
 
+#. translators: %s: the VAT rate, already formatted.
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:339
+msgid "Prices include statutory VAT (%s)."
+msgstr "Preise inkl. gesetzlicher MwSt. (%s)."
+
 #: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:214
 msgid "Print Report"
 msgstr "Bericht drucken"
@@ -3094,12 +3114,12 @@ msgid "Reading…"
 msgstr "Wird gelesen…"
 
 #. translators: %s: a file size such as "420 KB".
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:271
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:374
 msgid "Ready"
 msgstr "Bereit"
 
 #. translators: %s: a file size such as "420 KB".
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:268
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:371
 msgid "Ready · %s"
 msgstr "Bereit · %s"
 
@@ -3189,7 +3209,7 @@ msgstr "Auf der Seite „Verfügbarkeit“ freigeben."
 msgid "Release this lock?"
 msgstr "Diese Sperre aufheben?"
 
-#: frontend/admin/app/src/pages/Settings/InvoiceLogoField.jsx:80 frontend/site/app/src/components/BookingModal/StepPayment.jsx:288
+#: frontend/admin/app/src/pages/Settings/InvoiceLogoField.jsx:80 frontend/site/app/src/components/BookingModal/StepPayment.jsx:391
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -3209,7 +3229,7 @@ msgstr "Anteil wiederkehrender Kunden"
 msgid "Repeating events are not imported."
 msgstr "Wiederkehrende Termine werden nicht importiert."
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:281
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:384
 msgid "Replace"
 msgstr "Ersetzen"
 
@@ -3740,7 +3760,7 @@ msgstr "Diese E-Mail-Vorlage existiert nicht."
 msgid "That extra no longer exists."
 msgstr "Dieses Extra existiert nicht mehr."
 
-#: frontend/admin/app/src/services/icalService.js:79 frontend/site/app/src/components/BookingModal/StepPayment.jsx:106
+#: frontend/admin/app/src/services/icalService.js:79 frontend/site/app/src/components/BookingModal/StepPayment.jsx:199
 msgid "That file could not be read."
 msgstr "Diese Datei konnte nicht gelesen werden."
 
@@ -3753,11 +3773,11 @@ msgid "That file is too large to be a calendar export."
 msgstr "Diese Datei ist zu groß für einen Kalender-Export."
 
 #. translators: %s: the largest allowed file size.
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:82
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:175
 msgid "That file is too large. The most we can take is %s."
 msgstr "Diese Datei ist zu groß. Höchstens %s sind möglich."
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:70
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:163
 msgid "That file type is not supported. Use a JPG, PNG, WEBP or PDF."
 msgstr "Dieser Dateityp wird nicht unterstützt. Bitte JPG, PNG, WEBP oder PDF verwenden."
 
@@ -3902,7 +3922,7 @@ msgstr "Die nächste zu vergebende Nummer. Sie kann die Zählung nur nach vorn s
 msgid "The one-time verification code"
 msgstr "Der einmalige Bestätigungscode"
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:230
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:333
 msgid "The payment receipt you uploaded"
 msgstr "Der von Ihnen hochgeladene Zahlungsbeleg"
 
@@ -4008,7 +4028,7 @@ msgstr "Uhrzeit"
 msgid "Time Slot"
 msgstr "Zeitfenster"
 
-#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:338 frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:145 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:274 frontend/site/app/src/components/BookingModal/StepReview.jsx:209
+#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:338 frontend/admin/app/src/pages/Payments/components/PaymentsFilters/PaymentsFilters.jsx:145 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:274 frontend/site/app/src/components/BookingModal/StepReview.jsx:206
 msgid "To"
 msgstr "Bis"
 
@@ -4034,7 +4054,7 @@ msgstr "Beste Zimmer"
 
 #: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:205 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:251 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:430 frontend/admin/app/src/pages/Bookings/components/BookingForm/PriceBreakdown.jsx:174
 #: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:77 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:118 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:95 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:131
-#: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:190 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:125 frontend/site/app/src/components/BookingModal/StepDone.jsx:33 frontend/site/app/src/components/BookingModal/StepReview.jsx:288
+#: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:190 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:125 frontend/site/app/src/components/BookingModal/StepDone.jsx:33 frontend/site/app/src/components/BookingModal/StepReview.jsx:326
 msgid "Total"
 msgstr "Gesamt"
 
@@ -4081,7 +4101,7 @@ msgstr "Insgesamt verfügbare Menge dieses Extras (z. B. 3 für 3 Beamer)."
 msgid "Transactions"
 msgstr "Transaktionen"
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:146
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:239
 msgid "Transfer the amount to"
 msgstr "Überweisen Sie den Betrag an"
 
@@ -4200,7 +4220,7 @@ msgstr "Aktualisierte Rechnung — {{reference}}"
 msgid "Upload Image"
 msgstr "Bild hochladen"
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:212
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:315
 msgid "Upload Payment Screenshot / Receipt"
 msgstr "Zahlungs-Screenshot / Beleg hochladen"
 
@@ -4208,7 +4228,7 @@ msgstr "Zahlungs-Screenshot / Beleg hochladen"
 msgid "Upload image"
 msgstr "Bild hochladen"
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:308
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:411
 msgid "Upload payment proof"
 msgstr "Zahlungsnachweis hochladen"
 
@@ -4366,7 +4386,7 @@ msgstr "WordPress konnte die E-Mail nicht senden. Prüfen Sie, ob die Vorlage ak
 msgid "Worked back out of the price, which is what the guest pays. 0 shows no tax line."
 msgstr "Wird aus dem Preis herausgerechnet, den der Gast zahlt. 0 blendet die Steuerzeile aus."
 
-#: frontend/site/app/src/components/BookingModal/StepReview.jsx:102
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:101
 msgid "Working out the price…"
 msgstr "Preis wird berechnet …"
 
@@ -4387,7 +4407,7 @@ msgstr "Ihre Buchung wurde storniert – {{reference}}"
 msgid "Your booking is confirmed — {{reference}}"
 msgstr "Ihre Buchung ist bestätigt — {{reference}}"
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:375
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:478
 msgid "Your booking will be verified once your payment proof is confirmed."
 msgstr "Ihre Buchung wird bestätigt, sobald Ihr Zahlungsnachweis geprüft wurde."
 
@@ -4425,7 +4445,7 @@ msgid "from"
 msgstr "ab"
 
 #. translators: %s: the amount saved.
-#: frontend/site/app/src/components/BookingModal/StepReview.jsx:253
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:263
 msgid "includes %s off"
 msgstr "inkl. %s Rabatt"
 
@@ -4439,7 +4459,7 @@ msgstr "kein SMTP-Plugin"
 msgid "no reason given"
 msgstr "kein Grund angegeben"
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:218
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:321
 msgid "required"
 msgstr "erforderlich"
 

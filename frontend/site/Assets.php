@@ -232,6 +232,15 @@ final class Assets {
 				 */
 				'minHours' => SettingsRepository::number( SettingsRepository::MIN_HOURS ),
 				'maxHours' => SettingsRepository::number( SettingsRepository::MAX_HOURS ),
+
+				/*
+				 * For the line under the summary saying the prices already
+				 * include VAT. Sent as the rate rather than as the sentence so
+				 * the review screen can stay quiet when the owner has no VAT to
+				 * declare — telling a guest prices include tax at 0% is worse
+				 * than saying nothing.
+				 */
+				'taxRate'  => SettingsRepository::number( SettingsRepository::TAX_RATE ),
 			)
 		);
 	}

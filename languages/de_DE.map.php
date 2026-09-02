@@ -303,6 +303,18 @@ return array(
 	'Contact'                     => 'Kontakt',
 	'Continue'                    => 'Weiter',
 	'Copy'                        => 'Kopieren',
+
+	// The review summary, and the copy buttons beside the bank details.
+	'Booking summary'             => 'Buchungsübersicht',
+	'Additional guest (%d)'       => array(
+		'Zusätzlicher Gast (%d)',
+		'Zusätzliche Gäste (%d)',
+	),
+	'%s each'                     => 'je %s',
+	'Prices include statutory VAT (%s).' => 'Preise inkl. gesetzlicher MwSt. (%s).',
+
+	/* translators: %s is the field being copied, e.g. IBAN. */
+	'Copy %s'                     => '%s kopieren',
 	'Copy to clipboard'           => 'In die Zwischenablage kopieren',
 	'Could not build the report'  => 'Der Bericht konnte nicht erstellt werden',
 	'Could not check'             => 'Konnte nicht geprüft werden',

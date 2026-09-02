@@ -1099,24 +1099,59 @@
 	gap: 22px;
 }
 
-/* The three facts, side by side, each behind its own icon. */
-.bks-review__top {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-	gap: 16px;
-	margin: 0;
-	padding: 20px;
-	background: var(--bks-site-surface-muted);
-	border-radius: var(--bks-site-radius-xs);
+/*
+ * The stay: one card, with the apartment as its title and the window inside.
+ *
+ * Previously two blocks — a filled grey strip above a bordered box — which read
+ * as two competing summaries of the same booking, the grey one drawing the eye
+ * despite being the one that repeated what was already on screen.
+ */
+.bks-review__stay {
 	border: 1px solid var(--bks-site-border);
-	list-style: none;
+	border-radius: var(--bks-site-radius-sm);
+	background: var(--bks-site-surface);
+	overflow: hidden;
 }
 
-.bks-review__top li {
+.bks-review__stay-head {
 	display: flex;
-	align-items: flex-start;
-	gap: 10px;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px 16px;
+	padding: 14px 20px;
+	border-bottom: 1px solid var(--bks-site-border);
+	background: var(--bks-site-surface-muted);
+}
+
+.bks-review__stay-name {
+	display: flex;
+	align-items: center;
+	gap: 9px;
 	min-width: 0;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1.3;
+	color: var(--bks-site-text);
+}
+
+/*
+ * A pill, and it says "2 guests" rather than a bare 2 under a tiny label. The
+ * number alone needed the label to mean anything, which is what made it read
+ * as a form field instead of a fact.
+ */
+.bks-review__stay-guests {
+	display: flex;
+	flex: none;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 12px;
+	border-radius: var(--bks-site-radius-pill);
+	background: var(--bks-site-surface);
+	border: 1px solid var(--bks-site-border);
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--bks-site-text-muted);
 }
 
 /*
@@ -1124,15 +1159,16 @@
  * rather than every glyph carrying its own. `flex: none` keeps one from being
  * squeezed to nothing beside a long apartment name.
  */
-.bks-review__top svg,
+.bks-review__stay-name svg,
 .bks-review__guest svg,
 .bks-review__range-length svg {
 	flex: none;
 	color: var(--bks-site-brand);
 }
 
-.bks-review__top > li > div {
-	min-width: 0;
+.bks-review__stay-guests svg {
+	flex: none;
+	color: var(--bks-site-text-faint);
 }
 
 /*
@@ -1149,23 +1185,22 @@
 	text-transform: uppercase;
 }
 
-.bks-review__top strong {
-	display: block;
-	margin-top: 3px;
-	font-size: 16px;
-	font-weight: 600;
-	color: var(--bks-site-text);
+.bks-review__range-end strong,
+.bks-review__stay-name {
+	min-width: 0;
+	overflow-wrap: anywhere;
 }
 
-/* Both ends of the booking, and how long it runs. */
+/*
+ * Both ends of the booking, and how long it runs. Inside the stay card now, so
+ * it carries no border of its own — the card is the frame.
+ */
 .bks-review__range {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 14px 18px;
 	padding: 18px 20px;
-	border: 1px solid var(--bks-site-border);
-	border-radius: var(--bks-site-radius-xs);
 }
 
 .bks-review__range-end {
@@ -1229,14 +1264,54 @@
 	overflow-wrap: anywhere;
 }
 
+/*
+ * The bill, as a card of its own.
+ *
+ * It used to run on from the guest's details with only a hairline above it,
+ * which left the one block the guest is actually checking looking like a
+ * footnote to the block above. A titled card is what an invoice looks like,
+ * and this is read the same way.
+ */
+.bks-review__summary {
+	padding: 18px 20px;
+	border: 1px solid var(--bks-site-border);
+	border-radius: var(--bks-site-radius-sm);
+	background: var(--bks-site-surface);
+}
+
+.bks-review__summary-title {
+	margin: 0 0 14px;
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--bks-site-text);
+}
+
 .bks-review__lines {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
 	margin: 0;
-	padding: 18px 0 0;
-	border-top: 1px solid var(--bks-site-border);
+	padding: 0;
 	list-style: none;
+}
+
+/*
+ * The heading over the extras. A row of the list rather than a heading outside
+ * it, so it sits in the same rhythm as the lines it introduces.
+ */
+.bks-review__group {
+	display: block;
+	margin-top: 6px;
+	color: var(--bks-site-text);
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+}
+
+/* Indented under that heading, so the grouping is shown and not just stated. */
+.bks-review__extra > span:first-child {
+	padding-left: 12px;
 }
 
 .bks-review__lines li {
@@ -1294,15 +1369,31 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding-top: 16px;
+	margin: 0;
+	padding-top: 14px;
+	margin-top: 14px;
 	border-top: 1px solid var(--bks-site-border);
 	font-size: 16px;
+	font-weight: 600;
 }
 
 .bks-review__total strong {
 	font-size: 24px;
 	font-weight: 700;
 	color: var(--bks-site-brand);
+}
+
+/*
+ * Quiet, centred, and below the total it qualifies. It is a legal note rather
+ * than a line of the bill, and giving it a row of its own in the list would
+ * read as another charge.
+ */
+.bks-review__vat {
+	margin: 12px 0 0;
+	color: var(--bks-site-text-faint);
+	font-size: 12px;
+	font-style: italic;
+	text-align: center;
 }
 
 /* ═══════════════════════════════════════════════
@@ -1678,13 +1769,11 @@
 
 	/* Review ------------------------------------------------------------- */
 
-	.bks-review__top {
-		grid-template-columns: 1fr 1fr;
-		gap: 12px;
-		padding: 16px;
+	.bks-review__stay-head {
+		padding: 12px 16px;
 	}
 
-	.bks-review__top strong {
+	.bks-review__stay-name {
 		font-size: 15px;
 	}
 
@@ -2406,10 +2495,19 @@
 	color: var(--bks-site-text);
 }
 
+/*
+ * One column, at every width.
+ *
+ * These are not facts to be skimmed — they are five values a guest copies one
+ * at a time into a banking app, in this order. Flowing them into two or three
+ * columns on a wide screen saved a little height and cost the reading order:
+ * the eye has to find where IBAN went, and an IBAN typed from the wrong line
+ * is a payment that does not arrive.
+ */
 .bks-bank__rows {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-	gap: 12px 20px;
+	grid-template-columns: 1fr;
+	gap: 12px;
 	margin: 0;
 }
 
@@ -2421,7 +2519,15 @@
 	text-transform: uppercase;
 }
 
+/*
+ * The value and its copy button share a line, with the button pushed to the
+ * end so the buttons form a column the thumb can run down.
+ */
 .bks-bank__rows dd {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
 	margin: 3px 0 0;
 	font-size: 15px;
 	font-weight: 600;
@@ -2429,6 +2535,78 @@
 
 	/* An IBAN is one long unbreakable token to a layout engine. */
 	overflow-wrap: anywhere;
+}
+
+.bks-bank__value {
+	min-width: 0;
+}
+
+/*
+ * Quiet until wanted. It sits beside every value on the screen, so a row of
+ * five filled buttons would read as the point of the block rather than as a
+ * help with it.
+ */
+.bks-bank__copy {
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+	gap: 5px;
+	padding: 5px 10px;
+	border: 1px solid var(--bks-site-border);
+	border-radius: var(--bks-site-radius-xs);
+	background: var(--bks-site-surface);
+	font-family: inherit;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--bks-site-text-muted);
+	cursor: pointer;
+	transition:
+		border-color var(--bks-site-transition-fast),
+		color var(--bks-site-transition-fast),
+		background-color var(--bks-site-transition-fast);
+}
+
+.bks-bank__copy:hover {
+	border-color: var(--bks-site-brand);
+	color: var(--bks-site-brand);
+	background: var(--bks-site-brand-soft);
+}
+
+.bks-bank__copy:focus-visible {
+	outline: 2px solid var(--bks-site-brand);
+	outline-offset: 2px;
+}
+
+/*
+ * Confirmed in place, because the guest is looking at the button they just
+ * pressed. A toast somewhere else on the screen would be missed by the person
+ * it is for.
+ */
+.bks-bank__copy.is-copied {
+	border-color: var(--bks-site-success);
+	background: var(--bks-site-success-soft);
+	color: var(--bks-site-success);
+}
+
+@media (pointer: coarse) {
+
+	.bks-bank__copy {
+		min-height: var(--bks-site-tap, 44px);
+		padding-inline: 12px;
+	}
+}
+
+/* The label alone is enough once the row is narrow. */
+@media (max-width: 26rem) {
+
+	.bks-bank__copy span {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+	}
 }
 
 /*
@@ -2451,3 +2629,33 @@
 	color: var(--bks-site-text-muted);
 	font-size: 13px;
 }
+
+/*
+ * The copy buttons beside the bank details. The blanket rule above strips every
+ * button in the modal back to nothing, so each one that wants a surface has to
+ * ask for it again — including the confirmed state, which is the whole feedback
+ * the guest gets that the copy worked.
+ */
+.bks-booking .bks-bank__copy {
+	background-color: var(--bks-site-surface, #fff) !important;
+	color: var(--bks-site-text-muted, #475569) !important;
+	-webkit-text-fill-color: var(--bks-site-text-muted, #475569) !important;
+	border-color: var(--bks-site-border, #e2e8f0) !important;
+}
+
+.bks-booking .bks-bank__copy:hover:not(:disabled),
+.bks-booking .bks-bank__copy:focus:not(:disabled) {
+	background-color: var(--bks-site-brand-soft, #eff6ff) !important;
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+	border-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+.bks-booking .bks-bank__copy.is-copied,
+.bks-booking .bks-bank__copy.is-copied:hover {
+	background-color: var(--bks-site-success-soft, #f0fdf4) !important;
+	color: var(--bks-site-success, #16a34a) !important;
+	-webkit-text-fill-color: var(--bks-site-success, #16a34a) !important;
+	border-color: var(--bks-site-success, #16a34a) !important;
+}
+

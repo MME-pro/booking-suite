@@ -16,6 +16,9 @@ const settings = {
 	minHours: 3,
 	maxHours: 8,
 
+	// 0 means the owner declares no VAT, and the review screen says nothing.
+	taxRate: 0,
+
 	// WordPress's own defaults for Settings → General — except the clock.
 	dateFormat: 'F j, Y',
 	/*

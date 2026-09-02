@@ -147,3 +147,16 @@ export const MapPinIcon = ( props ) => (
 		<circle cx="12" cy="10.3" r="2.6" />
 	</Glyph>
 );
+
+export const CopyIcon = ( props ) => (
+	<Glyph { ...props }>
+		<rect x="9" y="9" width="11" height="11" rx="2" />
+		<path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" />
+	</Glyph>
+);
+
+export const CheckIcon = ( props ) => (
+	<Glyph { ...props }>
+		<path d="m4.5 12.5 5 5 10-10" />
+	</Glyph>
+);

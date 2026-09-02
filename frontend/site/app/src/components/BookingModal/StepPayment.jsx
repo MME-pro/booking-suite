@@ -17,8 +17,101 @@
  * payment.
  */
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { __, sprintf } from '@wordpress/i18n';
+
+import { CheckIcon, CopyIcon } from '../icons';
+
+/**
+ * One bank detail, with a button that copies it.
+ *
+ * A guest is retyping an IBAN into a banking app on a phone, which is the
+ * single most error-prone moment in the whole flow — one wrong digit and the
+ * money goes nowhere the owner can find it. Copying is not a convenience here.
+ *
+ * `navigator.clipboard` needs a secure context, so a site still on http gets
+ * the textarea fallback rather than a button that silently does nothing.
+ *
+ * @param {Object} props
+ * @param {string} props.label       The field name.
+ * @param {string} props.value       What is shown, and what is copied.
+ * @param {string} [props.className] Extra class for the value.
+ * @return {JSX.Element} The row.
+ */
+function BankRow( { label, value, className = '' } ) {
+	const [ copied, setCopied ] = useState( false );
+
+	// Clears the "Copied" state, and is cancelled if the row unmounts first.
+	useEffect( () => {
+		if ( ! copied ) {
+			return undefined;
+		}
+
+		const timer = window.setTimeout( () => setCopied( false ), 2000 );
+
+		return () => window.clearTimeout( timer );
+	}, [ copied ] );
+
+	const copy = async () => {
+		const text = String( value );
+
+		try {
+			if ( window.navigator.clipboard?.writeText ) {
+				await window.navigator.clipboard.writeText( text );
+			} else {
+				const field = document.createElement( 'textarea' );
+
+				field.value = text;
+				field.setAttribute( 'readonly', '' );
+				field.style.position = 'fixed';
+				field.style.opacity = '0';
+
+				document.body.appendChild( field );
+				field.select();
+				document.execCommand( 'copy' );
+				document.body.removeChild( field );
+			}
+
+			setCopied( true );
+		} catch ( error ) {
+			// Nothing useful to say: the value is on screen to be read either
+			// way, and an error notice here would only be in the way.
+		}
+	};
+
+	return (
+		<div className="bks-bank__row">
+			<dt>{ label }</dt>
+			<dd className={ className }>
+				<span className="bks-bank__value">{ value }</span>
+
+				<button
+					type="button"
+					className={ `bks-bank__copy${
+						copied ? ' is-copied' : ''
+					}` }
+					onClick={ copy }
+					aria-label={ sprintf(
+						/* translators: %s: the field being copied, e.g. IBAN. */
+						__( 'Copy %s', 'booking-suite' ),
+						label
+					) }
+				>
+					{ copied ? (
+						<CheckIcon size={ 15 } />
+					) : (
+						<CopyIcon size={ 15 } />
+					) }
+					<span>
+						{ copied
+							? __( 'Copied', 'booking-suite' )
+							: __( 'Copy', 'booking-suite' ) }
+					</span>
+				</button>
+			</dd>
+		</div>
+	);
+}
 
 /** What the server accepts; see ProofUpload on the PHP side. */
 const ACCEPTED = [ 'image/jpeg', 'image/png', 'image/webp', 'application/pdf' ];
@@ -146,42 +239,52 @@ export default function StepPayment( { payment, onChange, bank, total } ) {
 						{ __( 'Transfer the amount to', 'booking-suite' ) }
 					</h3>
 
+					{ /*
+					 * Every value is copyable, not just the IBAN. The reference
+					 * and the amount are retyped into the same form, and a
+					 * guest who can copy four of five fields will type the
+					 * fifth by hand and wonder why that one was different.
+					 */ }
 					<dl className="bks-bank__rows">
 						{ bank.holder && (
-							<div>
-								<dt>
-									{ __( 'Account holder', 'booking-suite' ) }
-								</dt>
-								<dd>{ bank.holder }</dd>
-							</div>
+							<BankRow
+								label={ __(
+									'Account holder',
+									'booking-suite'
+								) }
+								value={ bank.holder }
+							/>
 						) }
 
 						{ bank.bank && (
-							<div>
-								<dt>{ __( 'Bank', 'booking-suite' ) }</dt>
-								<dd>{ bank.bank }</dd>
-							</div>
+							<BankRow
+								label={ __( 'Bank', 'booking-suite' ) }
+								value={ bank.bank }
+							/>
 						) }
 
-						<div>
-							<dt>{ __( 'IBAN', 'booking-suite' ) }</dt>
-							{ /* Monospace and spaced in fours, so it can be
-							   read across without losing your place. */ }
-							<dd className="bks-bank__iban">{ bank.iban }</dd>
-						</div>
+						{ /* Monospace and spaced in fours, so it can be read
+						   across without losing your place. */ }
+						<BankRow
+							label={ __( 'IBAN', 'booking-suite' ) }
+							value={ bank.iban }
+							className="bks-bank__iban"
+						/>
 
 						{ bank.bic && (
-							<div>
-								<dt>{ __( 'BIC', 'booking-suite' ) }</dt>
-								<dd className="bks-bank__iban">{ bank.bic }</dd>
-							</div>
+							<BankRow
+								label={ __( 'BIC', 'booking-suite' ) }
+								value={ bank.bic }
+								className="bks-bank__iban"
+							/>
 						) }
 
 						{ total && (
-							<div>
-								<dt>{ __( 'Amount', 'booking-suite' ) }</dt>
-								<dd className="bks-bank__amount">{ total }</dd>
-							</div>
+							<BankRow
+								label={ __( 'Amount', 'booking-suite' ) }
+								value={ total }
+								className="bks-bank__amount"
+							/>
 						) }
 					</dl>
 

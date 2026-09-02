@@ -15,7 +15,6 @@
 import { __, sprintf, _n } from '@wordpress/i18n';
 
 import {
-	CalendarIcon,
 	ClockIcon,
 	HomeIcon,
 	MailIcon,
@@ -148,74 +147,73 @@ export default function StepReview( {
 	const fullName = `${ guest.firstName } ${ guest.lastName }`.trim();
 	const discount = quote.duration?.discount ?? 0;
 
+	// 0 when the owner declares no VAT, which keeps the note off the screen.
+	const taxRate = Number.parseFloat( settings.taxRate ) || 0;
+
 	return (
 		<div className="bks-review">
 			{ /*
-			 * Three facts, in the order they are asked: what, when, how many.
-			 * The icons are what let this be read at a glance rather than
-			 * parsed — the dates are the one item that needs a second look,
-			 * and the block underneath is where that look goes.
+			 * What is being booked, as one card rather than two.
+			 *
+			 * This was a grey strip of Apartment / Dates / Guests sitting above
+			 * the window below. Two of its three cells said nothing new — the
+			 * apartment is the modal's own heading, and the dates were repeated
+			 * underneath in full — so the block with the least to say carried
+			 * the most weight on the screen. The apartment names the card, the
+			 * party size sits beside it, and the window keeps the room it needs.
 			 */ }
-			<ul className="bks-review__top">
-				<li>
-					<HomeIcon />
-					<div>
-						<span className="bks-review__label">
-							{ __( 'Apartment', 'booking-suite' ) }
-						</span>
-						<strong>{ apartment.name }</strong>
-					</div>
-				</li>
-				<li>
-					<CalendarIcon />
-					<div>
-						<span className="bks-review__label">
-							{ __( 'Dates', 'booking-suite' ) }
-						</span>
-						<strong>
-							{ isHourly
-								? from.date
-								: `${ from.date } – ${ to.date }` }
-						</strong>
-					</div>
-				</li>
-				<li>
-					<UsersIcon />
-					<div>
-						<span className="bks-review__label">
-							{ __( 'Guests', 'booking-suite' ) }
-						</span>
-						<strong>{ stay.guests }</strong>
-					</div>
-				</li>
-			</ul>
-
-			{ /* The window itself: both ends, with their times, and how long. */ }
-			<div className="bks-review__range">
-				<div className="bks-review__range-end">
-					<span className="bks-review__label">
-						{ __( 'From', 'booking-suite' ) }
+			<div className="bks-review__stay">
+				<div className="bks-review__stay-head">
+					<span className="bks-review__stay-name">
+						<HomeIcon />
+						{ apartment.name }
 					</span>
-					<strong>{ from.date }</strong>
-					<em>{ from.time }</em>
+
+					<span className="bks-review__stay-guests">
+						<UsersIcon />
+						{ sprintf(
+							/* translators: %d: number of guests. */
+							_n(
+								'%d guest',
+								'%d guests',
+								stay.guests,
+								'booking-suite'
+							),
+							stay.guests
+						) }
+					</span>
 				</div>
 
-				<span className="bks-review__range-arrow" aria-hidden="true">
-					→
-				</span>
+				{ /* The window itself: both ends, their times, and how long. */ }
+				<div className="bks-review__range">
+					<div className="bks-review__range-end">
+						<span className="bks-review__label">
+							{ __( 'From', 'booking-suite' ) }
+						</span>
+						<strong>{ from.date }</strong>
+						<em>{ from.time }</em>
+					</div>
 
-				<div className="bks-review__range-end">
-					<span className="bks-review__label">
-						{ __( 'To', 'booking-suite' ) }
+					<span
+						className="bks-review__range-arrow"
+						aria-hidden="true"
+					>
+						→
 					</span>
-					<strong>{ to.date }</strong>
-					<em>{ to.time }</em>
-				</div>
 
-				<p className="bks-review__range-length">
-					<ClockIcon />
-					{ length }
-				</p>
+					<div className="bks-review__range-end">
+						<span className="bks-review__label">
+							{ __( 'To', 'booking-suite' ) }
+						</span>
+						<strong>{ to.date }</strong>
+						<em>{ to.time }</em>
+					</div>
+
+					<p className="bks-review__range-length">
+						<ClockIcon />
+						{ length }
+					</p>
+				</div>
 			</div>
 
 			{ /* Who it is for, together rather than scattered through a list. */ }
@@ -236,58 +234,117 @@ export default function StepReview( {
 				) }
 			</ul>
 
-			<ul className="bks-review__lines">
-				{ /*
-				 * One price for the apartment, however many nights or hours
-				 * that is. `accommodation` is the server's own figure for
-				 * exactly this, so the line cannot drift from what is charged.
-				 */ }
-				<li>
-					<span>
-						{ __( 'Base price', 'booking-suite' ) }
-						<small>{ length }</small>
-						{ discount > 0 && (
-							<em className="bks-review__saving">
-								{ sprintf(
-									/* translators: %s: the amount saved. */
-									__( 'includes %s off', 'booking-suite' ),
-									money( discount )
-								) }
-							</em>
-						) }
-					</span>
-					<span>{ money( quote.accommodation ) }</span>
-				</li>
+			{ /*
+			 * The bill, itemised the way an invoice is: what the apartment
+			 * costs, what was added to it, and one total. Titled, because this
+			 * is the part of the screen the guest is actually checking.
+			 */ }
+			<div className="bks-review__summary">
+				<h3 className="bks-review__summary-title">
+					{ __( 'Booking summary', 'booking-suite' ) }
+				</h3>
 
-				{ quote.guestCharge?.extraGuests > 0 && (
+				<ul className="bks-review__lines">
+					{ /*
+					 * One price for the apartment, however many nights or hours
+					 * that is. `accommodation` is the server's own figure for
+					 * exactly this, so the line cannot drift from what is
+					 * charged. Named rather than called "base price": the guest
+					 * is checking a bill, and a bill says what the thing was.
+					 */ }
 					<li>
 						<span>
-							{ sprintf(
-								/* translators: 1: number of extra guests, 2: price per guest. */
-								__(
-									'%1$d extra guests × %2$s',
-									'booking-suite'
-								),
-								quote.guestCharge.extraGuests,
-								money( quote.guestCharge.perGuest )
+							{ apartment.name }
+							<small>{ length }</small>
+							{ discount > 0 && (
+								<em className="bks-review__saving">
+									{ sprintf(
+										/* translators: %s: the amount saved. */
+										__(
+											'includes %s off',
+											'booking-suite'
+										),
+										money( discount )
+									) }
+								</em>
 							) }
 						</span>
-						<span>{ money( quote.guestCharge.total ) }</span>
+						<span>{ money( quote.accommodation ) }</span>
 					</li>
+
+					{ quote.guestCharge?.extraGuests > 0 && (
+						<li>
+							<span>
+								{ sprintf(
+									/* translators: %d: number of guests above the included party size. */
+									_n(
+										'Additional guest (%d)',
+										'Additional guests (%d)',
+										quote.guestCharge.extraGuests,
+										'booking-suite'
+									),
+									quote.guestCharge.extraGuests
+								) }
+								<small>
+									{ sprintf(
+										/* translators: %s: price per additional guest. */
+										__( '%s each', 'booking-suite' ),
+										money( quote.guestCharge.perGuest )
+									) }
+								</small>
+							</span>
+							<span>{ money( quote.guestCharge.total ) }</span>
+						</li>
+					) }
+
+					{ /*
+					 * Extras are grouped under their own heading rather than
+					 * running on from the apartment's own charges — they are a
+					 * different kind of thing, and a flat list of five lines
+					 * makes the guest work out which is which.
+					 */ }
+					{ ( quote.extraLines ?? [] ).length > 0 && (
+						<li className="bks-review__group">
+							{ __( 'Extras', 'booking-suite' ) }
+						</li>
+					) }
+
+					{ ( quote.extraLines ?? [] ).map( ( line ) => (
+						<li key={ line.id } className="bks-review__extra">
+							<span>
+								{ line.name }
+								{ line.quantity > 1 && (
+									<small>{ `× ${ line.quantity }` }</small>
+								) }
+							</span>
+							<span>{ money( line.subtotal ) }</span>
+						</li>
+					) ) }
+				</ul>
+
+				<p className="bks-review__total">
+					<span>{ __( 'Total', 'booking-suite' ) }</span>
+					<strong>{ money( quote.total ) }</strong>
+				</p>
+
+				{ /*
+				 * Only when there is a rate to declare. German prices are
+				 * quoted inclusive, so this says the total is what will be
+				 * charged rather than adding a line to it.
+				 */ }
+				{ taxRate > 0 && (
+					<p className="bks-review__vat">
+						{ sprintf(
+							/* translators: %s: the VAT rate, already formatted. */
+							__(
+								'Prices include statutory VAT (%s).',
+								'booking-suite'
+							),
+							`${ taxRate }%`
+						) }
+					</p>
 				) }
-
-				{ ( quote.extraLines ?? [] ).map( ( line ) => (
-					<li key={ line.id }>
-						<span>{ `${ line.name } × ${ line.quantity }` }</span>
-						<span>{ money( line.subtotal ) }</span>
-					</li>
-				) ) }
-			</ul>
-
-			<p className="bks-review__total">
-				<span>{ __( 'Total', 'booking-suite' ) }</span>
-				<strong>{ money( quote.total ) }</strong>
-			</p>
+			</div>
 		</div>
 	);
 }
