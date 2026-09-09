@@ -9,7 +9,7 @@
  * sent at all, and turning it off sends null rather than 0.
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -40,7 +40,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
 import { dialogMediaProps, openMediaLibrary } from '../../../../lib/media';
-import { extraService } from '../../../../services';
+import { apartmentService, extraService } from '../../../../services';
 
 const MAX_LENGTH_191 = 191;
 
@@ -73,6 +73,12 @@ const schema = z
 		stock: z.string().optional(),
 		imageUrl: z.string().optional(),
 		sortOrder: z.string().optional(),
+		/*
+		 * Which apartments offer this extra. Empty means every one of them —
+		 * the same meaning the column has carried since it was added, so an
+		 * extra saved before this field existed keeps behaving as it did.
+		 */
+		roomIds: z.array( z.number() ),
 		active: z.boolean(),
 	} )
 	.superRefine( ( values, ctx ) => {
@@ -104,6 +110,7 @@ const blank = () => ( {
 	stock: '0',
 	imageUrl: '',
 	sortOrder: '0',
+	roomIds: [],
 	active: true,
 } );
 
@@ -122,11 +129,36 @@ const fromExtra = ( extra ) => ( {
 	stock: null === extra.stock ? '0' : String( extra.stock ),
 	imageUrl: extra.imageUrl ?? '',
 	sortOrder: String( extra.sortOrder ?? 0 ),
+	roomIds: ( extra.roomIds ?? [] ).map( Number ),
 	active: Boolean( extra.active ),
 } );
 
 export default function ExtraForm( { extra = null, onClose, onSaved } ) {
 	const isEdit = null !== extra;
+
+	/*
+	 * Fetched rather than passed in: the form is opened from a table, a card
+	 * and an empty state, and threading the list through all three so this one
+	 * field can render is more coupling than one small request is worth.
+	 */
+	const [ apartments, setApartments ] = useState( [] );
+
+	useEffect( () => {
+		const controller = new AbortController();
+
+		apartmentService
+			.list( {}, controller.signal )
+			.then( setApartments )
+			.catch( () => {
+				/*
+				 * A failure here costs the picker, not the form. Saving with
+				 * no selection means "every apartment", which is exactly what
+				 * this extra would have done before the field existed.
+				 */
+			} );
+
+		return () => controller.abort();
+	}, [] );
 
 	const [ error, setError ] = useState( null );
 
@@ -433,6 +465,84 @@ export default function ExtraForm( { extra = null, onClose, onSaved } ) {
 											'Lower numbers appear first. Leave 0 for automatic ordering.',
 											'booking-suite'
 										) }
+									</FormDescription>
+									<FormMessage />
+								</FormItem>
+							) }
+						/>
+
+						<FormField
+							control={ form.control }
+							name="roomIds"
+							render={ ( { field } ) => (
+								<FormItem>
+									<FormLabel>
+										{ __(
+											'Available for',
+											'booking-suite'
+										) }
+									</FormLabel>
+
+									{ /*
+									 * Nothing ticked is the default and means
+									 * every apartment, so a new extra behaves
+									 * as extras always have. Ticking narrows it
+									 * rather than opting in.
+									 */ }
+									<div className="flex flex-col gap-2">
+										{ apartments.map( ( apartment ) => (
+											<label
+												key={ apartment.id }
+												htmlFor={ `bks-extra-room-${ apartment.id }` }
+												className="flex items-center gap-2 text-sm font-normal"
+											>
+												<Checkbox
+													id={ `bks-extra-room-${ apartment.id }` }
+													checked={ field.value.includes(
+														apartment.id
+													) }
+													onCheckedChange={ (
+														ticked
+													) =>
+														field.onChange(
+															ticked
+																? [
+																		...field.value,
+																		apartment.id,
+																  ]
+																: field.value.filter(
+																		(
+																			id
+																		) =>
+																			id !==
+																			apartment.id
+																  )
+														)
+													}
+												/>
+												<span
+													aria-hidden="true"
+													className="h-3 w-3 shrink-0 rounded-sm"
+													style={ {
+														backgroundColor:
+															apartment.colour,
+													} }
+												/>
+												{ apartment.name }
+											</label>
+										) ) }
+									</div>
+
+									<FormDescription>
+										{ field.value.length
+											? __(
+													'Only the apartments ticked above offer this extra.',
+													'booking-suite'
+											  )
+											: __(
+													'Every apartment offers this extra. Tick one or more to limit it.',
+													'booking-suite'
+											  ) }
 									</FormDescription>
 									<FormMessage />
 								</FormItem>

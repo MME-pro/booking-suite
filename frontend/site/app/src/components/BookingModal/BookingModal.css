@@ -630,6 +630,17 @@
 	gap: 10px;
 }
 
+/*
+ * The fixed daytime block.
+ *
+ * Full width rather than one tile in a grid of many: on the days it runs it is
+ * the only daytime offer there is, and sitting it in a 96px column would make
+ * a single choice look like the first of several.
+ */
+.bks-slots__slot--block {
+	grid-column: 1 / -1;
+}
+
 .bks-slots__slot {
 	display: flex;
 	flex-direction: column;
@@ -2477,6 +2488,75 @@
 /* ═══════════════════════════════════════════════
    Bank details on the payment step
    ═══════════════════════════════════════════════ */
+
+/*
+ * Pay now or pay later.
+ *
+ * Two cards rather than a row of radio dots: each option carries a sentence
+ * saying what actually happens, and that sentence is the thing being chosen
+ * between. The native input stays in the markup for keyboard and screen-reader
+ * behaviour and is hidden visually, with the card taking the selected state.
+ */
+.bks-paywhen {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 10px;
+	margin-bottom: 18px;
+}
+
+.bks-paywhen__option {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 14px 16px;
+	border: 1.5px solid var(--bks-site-border, #e2e8f0);
+	border-radius: var(--bks-site-radius-xs, 8px);
+	background: var(--bks-site-surface, #ffffff);
+	cursor: pointer;
+	transition:
+		border-color var(--bks-site-transition-fast),
+		background var(--bks-site-transition-fast);
+}
+
+.bks-paywhen__option:hover {
+	border-color: var(--bks-site-brand, #2563eb);
+}
+
+.bks-paywhen__option.is-selected {
+	border-color: var(--bks-site-brand, #2563eb);
+	background: var(--bks-site-brand-soft, #eff6ff);
+}
+
+/* Hidden, not removed: it is what makes the pair a real radio group. */
+.bks-paywhen__option input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.bks-paywhen__label {
+	font-weight: 600;
+	font-size: 15px;
+	color: var(--bks-site-text, #0f172a);
+}
+
+.bks-paywhen__note {
+	font-size: 13px;
+	line-height: 1.45;
+	color: var(--bks-site-text-muted, #64748b);
+}
+
+/* Focus has to land somewhere once the input itself is invisible. */
+.bks-paywhen__option:focus-within {
+	outline: 2px solid var(--bks-site-brand, #2563eb);
+	outline-offset: 2px;
+}
 
 .bks-bank {
 	display: flex;

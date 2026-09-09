@@ -55,6 +55,24 @@ final class SettingsRepository {
 	public const MAX_HOURS = 'max_hours';
 
 	/*
+	 * The daytime slot: one fixed block, offered only on certain weekdays.
+	 *
+	 * It is not a second set of opening hours. The window above says when an
+	 * hourly booking of any length *may* start; this says "on these days there
+	 * is also this one block, at this time, of this length" — a named thing a
+	 * guest picks rather than a range they assemble. It sits before the
+	 * overnight window so the two can be offered on the same day without
+	 * overlapping.
+	 */
+
+	/** ISO-8601 weekday numbers it runs on: 1 is Monday, 7 is Sunday. */
+	public const DAYTIME_SLOT_DAYS = 'daytime_slot_days';
+
+	public const DAYTIME_SLOT_START = 'daytime_slot_start';
+
+	public const DAYTIME_SLOT_END = 'daytime_slot_end';
+
+	/*
 	 * The invoice. Everything the PDF prints that is not taken from the booking
 	 * itself is stored here, so the wording, the sender block and the logo are
 	 * the owner's to change without a developer.
@@ -126,6 +144,16 @@ final class SettingsRepository {
 	/** The master switch for guest email. Off stops every template. */
 	public const EMAIL_NOTIFICATIONS = 'email_notifications';
 
+	/**
+	 * Whether a guest may book without paying first.
+	 *
+	 * Off means every booking arrives with a receipt attached, which is the
+	 * safest position and the one this flow started from. On trades that
+	 * certainty for bookings that would otherwise be abandoned at the transfer
+	 * screen — so it is the owner's call, not a constant.
+	 */
+	public const ALLOW_PAY_LATER = 'allow_pay_later';
+
 	/** Linked from the booking flow. */
 	public const TERMS_URL = 'terms_url';
 
@@ -153,8 +181,22 @@ final class SettingsRepository {
 		self::DAY_START        => '00:00',
 		self::DAY_END          => '23:30',
 		self::SLOT_STEP        => '30',
-		self::MIN_HOURS        => '1',
+		/*
+		 * Four hours is the shortest a guest may book. It is enforced in
+		 * PublicBookingController, not here and not in the picker alone — the
+		 * picker is not the only way in. The admin has no minimum at all and
+		 * takes a one-hour visit whenever the owner chooses.
+		 */
+		self::MIN_HOURS        => '4',
 		self::MAX_HOURS        => '8',
+		/*
+		 * Friday and Saturday, 11:30 to 15:30 — four hours, finishing half an
+		 * hour before the overnight window opens at 16:00, so a day guest is
+		 * out before an evening arrival is due.
+		 */
+		self::DAYTIME_SLOT_DAYS  => '5,6',
+		self::DAYTIME_SLOT_START => '11:30',
+		self::DAYTIME_SLOT_END   => '15:30',
 		self::INVOICE_LOGO     => '',
 		self::INVOICE_SENDER   => '',
 		self::INVOICE_PREFIX   => 'INV',
@@ -177,6 +219,7 @@ final class SettingsRepository {
 		self::BANK_BIC         => '',
 		self::BANK_DETAILS     => '',
 		self::EMAIL_NOTIFICATIONS => '1',
+		self::ALLOW_PAY_LATER  => '1',
 		self::TERMS_URL        => '',
 		self::PRIVACY_URL      => '',
 	);
@@ -447,6 +490,11 @@ final class SettingsRepository {
 	/** Whether guest email is switched on at all. */
 	public static function emails_enabled(): bool {
 		return '0' !== self::get( self::EMAIL_NOTIFICATIONS );
+	}
+
+	/** Whether a guest may complete a booking without paying first. */
+	public static function pay_later_allowed(): bool {
+		return '0' !== self::get( self::ALLOW_PAY_LATER );
 	}
 
 	public static function set( string $key, string $value, string $group = 'general', string $locale = '' ): void {

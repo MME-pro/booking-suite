@@ -24,12 +24,19 @@ final class SlotGenerator {
 	/**
 	 * Durations offered as suggestions, in hours.
 	 *
-	 * Only suggestions: a guest may enter any length they like.
+	 * @param int $floor Shortest to offer, overriding the guest minimum. The
+	 *                   admin passes 1: the owner takes a one-hour visit or a
+	 *                   favour for a regular whenever they choose, and the
+	 *                   four-hour rule is something guests are held to, not
+	 *                   something the owner is.
 	 *
 	 * @return int[]
 	 */
-	public static function durations(): array {
-		$min = max( 1, (int) SettingsRepository::number( SettingsRepository::MIN_HOURS ) );
+	public static function durations( int $floor = 0 ): array {
+		$min = $floor > 0
+			? $floor
+			: max( 1, (int) SettingsRepository::number( SettingsRepository::MIN_HOURS ) );
+
 		$max = max( $min, (int) SettingsRepository::number( SettingsRepository::MAX_HOURS ) );
 
 		return range( $min, $max );
@@ -102,6 +109,124 @@ final class SlotGenerator {
 		}
 
 		return $slots;
+	}
+
+	/**
+	 * The fixed daytime block, if this date is one of the days it runs on.
+	 *
+	 * Deliberately not expressed as opening hours plus a duration. The guest is
+	 * not assembling a booking out of a start time and a length here — they are
+	 * picking one named thing that either is or is not free, the way a table
+	 * sitting is booked. Modelling it as a range would put four-hour starts at
+	 * 11:30, 12:00 and 12:30 in front of them, which is three ways to describe
+	 * an offer that only exists once.
+	 *
+	 * Returns null on days it does not run, which is most of them, so callers
+	 * can hand the result straight to the response.
+	 *
+	 * @param array<string, mixed> $apartment
+	 * @param string               $date    Y-m-d.
+	 * @param int                  $guests  Only affects the price.
+	 * @param array<string, mixed> $options As for_date(): includePast,
+	 *                                      ignoreBookingId.
+	 *
+	 * @return array<string, mixed>|null
+	 */
+	public static function daytime_slot(
+		array $apartment,
+		string $date,
+		int $guests,
+		array $options = array()
+	): ?array {
+		$days = self::daytime_days();
+
+		if ( ! $days ) {
+			return null;
+		}
+
+		$start = self::at( $date, SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_START ) );
+		$end   = self::at( $date, SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_END ) );
+
+		if ( null === $start || null === $end || $end <= $start ) {
+			return null;
+		}
+
+		// 'N' is the ISO-8601 weekday: 1 Monday through 7 Sunday. Read from the
+		// slot's own start rather than from the date string, so a timezone that
+		// shifts the day cannot disagree with the times being offered.
+		if ( ! in_array( (int) $start->format( 'N' ), $days, true ) ) {
+			return null;
+		}
+
+		$include_past = (bool) ( $options['includePast'] ?? false );
+		$ignore       = isset( $options['ignoreBookingId'] ) ? (int) $options['ignoreBookingId'] : null;
+
+		$now  = new DateTimeImmutable( current_time( 'mysql' ) );
+		$past = $start <= $now;
+
+		if ( $past && ! $include_past ) {
+			return null;
+		}
+
+		$starts_at = $start->format( 'Y-m-d H:i:s' );
+		$ends_at   = $end->format( 'Y-m-d H:i:s' );
+
+		$quote = RateCalculator::quote( $apartment, $starts_at, $ends_at, $guests );
+
+		return array(
+			'start'     => $start->format( 'H:i' ),
+			'end'       => $end->format( 'H:i' ),
+			'startsAt'  => $starts_at,
+			'endsAt'    => $ends_at,
+			'hours'     => round( ( $end->getTimestamp() - $start->getTimestamp() ) / HOUR_IN_SECONDS, 2 ),
+			'available' => BookingsRepository::is_available(
+				(int) $apartment['id'],
+				$starts_at,
+				$ends_at,
+				$ignore
+			),
+			'past'      => $past,
+			'total'     => $quote['subtotal'],
+		);
+	}
+
+	/**
+	 * The weekdays the daytime slot runs on, as ISO-8601 numbers.
+	 *
+	 * Stored as a comma-separated list because it is a handful of small numbers
+	 * an owner may want to edit by hand. Anything outside 1..7 is dropped
+	 * rather than clamped: a typo should cost that one day, not silently move
+	 * the slot to a day nobody chose.
+	 *
+	 * @return int[]
+	 */
+	private static function daytime_days(): array {
+		$raw = SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_DAYS );
+
+		$days = array_filter(
+			array_map( 'intval', array_map( 'trim', explode( ',', $raw ) ) ),
+			static fn( int $day ): bool => $day >= 1 && $day <= 7
+		);
+
+		return array_values( array_unique( $days ) );
+	}
+
+	/**
+	 * A wall-clock time on a date, or null if either is unusable.
+	 *
+	 * @param string $date Y-m-d.
+	 * @param string $time H:i.
+	 */
+	private static function at( string $date, string $time ): ?DateTimeImmutable {
+		if ( ! preg_match( '/^\d{2}:\d{2}$/', $time ) ) {
+			return null;
+		}
+
+		try {
+			return new DateTimeImmutable( $date . ' ' . $time . ':00' );
+		} catch ( \Exception $e ) {
+			return null;
+		}
 	}
 
 	/**
@@ -254,6 +379,27 @@ final class SlotGenerator {
 	 *
 	 * @return array<int, array<string, mixed>>
 	 */
+	/**
+	 * Does this date offer the fixed block instead of free-form start times?
+	 *
+	 * The two are alternatives, never both. On a day the block runs, that block
+	 * is the whole daytime offer — so anything searching for free start times
+	 * has to skip the day rather than propose a time that cannot be booked.
+	 *
+	 * @param string $date Y-m-d.
+	 */
+	public static function is_fixed_block_day( string $date ): bool {
+		$days = self::daytime_days();
+
+		if ( ! $days ) {
+			return false;
+		}
+
+		$start = self::at( $date, SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_START ) );
+
+		return null !== $start && in_array( (int) $start->format( 'N' ), $days, true );
+	}
+
 	private static function free_starts(
 		array $apartment,
 		string $date,
@@ -315,10 +461,10 @@ final class SlotGenerator {
 	 *
 	 * @return array<int, array<string, mixed>>
 	 */
-	public static function duration_options( array $apartment, string $date, int $guests ): array {
+	public static function duration_options( array $apartment, string $date, int $guests, int $floor = 0 ): array {
 		$options = array();
 
-		foreach ( self::durations() as $hours ) {
+		foreach ( self::durations( $floor ) as $hours ) {
 			$price = RateCalculator::duration_price( $apartment, $date . ' 12:00:00', (float) $hours );
 			$guest = RateCalculator::guest_surcharge( $apartment, $guests );
 

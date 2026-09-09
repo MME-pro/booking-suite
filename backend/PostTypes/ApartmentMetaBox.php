@@ -15,6 +15,7 @@ namespace BookingSuite\Backend\PostTypes;
 
 use BookingSuite\Backend\Pricing\RateCalculator;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
+use BookingSuite\Backend\Repositories\ExtrasRepository;
 use BookingSuite\Backend\Repositories\IcalFeedsRepository;
 use BookingSuite\Backend\Schemas\ApartmentsTable;
 use BookingSuite\Backend\Support\IcalFeed;
@@ -73,6 +74,32 @@ final class ApartmentMetaBox {
 			'normal',
 			'high'
 		);
+
+		/*
+		 * Extras get the side column rather than a slot in the panel above.
+		 * They are a short list of ticks against a fixed set of things, which
+		 * is what that column is for — and in the main panel they sat between
+		 * the rates and calendar sync, two dense sections they have nothing to
+		 * do with. Posting from the side box works because it is the same form
+		 * and therefore the same nonce.
+		 */
+		add_meta_box(
+			'bks-apartment-extras',
+			__( 'Extras', 'booking-suite' ),
+			array( self::class, 'render_extras_box' ),
+			ApartmentPostType::POST_TYPE,
+			'side',
+			'default'
+		);
+	}
+
+	/**
+	 * The side box's callback.
+	 *
+	 * @param \WP_Post $post The apartment being edited.
+	 */
+	public static function render_extras_box( \WP_Post $post ): void {
+		self::render_extras( $post->ID );
 	}
 
 	public static function enqueue( string $hook_suffix ): void {
@@ -341,6 +368,138 @@ final class ApartmentMetaBox {
 
 		return $offered;
 	}
+	/**
+	 * Which extras this apartment offers.
+	 *
+	 * The Extras screen owns the same relationship from the other side, one
+	 * extra at a time. This is the view an owner needs when the apartment is
+	 * the new thing rather than the extra — and it writes to exactly the same
+	 * place, so the two screens can never disagree.
+	 *
+	 * @param int $post_id The apartment.
+	 */
+	private static function render_extras( int $post_id ): void {
+		$extras = ExtrasRepository::all();
+
+		if ( ! $extras ) {
+			return;
+		}
+
+		?>
+		<div class="bks-meta__extras">
+			<p class="description">
+				<?php esc_html_e( 'Which extras guests can add to a booking of this apartment.', 'booking-suite' ); ?>
+			</p>
+
+			<?php
+			/*
+			 * A hidden field with the same name, so a form with every box
+			 * cleared still posts the key. Without it, unticking the last
+			 * extra would look identical to a request that never had the
+			 * field — and nothing would be removed.
+			 */
+			?>
+			<input type="hidden" name="bks_extras_present" value="1" />
+
+			<ul class="bks-meta__extras-list">
+				<?php foreach ( $extras as $extra ) : ?>
+					<?php
+					$rooms   = array_map( 'absint', (array) ( $extra['room_ids'] ?? array() ) );
+					$offered = ! $rooms || in_array( $post_id, $rooms, true );
+					$id      = 'bks-extra-' . (int) $extra['id'];
+					?>
+					<li class="bks-meta__extras-row">
+						<label for="<?php echo esc_attr( $id ); ?>">
+							<input
+								type="checkbox"
+								id="<?php echo esc_attr( $id ); ?>"
+								name="bks_extras[]"
+								value="<?php echo esc_attr( (string) (int) $extra['id'] ); ?>"
+								<?php checked( $offered ); ?>
+							/>
+							<?php echo esc_html( (string) $extra['name'] ); ?>
+						</label>
+
+						<?php if ( ! $rooms ) : ?>
+							<span class="bks-meta__extras-note">
+								<?php esc_html_e( 'currently offered by every apartment', 'booking-suite' ); ?>
+							</span>
+						<?php endif; ?>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Write the ticked extras back, from this apartment's point of view.
+	 *
+	 * The awkward case is an extra with no apartments listed, which means
+	 * every apartment. Unticking it here cannot simply remove an id that was
+	 * never stored — the list has to be written out in full, minus this one.
+	 * That is a real change in meaning, and it is the operator's: an extra
+	 * that said "all" will afterwards name the apartments that exist today,
+	 * and will not be picked up by an apartment added tomorrow.
+	 *
+	 * @param int $post_id The apartment being saved.
+	 */
+	private static function save_extras( int $post_id ): void {
+		// The form did not carry the section at all — an autosave, or a screen
+		// with no extras to show. Nothing about them is being said.
+		if ( ! isset( $_POST['bks_extras_present'] ) ) {
+			return;
+		}
+
+		$ticked = isset( $_POST['bks_extras'] )
+			? array_map( 'absint', (array) wp_unslash( $_POST['bks_extras'] ) )
+			: array();
+
+		$others = array();
+
+		foreach ( ApartmentsRepository::all() as $apartment ) {
+			if ( (int) $apartment['id'] !== $post_id ) {
+				$others[] = (int) $apartment['id'];
+			}
+		}
+
+		foreach ( ExtrasRepository::all() as $extra ) {
+			$id      = (int) $extra['id'];
+			$rooms   = array_map( 'absint', (array) ( $extra['room_ids'] ?? array() ) );
+			$open    = ! $rooms;
+			$offered = $open || in_array( $post_id, $rooms, true );
+			$wanted  = in_array( $id, $ticked, true );
+
+			if ( $wanted === $offered ) {
+				continue;
+			}
+
+			if ( $wanted ) {
+				// Only reachable for an extra with an explicit list: one that
+				// was open to everything already counted as offered.
+				$rooms[] = $post_id;
+			} elseif ( $open ) {
+				$rooms = $others;
+			} else {
+				$rooms = array_values( array_diff( $rooms, array( $post_id ) ) );
+			}
+
+			/*
+			 * An explicit list that has emptied out would read as "every
+			 * apartment" — the opposite of what was just asked for. The extra
+			 * is switched off instead, which is the honest reading of an extra
+			 * no apartment offers.
+			 */
+			if ( ! $wanted && ! $rooms ) {
+				ExtrasRepository::update( $id, array( 'active' => 0 ) );
+
+				continue;
+			}
+
+			ExtrasRepository::update( $id, array( 'room_ids' => array_values( array_unique( $rooms ) ) ) );
+		}
+	}
+
 	private static function render_calendar_sync( int $post_id ): void {
 		$token = ApartmentsRepository::token( $post_id );
 
@@ -663,6 +822,7 @@ final class ApartmentMetaBox {
 			)
 		);
 
+		self::save_extras( $post_id );
 		self::save_feeds( $post_id );
 		self::maybe_publish_calendar( $post_id );
 	}

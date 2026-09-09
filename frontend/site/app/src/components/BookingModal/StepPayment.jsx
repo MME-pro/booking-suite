@@ -147,7 +147,13 @@ const formatSize = ( bytes ) => {
 	);
 };
 
-export default function StepPayment( { payment, onChange, bank, total } ) {
+export default function StepPayment( {
+	payment,
+	onChange,
+	bank,
+	total,
+	allowPayLater = false,
+} ) {
 	const [ isDragging, setDragging ] = useState( false );
 	const [ error, setError ] = useState( '' );
 	const inputRef = useRef( null );
@@ -223,8 +229,100 @@ export default function StepPayment( { payment, onChange, bank, total } ) {
 
 	const isImage = payment.proofData?.startsWith( 'data:image/' );
 
+	// 'now' unless the guest says otherwise, and unless the owner offers the
+	// alternative at all.
+	const later = allowPayLater && 'later' === payment.payWhen;
+
+	/**
+	 * Switch between paying now and paying later.
+	 *
+	 * Choosing to defer drops any receipt already attached. Keeping it would
+	 * send a booking that says "I will pay later" with a proof of payment
+	 * stapled to it, and the owner would have to work out which to believe.
+	 *
+	 * @param {string} when Either 'now' or 'later'.
+	 */
+	const choose = ( when ) => {
+		if ( 'later' === when ) {
+			onChange( {
+				...payment,
+				payWhen: 'later',
+				proofName: '',
+				proofSize: 0,
+				proofData: '',
+			} );
+
+			return;
+		}
+
+		onChange( { ...payment, payWhen: 'now' } );
+	};
+
 	return (
 		<div className="bks-step">
+			{ /*
+			 * The choice comes first: it decides whether the rest of the step
+			 * is even asked for, and a guest who intends to pay on arrival
+			 * should not have to scroll past an IBAN and an upload box to find
+			 * that out.
+			 */ }
+			{ allowPayLater && (
+				<div
+					className="bks-paywhen"
+					role="radiogroup"
+					aria-label={ __( 'When to pay', 'booking-suite' ) }
+				>
+					<label
+						htmlFor="bks-pay-now"
+						className={ `bks-paywhen__option${
+							later ? '' : ' is-selected'
+						}` }
+					>
+						<input
+							id="bks-pay-now"
+							type="radio"
+							name="bks-pay-when"
+							value="now"
+							checked={ ! later }
+							onChange={ () => choose( 'now' ) }
+						/>
+						<span className="bks-paywhen__label">
+							{ __( 'Pay now', 'booking-suite' ) }
+						</span>
+						<span className="bks-paywhen__note">
+							{ __(
+								'Transfer the amount and attach the receipt. Your dates are confirmed once it arrives.',
+								'booking-suite'
+							) }
+						</span>
+					</label>
+
+					<label
+						htmlFor="bks-pay-later"
+						className={ `bks-paywhen__option${
+							later ? ' is-selected' : ''
+						}` }
+					>
+						<input
+							id="bks-pay-later"
+							type="radio"
+							name="bks-pay-when"
+							value="later"
+							checked={ later }
+							onChange={ () => choose( 'later' ) }
+						/>
+						<span className="bks-paywhen__label">
+							{ __( 'Pay later', 'booking-suite' ) }
+						</span>
+						<span className="bks-paywhen__note">
+							{ __(
+								'Book now and pay by bank transfer afterwards. We will send you the details.',
+								'booking-suite'
+							) }
+						</span>
+					</label>
+				</div>
+			) }
 			{ /*
 			 * Where the money goes, above the box asking for proof it went.
 			 * The guest is being told to make a transfer and then upload the
@@ -233,7 +331,7 @@ export default function StepPayment( { payment, onChange, bank, total } ) {
 			 * lost. Hidden entirely when no IBAN is set — a half-filled
 			 * account is worse than none.
 			 */ }
-			{ bank?.hasAccount && (
+			{ ! later && bank?.hasAccount && (
 				<div className="bks-bank">
 					<h3 className="bks-bank__title">
 						{ __( 'Transfer the amount to', 'booking-suite' ) }
@@ -310,179 +408,198 @@ export default function StepPayment( { payment, onChange, bank, total } ) {
 				</div>
 			) }
 
-			<div className="bks-field">
-				<label htmlFor="bks-modal-payment-proof">
-					{ __(
-						'Upload Payment Screenshot / Receipt',
-						'booking-suite'
-					) }
-					<span
-						className="bks-field__required"
-						aria-label={ __( 'required', 'booking-suite' ) }
-					>
-						*
-					</span>
-				</label>
+			{ ! later && (
+				<div className="bks-field">
+					<label htmlFor="bks-modal-payment-proof">
+						{ __(
+							'Upload Payment Screenshot / Receipt',
+							'booking-suite'
+						) }
+						<span
+							className="bks-field__required"
+							aria-label={ __( 'required', 'booking-suite' ) }
+						>
+							*
+						</span>
+					</label>
 
-				{ payment.proofData ? (
-					<div className="bks-payment__proof">
-						<div className="bks-payment__proof-preview">
-							{ isImage ? (
-								<img
-									src={ payment.proofData }
-									alt={ __(
-										'The payment receipt you uploaded',
-										'booking-suite'
-									) }
-								/>
-							) : (
-								<span
-									className="bks-payment__proof-file"
-									aria-hidden="true"
-								>
-									PDF
+					{ payment.proofData ? (
+						<div className="bks-payment__proof">
+							<div className="bks-payment__proof-preview">
+								{ isImage ? (
+									<img
+										src={ payment.proofData }
+										alt={ __(
+											'The payment receipt you uploaded',
+											'booking-suite'
+										) }
+									/>
+								) : (
+									<span
+										className="bks-payment__proof-file"
+										aria-hidden="true"
+									>
+										PDF
+									</span>
+								) }
+							</div>
+
+							<div className="bks-payment__proof-meta">
+								<span className="bks-payment__proof-name">
+									{ payment.proofName ||
+										__(
+											'Payment receipt',
+											'booking-suite'
+										) }
 								</span>
-							) }
-						</div>
 
-						<div className="bks-payment__proof-meta">
-							<span className="bks-payment__proof-name">
-								{ payment.proofName ||
-									__( 'Payment receipt', 'booking-suite' ) }
+								<span className="bks-payment__proof-status">
+									<svg
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2.4"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										aria-hidden="true"
+									>
+										<path d="m5 12.5 4.5 4.5L19 7.5" />
+									</svg>
+									{ payment.proofSize
+										? sprintf(
+												/* translators: %s: a file size such as "420 KB". */
+												__(
+													'Ready · %s',
+													'booking-suite'
+												),
+												formatSize( payment.proofSize )
+										  )
+										: __( 'Ready', 'booking-suite' ) }
+								</span>
+							</div>
+
+							<div className="bks-payment__proof-actions">
+								<button
+									type="button"
+									className="bks-payment__proof-action"
+									onClick={ () => inputRef.current?.click() }
+								>
+									{ __( 'Replace', 'booking-suite' ) }
+								</button>
+								<button
+									type="button"
+									className="bks-payment__proof-action bks-payment__proof-action--remove"
+									onClick={ removeFile }
+								>
+									{ __( 'Remove', 'booking-suite' ) }
+								</button>
+							</div>
+						</div>
+					) : (
+						/* eslint-disable-next-line jsx-a11y/label-has-associated-control --
+					   the control is the input rendered below, outside this branch. */
+						<label
+							className={ `bks-payment__dropzone${
+								isDragging ? ' is-dragging' : ''
+							}` }
+							htmlFor="bks-modal-payment-proof"
+							onDragOver={ ( event ) => {
+								event.preventDefault();
+								setDragging( true );
+							} }
+							onDragLeave={ () => setDragging( false ) }
+							onDrop={ onDrop }
+						>
+							<span className="bks-sr-only">
+								{ __(
+									'Upload payment proof',
+									'booking-suite'
+								) }
 							</span>
 
-							<span className="bks-payment__proof-status">
+							<span className="bks-payment__dropzone-content">
 								<svg
-									width="14"
-									height="14"
+									width="28"
+									height="28"
 									viewBox="0 0 24 24"
 									fill="none"
 									stroke="currentColor"
-									strokeWidth="2.4"
+									strokeWidth="1.6"
 									strokeLinecap="round"
 									strokeLinejoin="round"
 									aria-hidden="true"
 								>
-									<path d="m5 12.5 4.5 4.5L19 7.5" />
+									<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+									<polyline points="17 8 12 3 7 8" />
+									<line x1="12" y1="3" x2="12" y2="15" />
 								</svg>
-								{ payment.proofSize
-									? sprintf(
-											/* translators: %s: a file size such as "420 KB". */
-											__( 'Ready · %s', 'booking-suite' ),
-											formatSize( payment.proofSize )
-									  )
-									: __( 'Ready', 'booking-suite' ) }
-							</span>
-						</div>
 
-						<div className="bks-payment__proof-actions">
-							<button
-								type="button"
-								className="bks-payment__proof-action"
-								onClick={ () => inputRef.current?.click() }
-							>
-								{ __( 'Replace', 'booking-suite' ) }
-							</button>
-							<button
-								type="button"
-								className="bks-payment__proof-action bks-payment__proof-action--remove"
-								onClick={ removeFile }
-							>
-								{ __( 'Remove', 'booking-suite' ) }
-							</button>
-						</div>
-					</div>
-				) : (
-					/* eslint-disable-next-line jsx-a11y/label-has-associated-control --
-					   the control is the input rendered below, outside this branch. */
-					<label
-						className={ `bks-payment__dropzone${
-							isDragging ? ' is-dragging' : ''
-						}` }
-						htmlFor="bks-modal-payment-proof"
-						onDragOver={ ( event ) => {
-							event.preventDefault();
-							setDragging( true );
-						} }
-						onDragLeave={ () => setDragging( false ) }
-						onDrop={ onDrop }
-					>
-						<span className="bks-sr-only">
-							{ __( 'Upload payment proof', 'booking-suite' ) }
-						</span>
-
-						<span className="bks-payment__dropzone-content">
-							<svg
-								width="28"
-								height="28"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								strokeWidth="1.6"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								aria-hidden="true"
-							>
-								<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-								<polyline points="17 8 12 3 7 8" />
-								<line x1="12" y1="3" x2="12" y2="15" />
-							</svg>
-
-							<strong>
-								{ __(
-									'Click or drop your payment screenshot here',
-									'booking-suite'
-								) }
-							</strong>
-
-							<span className="bks-payment__dropzone-hint">
-								{ sprintf(
-									/* translators: %s: the largest allowed file size. */
-									__(
-										'JPG, PNG, WEBP or PDF · up to %s',
+								<strong>
+									{ __(
+										'Click or drop your payment screenshot here',
 										'booking-suite'
-									),
-									formatSize( MAX_BYTES )
-								) }
+									) }
+								</strong>
+
+								<span className="bks-payment__dropzone-hint">
+									{ sprintf(
+										/* translators: %s: the largest allowed file size. */
+										__(
+											'JPG, PNG, WEBP or PDF · up to %s',
+											'booking-suite'
+										),
+										formatSize( MAX_BYTES )
+									) }
+								</span>
 							</span>
-						</span>
-					</label>
-				) }
+						</label>
+					) }
 
-				{ /* One input for both states, so Replace reuses it. */ }
-				<input
-					id="bks-modal-payment-proof"
-					ref={ inputRef }
-					type="file"
-					accept={ ACCEPTED.join( ',' ) }
-					className="bks-sr-only"
-					onChange={ ( event ) =>
-						accept( event.target.files?.[ 0 ] )
-					}
-				/>
+					{ /* One input for both states, so Replace reuses it. */ }
+					<input
+						id="bks-modal-payment-proof"
+						ref={ inputRef }
+						type="file"
+						accept={ ACCEPTED.join( ',' ) }
+						className="bks-sr-only"
+						onChange={ ( event ) =>
+							accept( event.target.files?.[ 0 ] )
+						}
+					/>
 
-				{ error && (
-					<p className="bks-payment__error" role="alert">
-						{ error }
-					</p>
-				) }
-			</div>
+					{ error && (
+						<p className="bks-payment__error" role="alert">
+							{ error }
+						</p>
+					) }
+				</div>
+			) }
 
 			{ /*
 			 * Says why Continue is disabled, rather than leaving a dead button
 			 * and no explanation — the commonest way a booking flow loses
-			 * someone at the last step.
+			 * someone at the last step. Paying later has nothing to wait for,
+			 * so it says what happens next instead.
 			 */ }
 			<p className="bks-step__hint">
-				{ payment.proofData
-					? __(
-							'Your booking will be verified once your payment proof is confirmed.',
-							'booking-suite'
-					  )
-					: __(
-							'A screenshot or receipt of your transfer is required before you can continue.',
-							'booking-suite'
-					  ) }
+				{ later &&
+					__(
+						'No payment is needed now. We will send you the bank details, and your dates are held in the meantime.',
+						'booking-suite'
+					) }
+
+				{ ! later &&
+					( payment.proofData
+						? __(
+								'Your booking will be verified once your payment proof is confirmed.',
+								'booking-suite'
+						  )
+						: __(
+								'A screenshot or receipt of your transfer is required before you can continue.',
+								'booking-suite'
+						  ) ) }
 			</p>
 		</div>
 	);

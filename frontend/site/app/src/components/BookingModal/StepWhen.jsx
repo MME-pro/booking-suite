@@ -263,7 +263,17 @@ export default function StepWhen( {
 			? ( slotData?.slots ?? [] ).filter( ( slot ) => slot.available )
 			: [];
 
-	const hasFree = freeSlots.length > 0;
+	/*
+	 * The fixed daytime block, on the days that have one.
+	 *
+	 * A block day sends no free-form starts at all, so the grid being empty
+	 * there says nothing about whether the day is bookable — the block does.
+	 * Reading the two separately is what keeps every Friday and Saturday from
+	 * showing the try-another-day panel.
+	 */
+	const block = 'ready' === status ? slotData?.daytimeSlot ?? null : null;
+
+	const hasFree = freeSlots.length > 0 || Boolean( block?.available );
 
 	// The billing break means some lengths cost less than the one below them.
 	const chosen = durations.find( ( option ) => option.hours === stay.hours );
@@ -288,7 +298,15 @@ export default function StepWhen( {
 					onChange={ onDate }
 				/>
 
-				<div className="bks-field">
+				{ /*
+				 * The block is one length, so there is nothing to choose. A
+				 * number field the guest can change but whose value is ignored
+				 * is worse than no field.
+				 */ }
+				<div
+					className="bks-field"
+					hidden={ Boolean( block ) && ! isOvernight }
+				>
 					<label htmlFor="bks-modal-duration">
 						{ __( 'Duration', 'booking-suite' ) }
 					</label>
@@ -476,6 +494,47 @@ export default function StepWhen( {
 					 * pushed the handful of real options off the screen — and
 					 * a guest cannot act on a time that is gone.
 					 */ }
+					{ /*
+					 * Picking it sets the length as well as the start: the two
+					 * are one offer, and a start without its length would post
+					 * a window the server refuses.
+					 */ }
+					{ block && block.available && (
+						<div className="bks-slots">
+							<button
+								type="button"
+								className={ `bks-slots__slot bks-slots__slot--block${
+									stay.startTime === block.start
+										? ' is-selected'
+										: ''
+								}` }
+								onClick={ () =>
+									onChange( {
+										...stay,
+										startTime: block.start,
+										hours: block.hours,
+									} )
+								}
+							>
+								{ sprintf(
+									/* translators: 1: start time, 2: end time, both 24-hour. */
+									__( '%1$s – %2$s', 'booking-suite' ),
+									formatWpTime( block.start ),
+									formatWpTime( block.end )
+								) }
+							</button>
+						</div>
+					) }
+
+					{ block && ! block.available && (
+						<p className="bks-when__note">
+							{ __(
+								'The daytime booking on this day is already taken. An overnight stay may still be free.',
+								'booking-suite'
+							) }
+						</p>
+					) }
+
 					<div className="bks-slots">
 						{ freeSlots.map( ( slot ) => (
 							<button

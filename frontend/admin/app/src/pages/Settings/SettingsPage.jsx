@@ -85,6 +85,19 @@ const NUMERIC = [
 const blank = {
 	currency: 'EUR',
 	accentColour: '#2563eb',
+	minHours: 4,
+	maxHours: 8,
+	baseHours: 3,
+	includedGuests: 2,
+	dayStart: '00:00',
+	dayEnd: '23:30',
+	slotStep: 30,
+	overnightStart: '16:00',
+	overnightEnd: '11:00',
+	daytimeSlotDays: '5,6',
+	daytimeSlotStart: '11:30',
+	daytimeSlotEnd: '15:30',
+	allowPayLater: true,
 	bankHolder: '',
 	bankName: '',
 	bankIban: '',
@@ -374,6 +387,189 @@ export default function SettingsPage() {
 								 * is where an owner who knew the old setting
 								 * will come looking for it.
 								 */ }
+								<div className="grid gap-4 sm:grid-cols-3">
+									<Field
+										form={ form }
+										name="minHours"
+										type="number"
+										min={ 1 }
+										max={ 24 }
+										touched={ touched }
+										label={ __(
+											'Shortest booking (hours)',
+											'booking-suite'
+										) }
+										description={ __(
+											'Guests only. The booking form opens on this length, and anything shorter is refused. You are not held to it when booking from the admin.',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="maxHours"
+										type="number"
+										min={ 1 }
+										max={ 24 }
+										touched={ touched }
+										label={ __(
+											'Longest booking (hours)',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="slotStep"
+										type="number"
+										min={ 5 }
+										max={ 240 }
+										step={ 5 }
+										touched={ touched }
+										label={ __(
+											'Minutes between start times',
+											'booking-suite'
+										) }
+									/>
+								</div>
+
+								<div className="grid gap-4 sm:grid-cols-2">
+									<Field
+										form={ form }
+										name="dayStart"
+										type="time"
+										touched={ touched }
+										label={ __(
+											'Earliest start time',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="dayEnd"
+										type="time"
+										touched={ touched }
+										label={ __(
+											'Latest start time',
+											'booking-suite'
+										) }
+										description={ __(
+											'The last time a booking may begin. A booking may still finish after it.',
+											'booking-suite'
+										) }
+									/>
+								</div>
+
+								<div className="grid gap-4 sm:grid-cols-2">
+									<Field
+										form={ form }
+										name="overnightStart"
+										type="time"
+										touched={ touched }
+										label={ __(
+											'Check-in',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="overnightEnd"
+										type="time"
+										touched={ touched }
+										label={ __(
+											'Check-out',
+											'booking-suite'
+										) }
+										description={ __(
+											'Also the hours a night imported from Airbnb or Booking.com occupies, so a portal stay blocks the same window a direct one does.',
+											'booking-suite'
+										) }
+									/>
+								</div>
+
+								<div className="grid gap-4 sm:grid-cols-3">
+									<Field
+										form={ form }
+										name="daytimeSlotDays"
+										touched={ touched }
+										label={ __(
+											'Daytime slot days',
+											'booking-suite'
+										) }
+										placeholder="5,6"
+										description={ __(
+											'1 is Monday, 7 is Sunday. Separate with commas, or leave empty for no daytime slot.',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="daytimeSlotStart"
+										type="time"
+										touched={ touched }
+										label={ __(
+											'Daytime slot from',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="daytimeSlotEnd"
+										type="time"
+										touched={ touched }
+										label={ __(
+											'Daytime slot until',
+											'booking-suite'
+										) }
+									/>
+								</div>
+
+								<p className="text-sm text-muted-foreground">
+									{ __(
+										'On the days listed above, that one fixed block is the whole daytime offer — free start times are not shown, and an overnight stay is the other option. On every other day guests pick their own start time.',
+										'booking-suite'
+									) }
+								</p>
+
+								<div className="grid gap-4 sm:grid-cols-2">
+									<Field
+										form={ form }
+										name="baseHours"
+										type="number"
+										min={ 1 }
+										max={ 24 }
+										touched={ touched }
+										label={ __(
+											'Hours the base rate covers',
+											'booking-suite'
+										) }
+										description={ __(
+											'Beyond this, the per-hour surcharge applies. A price, not a limit.',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="includedGuests"
+										type="number"
+										min={ 1 }
+										max={ 99 }
+										touched={ touched }
+										label={ __(
+											'Guests the base rate covers',
+											'booking-suite'
+										) }
+									/>
+								</div>
+
+								{ /*
+								 * The site-wide cooldown used to live here. It
+								 * is gone: turnaround is a property of the
+								 * apartment, not of the site, and holding a
+								 * 60-minute apartment to a 30-minute setting
+								 * was letting guests book into a gap nobody
+								 * could clean in. The note stays because this
+								 * is where an owner who knew the old setting
+								 * will come looking for it.
+								 */ }
 								<p className="text-sm text-muted-foreground">
 									{ __(
 										'Turnaround time is set per apartment. Open an apartment and choose its cleaning time — 30, 45 or 60 minutes — and that gap is kept free before and after every booking in it.',
@@ -392,6 +588,40 @@ export default function SettingsPage() {
 									'booking-suite'
 								) }
 							>
+								<FormField
+									control={ form.control }
+									name="allowPayLater"
+									render={ ( { field } ) => (
+										<FormItem className="flex flex-row items-start gap-3 space-y-0 rounded-lg border p-4">
+											<FormControl>
+												<Switch
+													checked={ Boolean(
+														field.value
+													) }
+													onCheckedChange={ touched(
+														field.onChange
+													) }
+												/>
+											</FormControl>
+											<div className="flex flex-col gap-1">
+												<FormLabel>
+													{ __(
+														'Allow paying later',
+														'booking-suite'
+													) }
+												</FormLabel>
+												<FormDescription>
+													{ __(
+														'Lets a guest book without transferring first. Off means every booking arrives with a receipt attached, which is safer but loses the ones abandoned at the transfer screen.',
+														'booking-suite'
+													) }
+												</FormDescription>
+											</div>
+											<FormMessage />
+										</FormItem>
+									) }
+								/>
+
 								<div className="grid gap-4 sm:grid-cols-2">
 									<Field
 										form={ form }

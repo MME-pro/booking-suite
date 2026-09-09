@@ -18,6 +18,7 @@ declare( strict_types=1 );
 namespace BookingSuite\Backend\APIs;
 
 use BookingSuite\Backend\Repositories\SettingsRepository;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -71,6 +72,23 @@ final class SettingsController {
 		'bankBic'        => SettingsRepository::BANK_BIC,
 		'bankDetails'    => SettingsRepository::BANK_DETAILS,
 		'emailNotifications' => SettingsRepository::EMAIL_NOTIFICATIONS,
+		/*
+		 * The booking rules. Every one of these shapes what a guest may ask
+		 * for, so every one of them is the owner's to change.
+		 */
+		'minHours'       => SettingsRepository::MIN_HOURS,
+		'maxHours'       => SettingsRepository::MAX_HOURS,
+		'baseHours'      => SettingsRepository::BASE_HOURS,
+		'includedGuests' => SettingsRepository::INCLUDED_GUESTS,
+		'dayStart'       => SettingsRepository::DAY_START,
+		'dayEnd'         => SettingsRepository::DAY_END,
+		'slotStep'       => SettingsRepository::SLOT_STEP,
+		'overnightStart' => SettingsRepository::OVERNIGHT_START,
+		'overnightEnd'   => SettingsRepository::OVERNIGHT_END,
+		'daytimeSlotDays'  => SettingsRepository::DAYTIME_SLOT_DAYS,
+		'daytimeSlotStart' => SettingsRepository::DAYTIME_SLOT_START,
+		'daytimeSlotEnd'   => SettingsRepository::DAYTIME_SLOT_END,
+		'allowPayLater'  => SettingsRepository::ALLOW_PAY_LATER,
 		'termsUrl'       => SettingsRepository::TERMS_URL,
 		'privacyUrl'     => SettingsRepository::PRIVACY_URL,
 	);
@@ -228,6 +246,41 @@ final class SettingsController {
 							'type'     => 'string',
 							'required' => false,
 						),
+						/*
+						 * Hours and minutes are bounded rather than merely
+						 * numeric: a zero-minute step makes the slot generator
+						 * loop forever, and a maximum below the minimum leaves
+						 * a guest no length at all to pick.
+						 */
+						'minHours'       => self::whole( 1, 24 ),
+						'maxHours'       => self::whole( 1, 24 ),
+						'baseHours'      => self::whole( 1, 24 ),
+						'includedGuests' => self::whole( 1, 99 ),
+						'slotStep'       => self::whole( 5, 240 ),
+						'dayStart'       => self::clock(),
+						'dayEnd'         => self::clock(),
+						'overnightStart' => self::clock(),
+						'overnightEnd'   => self::clock(),
+						'daytimeSlotStart' => self::clock(),
+						'daytimeSlotEnd'   => self::clock(),
+						'daytimeSlotDays'  => array(
+							'type'     => 'string',
+							'required' => false,
+							/*
+							 * ISO-8601 weekday numbers, comma separated, or
+							 * empty for "never". Anything else is refused
+							 * rather than quietly reduced to the days it could
+							 * make sense of.
+							 */
+							'validate_callback' => static fn( $value ): bool =>
+								is_string( $value )
+								&& ( '' === trim( $value )
+									|| 1 === preg_match( '/^[1-7](,[1-7])*$/', trim( $value ) ) ),
+						),
+						'allowPayLater'  => array(
+							'type'     => 'boolean',
+							'required' => false,
+						),
 						'emailNotifications' => array(
 							'type'     => 'boolean',
 							'required' => false,
@@ -245,6 +298,36 @@ final class SettingsController {
 					),
 				),
 			)
+		);
+	}
+
+	/**
+	 * A whole number within bounds.
+	 *
+	 * @param int $min Smallest accepted.
+	 * @param int $max Largest accepted.
+	 * @return array<string, mixed> A REST argument definition.
+	 */
+	private static function whole( int $min, int $max ): array {
+		return array(
+			'type'              => 'integer',
+			'required'          => false,
+			'validate_callback' => static fn( $value ): bool =>
+				is_numeric( $value ) && (int) $value >= $min && (int) $value <= $max,
+		);
+	}
+
+	/**
+	 * A 24-hour wall-clock time, HH:MM.
+	 *
+	 * @return array<string, mixed> A REST argument definition.
+	 */
+	private static function clock(): array {
+		return array(
+			'type'              => 'string',
+			'required'          => false,
+			'validate_callback' => static fn( $value ): bool =>
+				is_string( $value ) && 1 === preg_match( '/^([01]\d|2[0-3]):[0-5]\d$/', trim( $value ) ),
 		);
 	}
 
@@ -288,6 +371,19 @@ final class SettingsController {
 			'bankIban'       => SettingsRepository::get( SettingsRepository::BANK_IBAN ),
 			'bankBic'        => SettingsRepository::get( SettingsRepository::BANK_BIC ),
 			'bankDetails'    => SettingsRepository::get( SettingsRepository::BANK_DETAILS ),
+			'minHours'       => (int) SettingsRepository::number( SettingsRepository::MIN_HOURS ),
+			'maxHours'       => (int) SettingsRepository::number( SettingsRepository::MAX_HOURS ),
+			'baseHours'      => (int) SettingsRepository::number( SettingsRepository::BASE_HOURS ),
+			'includedGuests' => (int) SettingsRepository::number( SettingsRepository::INCLUDED_GUESTS ),
+			'dayStart'       => SettingsRepository::get( SettingsRepository::DAY_START ),
+			'dayEnd'         => SettingsRepository::get( SettingsRepository::DAY_END ),
+			'slotStep'       => (int) SettingsRepository::number( SettingsRepository::SLOT_STEP ),
+			'overnightStart' => SettingsRepository::get( SettingsRepository::OVERNIGHT_START ),
+			'overnightEnd'   => SettingsRepository::get( SettingsRepository::OVERNIGHT_END ),
+			'daytimeSlotDays'  => SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_DAYS ),
+			'daytimeSlotStart' => SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_START ),
+			'daytimeSlotEnd'   => SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_END ),
+			'allowPayLater'  => SettingsRepository::pay_later_allowed(),
 			'emailNotifications' => SettingsRepository::emails_enabled(),
 			'termsUrl'       => SettingsRepository::get( SettingsRepository::TERMS_URL ),
 			'privacyUrl'     => SettingsRepository::get( SettingsRepository::PRIVACY_URL ),
@@ -316,7 +412,30 @@ final class SettingsController {
 		return new WP_REST_Response( self::payload(), 200 );
 	}
 
-	public static function update( WP_REST_Request $request ): WP_REST_Response {
+	public static function update( WP_REST_Request $request ) {
+		/*
+		 * One rule no single field can check for itself.
+		 *
+		 * A longest stay below the shortest one leaves a guest no length to
+		 * pick — the generator quietly collapses the range to a single option
+		 * — so the save is refused rather than half-applied. Checked before
+		 * anything is written, because a loop that fails partway leaves the
+		 * settings in a state nobody asked for.
+		 */
+		$min = $request->get_param( "minHours" );
+		$max = $request->get_param( "maxHours" );
+
+		if ( null !== $min && null !== $max && (int) $max < (int) $min ) {
+			return new WP_Error(
+				"booking_suite_invalid_field",
+				__( "The longest stay cannot be shorter than the shortest one.", "booking-suite" ),
+				array(
+					"status" => 400,
+					"field"  => "maxHours",
+				)
+			);
+		}
+
 		foreach ( self::KEYS as $key => $stored_key ) {
 			$value = $request->get_param( $key );
 

@@ -108,7 +108,10 @@ export default function BookingModal( {
 			mode: 'hourly',
 			date: today,
 			startTime: '',
-			hours: 3,
+			// The shortest a guest may book, so the modal opens on something
+			// bookable rather than on a length it will correct as soon as the
+			// field is touched.
+			hours: Math.max( 1, Number.parseInt( settings.minHours, 10 ) || 1 ),
 			nights: 1,
 			checkIn: today,
 			checkOut: tomorrow,
@@ -120,6 +123,9 @@ export default function BookingModal( {
 	const [ guest, setGuest ] = useState( emptyGuest );
 	const [ payment, setPayment ] = useState( () => ( {
 		method: 'transfer',
+		// Paying now unless the guest says otherwise, whether or not the owner
+		// offers the alternative — so the value posted is always meaningful.
+		payWhen: 'now',
 		proofName: '',
 		proofData: '',
 	} ) );
@@ -261,6 +267,7 @@ export default function BookingModal( {
 					...payload(),
 					...guest,
 					payment: payment.method || 'transfer',
+					payWhen: payment.payWhen || 'now',
 					paymentProof: payment.proofData,
 					paymentProofName: payment.proofName,
 					verificationToken: verified?.token ?? '',
@@ -355,9 +362,15 @@ export default function BookingModal( {
 		 * Payment is by bank transfer, so the receipt is the only evidence the
 		 * owner ever gets that money moved. Without it a booking is a held date
 		 * with nothing to reconcile, which is why the step cannot be passed
-		 * until one is attached. The server enforces the same rule.
+		 * until one is attached — unless the guest has chosen to pay later and
+		 * the owner allows that, in which case there is nothing to attach yet.
+		 * The server enforces the same rule, including the permission.
 		 */
 		if ( 'payment' === step ) {
+			if ( settings.allowPayLater && 'later' === payment.payWhen ) {
+				return true;
+			}
+
 			return Boolean( payment.proofData );
 		}
 
@@ -525,6 +538,7 @@ export default function BookingModal( {
 								<StepPayment
 									payment={ payment }
 									onChange={ setPayment }
+									allowPayLater={ settings.allowPayLater }
 									bank={ context?.bank }
 									total={
 										quote

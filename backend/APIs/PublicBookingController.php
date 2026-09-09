@@ -162,11 +162,29 @@ final class PublicBookingController {
 
 		$guests = max( 1, absint( $request->get_param( 'guests' ) ) );
 		$hours  = (float) $request->get_param( 'hours' );
-		$hours  = $hours > 0 ? $hours : (float) SettingsRepository::number( SettingsRepository::BASE_HOURS );
 
-		$slots = SlotGenerator::for_date( $apartment, $date, $hours, $guests );
+		/*
+		 * The shortest bookable length, not the base rate's span. BASE_HOURS
+		 * answers a pricing question — how long the base rate covers before
+		 * the hourly surcharge starts — and standing it in here only worked
+		 * while the two numbers happened to agree. They no longer do, and a
+		 * grid built for three hours would be a grid of times this endpoint
+		 * refuses.
+		 */
+		$hours  = $hours > 0 ? $hours : (float) SettingsRepository::number( SettingsRepository::MIN_HOURS );
 
-		$has_free = (bool) array_filter(
+		$daytime = SlotGenerator::daytime_slot( $apartment, $date, $guests );
+
+		/*
+		 * A fixed-block day has no free-form starts. Offering the usual grid
+		 * beside the block would show forty-eight times that the endpoint below
+		 * refuses, which is a worse experience than showing one that works.
+		 */
+		$slots = SlotGenerator::is_fixed_block_day( $date )
+			? array()
+			: SlotGenerator::for_date( $apartment, $date, $hours, $guests );
+
+		$has_free = ( null !== $daytime && $daytime['available'] ) || (bool) array_filter(
 			$slots,
 			static fn( array $slot ): bool => (bool) $slot['available']
 		);
@@ -189,6 +207,13 @@ final class PublicBookingController {
 				'hours'        => $hours,
 				'durations'    => SlotGenerator::duration_options( $apartment, $date, $guests ),
 				'slots'        => $slots,
+				/*
+				 * The fixed daytime block, on the days it runs. Sent alongside
+				 * the grid rather than mixed into it: it is one offer to accept
+				 * or not, and folding it in among forty-eight start times would
+				 * bury the thing the guest is meant to notice.
+				 */
+				'daytimeSlot'  => $daytime,
 				'alternatives' => $alternatives,
 				'currency'     => SettingsRepository::currency(),
 			),
@@ -286,13 +311,26 @@ final class PublicBookingController {
 		}
 
 		/*
+		 * Paying later, when the owner allows it.
+		 *
+		 * The permission is read here rather than trusted from the request: the
+		 * endpoint is public, so a posted "later" on a site that does not offer
+		 * it has to mean nothing at all. A guest who chooses to defer is asked
+		 * for no receipt and gets no payment row — which is exactly how the
+		 * owner tells the two apart later, a deferred booking having nothing
+		 * against it rather than something pending.
+		 */
+		$defer = 'later' === $request->get_param( 'payWhen' )
+			&& SettingsRepository::pay_later_allowed();
+
+		/*
 		 * Proof of payment is required, and required here — before a booking, a
 		 * customer or an extras hold exists. Checked on the server rather than
 		 * trusting the modal's disabled button: the endpoint is public, and a
 		 * request that skips the form would otherwise take the dates off the
 		 * board with nothing to reconcile against.
 		 */
-		if ( '' === trim( (string) $request->get_param( 'paymentProof' ) ) ) {
+		if ( ! $defer && '' === trim( (string) $request->get_param( 'paymentProof' ) ) ) {
 			return self::error(
 				'booking_suite_payment_proof_required',
 				__(
@@ -660,6 +698,39 @@ final class PublicBookingController {
 
 		$starts = new \DateTimeImmutable( $date . ' ' . $start_time . ':00' );
 		$ends   = $starts->modify( '+' . (int) round( $hours * 60 ) . ' minutes' );
+
+		/*
+		 * On a fixed-block day the daytime offer is that block and nothing
+		 * else, so a window that is not exactly it is refused here rather than
+		 * quietly booked. Overnight stays are unaffected: they are made through
+		 * the stay endpoint, which never reaches this function.
+		 */
+		$block = SlotGenerator::daytime_slot( $apartment, $date, $guests );
+
+		if ( SlotGenerator::is_fixed_block_day( $date ) ) {
+			if ( null === $block ) {
+				return self::error(
+					'booking_suite_invalid_field',
+					__( 'That day is no longer open for daytime bookings.', 'booking-suite' ),
+					400,
+					'startTime'
+				);
+			}
+
+			if ( $starts->format( 'H:i' ) !== $block['start'] || $ends->format( 'H:i' ) !== $block['end'] ) {
+				return self::error(
+					'booking_suite_invalid_field',
+					sprintf(
+						/* translators: 1: start time, 2: end time, both 24-hour. */
+						__( 'On this day the daytime booking runs from %1$s to %2$s. For other times, please book an overnight stay.', 'booking-suite' ),
+						$block['start'],
+						$block['end']
+					),
+					400,
+					'startTime'
+				);
+			}
+		}
 
 		if ( $starts <= new \DateTimeImmutable( current_time( 'mysql' ) ) ) {
 			return self::error( 'booking_suite_invalid_field', __( 'That time has already passed.', 'booking-suite' ), 400, 'startTime' );

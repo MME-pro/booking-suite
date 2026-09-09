@@ -241,6 +241,15 @@ final class Assets {
 				 * than saying nothing.
 				 */
 				'taxRate'  => SettingsRepository::number( SettingsRepository::TAX_RATE ),
+
+				/*
+				 * Whether the payment step offers to defer. Sent with the page
+				 * for the same reason as the hours above: the choice has to be
+				 * right on first paint. The server enforces the same answer
+				 * when the booking is posted, so switching it off closes the
+				 * door rather than only hiding the handle.
+				 */
+				'allowPayLater' => SettingsRepository::pay_later_allowed(),
 			)
 		);
 	}

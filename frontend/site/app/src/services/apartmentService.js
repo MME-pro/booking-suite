@@ -13,11 +13,18 @@ const settings = {
 	// Mirrors the plugin's own defaults, so the bundle still behaves if the
 	// bootstrap object is missing — a caching plugin stripping inline script,
 	// for instance.
-	minHours: 3,
+	minHours: 4,
 	maxHours: 8,
 
 	// 0 means the owner declares no VAT, and the review screen says nothing.
 	taxRate: 0,
+
+	/*
+	 * Whether the payment step offers to defer. False here on purpose: if the
+	 * bootstrap is missing, the safe assumption is that every booking needs its
+	 * receipt, not that any may skip one.
+	 */
+	allowPayLater: false,
 
 	// WordPress's own defaults for Settings → General — except the clock.
 	dateFormat: 'F j, Y',

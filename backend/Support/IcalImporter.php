@@ -32,6 +32,7 @@ namespace BookingSuite\Backend\Support;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\BlocksRepository;
 use BookingSuite\Backend\Repositories\IcalFeedsRepository;
+use BookingSuite\Backend\Repositories\SettingsRepository;
 use WP_Error;
 
 defined( 'ABSPATH' ) || exit;
@@ -183,14 +184,65 @@ final class IcalImporter {
 	 *
 	 * @return array<string, mixed>
 	 */
+	/**
+	 * When an imported stay actually occupies the apartment.
+	 *
+	 * A portal writes availability as whole days: 18 Sep to 20 Sep means the
+	 * nights of the 18th and 19th, with the guest arriving on the 18th and
+	 * leaving on the 20th. Taken literally that is midnight to midnight, which
+	 * blocks two things it should not — the daytime of the arrival day before
+	 * the guest is due, and the whole of the departure day after they have
+	 * gone. On a Friday that is exactly the 11:30 slot this site sells.
+	 *
+	 * So an all-day event is placed in this site's own overnight window, the
+	 * same one a direct booking uses. The portal is describing nights; the
+	 * hours a night runs are ours to say.
+	 *
+	 * A timed event is left alone. A portal that publishes real times means
+	 * them, and second-guessing that would move a block the portal was precise
+	 * about.
+	 *
+	 * @param array<string, mixed> $event As read from the calendar.
+	 * @return array{startsAt: string, endsAt: string}
+	 */
+	private static function night_window( array $event ): array {
+		$literal = array(
+			'startsAt' => (string) $event['startsAt'],
+			'endsAt'   => (string) $event['endsAt'],
+		);
+
+		if ( empty( $event['allDay'] ) || '' === $literal['startsAt'] || '' === $literal['endsAt'] ) {
+			return $literal;
+		}
+
+		$arrive = substr( $literal['startsAt'], 0, 10 ) . ' ' . SettingsRepository::get( SettingsRepository::OVERNIGHT_START ) . ':00';
+		$leave  = substr( $literal['endsAt'], 0, 10 ) . ' ' . SettingsRepository::get( SettingsRepository::OVERNIGHT_END ) . ':00';
+
+		/*
+		 * A single all-day entry — a portal blocking one date with no night in
+		 * it — would come out ending before it started. Left as written rather
+		 * than invented into a window nobody described.
+		 */
+		if ( strtotime( $leave ) <= strtotime( $arrive ) ) {
+			return $literal;
+		}
+
+		return array(
+			'startsAt' => $arrive,
+			'endsAt'   => $leave,
+		);
+	}
+
 	private static function plan( array $event, array $existing, bool $skip_past, string $today ): array {
 		$lock = $existing[ $event['uid'] ] ?? null;
+
+		$window = self::night_window( $event );
 
 		$row = array(
 			'uid'      => (string) $event['uid'],
 			'summary'  => (string) $event['summary'],
-			'startsAt' => (string) $event['startsAt'],
-			'endsAt'   => (string) $event['endsAt'],
+			'startsAt' => $window['startsAt'],
+			'endsAt'   => $window['endsAt'],
 			'nights'   => (int) $event['nights'],
 			'allDay'   => (bool) $event['allDay'],
 			'action'   => self::SKIPPED,

@@ -22,7 +22,7 @@ msgid "\"%s\" will be removed. This cannot be undone."
 msgstr ""
 
 #. translators: 1: locks added, 2: locks moved, 3: locks released.
-#: backend/Support/IcalImporter.php:414
+#: backend/Support/IcalImporter.php:466
 msgid "%1$d added, %2$d changed, %3$d released."
 msgstr ""
 
@@ -69,6 +69,11 @@ msgstr ""
 #. translators: 1: who made the change, 2: when.
 #: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:256
 msgid "%1$s · %2$s"
+msgstr ""
+
+#. translators: 1: start time, 2: end time, both 24-hour.
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:521
+msgid "%1$s – %2$s"
 msgstr ""
 
 #. translators: 1: guest count, 2: infant count.
@@ -153,7 +158,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of calendar links that were not saved.
-#: backend/PostTypes/ApartmentMetaBox.php:840
+#: backend/PostTypes/ApartmentMetaBox.php:1000
 msgid "%d calendar link was not saved — it is not a usable address, or the same calendar was listed twice."
 msgid_plural "%d calendar links were not saved — they are not usable addresses, or the same calendar was listed twice."
 msgstr[0] ""
@@ -197,7 +202,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of hours.
-#: frontend/site/Shortcodes.php:1096 frontend/site/Shortcodes.php:1585 frontend/site/app/src/components/BookingModal/BookingModal.jsx:565 frontend/site/app/src/components/BookingModal/StepReview.jsx:117
+#: frontend/site/Shortcodes.php:1096 frontend/site/Shortcodes.php:1585 frontend/site/app/src/components/BookingModal/BookingModal.jsx:579 frontend/site/app/src/components/BookingModal/StepReview.jsx:117
 #: frontend/site/app/src/components/BookingModal/StepStay.jsx:217 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:26
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -241,12 +246,12 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: cleaning turnaround in minutes.
-#: backend/Integrations/Elementor/Tags.php:148 backend/PostTypes/ApartmentMetaBox.php:169
+#: backend/Integrations/Elementor/Tags.php:148 backend/PostTypes/ApartmentMetaBox.php:196
 msgid "%d minutes"
 msgstr ""
 
 #. translators: %d: number of nights.
-#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:577 frontend/site/app/src/components/BookingModal/StepReview.jsx:122 frontend/site/app/src/components/BookingModal/StepWhen.jsx:344
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:591 frontend/site/app/src/components/BookingModal/StepReview.jsx:122 frontend/site/app/src/components/BookingModal/StepWhen.jsx:362
 msgid "%d night"
 msgid_plural "%d nights"
 msgstr[0] ""
@@ -355,7 +360,7 @@ msgid "%s hours"
 msgstr ""
 
 #. translators: %s: name of the extra.
-#: backend/APIs/PublicBookingController.php:277
+#: backend/APIs/PublicBookingController.php:302
 msgid "%s is no longer available for these dates. Please adjust it and try again."
 msgstr ""
 
@@ -381,6 +386,10 @@ msgstr ""
 
 #: frontend/site/app/src/components/ApartmentCard/ApartmentCard.jsx:172
 msgid "/ night"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:498
+msgid "1 is Monday, 7 is Sunday. Separate with commas, or leave empty for no daytime slot."
 msgstr ""
 
 #. translators: %d: active percentage
@@ -460,7 +469,7 @@ msgstr ""
 msgid "A photo grid of the apartments with a \"Book now\" button on each card, for the homepage. Rendered by the server, so it is visible to search engines and needs no search bar. Use the apartment list instead when guests should filter by date first."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:482
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:599
 msgid "A screenshot or receipt of your transfer is required before you can continue."
 msgstr ""
 
@@ -476,7 +485,7 @@ msgstr ""
 msgid "Absender:"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:331
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:344
 msgid "Accent colour"
 msgstr ""
 
@@ -488,7 +497,7 @@ msgstr ""
 msgid "Access"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:414 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:400 frontend/site/app/src/components/BookingModal/StepPayment.jsx:251
+#: backend/Support/BookingEmails.php:414 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:630 frontend/site/app/src/components/BookingModal/StepPayment.jsx:349
 msgid "Account holder"
 msgstr ""
 
@@ -519,7 +528,7 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:454
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:564
 msgid "Active (visible to customers)"
 msgstr ""
 
@@ -528,7 +537,7 @@ msgstr ""
 msgid "Active Units"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:224
+#: backend/PostTypes/ApartmentMetaBox.php:251
 msgid "Active — guests can book this apartment"
 msgstr ""
 
@@ -545,11 +554,11 @@ msgstr ""
 msgid "Add Booking Suite to your home screen"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:336 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:394 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:483
+#: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:336 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:394 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:593
 msgid "Add Extra"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:198
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:230
 msgid "Add New Extra"
 msgstr ""
 
@@ -565,7 +574,7 @@ msgstr ""
 msgid "Add one"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:252
+#: backend/PostTypes/ApartmentMetaBox.php:279
 msgid "Add photos"
 msgstr ""
 
@@ -581,7 +590,7 @@ msgstr ""
 msgid "Add your first apartment to start taking bookings for it."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:440
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:670
 msgid "Additional details"
 msgstr ""
 
@@ -592,7 +601,7 @@ msgid_plural "Additional guests (%d)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:561
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:791
 msgid "Address"
 msgstr ""
 
@@ -600,7 +609,7 @@ msgstr ""
 msgid "Admin"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:592
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:822
 msgid "Admin email"
 msgstr ""
 
@@ -620,7 +629,7 @@ msgstr ""
 msgid "Airbnb"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:294 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:805
+#: backend/PostTypes/ApartmentMetaBox.php:321 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:805
 msgid "Airbnb: Calendar → Availability → Connect calendars."
 msgstr ""
 
@@ -682,16 +691,24 @@ msgstr ""
 msgid "All time"
 msgstr ""
 
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:608
+msgid "Allow paying later"
+msgstr ""
+
 #: frontend/site/app/src/components/BookingModal/StepStay.jsx:294
 msgid "Already booked"
 msgstr ""
 
-#: backend/Support/IcalImporter.php:224
+#: backend/Support/IcalImporter.php:276
 msgid "Already over."
 msgstr ""
 
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:481
+msgid "Also the hours a night imported from Airbnb or Booking.com occupies, so a portal stay blocks the same window a direct one does."
+msgstr ""
+
 #: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:79 frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:134 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:70 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:75
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:284
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:382
 msgid "Amount"
 msgstr ""
 
@@ -709,7 +726,7 @@ msgid_plural "Other apartments that are free"
 msgstr[0] ""
 msgstr[1] ""
 
-#: backend/APIs/BookingsController.php:904
+#: backend/APIs/BookingsController.php:912
 msgid "Another booking already holds those dates."
 msgstr ""
 
@@ -729,7 +746,7 @@ msgstr ""
 msgid "Any time"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:444
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:674
 msgid "Anything else to print under the account."
 msgstr ""
 
@@ -751,7 +768,7 @@ msgstr ""
 msgid "Apartment list"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:143 backend/Repositories/EmailTemplatesRepository.php:115
+#: backend/PostTypes/ApartmentMetaBox.php:170 backend/Repositories/EmailTemplatesRepository.php:115
 msgid "Apartment name"
 msgstr ""
 
@@ -759,7 +776,7 @@ msgstr ""
 msgid "Apartment not found."
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:110 frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:38
+#: backend/PostTypes/ApartmentMetaBox.php:137 frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:38
 msgid "Apartment photos"
 msgstr ""
 
@@ -862,12 +879,16 @@ msgstr ""
 msgid "Availability"
 msgstr ""
 
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:480
+msgid "Available for"
+msgstr ""
+
 #. translators: %s: the overnight window.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:429
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:447
 msgid "Available start times"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:333 frontend/site/app/src/components/BookingModal/StepWhen.jsx:529
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:333 frontend/site/app/src/components/BookingModal/StepWhen.jsx:588
 msgid "Available — you can continue."
 msgstr ""
 
@@ -896,16 +917,16 @@ msgstr ""
 msgid "Awaiting payment"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:424 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:430 frontend/site/app/src/components/BookingModal/StepPayment.jsx:276
+#: backend/Support/BookingEmails.php:424 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:660 frontend/site/app/src/components/BookingModal/StepPayment.jsx:374
 msgid "BIC"
 msgstr ""
 
 #. translators: %s: the bank's BIC.
-#: backend/Repositories/SettingsRepository.php:420
+#: backend/Repositories/SettingsRepository.php:463
 msgid "BIC: %s"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:561 frontend/site/app/src/components/BookingModal/BookingModal.jsx:612
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:561 frontend/site/app/src/components/BookingModal/BookingModal.jsx:626
 msgid "Back"
 msgstr ""
 
@@ -921,7 +942,7 @@ msgstr ""
 msgid "Balance due"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:418 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:409 frontend/site/app/src/components/BookingModal/StepPayment.jsx:261
+#: backend/Support/BookingEmails.php:418 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:639 frontend/site/app/src/components/BookingModal/StepPayment.jsx:359
 msgid "Bank"
 msgstr ""
 
@@ -954,6 +975,10 @@ msgstr ""
 msgid "Beschreibung"
 msgstr ""
 
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:544
+msgid "Beyond this, the per-hour surcharge applies. A price, not a limit."
+msgstr ""
+
 #: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:760
 msgid "Blocked by a portal (Airbnb, Booking.com)"
 msgstr ""
@@ -967,11 +992,15 @@ msgstr ""
 msgid "Book now"
 msgstr ""
 
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:318
+msgid "Book now and pay by bank transfer afterwards. We will send you the details."
+msgstr ""
+
 #: frontend/site/Shortcodes.php:47
 msgid "Book now button"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:409
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:422
 msgid "Book this apartment"
 msgstr ""
 
@@ -997,7 +1026,7 @@ msgstr ""
 msgid "Booked value, refunds excluded"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:928 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:63 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:361 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:70
+#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:928 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:63 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:374 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:70
 msgid "Booking"
 msgstr ""
 
@@ -1005,7 +1034,7 @@ msgstr ""
 msgid "Booking Status Distribution"
 msgstr ""
 
-#: backend/Integrations/ElementorTags.php:45 backend/PostTypes/ApartmentMetaBox.php:70 backend/Support/Pwa.php:133 backend/Support/Pwa.php:167
+#: backend/Integrations/ElementorTags.php:45 backend/PostTypes/ApartmentMetaBox.php:71 backend/Support/Pwa.php:133 backend/Support/Pwa.php:167
 #: frontend/admin/Menu.php:113 frontend/admin/Menu.php:114 frontend/admin/app/src/App.jsx:88
 msgid "Booking Suite"
 msgstr ""
@@ -1059,7 +1088,7 @@ msgstr ""
 msgid "Booking history, newest first."
 msgstr ""
 
-#: backend/APIs/BookingsController.php:915
+#: backend/APIs/BookingsController.php:923
 msgid "Booking not found."
 msgstr ""
 
@@ -1075,7 +1104,7 @@ msgstr ""
 msgid "Booking request received"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:184 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:624
+#: backend/PostTypes/ApartmentMetaBox.php:211 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:624
 msgid "Booking short link"
 msgstr ""
 
@@ -1099,7 +1128,7 @@ msgstr ""
 msgid "Booking.com"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:295 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:809
+#: backend/PostTypes/ApartmentMetaBox.php:322 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:809
 msgid "Booking.com: Rates & Availability → Sync calendars."
 msgstr ""
 
@@ -1118,12 +1147,12 @@ msgstr ""
 msgid "Bookings across all customers"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:315
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:328
 msgid "Bookings are priced and invoiced in this currency."
 msgstr ""
 
 #. translators: %d: the shortest bookable length, in hours.
-#: backend/APIs/PublicBookingController.php:648
+#: backend/APIs/PublicBookingController.php:686
 msgid "Bookings start at %d hour."
 msgid_plural "Bookings start at %d hours."
 msgstr[0] ""
@@ -1171,7 +1200,7 @@ msgstr ""
 msgid "Calendar"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:157
+#: backend/PostTypes/ApartmentMetaBox.php:184
 msgid "Calendar colour"
 msgstr ""
 
@@ -1180,7 +1209,7 @@ msgid "Calendar link"
 msgstr ""
 
 #. translators: %s: portal name, e.g. Airbnb.
-#: backend/PostTypes/ApartmentMetaBox.php:512
+#: backend/PostTypes/ApartmentMetaBox.php:671
 msgid "Calendar link — %s"
 msgstr ""
 
@@ -1188,7 +1217,7 @@ msgstr ""
 msgid "Calendar not found."
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:361 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:637
+#: backend/PostTypes/ApartmentMetaBox.php:520 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:637
 msgid "Calendar sync"
 msgstr ""
 
@@ -1199,7 +1228,7 @@ msgstr ""
 #. translators: %s: apartment name.
 #. translators: %s: extra name.
 #: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:359 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:660 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:376 frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:277
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:533 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:871 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:434 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:472
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:533 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:871 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:434 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:582
 msgid "Cancel"
 msgstr ""
 
@@ -1251,11 +1280,11 @@ msgstr ""
 msgid "Check your spam folder if it has not arrived. Nothing is booked until you finish."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:190 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:539 frontend/site/app/src/components/BookingModal/StepStay.jsx:107
+#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:190 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:539 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:467 frontend/site/app/src/components/BookingModal/StepStay.jsx:107
 msgid "Check-in"
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:476
+#: backend/APIs/PublicBookingController.php:514
 msgid "Check-in cannot be in the past."
 msgstr ""
 
@@ -1263,15 +1292,15 @@ msgstr ""
 msgid "Check-ins this week"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:197 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:561 frontend/site/app/src/components/BookingModal/StepStay.jsx:122
+#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:197 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:561 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:477 frontend/site/app/src/components/BookingModal/StepStay.jsx:122
 msgid "Check-out"
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:459 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:144
+#: backend/APIs/PublicBookingController.php:497 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:144
 msgid "Check-out must be after check-in."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:259 frontend/site/app/src/components/BookingModal/StepWhen.jsx:443
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:259 frontend/site/app/src/components/BookingModal/StepWhen.jsx:461
 msgid "Checking availability…"
 msgstr ""
 
@@ -1291,7 +1320,7 @@ msgstr ""
 msgid "Choose a date"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:434
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:452
 msgid "Choose a date to see what is free."
 msgstr ""
 
@@ -1307,7 +1336,7 @@ msgstr ""
 msgid "Choose an apartment."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:145
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:177
 msgid "Choose an image"
 msgstr ""
 
@@ -1327,11 +1356,11 @@ msgstr ""
 msgid "Choose logo"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:596
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:610
 msgid "Choose when you are coming"
 msgstr ""
 
-#: backend/Support/IcalImporter.php:87
+#: backend/Support/IcalImporter.php:88
 msgid "Choose which apartment the calendar belongs to."
 msgstr ""
 
@@ -1355,7 +1384,7 @@ msgstr ""
 msgid "Cleaning Duration"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:162 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:463
+#: backend/PostTypes/ApartmentMetaBox.php:189 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:463
 msgid "Cleaning time"
 msgstr ""
 
@@ -1368,7 +1397,7 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:390
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:422
 msgid "Clear Image"
 msgstr ""
 
@@ -1380,12 +1409,12 @@ msgstr ""
 msgid "Clear search"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:432
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:540
 msgid "Click or drop your payment screenshot here"
 msgstr ""
 
 #: frontend/admin/app/src/components/Modal/Modal.jsx:77 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:725 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:183 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:268
-#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:197 frontend/site/app/src/components/BookingModal/BookingModal.jsx:422
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:197 frontend/site/app/src/components/BookingModal/BookingModal.jsx:435
 msgid "Close"
 msgstr ""
 
@@ -1397,7 +1426,7 @@ msgstr ""
 msgid "Closes the apartments you choose for the window."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:712
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:942
 msgid "Closing line"
 msgstr ""
 
@@ -1417,15 +1446,15 @@ msgstr ""
 msgid "Company"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:500
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:730
 msgid "Company information"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:515
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:745
 msgid "Company logo"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:549
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:779
 msgid "Company name"
 msgstr ""
 
@@ -1437,7 +1466,7 @@ msgstr ""
 msgid "Comprehensive analytics and reports for your room booking business."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:544 frontend/site/app/src/components/BookingModal/BookingModal.jsx:388
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:544 frontend/site/app/src/components/BookingModal/BookingModal.jsx:401
 msgid "Confirm"
 msgstr ""
 
@@ -1457,7 +1486,7 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:637
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:651
 msgid "Continue"
 msgstr ""
 
@@ -1511,7 +1540,7 @@ msgstr ""
 msgid "Could not load customers"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:450
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:468
 msgid "Could not load the available times."
 msgstr ""
 
@@ -1531,11 +1560,11 @@ msgstr ""
 msgid "Could not reach the server."
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:116
+#: backend/PostTypes/ApartmentMetaBox.php:143
 msgid "Could not read the calendars just now. Try again in a moment."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:198
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:211
 msgid "Could not save settings"
 msgstr ""
 
@@ -1548,7 +1577,7 @@ msgstr ""
 msgid "Create export links"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:283
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:296
 msgid "Currency"
 msgstr ""
 
@@ -1585,7 +1614,7 @@ msgid "Database"
 msgstr ""
 
 #. translators: %s: amount saved at this length.
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:598 frontend/site/app/src/components/BookingModal/StepStay.jsx:156 frontend/site/app/src/components/BookingModal/StepWhen.jsx:285 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:598 frontend/site/app/src/components/BookingModal/StepStay.jsx:156 frontend/site/app/src/components/BookingModal/StepWhen.jsx:295 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59
 msgid "Date"
 msgstr ""
 
@@ -1593,7 +1622,7 @@ msgstr ""
 msgid "Date Range"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:383 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:838
+#: backend/PostTypes/ApartmentMetaBox.php:542 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:838
 msgid "Dates these portals have sold are blocked here, read automatically on a schedule."
 msgstr ""
 
@@ -1609,12 +1638,24 @@ msgstr ""
 msgid "Day"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:699
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:929
 msgid "Days from the invoice date to the due date."
 msgstr ""
 
 #: frontend/site/app/src/components/BookingModal/StepStay.jsx:84
 msgid "Daytime"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:493
+msgid "Daytime slot days"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:508
+msgid "Daytime slot from"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:518
+msgid "Daytime slot until"
 msgstr ""
 
 #: frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:234
@@ -1694,11 +1735,11 @@ msgstr ""
 msgid "Describe the apartment…"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:655 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:253
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:655 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:285
 msgid "Description"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:307 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:688 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:376 frontend/site/app/src/components/BookingModal/BookingModal.jsx:387
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:307 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:688 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:376 frontend/site/app/src/components/BookingModal/BookingModal.jsx:400
 msgid "Details"
 msgstr ""
 
@@ -1708,11 +1749,11 @@ msgid "Details for %s"
 msgstr ""
 
 #. translators: %s: comma-separated portal names.
-#: backend/PostTypes/ApartmentMetaBox.php:437 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:103
+#: backend/PostTypes/ApartmentMetaBox.php:596 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:103
 msgid "Direct bookings + %s"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:449 backend/Support/IcalExporter.php:92
+#: backend/PostTypes/ApartmentMetaBox.php:608 backend/Support/IcalExporter.php:92
 msgid "Direct bookings only"
 msgstr ""
 
@@ -1729,7 +1770,7 @@ msgid "Drop any of these into a subject or message and the booking fills them in
 msgstr ""
 
 #. translators: %d: number of hours.
-#: frontend/site/Shortcodes.php:1103 frontend/site/app/src/components/BookingModal/StepWhen.jsx:293 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:33
+#: frontend/site/Shortcodes.php:1103 frontend/site/app/src/components/BookingModal/StepWhen.jsx:311 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:33
 msgid "Duration"
 msgstr ""
 
@@ -1742,8 +1783,12 @@ msgid "E-Mail:"
 msgstr ""
 
 #. translators: %s: the company's email address.
-#: backend/Repositories/SettingsRepository.php:324
+#: backend/Repositories/SettingsRepository.php:367
 msgid "E-Mail: %s"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:440
+msgid "Earliest start time"
 msgstr ""
 
 #. translators: %s: apartment name.
@@ -1762,7 +1807,7 @@ msgstr ""
 msgid "Edit Apartment"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:197
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:229
 msgid "Edit Extra"
 msgstr ""
 
@@ -1774,7 +1819,7 @@ msgstr ""
 msgid "Edited"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:707 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:114 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:583 frontend/site/app/src/components/BookingModal/StepDetails.jsx:31
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:707 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:114 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:813 frontend/site/app/src/components/BookingModal/StepDetails.jsx:31
 msgid "Email"
 msgstr ""
 
@@ -1786,7 +1831,7 @@ msgstr ""
 msgid "Email confirmed."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:478
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:708
 msgid "Email notifications"
 msgstr ""
 
@@ -1794,7 +1839,7 @@ msgstr ""
 msgid "Email preview"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:456
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:686
 msgid "Email sent by the plugin."
 msgstr ""
 
@@ -1810,7 +1855,7 @@ msgstr ""
 msgid "Email verification code"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:305
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:337
 msgid "Enable stock management for this extra"
 msgstr ""
 
@@ -1838,15 +1883,15 @@ msgstr ""
 msgid "Enter the agreed total."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:94
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:100
 msgid "Enter the available quantity."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:237
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:269
 msgid "Enter the name of the extra item."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:504
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:734
 msgid "Entered once here, and used on the invoice and in the header of every guest email."
 msgstr ""
 
@@ -1866,6 +1911,10 @@ msgstr ""
 msgid "Every apartment is open for booking. Lock one for maintenance, or lock everything for a closure."
 msgstr ""
 
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:542
+msgid "Every apartment offers this extra. Tick one or more to limit it."
+msgstr ""
+
 #: frontend/admin/app/src/pages/Guide/GuidePage.jsx:154
 msgid "Every path below hangs off this. Admin routes need a logged-in user with manage_options and the wp_rest nonce; public ones do not."
 msgstr ""
@@ -1883,11 +1932,11 @@ msgid "Expedia"
 msgstr ""
 
 #. translators: %s: which feed, e.g. "For Airbnb".
-#: backend/PostTypes/ApartmentMetaBox.php:416 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:117
+#: backend/PostTypes/ApartmentMetaBox.php:575 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:117
 msgid "Export link — %s"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:394 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:216
+#: backend/PostTypes/ApartmentMetaBox.php:553 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:216
 msgid "Export links (.ics)"
 msgstr ""
 
@@ -1895,13 +1944,13 @@ msgstr ""
 msgid "Extra"
 msgstr ""
 
-#: frontend/admin/Menu.php:191 frontend/admin/Menu.php:192 frontend/admin/app/src/App.jsx:65 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402
-#: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:257 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416 frontend/site/app/src/components/BookingModal/BookingModal.jsx:386 frontend/site/app/src/components/BookingModal/StepOptions.jsx:44
-#: frontend/site/app/src/components/BookingModal/StepReview.jsx:308
+#: backend/PostTypes/ApartmentMetaBox.php:88 frontend/admin/Menu.php:191 frontend/admin/Menu.php:192 frontend/admin/app/src/App.jsx:65
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:257 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416 frontend/site/app/src/components/BookingModal/BookingModal.jsx:399
+#: frontend/site/app/src/components/BookingModal/StepOptions.jsx:44 frontend/site/app/src/components/BookingModal/StepReview.jsx:308
 msgid "Extras"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:201
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:233
 msgid "Extras are offered to guests during booking."
 msgstr ""
 
@@ -1929,7 +1978,7 @@ msgstr ""
 msgid "First name"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:228 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:522
+#: backend/PostTypes/ApartmentMetaBox.php:255 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:522
 msgid "Follow Hesse public holidays"
 msgstr ""
 
@@ -1951,7 +2000,7 @@ msgid "From"
 msgstr ""
 
 #. translators: %d: the shortest bookable length, in hours.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:316
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:334
 msgid "From %d hour."
 msgid_plural "From %d hours."
 msgstr[0] ""
@@ -1965,7 +2014,7 @@ msgstr ""
 msgid "Gebuchte Uhrzeit"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:271 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:69
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:284 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:69
 msgid "General"
 msgstr ""
 
@@ -1997,7 +2046,7 @@ msgstr ""
 msgid "Give an arrival and a departure date."
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:398 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:219
+#: backend/PostTypes/ApartmentMetaBox.php:557 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:219
 msgid "Give each to the portal it is named for. Each leaves out that portal’s own dates, and is readable by anyone holding it."
 msgstr ""
 
@@ -2037,15 +2086,23 @@ msgid "Guest paid on"
 msgstr ""
 
 #. translators: %d: number of nights.
-#: backend/PostTypes/ApartmentMetaBox.php:152 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:437 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:109 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177
+#: backend/PostTypes/ApartmentMetaBox.php:179 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:437 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:109 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177
 #: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:376 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:513 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:74 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:115
-#: frontend/site/Shortcodes.php:1058 frontend/site/app/src/components/BookingModal/StepStay.jsx:137 frontend/site/app/src/components/BookingModal/StepStay.jsx:175 frontend/site/app/src/components/BookingModal/StepWhen.jsx:360
+#: frontend/site/Shortcodes.php:1058 frontend/site/app/src/components/BookingModal/StepStay.jsx:137 frontend/site/app/src/components/BookingModal/StepStay.jsx:175 frontend/site/app/src/components/BookingModal/StepWhen.jsx:378
 #: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107
 msgid "Guests"
 msgstr ""
 
 #: backend/APIs/ApartmentsController.php:473
 msgid "Guests must be between 1 and 65535."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:402
+msgid "Guests only. The booking form opens on this length, and anything shorter is refused. You are not held to it when booking from the admin."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:556
+msgid "Guests the base rate covers"
 msgstr ""
 
 #: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:76
@@ -2081,7 +2138,11 @@ msgstr ""
 msgid "Hours"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:390
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:540
+msgid "Hours the base rate covers"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:586
 msgid "How guests pay you."
 msgstr ""
 
@@ -2097,7 +2158,7 @@ msgstr ""
 msgid "How many guests fit, and how long the apartment is blocked between stays."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:272
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:285
 msgid "How prices and the guest-facing booking flow are presented."
 msgstr ""
 
@@ -2117,12 +2178,12 @@ msgstr ""
 msgid "How this apartment is identified across the calendar and the website."
 msgstr ""
 
-#: backend/Support/BookingEmails.php:421 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:419 frontend/site/app/src/components/BookingModal/StepPayment.jsx:269
+#: backend/Support/BookingEmails.php:421 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:649 frontend/site/app/src/components/BookingModal/StepPayment.jsx:367
 msgid "IBAN"
 msgstr ""
 
 #. translators: %s: the IBAN, in groups of four.
-#: backend/Repositories/SettingsRepository.php:415
+#: backend/Repositories/SettingsRepository.php:458
 msgid "IBAN: %s"
 msgstr ""
 
@@ -2131,7 +2192,7 @@ msgstr ""
 msgid "If you have not paid yet, please transfer %s to the account below. Once it arrives we will confirm your booking by email."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:360
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:392
 msgid "Image URL"
 msgstr ""
 
@@ -2160,7 +2221,7 @@ msgstr ""
 msgid "Install app"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:179 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:615
+#: backend/PostTypes/ApartmentMetaBox.php:206 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:615
 msgid "Internal short link"
 msgstr ""
 
@@ -2168,7 +2229,7 @@ msgstr ""
 msgid "Invoice"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:659
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:889
 msgid "Invoice counter"
 msgstr ""
 
@@ -2180,7 +2241,7 @@ msgstr ""
 msgid "Invoice logo"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:644
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:874
 msgid "Invoice number prefix"
 msgstr ""
 
@@ -2193,7 +2254,7 @@ msgid "Items offered at booking"
 msgstr ""
 
 #. translators: %s: the largest allowed file size.
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:441
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:549
 msgid "JPG, PNG, WEBP or PDF · up to %s"
 msgstr ""
 
@@ -2226,13 +2287,13 @@ msgid "Last name"
 msgstr ""
 
 #. translators: 1: number of dated entries read, 2: when it was read.
-#: backend/APIs/IcalController.php:548 backend/PostTypes/ApartmentMetaBox.php:541 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:949
+#: backend/APIs/IcalController.php:548 backend/PostTypes/ApartmentMetaBox.php:700 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:949
 msgid "Last read %1$d entries on %2$s"
 msgstr ""
 
 #. translators: %s: the reason the read failed.
 #. translators: %s: the reason the last read failed.
-#: backend/APIs/IcalController.php:543 backend/PostTypes/ApartmentMetaBox.php:535 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:943
+#: backend/APIs/IcalController.php:543 backend/PostTypes/ApartmentMetaBox.php:694 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:943
 msgid "Last read failed: %s"
 msgstr ""
 
@@ -2240,12 +2301,20 @@ msgstr ""
 msgid "Last stay"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:607 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:74
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:450
+msgid "Latest start time"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:74 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:837
 msgid "Legal & invoice"
 msgstr ""
 
 #: backend/Repositories/EmailTemplatesRepository.php:129
 msgid "Length of stay in nights"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:614
+msgid "Lets a guest book without transferring first. Off means every booking arrives with a receipt attached, which is safer but loses the ones abandoned at the transfer screen."
 msgstr ""
 
 #: frontend/admin/app/src/pages/Customers/CustomersPage.jsx:129
@@ -2264,7 +2333,7 @@ msgstr ""
 msgid "Link to the booking in the admin"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:415 frontend/site/app/src/components/BookingModal/BookingModal.jsx:465
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:428 frontend/site/app/src/components/BookingModal/BookingModal.jsx:478
 msgid "Loading…"
 msgstr ""
 
@@ -2305,7 +2374,11 @@ msgstr ""
 msgid "Locks"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:432
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:414
+msgid "Longest booking (hours)"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:464
 msgid "Lower numbers appear first. Leave 0 for automatic ordering."
 msgstr ""
 
@@ -2400,6 +2473,10 @@ msgid_plural "Minimum %d hours"
 msgstr[0] ""
 msgstr[1] ""
 
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:427
+msgid "Minutes between start times"
+msgstr ""
+
 #: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:135
 msgid "Month"
 msgstr ""
@@ -2408,7 +2485,7 @@ msgstr ""
 msgid "Monthly"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:335 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:227 frontend/admin/app/src/pages/Guide/GuidePage.jsx:346
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:335 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:259 frontend/admin/app/src/pages/Guide/GuidePage.jsx:346
 msgid "Name"
 msgstr ""
 
@@ -2456,7 +2533,7 @@ msgid "Next photo"
 msgstr ""
 
 #. translators: %d: the shortest bookable length, in hours.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:331
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:349
 msgid "Nights"
 msgstr ""
 
@@ -2544,6 +2621,10 @@ msgstr ""
 msgid "No name given"
 msgstr ""
 
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:588
+msgid "No payment is needed now. We will send you the bank details, and your dates are held in the meantime."
+msgstr ""
+
 #: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:342
 msgid "No payments match your filters"
 msgstr ""
@@ -2556,7 +2637,7 @@ msgstr ""
 msgid "No start times for this date. Check the opening hours in Settings."
 msgstr ""
 
-#: backend/Support/IcalExporter.php:267 backend/Support/IcalImporter.php:268
+#: backend/Support/IcalExporter.php:267 backend/Support/IcalImporter.php:320
 msgid "Not available"
 msgstr ""
 
@@ -2568,7 +2649,7 @@ msgstr ""
 msgid "Not published yet"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:462
+#: backend/PostTypes/ApartmentMetaBox.php:621
 msgid "Not published yet. Creating the links makes this apartment’s booked dates readable by anyone holding one — each says when the apartment is taken, never who by."
 msgstr ""
 
@@ -2618,7 +2699,7 @@ msgstr ""
 msgid "Nothing to change."
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:117
+#: backend/PostTypes/ApartmentMetaBox.php:144
 msgid "Nothing to read — no calendar link is saved yet."
 msgstr ""
 
@@ -2626,11 +2707,11 @@ msgstr ""
 msgid "Nothing to report yet"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:724
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:954
 msgid "Notice"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:455 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:72
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:685 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:72
 msgid "Notifications"
 msgstr ""
 
@@ -2638,7 +2719,7 @@ msgstr ""
 msgid "Number of guests"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:648
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:878
 msgid "Numbers run PREFIX-YEAR-0001 and restart each year."
 msgstr ""
 
@@ -2670,6 +2751,15 @@ msgstr ""
 msgid "On"
 msgstr ""
 
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:526
+msgid "On the days listed above, that one fixed block is the whole daytime offer — free start times are not shown, and an overnight stay is the other option. On every other day guests pick their own start time."
+msgstr ""
+
+#. translators: 1: start time, 2: end time, both 24-hour.
+#: backend/APIs/PublicBookingController.php:725
+msgid "On this day the daytime booking runs from %1$s to %2$s. For other times, please book an overnight stay."
+msgstr ""
+
 #. translators: %s: Adults, Children or Infants.
 #: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:162
 msgid "One fewer: %s"
@@ -2683,7 +2773,7 @@ msgstr ""
 msgid "One hour more"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:562
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:792
 msgid "One line per line, as it should appear on the invoice."
 msgstr ""
 
@@ -2701,6 +2791,10 @@ msgstr[1] ""
 
 #: frontend/site/Shortcodes.php:204
 msgid "Only show apartments that sleep at least this many guests."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:538
+msgid "Only the apartments ticked above offer this extra."
 msgstr ""
 
 #. translators: %s: booking reference.
@@ -2732,7 +2826,7 @@ msgstr ""
 msgid "Optimized"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:259
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:291
 msgid "Optional description of the extra item."
 msgstr ""
 
@@ -2744,7 +2838,7 @@ msgstr ""
 msgid "Optional heading rendered above the list."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:406
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:438
 msgid "Optional image for this extra item."
 msgstr ""
 
@@ -2777,12 +2871,12 @@ msgid "Overnight"
 msgstr ""
 
 #. translators: %s: the overnight window, e.g. 16:00 – 11:00.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:409
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:427
 msgid "Overnight stay (%s)"
 msgstr ""
 
 #. translators: %s: the overnight window.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:419
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:437
 msgid "Overnight stays run %s and always take priority over hourly bookings."
 msgstr ""
 
@@ -2812,7 +2906,7 @@ msgstr ""
 msgid "Paste the calendar link the portal gave you — it should start with https://"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:298 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:814
+#: backend/PostTypes/ApartmentMetaBox.php:325 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:814
 msgid "Paste the calendar link this portal gave you."
 msgstr ""
 
@@ -2824,9 +2918,17 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:315
+msgid "Pay later"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:290
+msgid "Pay now"
+msgstr ""
+
 #: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:212 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:298 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:73 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:124
 #: frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:69 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:128 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:187 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:47
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:389 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:71 frontend/site/app/src/components/BookingModal/BookingModal.jsx:389
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:585 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:71 frontend/site/app/src/components/BookingModal/BookingModal.jsx:402
 msgid "Payment"
 msgstr ""
 
@@ -2851,7 +2953,7 @@ msgstr ""
 msgid "Payment proof for %s"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:351
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:450
 msgid "Payment receipt"
 msgstr ""
 
@@ -2899,7 +3001,7 @@ msgstr ""
 msgid "Payment status changed"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:695
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:925
 msgid "Payment term (days)"
 msgstr ""
 
@@ -2932,11 +3034,11 @@ msgstr ""
 msgid "People"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:214 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:589
+#: backend/PostTypes/ApartmentMetaBox.php:241 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:589
 msgid "Per extra guest"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:207 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:577
+#: backend/PostTypes/ApartmentMetaBox.php:234 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:577
 msgid "Per extra hour"
 msgstr ""
 
@@ -2948,7 +3050,7 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:235
+#: backend/PostTypes/ApartmentMetaBox.php:262
 msgid "Photo gallery"
 msgstr ""
 
@@ -2984,35 +3086,35 @@ msgstr ""
 msgid "Placeholders"
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:160 backend/APIs/PublicBookingController.php:610
+#: backend/APIs/PublicBookingController.php:160 backend/APIs/PublicBookingController.php:648
 msgid "Please choose a date."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:616
+#: backend/APIs/PublicBookingController.php:654
 msgid "Please choose a start time."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:453
+#: backend/APIs/PublicBookingController.php:491
 msgid "Please choose both dates."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:624
+#: backend/APIs/PublicBookingController.php:662
 msgid "Please choose how long you need."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:251
+#: backend/APIs/PublicBookingController.php:276
 msgid "Please confirm your email address before booking."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:233 backend/Support/EmailVerification.php:81
+#: backend/APIs/PublicBookingController.php:258 backend/Support/EmailVerification.php:81
 msgid "Please give a valid email address."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:229
+#: backend/APIs/PublicBookingController.php:254
 msgid "Please give your first and last name."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:305
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:403
 msgid "Please put your name in the payment reference. We will send you the booking number by email."
 msgstr ""
 
@@ -3021,7 +3123,7 @@ msgstr ""
 msgid "Please quote %s as the payment reference so we can match your transfer to your booking."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:298
+#: backend/APIs/PublicBookingController.php:336
 msgid "Please upload a screenshot or receipt of your payment to complete the booking."
 msgstr ""
 
@@ -3053,7 +3155,7 @@ msgstr ""
 msgid "Previous photo"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:720 frontend/admin/app/src/pages/Extras/components/ExtraCard/ExtraCard.jsx:79 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:275 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:64
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:720 frontend/admin/app/src/pages/Extras/components/ExtraCard/ExtraCard.jsx:79 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:307 frontend/admin/app/src/pages/Extras/components/ExtrasTable/ExtrasTable.jsx:64
 msgid "Price"
 msgstr ""
 
@@ -3074,19 +3176,19 @@ msgstr ""
 msgid "Print Report"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:535
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:765
 msgid "Printed at the top of the invoice and shown in the header of every guest email."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:725
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:955
 msgid "Printed last, after a bold \"Hinweis:\" label."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:420
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:650
 msgid "Printed on the invoice in groups of four, so a guest can read it across without losing their place."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:632
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:862
 msgid "Privacy policy page"
 msgstr ""
 
@@ -3094,7 +3196,7 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:459
+#: backend/PostTypes/ApartmentMetaBox.php:618
 msgid "Publish this apartment’s calendar when I save"
 msgstr ""
 
@@ -3110,17 +3212,17 @@ msgstr ""
 msgid "Rates cannot be negative."
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:115
+#: backend/PostTypes/ApartmentMetaBox.php:142
 msgid "Reading…"
 msgstr ""
 
 #. translators: %s: a file size such as "420 KB".
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:374
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:479
 msgid "Ready"
 msgstr ""
 
 #. translators: %s: a file size such as "420 KB".
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:371
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:473
 msgid "Ready · %s"
 msgstr ""
 
@@ -3210,7 +3312,7 @@ msgstr ""
 msgid "Release this lock?"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/InvoiceLogoField.jsx:80 frontend/site/app/src/components/BookingModal/StepPayment.jsx:391
+#: frontend/admin/app/src/pages/Settings/InvoiceLogoField.jsx:80 frontend/site/app/src/components/BookingModal/StepPayment.jsx:496
 msgid "Remove"
 msgstr ""
 
@@ -3218,7 +3320,7 @@ msgstr ""
 msgid "Remove one"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:112 backend/PostTypes/ApartmentMetaBox.php:245 frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:103
+#: backend/PostTypes/ApartmentMetaBox.php:139 backend/PostTypes/ApartmentMetaBox.php:272 frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:103
 msgid "Remove photo"
 msgstr ""
 
@@ -3230,7 +3332,7 @@ msgstr ""
 msgid "Repeating events are not imported."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:384
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:489
 msgid "Replace"
 msgstr ""
 
@@ -3242,7 +3344,7 @@ msgstr ""
 msgid "Reports & Analytics"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:625
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:639
 msgid "Request booking"
 msgstr ""
 
@@ -3287,7 +3389,7 @@ msgstr ""
 msgid "Revenue per apartment across the window."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:390
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:403
 msgid "Review"
 msgstr ""
 
@@ -3299,7 +3401,7 @@ msgstr ""
 msgid "Room Performance"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:362
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:375
 msgid "Rules applied when a booking is taken."
 msgstr ""
 
@@ -3312,7 +3414,7 @@ msgid "Save"
 msgstr ""
 
 #. translators: %s: amount saved at this length.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:275
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:285
 msgid "Save %s at this length"
 msgstr ""
 
@@ -3320,7 +3422,7 @@ msgstr ""
 msgid "Save Apartment"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:482
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:592
 msgid "Save Extra"
 msgstr ""
 
@@ -3328,7 +3430,7 @@ msgstr ""
 msgid "Save booking"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:739
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:969
 msgid "Save settings"
 msgstr ""
 
@@ -3341,7 +3443,7 @@ msgid "Saved with the apartment, then read on the next scheduled sync."
 msgstr ""
 
 #: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:733 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:307 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:879 frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:196
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:479 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:738
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:589 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:968
 msgid "Saving…"
 msgstr ""
 
@@ -3419,7 +3521,7 @@ msgstr ""
 msgid "Send this booking back to pending? The dates become bookable again."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:624
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:638
 msgid "Sending…"
 msgstr ""
 
@@ -3459,11 +3561,11 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:208
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:221
 msgid "Settings saved."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:239
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:252
 msgid "Settings section"
 msgstr ""
 
@@ -3486,6 +3588,10 @@ msgstr ""
 
 #: frontend/admin/app/src/pages/Guide/GuidePage.jsx:130
 msgid "Shortcodes"
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:398
+msgid "Shortest booking (hours)"
 msgstr ""
 
 #. translators: %s: extra name.
@@ -3545,7 +3651,7 @@ msgstr ""
 msgid "Sort"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:422
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:454
 msgid "Sort Order"
 msgstr ""
 
@@ -3581,7 +3687,7 @@ msgid "Stays"
 msgstr ""
 
 #. translators: %d: maximum number of nights.
-#: backend/APIs/PublicBookingController.php:467
+#: backend/APIs/PublicBookingController.php:505
 msgid "Stays are limited to %d nights."
 msgstr ""
 
@@ -3602,7 +3708,7 @@ msgstr ""
 msgid "Stock"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:328
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:360
 msgid "Stock Quantity"
 msgstr ""
 
@@ -3622,7 +3728,7 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:365 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:835
+#: backend/PostTypes/ApartmentMetaBox.php:524 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:835
 msgid "Subscriptions (import)"
 msgstr ""
 
@@ -3634,7 +3740,7 @@ msgstr ""
 msgid "Swiss Franc (CHF)"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:378
+#: backend/PostTypes/ApartmentMetaBox.php:537
 msgid "Sync now"
 msgstr ""
 
@@ -3671,13 +3777,13 @@ msgstr ""
 msgid "Tap the Share button at the bottom of Safari."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:679
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:909
 msgid "Tax rate (%)"
 msgstr ""
 
 #. translators: %s: the company's telephone number.
 #. translators: %s: the guest's telephone number.
-#: backend/Repositories/SettingsRepository.php:319 backend/Support/Invoice.php:229
+#: backend/Repositories/SettingsRepository.php:362 backend/Support/Invoice.php:229
 msgid "Tel: %s"
 msgstr ""
 
@@ -3685,7 +3791,7 @@ msgstr ""
 msgid "Telefon:"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:573
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:803
 msgid "Telephone"
 msgstr ""
 
@@ -3705,7 +3811,7 @@ msgstr ""
 msgid "Template saved."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:622
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:852
 msgid "Terms & conditions page"
 msgstr ""
 
@@ -3721,7 +3827,7 @@ msgstr ""
 msgid "Text of the booking button on each card."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:361
+#: backend/APIs/PublicBookingController.php:399
 msgid "Thank you — your booking request has been received. We will confirm it by email with payment details."
 msgstr ""
 
@@ -3737,11 +3843,11 @@ msgstr ""
 msgid "That calendar is listed twice. Each subscription needs its own link."
 msgstr ""
 
-#: backend/Support/IcalImporter.php:528
+#: backend/Support/IcalImporter.php:580
 msgid "That calendar is too large to be a listing export."
 msgstr ""
 
-#: backend/APIs/IcalController.php:673 backend/Support/IcalImporter.php:365
+#: backend/APIs/IcalController.php:673 backend/Support/IcalImporter.php:417
 msgid "That calendar subscription no longer exists."
 msgstr ""
 
@@ -3753,6 +3859,10 @@ msgstr ""
 msgid "That code is not right. Please check it and try again."
 msgstr ""
 
+#: backend/APIs/PublicBookingController.php:714
+msgid "That day is no longer open for daytime bookings."
+msgstr ""
+
 #: backend/APIs/EmailTemplatesController.php:302
 msgid "That email template does not exist."
 msgstr ""
@@ -3761,11 +3871,11 @@ msgstr ""
 msgid "That extra no longer exists."
 msgstr ""
 
-#: frontend/admin/app/src/services/icalService.js:79 frontend/site/app/src/components/BookingModal/StepPayment.jsx:199
+#: frontend/admin/app/src/services/icalService.js:79 frontend/site/app/src/components/BookingModal/StepPayment.jsx:205
 msgid "That file could not be read."
 msgstr ""
 
-#: backend/Support/IcalImporter.php:74
+#: backend/Support/IcalImporter.php:75
 msgid "That file is not a calendar. Export the .ics file from the portal and upload it unchanged."
 msgstr ""
 
@@ -3774,11 +3884,11 @@ msgid "That file is too large to be a calendar export."
 msgstr ""
 
 #. translators: %s: the largest allowed file size.
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:175
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:181
 msgid "That file is too large. The most we can take is %s."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:163
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:169
 msgid "That file type is not supported. Use a JPG, PNG, WEBP or PDF."
 msgstr ""
 
@@ -3786,7 +3896,7 @@ msgstr ""
 msgid "That guest no longer exists."
 msgstr ""
 
-#: backend/Support/IcalImporter.php:480
+#: backend/Support/IcalImporter.php:532
 msgid "That is not a usable calendar address."
 msgstr ""
 
@@ -3806,7 +3916,7 @@ msgstr ""
 msgid "That should be a link starting with https:// or webcal://"
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:665
+#: backend/APIs/PublicBookingController.php:736
 msgid "That time has already passed."
 msgstr ""
 
@@ -3826,7 +3936,7 @@ msgstr ""
 msgid "The booking could not be deleted."
 msgstr ""
 
-#: backend/APIs/BookingsController.php:213 backend/APIs/PublicBookingController.php:333
+#: backend/APIs/BookingsController.php:213 backend/APIs/PublicBookingController.php:371
 msgid "The booking could not be saved."
 msgstr ""
 
@@ -3834,12 +3944,12 @@ msgstr ""
 msgid "The booking could not be updated."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:346
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:359
 msgid "The brand colour of the guest booking flow. Hover, pressed and tint shades are worked out from it, so one colour is all that is needed."
 msgstr ""
 
 #. translators: %s: the underlying network error.
-#: backend/Support/IcalImporter.php:502
+#: backend/Support/IcalImporter.php:554
 msgid "The calendar could not be reached: %s"
 msgstr ""
 
@@ -3853,6 +3963,11 @@ msgstr ""
 
 #: backend/APIs/ApartmentsController.php:486
 msgid "The colour must be a hex value such as #3858e9."
+msgstr ""
+
+#. translators: 1: start time, 2: end time, both 24-hour.
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:531
+msgid "The daytime booking on this day is already taken. An overnight stay may still be free."
 msgstr ""
 
 #: backend/Support/IcalParser.php:371
@@ -3871,7 +3986,7 @@ msgstr ""
 msgid "The extra needs a name."
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:256
+#: backend/PostTypes/ApartmentMetaBox.php:283
 msgid "The first photo is also used as the featured image."
 msgstr ""
 
@@ -3895,8 +4010,12 @@ msgstr ""
 msgid "The guest-facing apartment grid, with an optional date and guest search bar above it."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:611
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:841
 msgid "The invoice the guest receives, and the pages it and the booking flow link to."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:454
+msgid "The last time a booking may begin. A booking may still finish after it."
 msgstr ""
 
 #: backend/APIs/BlocksController.php:251
@@ -3911,11 +4030,15 @@ msgstr ""
 msgid "The logo, header and footer are added automatically from Settings."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:484
+#: backend/APIs/SettingsController.php:431
+msgid "The longest stay cannot be shorter than the shortest one."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:714
 msgid "The master switch. Off stops every guest email, whatever the individual templates say."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:663
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:893
 msgid "The next number to issue. Only ever raises the sequence — it cannot reuse a number already sent."
 msgstr ""
 
@@ -3923,12 +4046,12 @@ msgstr ""
 msgid "The one-time verification code"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:333
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:432
 msgid "The payment receipt you uploaded"
 msgstr ""
 
 #. translators: %d: HTTP status code.
-#: backend/Support/IcalImporter.php:516
+#: backend/Support/IcalImporter.php:568
 msgid "The portal answered with status %d. Check the calendar link is still valid."
 msgstr ""
 
@@ -3936,7 +4059,7 @@ msgstr ""
 msgid "The price cannot be negative."
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:146
+#: backend/PostTypes/ApartmentMetaBox.php:173
 msgid "The same value as the post title — changing it here renames the apartment everywhere."
 msgstr ""
 
@@ -3973,7 +4096,7 @@ msgstr ""
 msgid "This apartment already subscribes to that calendar."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:109 backend/APIs/PublicBookingController.php:154 backend/APIs/PublicBookingController.php:412
+#: backend/APIs/PublicBookingController.php:109 backend/APIs/PublicBookingController.php:154 backend/APIs/PublicBookingController.php:450
 msgid "This apartment cannot be booked."
 msgstr ""
 
@@ -3994,7 +4117,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: the largest party the apartment takes.
-#: backend/APIs/PublicBookingController.php:432
+#: backend/APIs/PublicBookingController.php:470
 msgid "This apartment takes at most %d guest."
 msgid_plural "This apartment takes at most %d guests."
 msgstr[0] ""
@@ -4009,7 +4132,7 @@ msgstr ""
 msgid "This is a different day to the one you picked. Choosing a time moves your booking to it."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:334 frontend/site/app/src/components/BookingModal/StepWhen.jsx:530
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:334 frontend/site/app/src/components/BookingModal/StepWhen.jsx:589
 msgid "Those dates are already taken. Please try another window."
 msgstr ""
 
@@ -4017,7 +4140,7 @@ msgstr ""
 msgid "Those dates go back on the board and can be booked again."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:261
+#: backend/APIs/PublicBookingController.php:286
 msgid "Those dates have just been taken. Please choose another window."
 msgstr ""
 
@@ -4093,7 +4216,7 @@ msgstr ""
 msgid "Total amount"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:343
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:375
 msgid "Total available quantity for this extra (e.g. 3 for 3 projectors)."
 msgstr ""
 
@@ -4102,7 +4225,11 @@ msgstr ""
 msgid "Transactions"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:239
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:293
+msgid "Transfer the amount and attach the receipt. Your dates are confirmed once it arrives."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:337
 msgid "Transfer the amount to"
 msgstr ""
 
@@ -4146,7 +4273,7 @@ msgstr ""
 msgid "Turnaround blocked after each stay."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:378
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:574
 msgid "Turnaround time is set per apartment. Open an apartment and choose its cleaning time — 30, 45 or 60 minutes — and that gap is kept free before and after every booking in it."
 msgstr ""
 
@@ -4203,7 +4330,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: the largest party the apartment takes.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:384
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:402
 msgid "Up to %d guest."
 msgid_plural "Up to %d guests."
 msgstr[0] ""
@@ -4217,11 +4344,11 @@ msgstr ""
 msgid "Updated invoice — {{reference}}"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:374
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:406
 msgid "Upload Image"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:315
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:414
 msgid "Upload Payment Screenshot / Receipt"
 msgstr ""
 
@@ -4229,15 +4356,15 @@ msgstr ""
 msgid "Upload image"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:411
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:516
 msgid "Upload payment proof"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:111 frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:39
+#: backend/PostTypes/ApartmentMetaBox.php:138 frontend/admin/app/src/components/ImageUpload/ImageUpload.jsx:39
 msgid "Use these photos"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:146
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:178
 msgid "Use this image"
 msgstr ""
 
@@ -4306,7 +4433,7 @@ msgid "Waiting on confirmation"
 msgstr ""
 
 #. translators: 1: previous start date, 2: previous end date.
-#: backend/Support/IcalImporter.php:246
+#: backend/Support/IcalImporter.php:298
 msgid "Was %1$s to %2$s."
 msgstr ""
 
@@ -4331,11 +4458,11 @@ msgstr ""
 msgid "Week"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:193 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:547
+#: backend/PostTypes/ApartmentMetaBox.php:220 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:547
 msgid "Weekday rate (Sun–Thu)"
 msgstr ""
 
-#: backend/PostTypes/ApartmentMetaBox.php:200 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:555
+#: backend/PostTypes/ApartmentMetaBox.php:227 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:555
 msgid "Weekend rate (Fri/Sat)"
 msgstr ""
 
@@ -4351,11 +4478,11 @@ msgstr ""
 msgid "What this apartment adds beyond the base rate. Both were once one figure for the whole site, which made a studio and a villa charge the same for a fifth guest."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:385
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:398
 msgid "When"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:311
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:343
 msgid "When enabled, you can set a limited quantity. When disabled, unlimited quantity is available."
 msgstr ""
 
@@ -4363,12 +4490,20 @@ msgstr ""
 msgid "When stays start, busiest first."
 msgstr ""
 
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:273
+msgid "When to pay"
+msgstr ""
+
 #: frontend/admin/app/src/pages/Dashboard/components/ApartmentsStatus/ApartmentsStatus.jsx:92
 msgid "Where each one stands right now."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:596
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:826
 msgid "Where notifications for you are sent. Leave empty to use the WordPress admin address."
+msgstr ""
+
+#: backend/PostTypes/ApartmentMetaBox.php:391
+msgid "Which extras guests can add to a booking of this apartment."
 msgstr ""
 
 #: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:135
@@ -4383,7 +4518,7 @@ msgstr ""
 msgid "WordPress could not send the email. Check the template is switched on and that the site can send mail."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:683
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:913
 msgid "Worked back out of the price, which is what the guest pays. 0 shows no tax line."
 msgstr ""
 
@@ -4408,7 +4543,7 @@ msgstr ""
 msgid "Your booking is confirmed — {{reference}}"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:478
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:595
 msgid "Your booking will be verified once your payment proof is confirmed."
 msgstr ""
 
@@ -4437,6 +4572,10 @@ msgstr ""
 msgid "Zusätzliche Person — %1$s je Person (%2$d im Preis enthalten)"
 msgstr ""
 
+#: backend/PostTypes/ApartmentMetaBox.php:425
+msgid "currently offered by every apartment"
+msgstr ""
+
 #: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:346
 msgid "e.g. Studio Rheinblick"
 msgstr ""
@@ -4456,11 +4595,11 @@ msgid "no SMTP plugin"
 msgstr ""
 
 #. translators: %s: the reason the last read failed.
-#: backend/APIs/IcalController.php:544 backend/PostTypes/ApartmentMetaBox.php:536 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:945
+#: backend/APIs/IcalController.php:544 backend/PostTypes/ApartmentMetaBox.php:695 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:945
 msgid "no reason given"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:321
+#: frontend/site/app/src/components/BookingModal/StepPayment.jsx:420
 msgid "required"
 msgstr ""
 
@@ -4471,7 +4610,7 @@ msgstr ""
 
 #. translators: %s: end time.
 #. translators: %s: when the booking ends, with the day if it is a later one.
-#: frontend/site/app/src/components/BookingModal/Alternatives.jsx:39 frontend/site/app/src/components/BookingModal/StepWhen.jsx:497
+#: frontend/site/app/src/components/BookingModal/Alternatives.jsx:39 frontend/site/app/src/components/BookingModal/StepWhen.jsx:556
 msgid "until %s"
 msgstr ""
 

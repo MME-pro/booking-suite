@@ -754,14 +754,22 @@ final class BookingsController {
 
 		$guests  = max( 1, absint( $request->get_param( 'guests' ) ) );
 		$hours   = (float) $request->get_param( 'hours' );
-		$hours   = $hours > 0 ? $hours : (float) SettingsRepository::number( SettingsRepository::BASE_HOURS );
+		/*
+		 * The same opening length the guest flow uses. BASE_HOURS is a pricing
+		 * figure — how long the base rate covers — and using it here only ever
+		 * worked while it happened to match the shortest bookable stay. The
+		 * *choices* below still start at one hour: the minimum is a rule for
+		 * guests, not for the owner.
+		 */
+		$hours   = $hours > 0 ? $hours : (float) SettingsRepository::number( SettingsRepository::MIN_HOURS );
 		$exclude = absint( $request->get_param( 'excludeId' ) );
 
 		return new WP_REST_Response(
 			array(
 				'date'      => $date,
 				'hours'     => $hours,
-				'durations' => SlotGenerator::duration_options( $apartment, $date, $guests ),
+				// Floor of one hour: the guest minimum is not the owner's.
+				'durations' => SlotGenerator::duration_options( $apartment, $date, $guests, 1 ),
 				'slots'     => SlotGenerator::for_date(
 					$apartment,
 					$date,
