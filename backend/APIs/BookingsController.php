@@ -397,7 +397,7 @@ final class BookingsController {
 					'method'     => 'transfer',
 					'status'     => 'paid',
 					'amount'     => $due,
-					'paid_at'    => current_time( 'mysql', true ),
+					'paid_at'    => current_time( 'mysql' ),
 					'notes'      => __( 'Recorded when the booking was marked paid.', 'booking-suite' ),
 				)
 			);
@@ -545,7 +545,7 @@ final class BookingsController {
 					'method'     => 'transfer',
 					'status'     => 'paid',
 					'amount'     => $was,
-					'paid_at'    => current_time( 'mysql', true ),
+					'paid_at'    => current_time( 'mysql' ),
 					'notes'      => __( 'Recorded from the booking, which was already marked paid.', 'booking-suite' ),
 				)
 			);

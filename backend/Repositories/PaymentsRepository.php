@@ -27,7 +27,7 @@ final class PaymentsRepository {
 	public static function create( array $data ): ?int {
 		global $wpdb;
 
-		$now = current_time( 'mysql', true );
+		$now = current_time( 'mysql' );
 
 		$inserted = $wpdb->insert(
 			PaymentsTable::table(),
@@ -162,11 +162,11 @@ final class PaymentsRepository {
 
 		$data = array(
 			'status'     => $status,
-			'updated_at' => current_time( 'mysql', true ),
+			'updated_at' => current_time( 'mysql' ),
 		);
 
 		if ( 'paid' === $status && '' === $existing['paidAt'] ) {
-			$data['paid_at'] = current_time( 'mysql', true );
+			$data['paid_at'] = current_time( 'mysql' );
 		}
 
 		$wpdb->update( PaymentsTable::table(), $data, array( 'id' => $id ) );
@@ -245,7 +245,7 @@ final class PaymentsRepository {
 			PaymentsTable::table(),
 			array(
 				'amount'     => round( $amount, 2 ),
-				'updated_at' => current_time( 'mysql', true ),
+				'updated_at' => current_time( 'mysql' ),
 			),
 			array( 'id' => $id ),
 			array( '%f', '%s' ),
@@ -332,7 +332,7 @@ final class PaymentsRepository {
 			$table,
 			array(
 				'invoice_no' => $number,
-				'updated_at' => current_time( 'mysql', true ),
+				'updated_at' => current_time( 'mysql' ),
 			),
 			array( 'id' => $id )
 		);

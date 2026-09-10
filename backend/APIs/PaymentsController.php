@@ -234,7 +234,7 @@ final class PaymentsController {
 			BookingsTable::table(),
 			array(
 				'payment_status' => $next,
-				'updated_at'     => current_time( 'mysql', true ),
+				'updated_at'     => current_time( 'mysql' ),
 			),
 			array( 'id' => $booking_id )
 		);

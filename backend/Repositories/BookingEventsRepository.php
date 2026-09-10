@@ -95,7 +95,7 @@ final class BookingEventsRepository {
 				'actor_name' => $actor['name'],
 				'changes'    => $changes ? (string) wp_json_encode( $changes ) : null,
 				'note'       => isset( $args['note'] ) ? (string) $args['note'] : null,
-				'created_at' => current_time( 'mysql', true ),
+				'created_at' => current_time( 'mysql' ),
 			),
 			array( '%d', '%d', '%s', '%d', '%s', '%s', '%s', '%s' )
 		);

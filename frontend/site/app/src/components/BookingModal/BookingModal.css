@@ -2747,3 +2747,317 @@
 	border-color: var(--bks-site-success, #16a34a) !important;
 }
 
+
+/* ── The payment page ──────────────────────────────────────────────────── */
+
+/*
+ * Reached the moment the booking exists, so it carries the details a guest
+ * needs in front of a banking app: readable at arm's length, and with the two
+ * fields that get mistyped — the IBAN and the reference — set apart from the
+ * rest.
+ */
+.bks-pay {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.bks-pay__title {
+	margin: 0;
+	font-size: 18px;
+	line-height: 1.35;
+	font-weight: 700;
+	color: var(--bks-ink, #0f172a);
+}
+
+.bks-pay__reference {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 8px;
+	margin: 0;
+	font-size: 14px;
+	color: var(--bks-muted, #64748b);
+}
+
+.bks-pay__reference strong {
+	font-size: 16px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	color: var(--bks-ink, #0f172a);
+}
+
+.bks-pay__details {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	margin: 0;
+	border: 1px solid var(--bks-line, #e2e8f0);
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.bks-pay__line {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 10px 14px;
+	border-bottom: 1px solid var(--bks-line, #e2e8f0);
+}
+
+.bks-pay__line:last-child {
+	border-bottom: 0;
+}
+
+/* The purpose and the amount: the two a guest must not get wrong. */
+.bks-pay__line--strong {
+	background: var(--bks-tint, #f8fafc);
+}
+
+.bks-pay__label {
+	margin: 0;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--bks-muted, #64748b);
+}
+
+.bks-pay__value {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	font-size: 15px;
+	color: var(--bks-ink, #0f172a);
+}
+
+.bks-pay__line--strong .bks-pay__value {
+	font-weight: 700;
+}
+
+.bks-pay__text {
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	/* An IBAN is long; let it wrap rather than push the row wide. */
+	word-break: break-word;
+}
+
+.bks-pay__copy {
+	flex: none;
+	padding: 4px 10px;
+	border: 1px solid var(--bks-line, #e2e8f0);
+	border-radius: 999px;
+	background: #fff;
+	font-size: 12px;
+	color: var(--bks-muted, #64748b);
+	cursor: pointer;
+}
+
+.bks-pay__copy:hover {
+	border-color: var(--bks-brand, #2563eb);
+	color: var(--bks-brand, #2563eb);
+}
+
+.bks-giro {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	margin: 0;
+}
+
+/*
+ * White behind the square whatever the page does, so a scanner gets the
+ * contrast it expects.
+ */
+.bks-giro__code {
+	width: 160px;
+	padding: 10px;
+	border: 1px solid var(--bks-line, #e2e8f0);
+	border-radius: 12px;
+	background: #fff;
+}
+
+.bks-giro__code svg {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.bks-giro__caption {
+	font-size: 12px;
+	text-align: center;
+	color: var(--bks-muted, #64748b);
+}
+
+.bks-pay__note {
+	margin: 0;
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--bks-ink, #0f172a);
+}
+
+.bks-pay__declare {
+	align-self: flex-start;
+}
+
+/*
+ * Quieter than the button above it on purpose: it says the button changes
+ * nothing legally, which is a clarification rather than a warning.
+ */
+.bks-pay__smallprint {
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.5;
+	color: var(--bks-muted, #64748b);
+}
+
+/* ── Checkout: the discount line and the notices ───────────────────────── */
+
+.bks-review__line {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	margin: 0;
+	font-size: 14px;
+	color: var(--bks-muted, #64748b);
+}
+
+.bks-review__line--discount {
+	color: var(--bks-success, #15803d);
+}
+
+.bks-review__legal {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 16px;
+	padding-top: 16px;
+	border-top: 1px solid var(--bks-line, #e2e8f0);
+}
+
+.bks-review__consent {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--bks-ink, #0f172a);
+	cursor: pointer;
+}
+
+.bks-review__consent input {
+	margin-top: 3px;
+	flex: none;
+}
+
+.bks-review__notice {
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.55;
+	color: var(--bks-muted, #64748b);
+}
+
+/* ── Thank you: the details, once more ─────────────────────────────────── */
+
+.bks-done__bank {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	width: 100%;
+	margin: 16px 0 0;
+	padding: 14px;
+	border: 1px solid var(--bks-line, #e2e8f0);
+	border-radius: 12px;
+	text-align: left;
+}
+
+.bks-done__bank > div {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.bks-done__bank dt {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--bks-muted, #64748b);
+}
+
+.bks-done__bank dd {
+	margin: 0;
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 14px;
+	word-break: break-word;
+	color: var(--bks-ink, #0f172a);
+}
+
+/* ── The payment page, standing alone ──────────────────────────────────── */
+
+/*
+ * Opened from a link in an email, on a device that has never seen this site.
+ * It carries its own frame rather than borrowing the theme's, so it looks the
+ * same wherever it is opened and cannot be broken by a template it does not
+ * control.
+ */
+.bks-paypage {
+	min-height: 100vh;
+	padding: 24px 16px 48px;
+	background: var(--bks-canvas, #f4f5f7);
+}
+
+.bks-paypage__header {
+	max-width: 560px;
+	margin: 0 auto 20px;
+	text-align: center;
+}
+
+.bks-paypage__logo {
+	display: inline-block;
+	max-width: 180px;
+	height: auto;
+}
+
+.bks-paypage__name {
+	font-size: 18px;
+	font-weight: 700;
+	text-decoration: none;
+	color: var(--bks-ink, #0f172a);
+}
+
+.bks-paypage__body {
+	max-width: 560px;
+	margin: 0 auto;
+}
+
+.bks-paypage__card {
+	padding: 24px;
+	border: 1px solid var(--bks-line, #e2e8f0);
+	border-radius: 16px;
+	background: #fff;
+	box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.bks-paypage__hint {
+	max-width: 560px;
+	margin: 0 auto;
+	padding: 32px;
+	text-align: center;
+	color: var(--bks-muted, #64748b);
+}
+
+/*
+ * Sits above the details rather than replacing them: someone who has already
+ * told us the money is on its way is usually back to check the IBAN.
+ */
+.bks-paypage__declared {
+	margin: 0 0 18px;
+	padding: 12px 14px;
+	border-radius: 10px;
+	background: var(--bks-tint, #f0fdf4);
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--bks-success, #15803d);
+}

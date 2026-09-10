@@ -12,6 +12,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\Repositories;
 
+use BookingSuite\Backend\Schemas\BookingsTable;
 use BookingSuite\Backend\Schemas\SettingsTable;
 
 defined( 'ABSPATH' ) || exit;
@@ -167,7 +168,43 @@ final class SettingsRepository {
 	 * certainty for bookings that would otherwise be abandoned at the transfer
 	 * screen — so it is the owner's call, not a constant.
 	 */
+	/**
+	 * Retired. There is one way to pay — advance bank transfer — so there is
+	 * no longer a choice for a guest to make. Kept as a constant only so an
+	 * installation carrying the old row can still read it without a notice.
+	 */
 	public const ALLOW_PAY_LATER = 'allow_pay_later';
+
+	/**
+	 * How long a booking's dates are held while its transfer is awaited.
+	 *
+	 * The guest is told this number on the checkout and again on the payment
+	 * page, and it is what payment_deadline is worked out from — so it is one
+	 * setting rather than a constant and a sentence that can disagree with it.
+	 */
+	public const RESERVATION_HOURS = 'reservation_hours';
+
+	/**
+	 * VAT on a stay that crosses midnight.
+	 *
+	 * Accommodation is taxed differently from everything else, which is the
+	 * whole reason a booking carries a type. Two rates rather than one, chosen
+	 * by the booking's own type when an invoice is drawn up.
+	 */
+	public const TAX_RATE_OVERNIGHT = 'tax_rate_overnight';
+
+	/** VAT on a stay that begins and ends on the same day. */
+	public const TAX_RATE_HOURLY = 'tax_rate_hourly';
+
+	/**
+	 * A discount for paying in advance, as a percentage.
+	 *
+	 * Zero by default, and at zero nothing about it appears anywhere — no line
+	 * on the checkout, no line on the invoice. Advance transfer is the only way
+	 * to pay here, so a discount for it is a decision about pricing rather than
+	 * about payment, and the owner may simply not want one.
+	 */
+	public const PREPAY_DISCOUNT = 'prepay_discount';
 
 	/** Linked from the booking flow. */
 	public const TERMS_URL = 'terms_url';
@@ -235,6 +272,11 @@ final class SettingsRepository {
 		self::BANK_DETAILS     => '',
 		self::EMAIL_NOTIFICATIONS => '1',
 		self::ALLOW_PAY_LATER  => '1',
+		self::RESERVATION_HOURS   => '24',
+		// Germany: 7% on accommodation, 19% on everything else.
+		self::TAX_RATE_OVERNIGHT  => '7',
+		self::TAX_RATE_HOURLY     => '19',
+		self::PREPAY_DISCOUNT     => '0',
 		self::DAILY_SUMMARY_ENABLED    => '1',
 		self::DAILY_SUMMARY_TIME       => '00:00',
 		self::DAILY_SUMMARY_RECIPIENTS => '',
@@ -506,6 +548,50 @@ final class SettingsRepository {
 	}
 
 	/**
+	 * How many hours a booking's dates are held for.
+	 *
+	 * Floored at one: a zero-hour hold would expire the booking in the same
+	 * sweep that created it, and the guest would lose their dates while still
+	 * reading the payment page.
+	 */
+	public static function reservation_hours(): int {
+		return max( 1, (int) self::number( self::RESERVATION_HOURS ) );
+	}
+
+	/**
+	 * The VAT fraction for one kind of booking: 19 becomes 0.19.
+	 *
+	 * Falls back to the single older TAX_RATE when the newer pair has never
+	 * been set, so an installation that was configured before this release
+	 * keeps charging what it was charging.
+	 *
+	 * @param string $type BookingsTable::TYPE_OVERNIGHT or TYPE_HOURLY.
+	 */
+	public static function tax_fraction_for( string $type ): float {
+		$key = BookingsTable::TYPE_HOURLY === $type
+			? self::TAX_RATE_HOURLY
+			: self::TAX_RATE_OVERNIGHT;
+
+		$rate = self::get( $key );
+
+		if ( '' === trim( (string) $rate ) ) {
+			return self::tax_fraction();
+		}
+
+		return max( 0.0, min( 100.0, (float) $rate ) ) / 100;
+	}
+
+	/**
+	 * The prepayment discount as a fraction, or 0.0 when there is none.
+	 *
+	 * Capped below 100: a full discount would produce a nothing-owed booking
+	 * behind a checkout that says money is owed.
+	 */
+	public static function prepay_fraction(): float {
+		return max( 0.0, min( 99.0, (float) self::get( self::PREPAY_DISCOUNT ) ) ) / 100;
+	}
+
+	/**
 	 * The symbol to print after an amount, or the code when there is none.
 	 *
 	 * Kept beside currency() rather than inside whichever class happens to be
@@ -578,7 +664,7 @@ final class SettingsRepository {
 		global $wpdb;
 
 		$table = SettingsTable::table();
-		$now   = current_time( 'mysql', true );
+		$now   = current_time( 'mysql' );
 
 		$wpdb->query(
 			$wpdb->prepare(

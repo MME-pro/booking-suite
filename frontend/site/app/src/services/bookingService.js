@@ -59,6 +59,32 @@ export const bookingService = {
 		request( 'public/bookings', { method: 'POST', body: payload, signal } ),
 
 	/**
+	 * Tell the owner the transfer is on its way.
+	 *
+	 * The token is the whole credential — see PaymentLink on the server — so
+	 * this works from a link in an email, with no session and no login.
+	 *
+	 * @param {string}      token    The booking's payment token.
+	 * @param {AbortSignal} [signal]
+	 * @return {Promise<Object>} The payment payload, as it now stands.
+	 */
+	declareTransfer: ( token, signal ) =>
+		request( `public/payment/${ token }/declared`, {
+			method: 'POST',
+			signal,
+		} ),
+
+	/**
+	 * The payment page for a booking, opened from its link.
+	 *
+	 * @param {string}      token    The booking's payment token.
+	 * @param {AbortSignal} [signal]
+	 * @return {Promise<Object>} The payment payload.
+	 */
+	payment: ( token, signal ) =>
+		request( `public/payment/${ token }`, { signal } ),
+
+	/**
 	 * Post a one-time code to an address the guest has just typed.
 	 *
 	 * @param {string}      email    Where to send it.

@@ -166,20 +166,22 @@ final class EmailTemplatesRepository {
 					'booking-suite'
 				),
 				'enabled'     => true,
-				'subject'     => __( 'We have your request — {{reference}}', 'booking-suite' ),
+				'subject'     => __( 'Your booking {{reference}} — please transfer {{total}}', 'booking-suite' ),
 				'body'        => __(
-					"<h1>We have your request</h1>\n"
+					"<h1>Your booking is placed</h1>\n"
 					. "<p>Hello {{guest_first_name}},</p>\n"
-					. "<p>Thank you for your request. We have it, and we will confirm it shortly.</p>\n"
+					. "<p>Thank you — your booking is confirmed and binding. All that is left is the transfer.</p>\n"
 					. "<table>\n"
-					. "<tr><th>Reference</th><td>{{reference}}</td></tr>\n"
+					. "<tr><th>Booking number</th><td>{{reference}}</td></tr>\n"
 					. "<tr><th>Apartment</th><td>{{apartment}}</td></tr>\n"
 					. "<tr><th>Arrival</th><td>{{check_in}}</td></tr>\n"
 					. "<tr><th>Departure</th><td>{{check_out}}</td></tr>\n"
 					. "<tr><th>Guests</th><td>{{guests}}</td></tr>\n"
-					. "<tr><th>Total</th><td>{{total}}</td></tr>\n"
+					. "<tr><th>Amount</th><td>{{total}}</td></tr>\n"
 					. "</table>\n"
-					. "<p>Nothing is due yet — we will send payment details once the booking is confirmed.</p>\n"
+					. "<p>Open the page below to see the account details and a QR code your banking app can read. You can come back to it at any time.</p>\n"
+					. "{{payment_link}}\n"
+					. "{{bank_details}}\n"
 					. '<p>{{site_name}}</p>',
 					'booking-suite'
 				),
@@ -558,7 +560,7 @@ final class EmailTemplatesRepository {
 		global $wpdb;
 
 		$table = SettingsTable::table();
-		$now   = current_time( 'mysql', true );
+		$now   = current_time( 'mysql' );
 
 		$wpdb->query(
 			$wpdb->prepare(

@@ -30,7 +30,8 @@ final class BookingsRepository {
 	 * holds nothing, so the slot stays open to other guests. Approving one is
 	 * what takes the dates off the board.
 	 */
-	private const BLOCKING_STATUSES = array( 'reserved', 'confirmed' );
+	/** Defined on the table, so nothing here can drift from the exporter. */
+	private const BLOCKING_STATUSES = BookingsTable::BLOCKING_STATUSES;
 
 	/**
 	 * Cleaning turnaround per apartment, in minutes, for this request.
@@ -290,7 +291,7 @@ final class BookingsRepository {
 	public static function create( array $data ): ?int {
 		global $wpdb;
 
-		$now = current_time( 'mysql', true );
+		$now = current_time( 'mysql' );
 
 		$inserted = $wpdb->insert(
 			BookingsTable::table(),
@@ -298,7 +299,15 @@ final class BookingsRepository {
 				'reference'      => self::unique_reference(),
 				'room_id'        => (int) $data['room_id'],
 				'customer_id'    => isset( $data['customer_id'] ) ? (int) $data['customer_id'] : null,
-				'status'         => (string) ( $data['status'] ?? 'pending' ),
+				'status'         => (string) ( $data['status'] ?? 'awaiting_transfer' ),
+				/*
+				 * Worked out from the dates when it is not given, so a booking
+				 * made anywhere — the admin form included — carries a type. The
+				 * column's own default cannot do this: it is a constant, and
+				 * would file every hourly stay as accommodation.
+				 */
+				'booking_type'   => (string) ( $data['booking_type'] ?? BookingsTable::type_for( (string) $data['starts_at'], (string) $data['ends_at'] ) ),
+				'payment_deadline' => $data['payment_deadline'] ?? null,
 				'payment_status' => (string) ( $data['payment_status'] ?? 'unpaid' ),
 				'guests'         => (int) $data['guests'],
 				'starts_at'      => (string) $data['starts_at'],
@@ -310,7 +319,7 @@ final class BookingsRepository {
 				'created_at'     => $now,
 				'updated_at'     => $now,
 			),
-			array( '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%f', '%s', '%s', '%s', '%s', '%s' )
+			array( '%s', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%f', '%s', '%s', '%s', '%s', '%s' )
 		);
 
 		if ( false === $inserted ) {
@@ -337,6 +346,14 @@ final class BookingsRepository {
 	 */
 	private const EDITABLE = array(
 		'room_id'        => '%d',
+		/*
+		 * Editable, but not casually — BookingsController makes the caller
+		 * confirm, because changing it changes the VAT on the invoice and so
+		 * what the guest is held to have owed.
+		 */
+		'booking_type'   => '%s',
+		'payment_deadline'      => '%s',
+		'transfer_confirmed_at' => '%s',
 		'customer_id'    => '%d',
 		'status'         => '%s',
 		'payment_status' => '%s',
@@ -385,7 +402,7 @@ final class BookingsRepository {
 		 */
 		$before = self::raw( $id );
 
-		$fields['updated_at'] = current_time( 'mysql', true );
+		$fields['updated_at'] = current_time( 'mysql' );
 		$formats[]            = '%s';
 
 		$written = false !== $wpdb->update(
@@ -481,7 +498,7 @@ final class BookingsRepository {
 	public static function attach_extras( int $booking_id, array $extras ): void {
 		global $wpdb;
 
-		$now = current_time( 'mysql', true );
+		$now = current_time( 'mysql' );
 
 		foreach ( $extras as $extra ) {
 			$wpdb->insert(
@@ -658,6 +675,14 @@ final class BookingsRepository {
 				(string) $row['starts_at'],
 				(string) $row['ends_at']
 			) ? 'overnight' : 'hourly',
+			/*
+			 * Written when the booking was made and never recomputed: it
+			 * decides the VAT, and a rate a guest was charged under must not
+			 * move because the rules or the dates changed afterwards.
+			 */
+			'bookingType'   => (string) ( $row['booking_type'] ?? '' ),
+			'paymentDeadline'     => $row['payment_deadline'] ?? null,
+			'transferConfirmedAt' => $row['transfer_confirmed_at'] ?? null,
 			'total'         => (float) $row['total_amount'],
 			'currency'      => (string) $row['currency'],
 			'source'        => (string) $row['source'],

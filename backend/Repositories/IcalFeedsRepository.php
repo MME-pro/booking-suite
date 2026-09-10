@@ -141,7 +141,7 @@ final class IcalFeedsRepository {
 	public static function create( array $values ): ?int {
 		global $wpdb;
 
-		$now = current_time( 'mysql', true );
+		$now = current_time( 'mysql' );
 
 		$inserted = $wpdb->insert(
 			IcalFeedsTable::table(),
@@ -193,7 +193,7 @@ final class IcalFeedsRepository {
 			return true;
 		}
 
-		$data['updated_at'] = current_time( 'mysql', true );
+		$data['updated_at'] = current_time( 'mysql' );
 
 		return false !== $wpdb->update( IcalFeedsTable::table(), $data, array( 'id' => $id ) );
 	}
@@ -214,10 +214,10 @@ final class IcalFeedsRepository {
 		global $wpdb;
 
 		$data = array(
-			'last_sync_at' => current_time( 'mysql', true ),
+			'last_sync_at' => current_time( 'mysql' ),
 			'last_status'  => $status,
 			'last_message' => substr( $message, 0, 255 ),
-			'updated_at'   => current_time( 'mysql', true ),
+			'updated_at'   => current_time( 'mysql' ),
 		);
 
 		if ( null !== $event_count ) {

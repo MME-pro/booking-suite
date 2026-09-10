@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace BookingSuite\Backend\Schemas;
 
 use BookingSuite\Backend\Db;
+use BookingSuite\Backend\Pricing\RateCalculator;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -20,11 +21,20 @@ final class BookingsTable {
 	/**
 	 * Lifecycle of the reservation itself.
 	 *
-	 * pending   — the request has arrived, nothing decided; holds no dates
-	 * reserved  — held for the guest while payment is awaited
-	 * confirmed — approved and going ahead
-	 * completed — the stay has happened
-	 * cancelled — it will not happen, and holds no dates
+	 * awaiting_transfer — the contract is concluded and the money is owed; the
+	 *                     dates are held until payment_deadline passes
+	 * transfer_declared — the guest has said they sent it. A note to the owner
+	 *                     and nothing more: no money has been seen, and this
+	 *                     status has no legal weight of its own
+	 * confirmed         — the owner has seen the money arrive in the bank and
+	 *                     said so by hand. This is the only thing that sends
+	 *                     the final confirmation
+	 * completed         — the stay has happened
+	 * cancelled         — it will not happen, and holds no dates
+	 *
+	 * `pending` and `reserved` are the old names for the first two and are kept
+	 * so rows written before this release still read: nothing rewrites history,
+	 * and BLOCKING_STATUSES covers both spellings.
 	 *
 	 * `cancelled` is deliberately absent from BLOCKING_STATUSES: a cancelled
 	 * booking frees its dates the moment it is cancelled. Before it existed the
@@ -32,8 +42,81 @@ final class BookingsTable {
 	 * record along with the reservation — see BookingLifecycle, which parks
 	 * expired requests here instead.
 	 */
-	public const STATUSES = array( 'pending', 'reserved', 'confirmed', 'completed', 'cancelled' );
+	public const STATUSES = array(
+		'awaiting_transfer',
+		'transfer_declared',
+		'confirmed',
+		'completed',
+		'cancelled',
+		// Retired, still readable.
+		'pending',
+		'reserved',
+	);
 
+	/**
+	 * The two kinds of booking, decided by the dates and never by a person.
+	 *
+	 * The distinction is a tax one: a stay that crosses midnight is
+	 * accommodation and a stay that does not is something else, and the two
+	 * carry different VAT. That is why it is written into the row when the
+	 * booking is made rather than worked out again whenever an invoice is
+	 * printed — the rate a guest was charged under must not move because the
+	 * rules changed afterwards.
+	 */
+	public const TYPE_OVERNIGHT = 'overnight';
+
+	public const TYPE_HOURLY = 'hourly';
+
+	public const TYPES = array( self::TYPE_OVERNIGHT, self::TYPE_HOURLY );
+
+	/**
+	 * Which kind a stay is, from its two ends.
+	 *
+	 * "Does it cross into the next day" is the obvious reading and the wrong
+	 * one. An hourly visit from 22:00 to 02:00 crosses midnight and is not
+	 * accommodation — the guest was charged an hourly rate for it, and taxing
+	 * as a hotel night something that was priced as four hours is incoherent
+	 * on the same invoice.
+	 *
+	 * So the question asked is the pricing engine's: does this stay occupy the
+	 * overnight window, check-in time to check-out time on the following day?
+	 * That is the same test that decided whether the guest paid a night rate,
+	 * which keeps the rate and the tax telling one story.
+	 *
+	 * @param string $starts_at 'Y-m-d H:i:s'.
+	 * @param string $ends_at   'Y-m-d H:i:s'.
+	 */
+	public static function type_for( string $starts_at, string $ends_at ): string {
+		return RateCalculator::is_overnight_window( $starts_at, $ends_at )
+			? self::TYPE_OVERNIGHT
+			: self::TYPE_HOURLY;
+	}
+
+	/**
+	 * The statuses that take a window off the board.
+	 *
+	 * A booking is binding the moment the guest presses the order button, so
+	 * the dates go the moment it exists — waiting for the money to arrive would
+	 * leave the same night on sale to somebody else for a day.
+	 *
+	 * Legacy `reserved` is here for the same reason it always was. Legacy
+	 * `pending` is not: it never held dates, and adding it now would take
+	 * windows off the board retrospectively for requests nobody ever answered.
+	 */
+	public const BLOCKING_STATUSES = array(
+		'awaiting_transfer',
+		'transfer_declared',
+		'confirmed',
+		'reserved',
+	);
+
+	/**
+	 * The statuses a booking can be in while it is still owed money.
+	 *
+	 * These are the ones the deadline sweep looks at, and the ones the owner
+	 * is chasing.
+	 */
+	public const AWAITING_STATUSES = array( 'awaiting_transfer', 'transfer_declared' );
 	/** Settlement state, tracked separately from the booking status. */
 	public const PAYMENT_STATUSES = array( 'unpaid', 'partial', 'paid', 'refunded' );
 
@@ -69,6 +152,9 @@ final class BookingsTable {
 			total_amount decimal(10,2) NOT NULL default 0.00,
 			currency char(3) NOT NULL default 'EUR',
 			source varchar(32) NOT NULL default 'website',
+			booking_type varchar(20) NOT NULL default 'overnight',
+			payment_deadline datetime NULL default NULL,
+			transfer_confirmed_at datetime NULL default NULL,
 			notes longtext NULL,
 			created_at datetime NOT NULL default '0000-00-00 00:00:00',
 			updated_at datetime NOT NULL default '0000-00-00 00:00:00',
@@ -77,6 +163,7 @@ final class BookingsTable {
 			KEY room_window (room_id,starts_at,ends_at),
 			KEY customer_id (customer_id),
 			KEY status (status),
+			KEY payment_deadline (payment_deadline),
 			KEY payment_status (payment_status)
 		) $collate;";
 	}

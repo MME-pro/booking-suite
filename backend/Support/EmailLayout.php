@@ -146,6 +146,15 @@ final class EmailLayout {
 			'<ul>' => '<ul style="margin:0 0 16px 0;padding-left:20px;">',
 			'<ol>' => '<ol style="margin:0 0 16px 0;padding-left:20px;">',
 			'<li>' => '<li style="margin:0 0 6px 0;">',
+			/*
+			 * Longest match wins in strtr, so this is chosen over the plain
+			 * '<a ' rule below rather than fighting it. It has to be: two
+			 * style attributes on one tag is not a merge — the first one
+			 * wins and the second is dropped, which is how the payment
+			 * button came out looking like an ordinary link.
+			 */
+			'<a class="bks-button" ' => '<a style="display:inline-block;padding:12px 22px;border-radius:8px;'
+				. 'background-color:' . $accent . ';color:#ffffff;font-weight:700;text-decoration:none;" ',
 			'<a '  => '<a style="color:' . $accent . ';text-decoration:underline;" ',
 			'<hr>' => '<hr style="border:0;border-top:1px solid ' . self::LINE . ';margin:24px 0;">',
 			'<blockquote>' => '<blockquote style="margin:0 0 16px 0;padding:12px 16px;border-left:3px solid ' . $accent . ';background-color:' . self::PAPER . ';">',

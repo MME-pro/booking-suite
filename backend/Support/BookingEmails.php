@@ -23,6 +23,7 @@ use BookingSuite\Backend\Repositories\EmailTemplatesRepository;
 use BookingSuite\Backend\Repositories\PaymentsRepository;
 use BookingSuite\Backend\Repositories\SettingsRepository;
 use BookingSuite\Backend\Schemas\BookingEventsTable;
+use BookingSuite\Backend\Support\PaymentLink;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -334,6 +335,8 @@ final class BookingEmails {
 			'{{amount_paid}}'      => self::money( 60.0, 'EUR' ),
 			'{{amount_due}}'       => self::money( 120.0, 'EUR' ),
 			'{{invoice_no}}'       => 'INV-2026-0001',
+			'{{payment_url}}'      => home_url( '/booking/pay/0.0.preview' ),
+			'{{payment_link}}'     => self::payment_button( home_url( '/booking/pay/0.0.preview' ) ),
 			'{{status}}'           => 'confirmed',
 			'{{payment_status}}'   => 'paid',
 			'{{site_name}}'        => (string) get_bloginfo( 'name' ),
@@ -373,6 +376,14 @@ final class BookingEmails {
 				$due > 0
 			),
 			'{{invoice_no}}'  => $invoice_no,
+			/*
+			 * The way back to the payment page, from any device, with no
+			 * login. This is the single most useful thing in the email: the
+			 * guest reads it on a phone, and everything they need to pay is
+			 * one tap away rather than transcribed by hand.
+			 */
+			'{{payment_url}}'  => $id ? PaymentLink::url( $id ) : '',
+			'{{payment_link}}' => $id ? self::payment_button( PaymentLink::url( $id ) ) : '',
 			'{{guest_name}}'       => $name,
 			'{{guest_first_name}}' => '' !== $first ? $first : $name,
 			'{{reference}}'        => (string) ( $booking['reference'] ?? '' ),
@@ -388,6 +399,34 @@ final class BookingEmails {
 			'{{payment_status}}'   => (string) ( $booking['paymentStatus'] ?? '' ),
 			'{{site_name}}'        => (string) get_bloginfo( 'name' ),
 			'{{site_url}}'         => (string) home_url(),
+		);
+	}
+
+	/**
+	 * The payment link, as something to press.
+	 *
+	 * A bare URL in an email is a URL a guest has to notice is a link. This is
+	 * drawn as a button, styled inline because EmailLayout's class map cannot
+	 * reach markup that arrives through a placeholder — and a button that is
+	 * unstyled in Outlook is a button nobody presses.
+	 *
+	 * @param string $url Where it goes.
+	 */
+	private static function payment_button( string $url ): string {
+		if ( '' === $url ) {
+			return '';
+		}
+
+		/*
+		 * The class is the hook EmailLayout styles it through, rather than a
+		 * style attribute written here: the layout prefixes every anchor with
+		 * its own link style, and two style attributes on one tag means the
+		 * second one is dropped.
+		 */
+		return sprintf(
+			'<p><a class="bks-button" href="%1$s">%2$s</a></p>',
+			esc_url( $url ),
+			esc_html__( 'Open the payment page', 'booking-suite' )
 		);
 	}
 
@@ -465,8 +504,10 @@ final class BookingEmails {
 		$html .= '<table role="presentation" cellpadding="0" cellspacing="0"><tbody>';
 
 		foreach ( $rows as [ $label, $value ] ) {
-			$html .= '<tr><td><strong>' . esc_html( $label ) . '</strong></td><td>'
-				. esc_html( $value ) . "</td></tr>\n";
+			$html .= '<tr><td style="padding:6px 16px 6px 0;white-space:nowrap;"><strong>'
+				. esc_html( $label ) . '</strong></td><td style="padding:6px 0;">'
+				. esc_html( $value ) . "</td></tr>
+";
 		}
 
 		$html .= "</tbody></table>\n";

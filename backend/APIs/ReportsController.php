@@ -45,10 +45,19 @@ final class ReportsController {
 	/**
 	 * Statuses counted as real business.
 	 *
-	 * Pending requests are included: they were taken, and excluding them would
-	 * understate a month that is still being worked through.
+	 * A booking awaiting its transfer is included: the contract is concluded
+	 * and the money is owed, so leaving it out would understate a month that is
+	 * still being worked through. Only cancellations are absent.
 	 */
-	private const COUNTED = array( 'pending', 'reserved', 'confirmed', 'completed' );
+	private const COUNTED = array(
+		'awaiting_transfer',
+		'transfer_declared',
+		'confirmed',
+		'completed',
+		// Retired names, still in older rows.
+		'pending',
+		'reserved',
+	);
 
 	public static function register(): void {
 		add_action( 'rest_api_init', array( self::class, 'register_routes' ) );

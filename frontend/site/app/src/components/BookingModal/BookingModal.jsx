@@ -16,7 +16,7 @@ import { addDays, startOfToday, toKey } from '../../utils/date';
 import StepWhen from './StepWhen';
 import StepOptions from './StepOptions';
 import StepDetails from './StepDetails';
-import StepPayment from './StepPayment';
+import StepTransfer from './StepTransfer';
 import StepReview from './StepReview';
 import StepVerify from './StepVerify';
 import StepDone from './StepDone';
@@ -27,14 +27,15 @@ import './BookingModal.css';
  * the site has verification off, or this address was proved already — so the
  * stepper never shows a number the guest will not be asked to walk through.
  */
-const ALL_STEPS = [
-	'when',
-	'extras',
-	'details',
-	'verify',
-	'payment',
-	'review',
-];
+/*
+ * There is no payment step before the order any more.
+ *
+ * Bank transfer is the only way to pay and nothing about it is the guest's to
+ * decide, so asking them anything about payment before they have committed was
+ * a question with one answer. The details they need come AFTER the order, on
+ * the payment page, because that is when they are of any use.
+ */
+const ALL_STEPS = [ 'when', 'extras', 'details', 'verify', 'review' ];
 
 /**
  * Where a proved address is remembered.
@@ -80,7 +81,18 @@ export default function BookingModal( {
 } ) {
 	const [ context, setContext ] = useState( null );
 	const [ step, setStep ] = useState( 'when' );
-	const [ isDone, setDone ] = useState( false );
+	/**
+	 * Where the guest is: still filling the form, on the payment page, or
+	 * finished.
+	 *
+	 * One value rather than two booleans, because "paying" and "done" are
+	 * mutually exclusive and a pair of flags can express a state that is
+	 * neither — or both.
+	 */
+	const [ phase, setPhase ] = useState( 'form' );
+
+	/** Both post-order phases hide the stepper and the footer. */
+	const isDone = 'form' !== phase;
 	const [ isLoading, setLoading ] = useState( true );
 	const [ isBusy, setBusy ] = useState( false );
 	const [ error, setError ] = useState( null );
@@ -120,16 +132,16 @@ export default function BookingModal( {
 		};
 	} );
 	const [ extras, setExtras ] = useState( {} );
-	const [ guest, setGuest ] = useState( emptyGuest );
-	const [ payment, setPayment ] = useState( () => ( {
-		method: 'transfer',
-		// Paying now unless the guest says otherwise, whether or not the owner
-		// offers the alternative — so the value posted is always meaningful.
-		payWhen: 'now',
-		proofName: '',
-		proofData: '',
-	} ) );
 
+	/**
+	 * Whether the guest has accepted the terms.
+	 *
+	 * Not remembered between openings on purpose: consent is given for the
+	 * booking being made, and a box that was already ticked when the modal
+	 * opened would be recording a decision nobody made this time.
+	 */
+	const [ accepted, setAccepted ] = useState( false );
+	const [ guest, setGuest ] = useState( emptyGuest );
 	/** The address proved in this session, and the token that says so. */
 	const [ verified, setVerified ] = useState( rememberedVerification );
 
@@ -257,6 +269,31 @@ export default function BookingModal( {
 		return () => controller.abort();
 	}, [ isStayComplete, payload, isDone ] );
 
+	/**
+	 * "I have sent it."
+	 *
+	 * A status marker with no legal weight — the booking was binding when the
+	 * order was placed. It fails soft on purpose: the guest has already done
+	 * the thing that matters, and an error here would suggest otherwise, so a
+	 * failed call still moves them on to the thank-you page.
+	 */
+	const declareTransfer = async () => {
+		setBusy( true );
+
+		try {
+			const updated = await bookingService.declareTransfer(
+				booking?.token
+			);
+
+			setBooking( ( current ) => ( { ...current, payment: updated } ) );
+		} catch ( cause ) {
+			// Deliberately swallowed; see above.
+		} finally {
+			setBusy( false );
+			setPhase( 'done' );
+		}
+	};
+
 	const submit = async () => {
 		setBusy( true );
 		setError( null );
@@ -266,14 +303,16 @@ export default function BookingModal( {
 				await bookingService.book( {
 					...payload(),
 					...guest,
-					payment: payment.method || 'transfer',
-					payWhen: payment.payWhen || 'now',
-					paymentProof: payment.proofData,
-					paymentProofName: payment.proofName,
 					verificationToken: verified?.token ?? '',
 				} )
 			);
-			setDone( true );
+
+			/*
+			 * Straight to the payment page, not to a thank-you. The booking
+			 * exists and the money is owed from this moment, so the next thing
+			 * on screen has to be where to send it.
+			 */
+			setPhase( 'transfer' );
 		} catch ( cause ) {
 			setError( cause.message );
 		} finally {
@@ -342,7 +381,7 @@ export default function BookingModal( {
 			// modal in this tab.
 		}
 
-		setStep( 'payment' );
+		setStep( 'review' );
 	};
 
 	const canContinue = () => {
@@ -356,22 +395,6 @@ export default function BookingModal( {
 				guest.lastName.trim() &&
 				guest.email.trim()
 			);
-		}
-
-		/*
-		 * Payment is by bank transfer, so the receipt is the only evidence the
-		 * owner ever gets that money moved. Without it a booking is a held date
-		 * with nothing to reconcile, which is why the step cannot be passed
-		 * until one is attached — unless the guest has chosen to pay later and
-		 * the owner allows that, in which case there is nothing to attach yet.
-		 * The server enforces the same rule, including the permission.
-		 */
-		if ( 'payment' === step ) {
-			if ( settings.allowPayLater && 'later' === payment.payWhen ) {
-				return true;
-			}
-
-			return Boolean( payment.proofData );
 		}
 
 		// The code moves the guest on by itself once it is accepted; there is
@@ -485,7 +508,15 @@ export default function BookingModal( {
 						</p>
 					) }
 
-					{ ! isLoading && apartment && isDone && (
+					{ ! isLoading && apartment && 'transfer' === phase && (
+						<StepTransfer
+							payment={ booking?.payment }
+							onDeclare={ declareTransfer }
+							isBusy={ isBusy }
+						/>
+					) }
+
+					{ ! isLoading && apartment && 'done' === phase && (
 						<StepDone booking={ booking } currency={ currency } />
 					) }
 
@@ -534,24 +565,6 @@ export default function BookingModal( {
 								/>
 							) }
 
-							{ 'payment' === step && (
-								<StepPayment
-									payment={ payment }
-									onChange={ setPayment }
-									allowPayLater={ settings.allowPayLater }
-									bank={ context?.bank }
-									total={
-										quote
-											? formatPrice(
-													quote.total,
-													currency,
-													settings.locale
-											  )
-											: ''
-									}
-								/>
-							) }
-
 							{ 'review' === step && (
 								<StepReview
 									apartment={ apartment }
@@ -561,6 +574,11 @@ export default function BookingModal( {
 									currency={ currency }
 									checkInTime={ context?.checkIn }
 									checkOutTime={ context?.checkOut }
+									accepted={ accepted }
+									onAccept={ setAccepted }
+									reservationHours={
+										settings.reservationHours || 24
+									}
 								/>
 							) }
 						</>
@@ -632,12 +650,24 @@ export default function BookingModal( {
 									type="button"
 									className="bks-booking__button"
 									onClick={ submit }
-									disabled={ isBusy || ! quote?.available }
+									disabled={
+										isBusy ||
+										! quote?.available ||
+										! accepted
+									}
 								>
+									{ /*
+									 * "Book subject to payment", and nothing
+									 * softer. § 312j Abs. 3 BGB requires the
+									 * button that concludes the contract to say
+									 * in so many words that pressing it means
+									 * owing money — a checkout that fails this
+									 * risks the contract not binding at all.
+									 */ }
 									{ isBusy
 										? __( 'Sending…', 'booking-suite' )
 										: __(
-												'Request booking',
+												'Book subject to payment',
 												'booking-suite'
 										  ) }
 								</button>

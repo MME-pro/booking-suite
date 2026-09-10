@@ -1623,4 +1623,70 @@ Gute Reise und bis bald.
 	'That address is already on the list.' => 'Diese Adresse steht bereits auf der Liste.',
 	'That does not look like an email address.' => 'Das sieht nicht nach einer E-Mail-Adresse aus.',
 	'name@example.com' => 'name@example.com',
+	'<h1>Your booking is placed</h1>
+<p>Hello {{guest_first_name}},</p>
+<p>Thank you — your booking is confirmed and binding. All that is left is the transfer.</p>
+<table>
+<tr><th>Booking number</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Arrival</th><td>{{check_in}}</td></tr>
+<tr><th>Departure</th><td>{{check_out}}</td></tr>
+<tr><th>Guests</th><td>{{guests}}</td></tr>
+<tr><th>Amount</th><td>{{total}}</td></tr>
+</table>
+<p>Open the page below to see the account details and a QR code your banking app can read. You can come back to it at any time.</p>
+{{payment_link}}
+{{bank_details}}
+<p>{{site_name}}</p>' => '<h1>Ihre Buchung ist eingegangen</h1>
+<p>Hallo {{guest_first_name}},</p>
+<p>Vielen Dank — Ihre Buchung ist verbindlich zustande gekommen. Es fehlt nur noch die Überweisung.</p>
+<table>
+<tr><th>Buchungsnummer</th><td>{{reference}}</td></tr>
+<tr><th>Apartment</th><td>{{apartment}}</td></tr>
+<tr><th>Anreise</th><td>{{check_in}}</td></tr>
+<tr><th>Abreise</th><td>{{check_out}}</td></tr>
+<tr><th>Gäste</th><td>{{guests}}</td></tr>
+<tr><th>Betrag</th><td>{{total}}</td></tr>
+</table>
+<p>Über die Schaltfläche unten sehen Sie die Kontodaten und einen QR-Code, den Ihre Banking-App einlesen kann. Sie können jederzeit dorthin zurückkehren.</p>
+{{payment_link}}
+{{bank_details}}
+<p>{{site_name}}</p>',
+	'Book subject to payment' => 'Zahlungspflichtig buchen',
+	'There is no right of withdrawal (§ 312g Abs. 2 Nr. 9 BGB). The cancellation conditions of the terms and conditions apply.' => 'Es besteht kein Widerrufsrecht (§ 312g Abs. 2 Nr. 9 BGB). Es gelten die Stornobedingungen der AGB.',
+	'Payment exclusively by advance bank transfer. Your reservation is valid for %d hours.' => 'Zahlung ausschließlich per Vorkasse-Überweisung. Ihre Reservierung ist %d Stunden gültig.',
+	'I accept the terms and conditions and the privacy policy.' => 'Ich akzeptiere die AGB und die Datenschutzerklärung.',
+	'Your booking is already binding upon placing your order. This confirmation serves solely to expedite the processing of your payment.' => 'Ihre Buchung ist bereits mit der Bestellung verbindlich. Diese Bestätigung dient ausschließlich der Beschleunigung der Zahlungsabwicklung.',
+	'Prices include statutory VAT.' => 'Preise inkl. gesetzlicher MwSt.',
+	'Your booking is confirmed — please transfer the payment now' => 'Ihre Buchung ist bestätigt – bitte überweisen Sie jetzt',
+	'Booking number' => 'Buchungsnummer',
+	'Transfer initiated' => 'Überweisung veranlasst',
+	'Just a moment…' => 'Einen Moment …',
+	'Please transfer the payment within %d hours, and be sure to include the booking number as the payment reference.' => 'Bitte überweisen Sie den Betrag innerhalb von %d Stunden und geben Sie unbedingt die Buchungsnummer als Verwendungszweck an.',
+	'Scan with your banking app to fill the transfer in automatically.' => 'Mit der Banking-App scannen, um die Überweisung automatisch auszufüllen.',
+	'Complete your payment — %s' => 'Zahlung abschließen — %s',
+	'Loading your booking…' => 'Buchung wird geladen …',
+	'Open the payment page' => 'Zahlungsseite öffnen',
+	'We could not open this booking' => 'Diese Buchung konnte nicht geöffnet werden',
+	'This payment link is not valid any more. Please use the link in your booking email, or get in touch.' => 'Dieser Zahlungslink ist nicht mehr gültig. Bitte nutzen Sie den Link aus Ihrer Buchungs-E-Mail oder melden Sie sich bei uns.',
+	'This booking could not be found.' => 'Diese Buchung wurde nicht gefunden.',
+	'This booking has been cancelled' => 'Diese Buchung wurde storniert',
+	'Please do not transfer anything. Get in touch if you would like to book these dates again.' => 'Bitte überweisen Sie nichts. Melden Sie sich bei uns, wenn Sie diesen Zeitraum erneut buchen möchten.',
+	'Your payment has arrived' => 'Ihre Zahlung ist eingegangen',
+	'Nothing more to do — your booking is confirmed.' => 'Es ist nichts weiter zu tun — Ihre Buchung ist bestätigt.',
+	'Thank you — you have told us the transfer is on its way. We will confirm your booking as soon as it reaches us.' => 'Vielen Dank — Sie haben uns mitgeteilt, dass die Überweisung unterwegs ist. Wir bestätigen Ihre Buchung, sobald sie bei uns eingegangen ist.',
+	'Thank you — your booking is placed' => 'Vielen Dank — Ihre Buchung ist eingegangen',
+	'Once we have received your payment, you will receive a separate confirmation by email.' => 'Sobald Ihre Zahlung bei uns eingegangen ist, erhalten Sie eine gesonderte Bestätigung per E-Mail.',
+	'Subtotal' => 'Zwischensumme',
+	'Discount for advance payment (%s)' => 'Rabatt für Vorkasse (%s)',
+	'Your booking {{reference}} — please transfer {{total}}' => 'Ihre Buchung {{reference}} — bitte überweisen Sie {{total}}',
+	'Hold the dates for (hours)' => 'Termin reservieren für (Stunden)',
+	'How long a booking keeps its dates while the transfer is awaited. The guest is told this number at checkout and again on the payment page, and a booking whose money has not arrived by then is cancelled and its dates released.' => 'Wie lange eine Buchung ihren Zeitraum belegt, während auf die Überweisung gewartet wird. Der Gast sieht diese Zahl an der Kasse und auf der Zahlungsseite. Ist das Geld bis dahin nicht da, wird die Buchung storniert und der Zeitraum wieder freigegeben.',
+	'Discount for paying in advance (%)' => 'Rabatt für Vorkasse (%)',
+	'Taken off the whole bill. At 0 there is no discount and no discount line anywhere — not on the checkout, not on the invoice.' => 'Wird von der gesamten Rechnung abgezogen. Bei 0 gibt es keinen Rabatt und nirgends eine Rabattzeile — weder an der Kasse noch auf der Rechnung.',
+	'VAT on overnight stays (%)' => 'MwSt. auf Übernachtungen (%)',
+	'A stay that crosses midnight. In Germany accommodation is usually 7%.' => 'Ein Aufenthalt über Mitternacht hinaus. Beherbergung liegt in Deutschland meist bei 7 %.',
+	'VAT on hourly bookings (%)' => 'MwSt. auf stundenweise Buchungen (%)',
+	'A stay that begins and ends on the same day. Usually 19%.' => 'Ein Aufenthalt, der am selben Tag beginnt und endet. Meist 19 %.',
+	'Each booking is filed as overnight or hourly from its dates, and carries that for good. Guests are only ever shown the gross amount and "incl. statutory VAT" — the split appears on the invoice alone.' => 'Jede Buchung wird anhand ihrer Zeiten als Übernachtung oder stundenweise eingestuft und behält diese Einstufung dauerhaft. Gästen wird ausschließlich der Bruttobetrag und "inkl. gesetzlicher MwSt." angezeigt — die Aufschlüsselung erscheint allein auf der Rechnung.',
 );

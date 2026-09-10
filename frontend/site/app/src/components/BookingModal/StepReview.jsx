@@ -94,6 +94,11 @@ export default function StepReview( {
 	currency,
 	checkInTime,
 	checkOutTime,
+	/** Whether the consent box is ticked, and how to tick it. */
+	accepted,
+	onAccept,
+	/** How long the dates are held, for the notice under the box. */
+	reservationHours,
 } ) {
 	if ( ! quote ) {
 		return (
@@ -322,28 +327,95 @@ export default function StepReview( {
 					) ) }
 				</ul>
 
+				{ /*
+				 * The discount for paying in advance, named as such and shown
+				 * as what it takes off. Absent entirely when the owner has set
+				 * no discount, rather than drawn as a zero.
+				 */ }
+				{ quote.prepayDiscount > 0 && (
+					<>
+						<p className="bks-review__line">
+							<span>{ __( 'Subtotal', 'booking-suite' ) }</span>
+							<span>{ money( quote.gross ) }</span>
+						</p>
+						<p className="bks-review__line bks-review__line--discount">
+							<span>
+								{ sprintf(
+									/* translators: %s: the discount, e.g. "5%". */
+									__(
+										'Discount for advance payment (%s)',
+										'booking-suite'
+									),
+									`${ quote.prepayPercent }%`
+								) }
+							</span>
+							<span>−{ money( quote.prepayDiscount ) }</span>
+						</p>
+					</>
+				) }
+
 				<p className="bks-review__total">
-					<span>{ __( 'Total', 'booking-suite' ) }</span>
+					<span>{ __( 'Total amount', 'booking-suite' ) }</span>
 					<strong>{ money( quote.total ) }</strong>
 				</p>
 
 				{ /*
-				 * Only when there is a rate to declare. German prices are
-				 * quoted inclusive, so this says the total is what will be
-				 * charged rather than adding a line to it.
+				 * Neutral wording, and never a rate or a split.
+				 *
+				 * Which rate applies depends on whether this stay is a night or
+				 * a few hours, and naming a percentage here would put a tax
+				 * claim in front of a guest that only the invoice is entitled
+				 * to make. "Statutory VAT" is both true and sufficient.
 				 */ }
 				{ taxRate > 0 && (
 					<p className="bks-review__vat">
-						{ sprintf(
-							/* translators: %s: the VAT rate, already formatted. */
-							__(
-								'Prices include statutory VAT (%s).',
-								'booking-suite'
-							),
-							`${ taxRate }%`
+						{ __(
+							'Prices include statutory VAT.',
+							'booking-suite'
 						) }
 					</p>
 				) }
+			</div>
+
+			{ /*
+			 * The two things a guest has to be told before they can be bound,
+			 * and the box that records that they were.
+			 */ }
+			<div className="bks-review__legal">
+				<label className="bks-review__consent" htmlFor="bks-terms">
+					<input
+						id="bks-terms"
+						type="checkbox"
+						checked={ Boolean( accepted ) }
+						onChange={ ( event ) =>
+							onAccept( event.target.checked )
+						}
+					/>
+					<span>
+						{ __(
+							'I accept the terms and conditions and the privacy policy.',
+							'booking-suite'
+						) }
+					</span>
+				</label>
+
+				<p className="bks-review__notice">
+					{ __(
+						'There is no right of withdrawal (§ 312g Abs. 2 Nr. 9 BGB). The cancellation conditions of the terms and conditions apply.',
+						'booking-suite'
+					) }
+				</p>
+
+				<p className="bks-review__notice">
+					{ sprintf(
+						/* translators: %d: hours the dates are held for. */
+						__(
+							'Payment exclusively by advance bank transfer. Your reservation is valid for %d hours.',
+							'booking-suite'
+						),
+						reservationHours
+					) }
+				</p>
 			</div>
 		</div>
 	);

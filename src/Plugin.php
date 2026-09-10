@@ -23,6 +23,7 @@ use BookingSuite\Backend\Installer;
 use BookingSuite\Backend\Support\BookingLifecycle;
 use BookingSuite\Backend\Support\DailySummary;
 use BookingSuite\Backend\Support\IcalFeed;
+use BookingSuite\Backend\Support\PaymentPage;
 use BookingSuite\Backend\Support\IcalSync;
 use BookingSuite\Backend\Support\Pwa;
 use BookingSuite\Backend\Migrations\MetaToTableMigration;
@@ -87,6 +88,13 @@ final class Plugin {
 
 		// And the day's figures, sent to whoever asked for them.
 		DailySummary::register();
+
+		/*
+		 * The guest's payment page, at a URL of its own. Public and outside
+		 * is_admin() for the same reason the calendar feed is: nothing that
+		 * opens it is ever logged in.
+		 */
+		PaymentPage::register();
 
 		// And the public URL the portals read this site's own calendar from.
 		// Not admin-only: nothing fetching it is ever logged in.

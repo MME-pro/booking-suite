@@ -27,8 +27,11 @@ use BookingSuite\Backend\Pricing\SlotGenerator;
 use BookingSuite\Backend\Repositories\PriceRulesRepository;
 use BookingSuite\Backend\Repositories\PaymentsRepository;
 use BookingSuite\Backend\Repositories\SettingsRepository;
+use BookingSuite\Backend\Schemas\BookingsTable;
 use BookingSuite\Backend\Support\EmailVerification;
-use BookingSuite\Backend\Support\ProofUpload;
+use BookingSuite\Backend\Support\EpcQr;
+use BookingSuite\Backend\Support\PaymentLink;
+use DateTimeImmutable;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -94,6 +97,163 @@ final class PublicBookingController {
 				'callback'            => array( self::class, 'create' ),
 				'permission_callback' => '__return_true',
 			)
+		);
+
+		/*
+		 * The payment page, reachable by anyone holding the link and by nobody
+		 * else. The token IS the permission — see PaymentLink — so the callback
+		 * is open and the check happens on the token inside.
+		 */
+		register_rest_route(
+			self::NAMESPACE,
+			'/public/payment/(?P<token>[A-Za-z0-9.]+)',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( self::class, 'payment_page' ),
+				'permission_callback' => '__return_true',
+			)
+		);
+
+		/*
+		 * "I have sent it."
+		 *
+		 * A note to the owner and nothing more: no money has been seen and the
+		 * booking was already binding, so this moves a status and a timestamp
+		 * and touches nothing else.
+		 */
+		register_rest_route(
+			self::NAMESPACE,
+			'/public/payment/(?P<token>[A-Za-z0-9.]+)/declared',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( self::class, 'declare_transfer' ),
+				'permission_callback' => '__return_true',
+			)
+		);
+	}
+
+	/**
+	 * Everything the payment page shows, for one booking.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function payment_page( WP_REST_Request $request ) {
+		$booking = self::booking_from_token( (string) $request['token'] );
+
+		if ( $booking instanceof WP_Error ) {
+			return $booking;
+		}
+
+		return new WP_REST_Response( self::payment_payload( $booking ), 200 );
+	}
+
+	/**
+	 * Record that the guest says the transfer is on its way.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function declare_transfer( WP_REST_Request $request ) {
+		$booking = self::booking_from_token( (string) $request['token'] );
+
+		if ( $booking instanceof WP_Error ) {
+			return $booking;
+		}
+
+		$id = (int) $booking['id'];
+
+		/*
+		 * Only from the one status this can follow. A booking already confirmed
+		 * by the owner, or cancelled when its deadline passed, must not be
+		 * dragged back to "the guest says they paid" by someone reopening an
+		 * old link — the owner's word is the later and better one.
+		 */
+		if ( 'awaiting_transfer' === ( $booking['status'] ?? '' ) ) {
+			BookingsRepository::update(
+				$id,
+				array(
+					'status'                => 'transfer_declared',
+					'transfer_confirmed_at' => current_time( 'mysql' ),
+				)
+			);
+
+			$booking = BookingsRepository::find( $id );
+		}
+
+		return new WP_REST_Response( self::payment_payload( $booking ), 200 );
+	}
+
+	/**
+	 * The booking a payment token names, or the reason it names none.
+	 *
+	 * @return array<string, mixed>|WP_Error
+	 */
+	private static function booking_from_token( string $token ) {
+		$id = PaymentLink::booking_id( $token );
+
+		if ( null === $id ) {
+			return self::error(
+				'booking_suite_bad_link',
+				__( 'This payment link is not valid any more. Please use the link in your booking email, or get in touch.', 'booking-suite' ),
+				404
+			);
+		}
+
+		$booking = BookingsRepository::find( $id );
+
+		if ( null === $booking ) {
+			return self::error(
+				'booking_suite_not_found',
+				__( 'This booking could not be found.', 'booking-suite' ),
+				404
+			);
+		}
+
+		return $booking;
+	}
+
+	/**
+	 * What the payment page and the thank-you page both draw from.
+	 *
+	 * The bank details are repeated here rather than left to the bootstrap: the
+	 * page has to work from a link in an email, opened on a phone, on a page
+	 * that never loaded the booking form.
+	 *
+	 * @param array<string, mixed> $booking
+	 * @return array<string, mixed>
+	 */
+	private static function payment_payload( array $booking ): array {
+		$total = (float) ( $booking['total'] ?? 0 );
+		$iban  = SettingsRepository::get( SettingsRepository::BANK_IBAN );
+
+		return array(
+			'reference'     => (string) ( $booking['reference'] ?? '' ),
+			'status'        => (string) ( $booking['status'] ?? '' ),
+			'bookingType'   => (string) ( $booking['bookingType'] ?? '' ),
+			'startsAt'      => (string) ( $booking['startsAt'] ?? '' ),
+			'endsAt'        => (string) ( $booking['endsAt'] ?? '' ),
+			'total'         => $total,
+			'currency'      => SettingsRepository::currency(),
+			'deadline'      => $booking['paymentDeadline'] ?? null,
+			'declaredAt'    => $booking['transferConfirmedAt'] ?? null,
+			'bank'          => array(
+				'holder' => SettingsRepository::get( SettingsRepository::BANK_HOLDER ),
+				'name'   => SettingsRepository::get( SettingsRepository::BANK_NAME ),
+				'iban'   => SettingsRepository::format_iban( $iban ),
+				'bic'    => SettingsRepository::get( SettingsRepository::BANK_BIC ),
+			),
+			/*
+			 * The GiroCode's payload, built server-side. The page draws it as a
+			 * QR; deciding what goes IN it is a banking question, not a
+			 * rendering one, and belongs where the IBAN already lives.
+			 */
+			'giroCode'      => EpcQr::payload(
+				SettingsRepository::get( SettingsRepository::BANK_HOLDER ),
+				$iban,
+				SettingsRepository::get( SettingsRepository::BANK_BIC ),
+				$total,
+				(string) ( $booking['reference'] ?? '' )
+			),
+			'reservationHours' => SettingsRepository::reservation_hours(),
 		);
 	}
 
@@ -311,36 +471,14 @@ final class PublicBookingController {
 		}
 
 		/*
-		 * Paying later, when the owner allows it.
+		 * There is nothing to decide here any more.
 		 *
-		 * The permission is read here rather than trusted from the request: the
-		 * endpoint is public, so a posted "later" on a site that does not offer
-		 * it has to mean nothing at all. A guest who chooses to defer is asked
-		 * for no receipt and gets no payment row — which is exactly how the
-		 * owner tells the two apart later, a deferred booking having nothing
-		 * against it rather than something pending.
+		 * One way to pay — advance bank transfer — so no choice is offered and
+		 * none is read from the request. No proof is asked for either: the
+		 * guest cannot prove a transfer has cleared, only claim it, and the
+		 * only thing that settles a booking is the owner seeing the money in
+		 * the bank and saying so.
 		 */
-		$defer = 'later' === $request->get_param( 'payWhen' )
-			&& SettingsRepository::pay_later_allowed();
-
-		/*
-		 * Proof of payment is required, and required here — before a booking, a
-		 * customer or an extras hold exists. Checked on the server rather than
-		 * trusting the modal's disabled button: the endpoint is public, and a
-		 * request that skips the form would otherwise take the dates off the
-		 * board with nothing to reconcile against.
-		 */
-		if ( ! $defer && '' === trim( (string) $request->get_param( 'paymentProof' ) ) ) {
-			return self::error(
-				'booking_suite_payment_proof_required',
-				__(
-					'Please upload a screenshot or receipt of your payment to complete the booking.',
-					'booking-suite'
-				),
-				400,
-				'payment'
-			);
-		}
 
 		$customer_id = CustomersRepository::find_or_create(
 			array(
@@ -356,20 +494,20 @@ final class PublicBookingController {
 		);
 
 		/*
-		 * Whether this booking holds its dates.
+		 * The contract is concluded the moment the order button is pressed
+		 * (§ 312j Abs. 3 BGB), so the booking exists owing money and the dates
+		 * come off the board straight away. Waiting for the transfer to clear
+		 * would leave the same night on sale to somebody else for a day.
 		 *
-		 * Only 'reserved' and 'confirmed' block the window; 'pending' does
-		 * not, which meant a completed booking left the slot on sale and two
-		 * guests could take the same Friday. A booking that arrives with a
-		 * receipt is therefore reserved straight away — the schema's own note
-		 * calls that status "held for the guest while payment is awaited",
-		 * which is exactly this.
-		 *
-		 * One that defers payment stays pending and holds nothing. The owner
-		 * chose that trade: a booking showing no evidence of payment should
-		 * not be able to take dates off the board on its own say-so.
+		 * The hold is not open-ended: payment_deadline is what the sweep in
+		 * BookingLifecycle measures against, and what the guest is promised on
+		 * the checkout and the payment page.
 		 */
-		$status = $defer ? 'pending' : 'reserved';
+		$status = 'awaiting_transfer';
+
+		$deadline = ( new DateTimeImmutable( current_time( 'mysql' ) ) )
+			->modify( '+' . SettingsRepository::reservation_hours() . ' hours' )
+			->format( 'Y-m-d H:i:s' );
 
 		$booking_id = BookingsRepository::create(
 			array(
@@ -379,6 +517,13 @@ final class PublicBookingController {
 				'starts_at'    => $parsed['starts_at'],
 				'ends_at'      => $parsed['ends_at'],
 				'status'       => $status,
+				/*
+				 * Written now, never worked out again. It decides the VAT on
+				 * the invoice, and a rate a guest was charged under must not
+				 * move because the dates were edited afterwards.
+				 */
+				'booking_type'     => BookingsTable::type_for( $parsed['starts_at'], $parsed['ends_at'] ),
+				'payment_deadline' => $deadline,
 				'total_amount' => $quote['total'],
 				'notes'        => (string) $request->get_param( 'notes' ),
 			)
@@ -392,7 +537,7 @@ final class PublicBookingController {
 
 		$booking = BookingsRepository::find( $booking_id );
 
-		self::record_payment( $booking_id, (string) ( $booking['reference'] ?? '' ), $quote['total'], $request );
+		self::record_payment( $booking_id, (string) ( $booking['reference'] ?? '' ), $quote['total'] );
 
 		if ( $customer_id ) {
 			CustomersRepository::record_booking( $customer_id, $quote['total'], $parsed['starts_at'] );
@@ -405,6 +550,12 @@ final class PublicBookingController {
 		 */
 		BookingEmails::send( EmailTemplatesRepository::BOOKING_REQUEST, $booking_id );
 
+		/*
+		 * Everything the payment page needs comes back with the booking, so the
+		 * guest lands on it without a second request — and `token` is what lets
+		 * them return to it later from the email, on a device that has never
+		 * seen this form.
+		 */
 		return new WP_REST_Response(
 			array(
 				'id'        => $booking_id,
@@ -413,44 +564,43 @@ final class PublicBookingController {
 				'total'     => $quote['total'],
 				'currency'  => SettingsRepository::currency(),
 				'nights'    => $quote['nights'],
-				'message'   => __( 'Thank you — your booking request has been received. We will confirm it by email with payment details.', 'booking-suite' ),
+				'token'     => PaymentLink::token( $booking_id ),
+				'paymentUrl' => PaymentLink::url( $booking_id ),
+				'payment'   => self::payment_payload( $booking ),
 			),
 			201
 		);
 	}
 
 	/**
-	 * Record what the guest told us about paying, including any receipt they
-	 * uploaded. A booking is still valid without one.
+	 * Open the booking's account: one transfer, expected, not yet seen.
+	 *
+	 * Written when the booking is, rather than when money turns up, because it
+	 * is what the owner reconciles against. Without it a booking owing 300 €
+	 * and a booking owing nothing look identical on the payments screen, and
+	 * there is nothing for a part-payment to be part OF — which is what makes
+	 * "partially paid, 120 € outstanding" expressible at all.
+	 *
+	 * `reference` is the booking number, because that is the transfer purpose
+	 * the guest is told to use; matching a bank line to a booking is the whole
+	 * job this row exists to make possible.
+	 *
+	 * Status 'pending' means exactly what it says here: claimed by nobody,
+	 * seen by nobody. Only the owner marking it paid moves it on.
+	 *
+	 * @param int    $booking_id The booking it belongs to.
+	 * @param string $reference  The booking number.
+	 * @param float  $amount     The gross total owed.
 	 */
-	private static function record_payment( int $booking_id, string $reference, float $amount, WP_REST_Request $request ): void {
-		$proof_data = (string) $request->get_param( 'paymentProof' );
-		$paid_on    = self::date( (string) $request->get_param( 'paymentDate' ) );
-
-		$attachment_id = '' === $proof_data
-			? null
-			: ProofUpload::save( $proof_data, $reference );
-
-		/*
-		 * Nothing at all to record. Proof is required before a booking is
-		 * created, so in practice this only catches an upload that failed to
-		 * save — and in that case the row is still written, with no attachment,
-		 * rather than leaving a booking with no payment against it for the owner
-		 * to chase.
-		 */
-		if ( '' === $proof_data && null === $paid_on ) {
-			return;
-		}
-
+	private static function record_payment( int $booking_id, string $reference, float $amount ): void {
 		PaymentsRepository::create(
 			array(
-				'booking_id'          => $booking_id,
-				'method'              => 'transfer',
-				'status'              => 'pending',
-				'amount'              => $amount,
-				'proof_attachment_id' => $attachment_id,
-				'paid_at'             => $paid_on ? $paid_on . ' 00:00:00' : null,
-				'reference'           => $reference,
+				'booking_id' => $booking_id,
+				'method'     => 'transfer',
+				'status'     => 'pending',
+				'amount'     => $amount,
+				'paid_at'    => null,
+				'reference'  => $reference,
 			)
 		);
 	}
@@ -631,6 +781,22 @@ final class PublicBookingController {
 			);
 		}
 
+		/*
+		 * The discount for paying in advance.
+		 *
+		 * Taken off the whole gross — stay, guests and extras — because it is
+		 * a discount on the bill rather than on the room. At the default of
+		 * zero every figure below is what it was, and the checkout has no
+		 * discount line to draw.
+		 *
+		 * `gross` is kept alongside `total` so the checkout can show what was
+		 * struck through; `total` stays the one number that means "what the
+		 * guest owes", which is what every caller already reads it as.
+		 */
+		$gross    = round( $stay['subtotal'] + $extra_sum, 2 );
+		$fraction = SettingsRepository::prepay_fraction();
+		$discount = round( $gross * $fraction, 2 );
+
 		return array(
 			'available'      => BookingsRepository::is_available( $id, $parsed['starts_at'], $parsed['ends_at'] ),
 			'mode'           => $stay['mode'],
@@ -645,7 +811,10 @@ final class PublicBookingController {
 			'extrasAvailable' => (object) $availability,
 			'extrasShortfall' => $shortfall,
 			'extrasTotal'    => round( $extra_sum, 2 ),
-			'total'          => round( $stay['subtotal'] + $extra_sum, 2 ),
+			'gross'          => $gross,
+			'prepayPercent'  => round( $fraction * 100, 2 ),
+			'prepayDiscount' => $discount,
+			'total'          => round( $gross - $discount, 2 ),
 			'currency'       => SettingsRepository::currency(),
 			'provisional'    => null === $nightly,
 		);

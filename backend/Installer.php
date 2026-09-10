@@ -20,7 +20,7 @@ final class Installer {
 	/**
 	 * Bump whenever any table definition changes.
 	 */
-	public const DB_VERSION = 13;
+	public const DB_VERSION = 14;
 
 	private const VERSION_OPTION = 'bksuite_db_version';
 
@@ -40,6 +40,7 @@ final class Installer {
 		}
 
 		self::backfill_short_links();
+		self::backfill_booking_types();
 
 		update_option( self::VERSION_OPTION, self::DB_VERSION, false );
 	}
@@ -171,6 +172,46 @@ final class Installer {
 		foreach ( $kept as $key => $setting ) {
 			SettingsRepository::set( $key, $setting['value'], $setting['group'], $setting['locale'] );
 		}
+	}
+
+	/**
+	 * Give every booking made before this release its type.
+	 *
+	 * The column arrives defaulting to 'overnight', which is wrong for every
+	 * hourly booking already taken — and the type decides the VAT on the
+	 * invoice, so leaving it wrong would put the wrong rate on paperwork for
+	 * bookings that have already happened.
+	 *
+	 * Worked out the same way BookingsTable::type_for() does it, in SQL so it
+	 * is one statement rather than a loop over every row a busy property has:
+	 * same calendar day out as in means hourly.
+	 *
+	 * Only touches rows whose type is still the untouched default AND whose
+	 * dates say hourly, so it cannot overwrite a type somebody has since
+	 * corrected by hand, and running it twice does nothing the second time.
+	 */
+	private static function backfill_booking_types(): void {
+		global $wpdb;
+
+		$bookings = Schemas\BookingsTable::table();
+
+		// The column may not exist yet on an install that has not run dbDelta.
+		$columns = $wpdb->get_col( "DESC $bookings" );
+
+		if ( ! in_array( 'booking_type', $columns, true ) ) {
+			return;
+		}
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE $bookings
+				SET booking_type = %s
+				WHERE booking_type = %s
+					AND DATE( starts_at ) = DATE( ends_at )",
+				Schemas\BookingsTable::TYPE_HOURLY,
+				Schemas\BookingsTable::TYPE_OVERNIGHT
+			)
+		);
 	}
 
 	/**

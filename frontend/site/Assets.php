@@ -240,16 +240,23 @@ final class Assets {
 				 * declare — telling a guest prices include tax at 0% is worse
 				 * than saying nothing.
 				 */
-				'taxRate'  => SettingsRepository::number( SettingsRepository::TAX_RATE ),
+				/*
+				 * Only ever used as a yes/no: is there VAT to declare? The rate
+				 * itself is never shown to a guest — which of the two applies
+				 * depends on the booking's type, and the split belongs on the
+				 * invoice alone.
+				 */
+				'taxRate'  => max(
+					SettingsRepository::number( SettingsRepository::TAX_RATE_OVERNIGHT ),
+					SettingsRepository::number( SettingsRepository::TAX_RATE_HOURLY )
+				),
 
 				/*
-				 * Whether the payment step offers to defer. Sent with the page
-				 * for the same reason as the hours above: the choice has to be
-				 * right on first paint. The server enforces the same answer
-				 * when the booking is posted, so switching it off closes the
-				 * door rather than only hiding the handle.
+				 * How long a booking holds its dates. The checkout promises this
+				 * number to the guest before they are bound by it, so it has to
+				 * be right on first paint rather than fetched.
 				 */
-				'allowPayLater' => SettingsRepository::pay_later_allowed(),
+				'reservationHours' => SettingsRepository::reservation_hours(),
 
 				/*
 				 * Which weekdays offer one fixed block instead of free start

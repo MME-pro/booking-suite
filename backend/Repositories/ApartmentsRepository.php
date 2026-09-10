@@ -212,7 +212,7 @@ final class ApartmentsRepository {
 			return;
 		}
 
-		$now = current_time( 'mysql', true );
+		$now = current_time( 'mysql' );
 
 		$wpdb->insert(
 			$table,
@@ -293,7 +293,7 @@ final class ApartmentsRepository {
 			ApartmentsTable::table(),
 			array(
 				'ical_token' => $token,
-				'updated_at' => current_time( 'mysql', true ),
+				'updated_at' => current_time( 'mysql' ),
 			),
 			array( 'post_id' => $post_id ),
 			array( '%s', '%s' ),
@@ -393,7 +393,7 @@ final class ApartmentsRepository {
 			$table,
 			array(
 				'internal_short_link' => $link,
-				'updated_at'          => current_time( 'mysql', true ),
+				'updated_at'          => current_time( 'mysql' ),
 			),
 			array( 'post_id' => $post_id ),
 			array( '%s', '%s' ),
@@ -477,7 +477,7 @@ final class ApartmentsRepository {
 			return true;
 		}
 
-		$values['updated_at'] = current_time( 'mysql', true );
+		$values['updated_at'] = current_time( 'mysql' );
 		$formats[]            = '%s';
 
 		return false !== $wpdb->update(

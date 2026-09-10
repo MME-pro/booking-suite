@@ -104,7 +104,8 @@ final class IcalExporter {
 	 * request is not among them: it holds nothing here, and exporting it would
 	 * close dates elsewhere that are still for sale here.
 	 */
-	private const BLOCKING_STATUSES = array( 'reserved', 'confirmed' );
+	/** Defined on the table, so nothing here can drift from the repository. */
+	private const BLOCKING_STATUSES = BookingsTable::BLOCKING_STATUSES;
 
 	/**
 	 * How far back the feed reaches, in days.

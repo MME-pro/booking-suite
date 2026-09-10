@@ -221,7 +221,7 @@ final class CustomersRepository {
 			}
 		}
 
-		$now = current_time( 'mysql', true );
+		$now = current_time( 'mysql' );
 
 		$inserted = $wpdb->insert(
 			$table,
@@ -264,7 +264,7 @@ final class CustomersRepository {
 			return;
 		}
 
-		$fields['updated_at'] = current_time( 'mysql', true );
+		$fields['updated_at'] = current_time( 'mysql' );
 
 		$wpdb->update( CustomersTable::table(), $fields, array( 'id' => $id ) );
 	}
@@ -287,7 +287,7 @@ final class CustomersRepository {
 				WHERE id = %d",
 				$amount,
 				$booked_at,
-				current_time( 'mysql', true ),
+				current_time( 'mysql' ),
 				$customer_id
 			)
 		);

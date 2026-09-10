@@ -11,6 +11,7 @@ import { createRoot } from 'react-dom/client';
 
 import ApartmentsApp from './ApartmentsApp';
 import BookingLauncher from './BookingLauncher';
+import PaymentApp from './PaymentApp';
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/button.css';
@@ -19,6 +20,7 @@ import './styles/button.css';
 import './styles/armour.css';
 
 const LIST_SELECTOR = '[data-booking-suite-apartments]';
+const PAYMENT_SELECTOR = '[data-booking-suite-payment]';
 const MODAL_ROOT_ID = 'booking-suite-modal-root';
 
 const mountLists = () => {
@@ -42,6 +44,27 @@ const mountLists = () => {
 	} );
 };
 
+/*
+ * The standalone payment page, opened from the link in a booking email.
+ *
+ * Its own mount rather than part of the launcher: there is no apartment on the
+ * page and no modal to open, only one booking's payment details, and the token
+ * that names them is already in the markup.
+ */
+const mountPayment = () => {
+	document.querySelectorAll( PAYMENT_SELECTOR ).forEach( ( container ) => {
+		if ( container.dataset.mounted ) {
+			return;
+		}
+
+		container.dataset.mounted = 'true';
+
+		createRoot( container ).render(
+			<PaymentApp token={ container.dataset.bookingSuitePayment } />
+		);
+	} );
+};
+
 const mountLauncher = () => {
 	if ( document.getElementById( MODAL_ROOT_ID ) ) {
 		return;
@@ -57,6 +80,7 @@ const mountLauncher = () => {
 
 const boot = () => {
 	mountLists();
+	mountPayment();
 	mountLauncher();
 };
 

@@ -95,7 +95,7 @@ final class BookingLifecycle {
 	 * cancelled helps nobody — least of all on the first sweep, which would
 	 * post a backlog of them at once.
 	 *
-	 * @return array{cancelled: int, completed: int} What changed.
+	 * @return array{expired: int, cancelled: int, completed: int} What changed.
 	 */
 	public static function run(): array {
 		global $wpdb;
@@ -107,6 +107,44 @@ final class BookingLifecycle {
 		// bookings early or late by the offset.
 		$now = current_time( 'mysql' );
 
+		/*
+		 * The transfer never came.
+		 *
+		 * A booking awaiting its money holds the dates from the moment it is
+		 * made, which is the only way to stop the same night being sold twice
+		 * while a guest is at their bank. The cost of that is that a guest who
+		 * never pays would hold the dates forever, so the hold has an end:
+		 * payment_deadline, set when the booking was taken and promised to the
+		 * guest on the checkout and again on the payment page.
+		 *
+		 * `transfer_declared` expires too. Saying the money was sent is a
+		 * courtesy to the owner and has no legal weight of its own — if it
+		 * never arrives, the claim that it was sent cannot keep the room shut.
+		 *
+		 * Rows with no deadline are left alone. Everything made before this
+		 * release has none, and inventing one now would cancel bookings that
+		 * were taken under different terms.
+		 */
+		$awaiting     = BookingsTable::AWAITING_STATUSES;
+		$placeholders = implode( ',', array_fill( 0, count( $awaiting ), '%s' ) );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$expired = (int) $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE $table
+				SET status = 'cancelled', updated_at = %s
+				WHERE status IN ( $placeholders )
+					AND payment_deadline IS NOT NULL
+					AND payment_deadline < %s",
+				array_merge( array( $now ), $awaiting, array( $now ) )
+			)
+		);
+
+		/*
+		 * And the older shape of the same thing: a request nobody ever answered
+		 * whose window has now been and gone. Kept for rows written before the
+		 * deadline existed.
+		 */
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$cancelled = (int) $wpdb->query(
 			$wpdb->prepare(
@@ -130,6 +168,7 @@ final class BookingLifecycle {
 		);
 
 		return array(
+			'expired'   => max( 0, $expired ),
 			'cancelled' => max( 0, $cancelled ),
 			'completed' => max( 0, $completed ),
 		);

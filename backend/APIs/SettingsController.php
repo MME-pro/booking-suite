@@ -89,7 +89,10 @@ final class SettingsController {
 		'daytimeSlotDays'  => SettingsRepository::DAYTIME_SLOT_DAYS,
 		'daytimeSlotStart' => SettingsRepository::DAYTIME_SLOT_START,
 		'daytimeSlotEnd'   => SettingsRepository::DAYTIME_SLOT_END,
-		'allowPayLater'  => SettingsRepository::ALLOW_PAY_LATER,
+		'reservationHours'  => SettingsRepository::RESERVATION_HOURS,
+		'taxRateOvernight'  => SettingsRepository::TAX_RATE_OVERNIGHT,
+		'taxRateHourly'     => SettingsRepository::TAX_RATE_HOURLY,
+		'prepayDiscount'    => SettingsRepository::PREPAY_DISCOUNT,
 		'dailySummaryEnabled'    => SettingsRepository::DAILY_SUMMARY_ENABLED,
 		'dailySummaryTime'       => SettingsRepository::DAILY_SUMMARY_TIME,
 		'dailySummaryRecipients' => SettingsRepository::DAILY_SUMMARY_RECIPIENTS,
@@ -282,10 +285,14 @@ final class SettingsController {
 								&& ( '' === trim( $value )
 									|| 1 === preg_match( '/^[1-7](,[1-7])*$/', trim( $value ) ) ),
 						),
-						'allowPayLater'  => array(
-							'type'     => 'boolean',
-							'required' => false,
-						),
+						'reservationHours' => self::whole( 1, 720 ),
+						/*
+						 * A percentage, not a fraction, and allowed to be zero —
+						 * which is how an owner switches the discount off.
+						 */
+						'taxRateOvernight' => self::percent(),
+						'taxRateHourly'    => self::percent(),
+						'prepayDiscount'   => self::percent(),
 						'emailNotifications' => array(
 							'type'     => 'boolean',
 							'required' => false,
@@ -416,6 +423,20 @@ final class SettingsController {
 	}
 
 	/**
+	 * A percentage between 0 and 100, fractions allowed.
+	 *
+	 * @return array<string, mixed> A REST argument definition.
+	 */
+	private static function percent(): array {
+		return array(
+			'type'              => 'number',
+			'required'          => false,
+			'validate_callback' => static fn( $value ): bool =>
+				is_numeric( $value ) && (float) $value >= 0 && (float) $value <= 100,
+		);
+	}
+
+	/**
 	 * A 24-hour wall-clock time, HH:MM.
 	 *
 	 * @return array<string, mixed> A REST argument definition.
@@ -481,7 +502,10 @@ final class SettingsController {
 			'daytimeSlotDays'  => SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_DAYS ),
 			'daytimeSlotStart' => SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_START ),
 			'daytimeSlotEnd'   => SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_END ),
-			'allowPayLater'  => SettingsRepository::pay_later_allowed(),
+			'reservationHours' => SettingsRepository::reservation_hours(),
+			'taxRateOvernight' => (float) SettingsRepository::get( SettingsRepository::TAX_RATE_OVERNIGHT ),
+			'taxRateHourly'    => (float) SettingsRepository::get( SettingsRepository::TAX_RATE_HOURLY ),
+			'prepayDiscount'   => (float) SettingsRepository::get( SettingsRepository::PREPAY_DISCOUNT ),
 			'emailNotifications' => SettingsRepository::emails_enabled(),
 			'dailySummaryEnabled'    => SettingsRepository::daily_summary_enabled(),
 			'dailySummaryTime'       => SettingsRepository::get( SettingsRepository::DAILY_SUMMARY_TIME ),

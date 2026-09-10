@@ -24,6 +24,7 @@ declare( strict_types=1 );
 namespace BookingSuite\Backend\Repositories;
 
 use BookingSuite\Backend\Schemas\BlocksTable;
+use BookingSuite\Backend\Schemas\BookingsTable;
 use BookingSuite\Backend\Schemas\ExtrasTable;
 
 defined( 'ABSPATH' ) || exit;
@@ -164,7 +165,7 @@ final class BlocksRepository {
 	): ?int {
 		global $wpdb;
 
-		$now = current_time( 'mysql', true );
+		$now = current_time( 'mysql' );
 
 		$inserted = $wpdb->insert(
 			BlocksTable::table(),
@@ -208,7 +209,7 @@ final class BlocksRepository {
 				'ends_at'    => $ends_at,
 				'reason'     => $reason,
 				'feed_id'    => $feed_id,
-				'updated_at' => current_time( 'mysql', true ),
+				'updated_at' => current_time( 'mysql' ),
 			),
 			array( 'id' => $id )
 		);
@@ -289,15 +290,23 @@ final class BlocksRepository {
 		$bookings = \BookingSuite\Backend\Schemas\BookingsTable::table();
 		$posts    = $wpdb->posts;
 
+		/*
+		 * The statuses that hold dates, from the table rather than spelled out
+		 * here: a booking awaiting its transfer occupies the window, and a lock
+		 * laid over it has to say so.
+		 */
+		$blocking     = BookingsTable::BLOCKING_STATUSES;
+		$placeholders = implode( ',', array_fill( 0, count( $blocking ), '%s' ) );
+
 		$sql = "SELECT b.id, b.reference, b.starts_at, b.ends_at, b.status,
 				p.post_title AS apartment_name
 			FROM $bookings b
 			LEFT JOIN $posts p ON p.ID = b.room_id
 			WHERE b.starts_at < %s
 				AND b.ends_at > %s
-				AND b.status IN ('pending','reserved','confirmed')";
+				AND b.status IN ( $placeholders )";
 
-		$params = array( $ends_at, $starts_at );
+		$params = array_merge( array( $ends_at, $starts_at ), $blocking );
 
 		if ( null !== $apartment_id ) {
 			$sql     .= ' AND b.room_id = %d';

@@ -78,6 +78,10 @@ const SECTIONS = [
 /** Sent as numbers; a text input hands back strings the endpoint refuses. */
 const NUMERIC = [
 	'companyLogo',
+	'reservationHours',
+	'prepayDiscount',
+	'taxRateOvernight',
+	'taxRateHourly',
 	'invoiceDueDays',
 	'invoiceCounter',
 	'taxRate',
@@ -98,7 +102,10 @@ const blank = {
 	daytimeSlotDays: '5,6',
 	daytimeSlotStart: '11:30',
 	daytimeSlotEnd: '15:30',
-	allowPayLater: true,
+	reservationHours: 24,
+	prepayDiscount: 0,
+	taxRateOvernight: 7,
+	taxRateHourly: 19,
 	bankHolder: '',
 	bankName: '',
 	bankIban: '',
@@ -628,39 +635,95 @@ export default function SettingsPage() {
 									'booking-suite'
 								) }
 							>
-								<FormField
-									control={ form.control }
-									name="allowPayLater"
-									render={ ( { field } ) => (
-										<FormItem className="flex flex-row items-start gap-3 space-y-0 rounded-lg border p-4">
-											<FormControl>
-												<Switch
-													checked={ Boolean(
-														field.value
-													) }
-													onCheckedChange={ touched(
-														field.onChange
-													) }
-												/>
-											</FormControl>
-											<div className="flex flex-col gap-1">
-												<FormLabel>
-													{ __(
-														'Allow paying later',
-														'booking-suite'
-													) }
-												</FormLabel>
-												<FormDescription>
-													{ __(
-														'Lets a guest book without transferring first. Off means every booking arrives with a receipt attached, which is safer but loses the ones abandoned at the transfer screen.',
-														'booking-suite'
-													) }
-												</FormDescription>
-											</div>
-											<FormMessage />
-										</FormItem>
+								{ /*
+								 * There is no choice to offer any more: advance
+								 * bank transfer is the only way to pay, so what
+								 * is left to set is the terms of it.
+								 */ }
+								<Field
+									form={ form }
+									name="reservationHours"
+									type="number"
+									min={ 1 }
+									max={ 720 }
+									touched={ touched }
+									label={ __(
+										'Hold the dates for (hours)',
+										'booking-suite'
+									) }
+									description={ __(
+										'How long a booking keeps its dates while the transfer is awaited. The guest is told this number at checkout and again on the payment page, and a booking whose money has not arrived by then is cancelled and its dates released.',
+										'booking-suite'
 									) }
 								/>
+
+								<Field
+									form={ form }
+									name="prepayDiscount"
+									type="number"
+									min={ 0 }
+									max={ 100 }
+									step="0.1"
+									touched={ touched }
+									label={ __(
+										'Discount for paying in advance (%)',
+										'booking-suite'
+									) }
+									description={ __(
+										'Taken off the whole bill. At 0 there is no discount and no discount line anywhere — not on the checkout, not on the invoice.',
+										'booking-suite'
+									) }
+								/>
+
+								<div className="grid gap-4 sm:grid-cols-2">
+									<Field
+										form={ form }
+										name="taxRateOvernight"
+										type="number"
+										min={ 0 }
+										max={ 100 }
+										step="0.1"
+										touched={ touched }
+										label={ __(
+											'VAT on overnight stays (%)',
+											'booking-suite'
+										) }
+										description={ __(
+											'A stay that crosses midnight. In Germany accommodation is usually 7%.',
+											'booking-suite'
+										) }
+									/>
+									<Field
+										form={ form }
+										name="taxRateHourly"
+										type="number"
+										min={ 0 }
+										max={ 100 }
+										step="0.1"
+										touched={ touched }
+										label={ __(
+											'VAT on hourly bookings (%)',
+											'booking-suite'
+										) }
+										description={ __(
+											'A stay that begins and ends on the same day. Usually 19%.',
+											'booking-suite'
+										) }
+									/>
+								</div>
+
+								{ /*
+								 * Which of the two a booking takes is decided by
+								 * its own dates and written into it when it is
+								 * made, so a rate changed here never moves what
+								 * a guest was already charged.
+								 */ }
+								<p className="text-sm text-muted-foreground">
+									{ __(
+										'Each booking is filed as overnight or hourly from its dates, and carries that for good. Guests are only ever shown the gross amount and "incl. statutory VAT" — the split appears on the invoice alone.',
+										'booking-suite'
+									) }
+								</p>
 
 								<div className="grid gap-4 sm:grid-cols-2">
 									<Field

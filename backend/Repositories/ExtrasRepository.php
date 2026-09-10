@@ -99,7 +99,7 @@ final class ExtrasRepository {
 	public static function create( array $data ): ?array {
 		global $wpdb;
 
-		$now = current_time( 'mysql', true );
+		$now = current_time( 'mysql' );
 
 		$inserted = $wpdb->insert(
 			ExtrasTable::table(),
@@ -134,7 +134,7 @@ final class ExtrasRepository {
 		if ( $columns ) {
 			$wpdb->update(
 				ExtrasTable::table(),
-				$columns + array( 'updated_at' => current_time( 'mysql', true ) ),
+				$columns + array( 'updated_at' => current_time( 'mysql' ) ),
 				array( 'id' => $id )
 			);
 		}
@@ -162,7 +162,7 @@ final class ExtrasRepository {
 	 * A completed booking has handed its extras back even if its window has
 	 * not fully elapsed, so it is not counted.
 	 */
-	private const HOLDING_STATUSES = array( 'pending', 'reserved', 'confirmed' );
+	private const HOLDING_STATUSES = BookingsTable::BLOCKING_STATUSES;
 
 	/**
 	 * How many of each extra are free for a given window.
