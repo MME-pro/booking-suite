@@ -292,4 +292,39 @@ final class CustomersRepository {
 			)
 		);
 	}
-}
+
+	/**
+	 * How many bookings still point at this customer.
+	 *
+	 * @param int $id The customer.
+	 */
+	public static function booking_count( int $id ): int {
+		global $wpdb;
+
+		$bookings = BookingsTable::table();
+
+		return (int) $wpdb->get_var(
+			$wpdb->prepare( "SELECT COUNT(*) FROM $bookings WHERE customer_id = %d", $id )
+		);
+	}
+
+	/**
+	 * Remove a customer who has no bookings left.
+	 *
+	 * Refused while any booking still points at them. `customer_id` is
+	 * nullable, so the database would allow the delete and quietly leave
+	 * bookings with nobody's name on them — which is worse than refusing,
+	 * because the loss only shows up later on an invoice.
+	 *
+	 * @param int $id The customer.
+	 * @return bool Whether the row went.
+	 */
+	public static function delete( int $id ): bool {
+		global $wpdb;
+
+		if ( self::booking_count( $id ) > 0 ) {
+			return false;
+		}
+
+		return (bool) $wpdb->delete( CustomersTable::table(), array( 'id' => $id ), array( '%d' ) );
+	}}

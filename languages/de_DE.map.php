@@ -1511,4 +1511,116 @@ Gute Reise und bis bald.
 	'Beyond this, the per-hour surcharge applies. A price, not a limit.' => 'Darüber hinaus gilt der Stundenzuschlag. Ein Preis, keine Grenze.',
 	'Lets a guest book without transferring first. Off means every booking arrives with a receipt attached, which is safer but loses the ones abandoned at the transfer screen.' => 'Erlaubt Gästen, ohne vorherige Überweisung zu buchen. Ausgeschaltet kommt jede Buchung mit Beleg an – sicherer, kostet aber die Buchungen, die beim Überweisungsschritt abgebrochen werden.',
 	'The longest stay cannot be shorter than the shortest one.' => 'Die längste Buchung kann nicht kürzer als die kürzeste sein.',
+	'Nothing free on %s.' => 'Am %s ist nichts frei.',
+	'Select all' => 'Alle auswählen',
+	'%d selected' => array( '%d ausgewählt', '%d ausgewählt' ),
+	'Delete %d booking?' => array( '%d Buchung löschen?', '%d Buchungen löschen?' ),
+	'Delete %d customer?' => array( '%d Kunden löschen?', '%d Kunden löschen?' ),
+	'Delete %d extra?' => array( '%d Zusatz löschen?', '%d Zusätze löschen?' ),
+	'Delete %d payment?' => array( '%d Zahlung löschen?', '%d Zahlungen löschen?' ),
+	'The bookings and everything attached to them — payments, extras, history — are removed for good. Dates they held go back on sale. This cannot be undone.' => 'Die Buchungen und alles, was daran hängt – Zahlungen, Zusätze, Verlauf – werden endgültig entfernt. Die belegten Termine sind wieder buchbar. Das lässt sich nicht rückgängig machen.',
+	'Only customers with no bookings can be removed. Any that still have one are left alone and reported. This cannot be undone.' => 'Es lassen sich nur Kunden ohne Buchungen entfernen. Kunden, die noch eine haben, bleiben unangetastet und werden gemeldet. Das lässt sich nicht rückgängig machen.',
+	'The payments are removed and each booking is marked paid, part paid or unpaid again from what is left. This cannot be undone.' => 'Die Zahlungen werden entfernt und jede Buchung wird anhand des Rests neu als bezahlt, teilweise bezahlt oder offen eingestuft. Das lässt sich nicht rückgängig machen.',
+	'They will be removed and detached from any booking they were added to. Those bookings keep the total they were taken at. This cannot be undone.' => 'Sie werden entfernt und von jeder Buchung gelöst, zu der sie hinzugefügt wurden. Diese Buchungen behalten den Betrag, zu dem sie aufgenommen wurden. Das lässt sich nicht rückgängig machen.',
+	'That customer no longer exists.' => 'Diesen Kunden gibt es nicht mehr.',
+	'This customer still has %d booking. Delete or reassign it first.' => array( 'Dieser Kunde hat noch %d Buchung. Löschen oder übertragen Sie sie zuerst.', 'Dieser Kunde hat noch %d Buchungen. Löschen oder übertragen Sie sie zuerst.' ),
+	'Weekday' => 'Wochentag',
+	'Weekend' => 'Wochenende',
+	'Fixed on this day.' => 'An diesem Tag festgelegt.',
+	'<h1>Summary for {{summary_date}}</h1>
+
+<table class="bks-cards">
+<tr>
+<td class="bks-card"><span class="bks-card__label">Bookings</span><span class="bks-card__figure">{{bookings_count}}</span><span class="bks-card__note">{{bookings_total}} in total</span></td>
+<td class="bks-card"><span class="bks-card__label">Money in</span><span class="bks-card__figure">{{received_total}}</span><span class="bks-card__note">settled on this day</span></td>
+</tr>
+<tr>
+<td class="bks-card"><span class="bks-card__label">Cancellations</span><span class="bks-card__figure">{{cancelled_count}}</span><span class="bks-card__note">cancelled for this day</span></td>
+<td class="bks-card"><span class="bks-card__label">Paid on site</span><span class="bks-card__figure">{{onsite_total}}</span><span class="bks-card__note">{{onsite_count}} payments</span></td>
+</tr>
+</table>
+
+<h2>Overview {{summary_date}}</h2>
+
+<table>
+<tr><th>Bookings</th><td>{{bookings_count}}</td></tr>
+<tr><th>Apartments booked</th><td>{{apartments}}</td></tr>
+<tr><th>Value of those bookings</th><td>{{bookings_total}}</td></tr>
+<tr><th>Received by transfer</th><td>{{transfer_total}}</td></tr>
+<tr><th>Received by card</th><td>{{card_total}}</td></tr>
+<tr><th>Paid on site</th><td>{{onsite_count}} totalling {{onsite_total}}</td></tr>
+<tr><th>Cancellations</th><td>{{cancelled_count}}</td></tr>
+</table>
+
+<h2>Appointments {{summary_date}}</h2>
+
+<table>
+<tr><th>Time</th><th>Apartment</th><th>Guest</th><th>Total</th></tr>
+{{bookings_table}}
+</table>
+
+<p><a href="{{admin_url}}">Open the bookings screen</a></p>
+
+<p>{{site_name}} — generated automatically, no reply needed.</p>
+' => '<h1>Übersicht für {{summary_date}}</h1>
+
+<table class="bks-cards">
+<tr>
+<td class="bks-card"><span class="bks-card__label">Buchungen</span><span class="bks-card__figure">{{bookings_count}}</span><span class="bks-card__note">{{bookings_total}} insgesamt</span></td>
+<td class="bks-card"><span class="bks-card__label">Zahlungseingang</span><span class="bks-card__figure">{{received_total}}</span><span class="bks-card__note">an diesem Tag verbucht</span></td>
+</tr>
+<tr>
+<td class="bks-card"><span class="bks-card__label">Stornierungen</span><span class="bks-card__figure">{{cancelled_count}}</span><span class="bks-card__note">für diesen Tag storniert</span></td>
+<td class="bks-card"><span class="bks-card__label">Vor-Ort-Zahlungen</span><span class="bks-card__figure">{{onsite_total}}</span><span class="bks-card__note">{{onsite_count}} Zahlungen</span></td>
+</tr>
+</table>
+
+<h2>Überblick {{summary_date}}</h2>
+
+<table>
+<tr><th>Buchungen</th><td>{{bookings_count}}</td></tr>
+<tr><th>Gebuchte Apartments</th><td>{{apartments}}</td></tr>
+<tr><th>Wert dieser Buchungen</th><td>{{bookings_total}}</td></tr>
+<tr><th>Eingang per Überweisung</th><td>{{transfer_total}}</td></tr>
+<tr><th>Eingang per Karte</th><td>{{card_total}}</td></tr>
+<tr><th>Vor Ort bezahlt</th><td>{{onsite_count}} mit insgesamt {{onsite_total}}</td></tr>
+<tr><th>Stornierungen</th><td>{{cancelled_count}}</td></tr>
+</table>
+
+<h2>Terminübersicht {{summary_date}}</h2>
+
+<table>
+<tr><th>Zeit</th><th>Apartment</th><th>Gast</th><th>Summe</th></tr>
+{{bookings_table}}
+</table>
+
+<p><a href="{{admin_url}}">Buchungen im Adminbereich öffnen</a></p>
+
+<p>{{site_name}} — automatisch erstellt, keine Antwort nötig.</p>
+',
+	'Summary for {{summary_date}} — {{bookings_count}} bookings' => 'Übersicht für {{summary_date}} — {{bookings_count}} Buchungen',
+	'Daily summary' => 'Tagesübersicht',
+	'Daily summary (owner)' => 'Tagesübersicht (Betreiber)',
+	'The day\'s figures, sent on a schedule rather than against a booking. The time and the recipients are set under Settings → Notifications.' => 'Die Zahlen des Tages, zeitgesteuert versendet statt zu einer einzelnen Buchung. Uhrzeit und Empfänger stehen unter Einstellungen → Benachrichtigungen.',
+	'One email a day with that day\'s figures: bookings, money in, cancellations, and the list of who is arriving.' => 'Eine E-Mail pro Tag mit den Zahlen des Tages: Buchungen, Zahlungseingang, Stornierungen und die Liste der anreisenden Gäste.',
+	'Send the summary automatically' => 'Übersicht automatisch senden',
+	'Off keeps the settings and the button below, but nothing is sent on a schedule.' => 'Ausgeschaltet bleiben die Einstellungen und die Schaltfläche unten erhalten, es wird aber nichts zeitgesteuert versendet.',
+	'Send at' => 'Senden um',
+	'Before 06:00 the summary reports on the day that has just ended; from 06:00 onwards it reports on the day in progress.' => 'Vor 06:00 Uhr berichtet die Übersicht über den soeben beendeten Tag, ab 06:00 Uhr über den laufenden Tag.',
+	'Send to' => 'Senden an',
+	'One address per line. Left empty, it goes to the notification address on the Company tab.' => 'Eine Adresse pro Zeile. Bleibt das Feld leer, geht die E-Mail an die Benachrichtigungsadresse im Reiter Unternehmen.',
+	'Send summary now' => 'Übersicht jetzt senden',
+	'Sends the saved settings, so save first if you have just changed the addresses.' => 'Versendet mit den gespeicherten Einstellungen — bitte zuerst speichern, wenn Sie die Adressen gerade geändert haben.',
+	'Sent to %1$d address for %2$s.' => array( 'An %1$d Adresse für %2$s gesendet.', 'An %1$d Adressen für %2$s gesendet.' ),
+	'Add at least one address for the summary to go to.' => 'Bitte mindestens eine Adresse angeben, an die die Übersicht gehen soll.',
+	'Nothing was sent. Check that email notifications are on and that the daily summary template is enabled.' => 'Es wurde nichts gesendet. Bitte prüfen, ob E-Mail-Benachrichtigungen aktiv sind und die Vorlage für die Tagesübersicht aktiviert ist.',
+	'Nothing booked for this day.' => 'Für diesen Tag ist nichts gebucht.',
+	'Apartment %d' => 'Apartment %d',
+	'cancelled' => 'storniert',
+	'Add address' => 'Adresse hinzufügen',
+	'Add as many as you like. Left empty, the summary goes to the notification address on the Company tab.' => 'Beliebig viele Adressen möglich. Bleibt die Liste leer, geht die Übersicht an die Benachrichtigungsadresse im Reiter Unternehmen.',
+	'Remove %s' => '%s entfernen',
+	'That address is already on the list.' => 'Diese Adresse steht bereits auf der Liste.',
+	'That does not look like an email address.' => 'Das sieht nicht nach einer E-Mail-Adresse aus.',
+	'name@example.com' => 'name@example.com',
 );

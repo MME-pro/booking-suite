@@ -15,7 +15,7 @@
 
 import { addDays, startOfWeek } from 'date-fns';
 
-import { toDate } from '../../../lib/dates';
+import { siteNow, toDate } from '../../../lib/dates';
 
 /** A day, in the unit the grids position with. */
 export const MINUTES_IN_DAY = 1440;
@@ -227,7 +227,7 @@ export function daySegments( bookings, date, apartmentIds = null ) {
  * @param {Date} now  The current moment.
  * @return {number|null} Where the now line goes, or null for no line.
  */
-export function nowMinutes( date, now = new Date() ) {
+export function nowMinutes( date, now = siteNow() ) {
 	if (
 		! date ||
 		date.getFullYear() !== now.getFullYear() ||

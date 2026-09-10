@@ -12,6 +12,7 @@ import { BadgeEuro, Eye, Receipt } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
 	Table,
 	TableBody,
@@ -27,6 +28,7 @@ import { PaymentCard } from '../PaymentCard';
 
 export default function PaymentsTable( {
 	payments,
+	selection = null,
 	onView,
 	onMarkPaid,
 	busyId = null,
@@ -59,6 +61,18 @@ export default function PaymentsTable( {
 				<Table>
 					<TableHeader>
 						<TableRow className="hover:bg-transparent">
+							{ selection && (
+								<TableHead className="w-10">
+									<Checkbox
+										checked={ selection.allSelected }
+										aria-label={ __(
+											'Select all',
+											'booking-suite'
+										) }
+										onCheckedChange={ selection.toggleAll }
+									/>
+								</TableHead>
+							) }
 							<TableHead className="w-[150px]">
 								{ __( 'Booking', 'booking-suite' ) }
 							</TableHead>
@@ -91,9 +105,34 @@ export default function PaymentsTable( {
 							return (
 								<TableRow
 									key={ payment.id }
+									data-state={
+										selection?.isSelected( payment.id )
+											? 'selected'
+											: undefined
+									}
 									onClick={ () => onView( payment ) }
 									className="cursor-pointer"
 								>
+									{ selection && (
+										<TableCell
+											className="w-10"
+											onClick={ ( event ) =>
+												event.stopPropagation()
+											}
+										>
+											<Checkbox
+												checked={ selection.isSelected(
+													payment.id
+												) }
+												aria-label={ payment.reference }
+												onCheckedChange={ () =>
+													selection.toggle(
+														payment.id
+													)
+												}
+											/>
+										</TableCell>
+									) }
 									<TableCell className="font-medium tabular-nums">
 										<div className="flex flex-col">
 											<span>

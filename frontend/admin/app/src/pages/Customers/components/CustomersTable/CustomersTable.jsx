@@ -18,6 +18,7 @@ import { History } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
 	Table,
 	TableBody,
@@ -33,6 +34,7 @@ import { CustomerCard } from '../CustomerCard';
 
 export default function CustomersTable( {
 	customers,
+	selection = null,
 	onViewHistory,
 	emptyContent = null,
 } ) {
@@ -60,6 +62,18 @@ export default function CustomersTable( {
 				<Table>
 					<TableHeader>
 						<TableRow className="hover:bg-transparent">
+							{ selection && (
+								<TableHead className="w-10">
+									<Checkbox
+										checked={ selection.allSelected }
+										aria-label={ __(
+											'Select all',
+											'booking-suite'
+										) }
+										onCheckedChange={ selection.toggleAll }
+									/>
+								</TableHead>
+							) }
 							<TableHead>
 								{ __( 'Customer', 'booking-suite' ) }
 							</TableHead>
@@ -93,9 +107,32 @@ export default function CustomersTable( {
 						{ customers.map( ( customer ) => (
 							<TableRow
 								key={ customer.id }
+								data-state={
+									selection?.isSelected( customer.id )
+										? 'selected'
+										: undefined
+								}
 								onClick={ () => onViewHistory( customer ) }
 								className="cursor-pointer"
 							>
+								{ selection && (
+									<TableCell
+										className="w-10"
+										onClick={ ( event ) =>
+											event.stopPropagation()
+										}
+									>
+										<Checkbox
+											checked={ selection.isSelected(
+												customer.id
+											) }
+											aria-label={ customer.name }
+											onCheckedChange={ () =>
+												selection.toggle( customer.id )
+											}
+										/>
+									</TableCell>
+								) }
 								<TableCell>
 									<div className="flex items-center gap-3">
 										<span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">

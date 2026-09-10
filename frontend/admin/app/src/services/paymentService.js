@@ -39,6 +39,19 @@ export const paymentService = {
 	 */
 	setStatus: ( id, status, signal ) =>
 		http.put( `${ RESOURCE }/${ id }`, { status }, { signal } ),
+
+	/**
+	 * Remove a payment.
+	 *
+	 * The booking's own payment status is re-derived on the server, so a
+	 * booking never stays marked paid for money no longer recorded.
+	 *
+	 * @param {number}      id
+	 * @param {AbortSignal} [signal]
+	 */
+	async remove( id, signal ) {
+		return http.delete( `${ RESOURCE }/${ id }`, { signal } );
+	},
 };
 
 export default paymentService;

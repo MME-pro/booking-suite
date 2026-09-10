@@ -654,14 +654,7 @@ final class Invoice {
 	}
 
 	private static function symbol( string $currency ): string {
-		$symbols = array(
-			'EUR' => '€',
-			'USD' => '$',
-			'GBP' => '£',
-			'CHF' => 'CHF',
-		);
-
-		return $symbols[ strtoupper( $currency ) ] ?? $currency;
+		return SettingsRepository::currency_symbol( $currency );
 	}
 
 	/**

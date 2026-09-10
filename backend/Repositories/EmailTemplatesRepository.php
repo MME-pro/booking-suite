@@ -54,6 +54,9 @@ final class EmailTemplatesRepository {
 	/** Tells the owner money has arrived. */
 	public const ADMIN_PAYMENT_RECEIVED = 'admin_payment_received';
 
+	/** The day's figures, sent on a schedule rather than to a booking. */
+	public const DAILY_SUMMARY = 'daily_summary';
+
 	/**
 	 * Who a template is written for.
 	 *
@@ -94,6 +97,7 @@ final class EmailTemplatesRepository {
 			self::BALANCE_DUE             => self::AUDIENCE_GUEST,
 			self::ADMIN_BOOKING_CONFIRMED => self::AUDIENCE_ADMIN,
 			self::ADMIN_PAYMENT_RECEIVED  => self::AUDIENCE_ADMIN,
+			self::DAILY_SUMMARY           => self::AUDIENCE_ADMIN,
 		);
 	}
 
@@ -388,6 +392,53 @@ final class EmailTemplatesRepository {
 					. "<tr><th>Booking total</th><td>{{total}}</td></tr>\n"
 					. "</table>\n"
 					. '<p><a href="{{admin_url}}">Open this booking in the admin</a></p>',
+					'booking-suite'
+				),
+			),
+			self::DAILY_SUMMARY  => array(
+				'label'       => __( 'Daily summary (owner)', 'booking-suite' ),
+				'description' => __(
+					'The day\'s figures, sent on a schedule rather than against a booking. The time and the recipients are set under Settings → Notifications.',
+					'booking-suite'
+				),
+				'enabled'     => true,
+				'subject'     => __( 'Summary for {{summary_date}} — {{bookings_count}} bookings', 'booking-suite' ),
+				'body'        => __(
+					"<h1>Summary for {{summary_date}}</h1>\n"
+					. "\n"
+					. "<table class=\"bks-cards\">\n"
+					. "<tr>\n"
+					. "<td class=\"bks-card\"><span class=\"bks-card__label\">Bookings</span><span class=\"bks-card__figure\">{{bookings_count}}</span><span class=\"bks-card__note\">{{bookings_total}} in total</span></td>\n"
+					. "<td class=\"bks-card\"><span class=\"bks-card__label\">Money in</span><span class=\"bks-card__figure\">{{received_total}}</span><span class=\"bks-card__note\">settled on this day</span></td>\n"
+					. "</tr>\n"
+					. "<tr>\n"
+					. "<td class=\"bks-card\"><span class=\"bks-card__label\">Cancellations</span><span class=\"bks-card__figure\">{{cancelled_count}}</span><span class=\"bks-card__note\">cancelled for this day</span></td>\n"
+					. "<td class=\"bks-card\"><span class=\"bks-card__label\">Paid on site</span><span class=\"bks-card__figure\">{{onsite_total}}</span><span class=\"bks-card__note\">{{onsite_count}} payments</span></td>\n"
+					. "</tr>\n"
+					. "</table>\n"
+					. "\n"
+					. "<h2>Overview {{summary_date}}</h2>\n"
+					. "\n"
+					. "<table>\n"
+					. "<tr><th>Bookings</th><td>{{bookings_count}}</td></tr>\n"
+					. "<tr><th>Apartments booked</th><td>{{apartments}}</td></tr>\n"
+					. "<tr><th>Value of those bookings</th><td>{{bookings_total}}</td></tr>\n"
+					. "<tr><th>Received by transfer</th><td>{{transfer_total}}</td></tr>\n"
+					. "<tr><th>Received by card</th><td>{{card_total}}</td></tr>\n"
+					. "<tr><th>Paid on site</th><td>{{onsite_count}} totalling {{onsite_total}}</td></tr>\n"
+					. "<tr><th>Cancellations</th><td>{{cancelled_count}}</td></tr>\n"
+					. "</table>\n"
+					. "\n"
+					. "<h2>Appointments {{summary_date}}</h2>\n"
+					. "\n"
+					. "<table>\n"
+					. "<tr><th>Time</th><th>Apartment</th><th>Guest</th><th>Total</th></tr>\n"
+					. "{{bookings_table}}\n"
+					. "</table>\n"
+					. "\n"
+					. "<p><a href=\"{{admin_url}}\">Open the bookings screen</a></p>\n"
+					. "\n"
+					. "<p>{{site_name}} — generated automatically, no reply needed.</p>\n",
 					'booking-suite'
 				),
 			),

@@ -18,6 +18,7 @@ declare( strict_types=1 );
 namespace BookingSuite\Backend\APIs;
 
 use BookingSuite\Backend\Repositories\SettingsRepository;
+use BookingSuite\Backend\Support\DailySummary;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -89,12 +90,16 @@ final class SettingsController {
 		'daytimeSlotStart' => SettingsRepository::DAYTIME_SLOT_START,
 		'daytimeSlotEnd'   => SettingsRepository::DAYTIME_SLOT_END,
 		'allowPayLater'  => SettingsRepository::ALLOW_PAY_LATER,
+		'dailySummaryEnabled'    => SettingsRepository::DAILY_SUMMARY_ENABLED,
+		'dailySummaryTime'       => SettingsRepository::DAILY_SUMMARY_TIME,
+		'dailySummaryRecipients' => SettingsRepository::DAILY_SUMMARY_RECIPIENTS,
 		'termsUrl'       => SettingsRepository::TERMS_URL,
 		'privacyUrl'     => SettingsRepository::PRIVACY_URL,
 	);
 
 	/** Free-text fields: stored as written, escaped when drawn. */
 	private const TEXT_KEYS = array(
+		'dailySummaryRecipients',
 		'invoiceSender',
 		'invoiceThanks',
 		'invoiceNotice',
@@ -285,6 +290,21 @@ final class SettingsController {
 							'type'     => 'boolean',
 							'required' => false,
 						),
+						'dailySummaryEnabled' => array(
+							'type'     => 'boolean',
+							'required' => false,
+						),
+						'dailySummaryTime'    => self::clock(),
+						'dailySummaryRecipients' => array(
+							/*
+							 * Free text rather than a list of addresses: the
+							 * repository is what decides which lines are
+							 * usable, so a typo costs the owner that one
+							 * recipient rather than the whole save.
+							 */
+							'type'     => 'string',
+							'required' => false,
+						),
 						'termsUrl'       => array(
 							'type'              => 'string',
 							'required'          => false,
@@ -298,6 +318,84 @@ final class SettingsController {
 					),
 				),
 			)
+		);
+
+		/*
+		 * Sending is its own route rather than a flag on the save. An owner
+		 * wants to see the email before committing to a time, and a save that
+		 * mails people as a side effect is a trap: every stray click on Save
+		 * would put another message in someone's inbox.
+		 */
+		register_rest_route(
+			self::NAMESPACE,
+			'/' . self::ROUTE . '/daily-summary',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( self::class, 'send_summary' ),
+				'permission_callback' => array( self::class, 'can_manage' ),
+				'args'                => array(
+					'date' => array(
+						'type'              => 'string',
+						'required'          => false,
+						'validate_callback' => static fn( $value ): bool =>
+							is_string( $value ) && 1 === preg_match( '/^\d{4}-\d{2}-\d{2}$/', trim( $value ) ),
+					),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Send the summary for one day, now.
+	 *
+	 * @param WP_REST_Request $request The request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function send_summary( WP_REST_Request $request ) {
+		$date = trim( (string) $request->get_param( 'date' ) );
+
+		if ( '' === $date ) {
+			$date = DailySummary::target_date();
+		}
+
+		$recipients = SettingsRepository::daily_summary_recipients();
+
+		if ( ! $recipients ) {
+			return new WP_Error(
+				'booking_suite_no_recipients',
+				__( 'Add at least one address for the summary to go to.', 'booking-suite' ),
+				array(
+					'status' => 400,
+					'field'  => 'dailySummaryRecipients',
+				)
+			);
+		}
+
+		$sent = DailySummary::send( $date );
+
+		/*
+		 * Nothing sent is reported as a failure rather than as a quiet success.
+		 * The two ways it happens — notifications switched off, or the template
+		 * disabled — both look identical from the screen otherwise, and an
+		 * owner who pressed the button and saw "done" would go on believing
+		 * the schedule works.
+		 */
+		if ( 0 === $sent ) {
+			return new WP_Error(
+				'booking_suite_summary_not_sent',
+				__( 'Nothing was sent. Check that email notifications are on and that the daily summary template is enabled.', 'booking-suite' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		return new WP_REST_Response(
+			array(
+				'sent'       => $sent,
+				'date'       => $date,
+				'recipients' => $recipients,
+				'figures'    => DailySummary::figures( $date ),
+			),
+			200
 		);
 	}
 
@@ -385,6 +483,9 @@ final class SettingsController {
 			'daytimeSlotEnd'   => SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_END ),
 			'allowPayLater'  => SettingsRepository::pay_later_allowed(),
 			'emailNotifications' => SettingsRepository::emails_enabled(),
+			'dailySummaryEnabled'    => SettingsRepository::daily_summary_enabled(),
+			'dailySummaryTime'       => SettingsRepository::get( SettingsRepository::DAILY_SUMMARY_TIME ),
+			'dailySummaryRecipients' => SettingsRepository::get( SettingsRepository::DAILY_SUMMARY_RECIPIENTS ),
 			'termsUrl'       => SettingsRepository::get( SettingsRepository::TERMS_URL ),
 			'privacyUrl'     => SettingsRepository::get( SettingsRepository::PRIVACY_URL ),
 		);
@@ -465,6 +566,14 @@ final class SettingsController {
 
 			SettingsRepository::set( $stored_key, $value );
 		}
+
+		/*
+		 * The scheduled send is booked from admin_init, which a REST save
+		 * never reaches — so without this the new time would not take effect
+		 * until the next admin page load, and switching the summary off would
+		 * leave one more email to arrive.
+		 */
+		DailySummary::schedule();
 
 		self::purge_page_caches();
 

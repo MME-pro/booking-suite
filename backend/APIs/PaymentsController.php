@@ -95,8 +95,38 @@ final class PaymentsController {
 						),
 					),
 				),
+				array(
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => array( self::class, 'destroy' ),
+					'permission_callback' => array( self::class, 'can_manage' ),
+				),
 			)
 		);
+	}
+
+	/**
+	 * Remove a payment, and put the booking's status back where it belongs.
+	 *
+	 * The repository does the recalculating: a booking marked paid for money
+	 * no longer recorded anywhere is the one state nobody can reconcile
+	 * against a bank statement.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function destroy( WP_REST_Request $request ) {
+		$id = (int) $request['id'];
+
+		if ( null === PaymentsRepository::find( $id ) ) {
+			return new WP_Error(
+				'booking_suite_not_found',
+				__( 'That payment no longer exists.', 'booking-suite' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		PaymentsRepository::delete( $id );
+
+		return new WP_REST_Response( array( 'deleted' => true, 'id' => $id ), 200 );
 	}
 
 	public static function can_manage(): bool {

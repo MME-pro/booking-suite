@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\Repositories;
 
+use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Schemas\BookingEventsTable;
 use BookingSuite\Backend\Schemas\BookingsTable;
 use BookingSuite\Backend\Schemas\CustomersTable;
@@ -465,4 +466,54 @@ final class PaymentsRepository {
 			'createdAt' => (string) $row['created_at'],
 		);
 	}
-}
+
+	/**
+	 * Remove a payment, and put the booking's totals back.
+	 *
+	 * A payment is not a record of itself — it is part of what a booking has
+	 * been paid. Deleting the row without recalculating would leave a booking
+	 * marked paid for money that is no longer recorded anywhere, which is the
+	 * one state nobody can reconcile against a bank statement.
+	 *
+	 * @param int $id The payment.
+	 * @return bool Whether the row went.
+	 */
+	public static function delete( int $id ): bool {
+		global $wpdb;
+
+		$payment = self::find( $id );
+
+		if ( null === $payment ) {
+			return false;
+		}
+
+		$gone = (bool) $wpdb->delete( PaymentsTable::table(), array( 'id' => $id ), array( '%d' ) );
+
+		if ( ! $gone ) {
+			return false;
+		}
+
+		$booking_id = (int) $payment['bookingId'];
+		$booking    = BookingsRepository::find( $booking_id );
+
+		if ( null === $booking ) {
+			return true;
+		}
+
+		$paid  = self::settled_for( $booking_id );
+		$total = (float) ( $booking['totalAmount'] ?? $booking['total_amount'] ?? 0 );
+
+		if ( $paid + 0.005 >= $total && $total > 0 ) {
+			$status = 'paid';
+		} elseif ( $paid > 0.005 ) {
+			$status = 'partial';
+		} else {
+			$status = 'unpaid';
+		}
+
+		// Through the repository, so the change leaves a trace like every
+		// other edit to a booking rather than being the one silent one.
+		BookingsRepository::update( $booking_id, array( 'payment_status' => $status ) );
+
+		return true;
+	}}

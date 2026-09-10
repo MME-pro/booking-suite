@@ -3,19 +3,20 @@
  */
 
 import { settings } from '../../../settings';
+import { toDate } from '../../../lib/dates';
 
 const toBcp47 = ( locale ) => String( locale || 'de_DE' ).replace( '_', '-' );
 
-// Booking times are stored as 'Y-m-d H:i:s' in UTC.
+/*
+ * Booking times are the property's wall clock, not an instant — see
+ * lib/dates.js. toDate keeps them that way; this used to append 'Z' and shift
+ * every booking on the list by the viewer's own offset.
+ */
 export function formatDateTime( value ) {
-	if ( ! value ) {
-		return '';
-	}
+	const date = toDate( value );
 
-	const date = new Date( value.replace( ' ', 'T' ) + 'Z' );
-
-	if ( Number.isNaN( date.getTime() ) ) {
-		return value;
+	if ( ! date ) {
+		return value ? String( value ) : '';
 	}
 
 	return new Intl.DateTimeFormat( toBcp47( settings.locale ), {

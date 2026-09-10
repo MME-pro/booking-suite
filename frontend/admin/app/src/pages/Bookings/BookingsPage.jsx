@@ -47,6 +47,8 @@ import { bookingService } from '../../services';
 import { BookingsTable } from './components/BookingsTable';
 import { ListPager } from '@/components/ListPager';
 import { usePaged } from '@/hooks/usePaged';
+import { useRowSelection } from '../../hooks/useRowSelection';
+import { BulkBar } from '../../components/BulkBar';
 import { BookingDetail } from './components/BookingDetail';
 import { BookingForm } from './components/BookingForm';
 import { PaymentDialog } from './components/PaymentDialog';
@@ -157,6 +159,47 @@ export default function BookingsPage() {
 	 * every booking rather than the page you happen to be on.
 	 */
 	const paged = usePaged( visible );
+
+	/*
+	 * Ticked rows. The hook drops ticks for rows that leave the list, so the
+	 * number beside "selected" is always the number of boxes on screen.
+	 */
+	const selection = useRowSelection( paged.rows );
+
+	const [ isBulkPending, setBulkPending ] = useState( false );
+	const [ isBulkBusy, setBulkBusy ] = useState( false );
+
+	const confirmBulkDelete = async () => {
+		const ids = selection.ids;
+
+		setBulkPending( false );
+		setBulkBusy( true );
+
+		/*
+		 * One request per row against the endpoint that already exists. A row
+		 * the server refuses then costs that row rather than the batch, and
+		 * whatever did go is still gone from the screen.
+		 */
+		const gone = [];
+		let failure = null;
+
+		for ( const id of ids ) {
+			try {
+				await bookingService.remove( id );
+				gone.push( id );
+			} catch ( cause ) {
+				failure = cause.message;
+			}
+		}
+
+		setBookings( ( current ) =>
+			current.filter( ( row ) => ! gone.includes( row.id ) )
+		);
+
+		selection.clear();
+		setError( failure );
+		setBulkBusy( false );
+	};
 
 	const tabs = [ 'all', ...statuses ];
 
@@ -544,35 +587,45 @@ export default function BookingsPage() {
 					 * the table, and around the empty state.
 					 */ }
 					{ bookings.length > 0 ? (
-						<BookingsTable
-							bookings={ paged.rows }
-							onSelectBooking={ setSelectedBooking }
-							busyId={ busyId }
-							onApprove={ ( booking ) =>
-								runQuickAction( booking, {
-									status: 'confirmed',
-								} )
-							}
-							onMarkPaid={ ( booking ) =>
-								runQuickAction( booking, {
-									payment_status: 'paid',
-								} )
-							}
-							onViewPayment={ setPayingBooking }
-							onDelete={ setPendingDelete }
-							emptyContent={
-								<EmptyBookings
-									title={ __(
-										'No bookings match your filter',
-										'booking-suite'
-									) }
-									description={ __(
-										'Try another status, or clear the search to see all requests.',
-										'booking-suite'
-									) }
-								/>
-							}
-						/>
+						<>
+							<BulkBar
+								count={ selection.count }
+								isBusy={ isBulkBusy }
+								onClear={ selection.clear }
+								onDelete={ () => setBulkPending( true ) }
+							/>
+
+							<BookingsTable
+								bookings={ paged.rows }
+								selection={ selection }
+								onSelectBooking={ setSelectedBooking }
+								busyId={ busyId }
+								onApprove={ ( booking ) =>
+									runQuickAction( booking, {
+										status: 'confirmed',
+									} )
+								}
+								onMarkPaid={ ( booking ) =>
+									runQuickAction( booking, {
+										payment_status: 'paid',
+									} )
+								}
+								onViewPayment={ setPayingBooking }
+								onDelete={ setPendingDelete }
+								emptyContent={
+									<EmptyBookings
+										title={ __(
+											'No bookings match your filter',
+											'booking-suite'
+										) }
+										description={ __(
+											'Try another status, or clear the search to see all requests.',
+											'booking-suite'
+										) }
+									/>
+								}
+							/>
+						</>
 					) : (
 						<Card className="overflow-hidden">
 							<EmptyBookings
@@ -622,6 +675,45 @@ export default function BookingsPage() {
 					} }
 				/>
 			) }
+
+			<AlertDialog
+				open={ isBulkPending }
+				onOpenChange={ ( open ) => ! open && setBulkPending( false ) }
+			>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							{ sprintf(
+								/* translators: %d: how many rows are ticked. */
+								_n(
+									'Delete %d booking?',
+									'Delete %d bookings?',
+									selection.count,
+									'booking-suite'
+								),
+								selection.count
+							) }
+						</AlertDialogTitle>
+						<AlertDialogDescription>
+							{ __(
+								'The bookings and everything attached to them — payments, extras, history — are removed for good. Dates they held go back on sale. This cannot be undone.',
+								'booking-suite'
+							) }
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>
+							{ __( 'Cancel', 'booking-suite' ) }
+						</AlertDialogCancel>
+						<AlertDialogAction
+							onClick={ confirmBulkDelete }
+							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+						>
+							{ __( 'Delete', 'booking-suite' ) }
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</div>
 	);
 }

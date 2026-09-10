@@ -23,7 +23,7 @@ import { chipStyle } from '../BookingChip';
 import { LockChip } from '../LockChip';
 import { nowMinutes } from '../../data/segments';
 import { useHolidays } from '../../../../hooks/useHolidays';
-import { dayKey, formatClock, formatTime } from '../../../../lib/dates';
+import { dayKey, formatClock, formatTime, siteNow } from '../../../../lib/dates';
 import { formatMoney } from '../../../Bookings/data/format';
 
 /** Pixels per hour. Tall enough that a one-hour booking is a real target. */
@@ -172,10 +172,10 @@ export default function TimeGrid( {
 	 * all morning, and a line frozen at whenever the page loaded is worse than
 	 * no line, because it is quietly wrong rather than obviously absent.
 	 */
-	const [ now, setNow ] = useState( () => new Date() );
+	const [ now, setNow ] = useState( siteNow );
 
 	useEffect( () => {
-		const timer = setInterval( () => setNow( new Date() ), 60000 );
+		const timer = setInterval( () => setNow( siteNow() ), 60000 );
 
 		return () => clearInterval( timer );
 	}, [] );

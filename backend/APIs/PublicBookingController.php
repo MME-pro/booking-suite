@@ -355,6 +355,22 @@ final class PublicBookingController {
 			)
 		);
 
+		/*
+		 * Whether this booking holds its dates.
+		 *
+		 * Only 'reserved' and 'confirmed' block the window; 'pending' does
+		 * not, which meant a completed booking left the slot on sale and two
+		 * guests could take the same Friday. A booking that arrives with a
+		 * receipt is therefore reserved straight away — the schema's own note
+		 * calls that status "held for the guest while payment is awaited",
+		 * which is exactly this.
+		 *
+		 * One that defers payment stays pending and holds nothing. The owner
+		 * chose that trade: a booking showing no evidence of payment should
+		 * not be able to take dates off the board on its own say-so.
+		 */
+		$status = $defer ? 'pending' : 'reserved';
+
 		$booking_id = BookingsRepository::create(
 			array(
 				'room_id'      => $parsed['apartment']['id'],
@@ -362,6 +378,7 @@ final class PublicBookingController {
 				'guests'       => $parsed['guests'],
 				'starts_at'    => $parsed['starts_at'],
 				'ends_at'      => $parsed['ends_at'],
+				'status'       => $status,
 				'total_amount' => $quote['total'],
 				'notes'        => (string) $request->get_param( 'notes' ),
 			)
@@ -392,7 +409,7 @@ final class PublicBookingController {
 			array(
 				'id'        => $booking_id,
 				'reference' => $booking['reference'] ?? '',
-				'status'    => 'pending',
+				'status'    => $status,
 				'total'     => $quote['total'],
 				'currency'  => SettingsRepository::currency(),
 				'nights'    => $quote['nights'],
@@ -666,71 +683,21 @@ final class PublicBookingController {
 		}
 
 		/*
-		 * The shortest booking a guest may make.
+		 * The rules, asked of the one place that states them.
 		 *
-		 * This endpoint used to take any positive length, on the grounds that
-		 * the setting only shaped the picker's suggestions — but the picker is
-		 * not the only way in, and a typed or posted 1 went straight through.
-		 *
-		 * Guests only. An admin booking is made through BookingsController,
-		 * which deliberately has no minimum: the owner takes a one-hour visit
-		 * or a favour for a regular whenever they choose.
+		 * They apply here and in the admin alike. This endpoint is public, so
+		 * the check has to live on the server whatever the modal does — the
+		 * picker is not the only way in, and a posted length went straight
+		 * through before there was a check here at all.
 		 */
-		$minimum = max( 1, (int) SettingsRepository::number( SettingsRepository::MIN_HOURS ) );
+		$refusal = SlotGenerator::rule_violation( $date, $start_time, $hours );
 
-		if ( $hours < $minimum ) {
-			return self::error(
-				'booking_suite_invalid_field',
-				sprintf(
-					/* translators: %d: the shortest bookable length, in hours. */
-					_n(
-						'Bookings start at %d hour.',
-						'Bookings start at %d hours.',
-						$minimum,
-						'booking-suite'
-					),
-					$minimum
-				),
-				400,
-				'hours'
-			);
+		if ( null !== $refusal ) {
+			return self::error( 'booking_suite_invalid_field', $refusal, 400, 'hours' );
 		}
 
 		$starts = new \DateTimeImmutable( $date . ' ' . $start_time . ':00' );
 		$ends   = $starts->modify( '+' . (int) round( $hours * 60 ) . ' minutes' );
-
-		/*
-		 * On a fixed-block day the daytime offer is that block and nothing
-		 * else, so a window that is not exactly it is refused here rather than
-		 * quietly booked. Overnight stays are unaffected: they are made through
-		 * the stay endpoint, which never reaches this function.
-		 */
-		$block = SlotGenerator::daytime_slot( $apartment, $date, $guests );
-
-		if ( SlotGenerator::is_fixed_block_day( $date ) ) {
-			if ( null === $block ) {
-				return self::error(
-					'booking_suite_invalid_field',
-					__( 'That day is no longer open for daytime bookings.', 'booking-suite' ),
-					400,
-					'startTime'
-				);
-			}
-
-			if ( $starts->format( 'H:i' ) !== $block['start'] || $ends->format( 'H:i' ) !== $block['end'] ) {
-				return self::error(
-					'booking_suite_invalid_field',
-					sprintf(
-						/* translators: 1: start time, 2: end time, both 24-hour. */
-						__( 'On this day the daytime booking runs from %1$s to %2$s. For other times, please book an overnight stay.', 'booking-suite' ),
-						$block['start'],
-						$block['end']
-					),
-					400,
-					'startTime'
-				);
-			}
-		}
 
 		if ( $starts <= new \DateTimeImmutable( current_time( 'mysql' ) ) ) {
 			return self::error( 'booking_suite_invalid_field', __( 'That time has already passed.', 'booking-suite' ), 400, 'startTime' );

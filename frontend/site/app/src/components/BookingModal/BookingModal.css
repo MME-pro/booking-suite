@@ -250,9 +250,17 @@
    Body Container & Scrollable Content
    ═══════════════════════════════════════════════ */
 
+/*
+ * The scrolling half of the dialog.
+ *
+ * The extra room at the foot is deliberate. The body and the footer are flex
+ * siblings, so nothing genuinely overlaps — but content clipped flush against
+ * the footer bar reads as though it does, and a card sliced mid-row gives no
+ * hint that scrolling reveals the rest of it.
+ */
 .bks-booking__body {
 	flex: 1;
-	padding: 32px;
+	padding: 32px 32px 40px;
 	overflow-y: auto;
 	overscroll-behavior: contain;
 }

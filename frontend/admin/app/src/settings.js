@@ -15,6 +15,8 @@ const defaults = {
 	restUrl: '',
 	nonce: '',
 	locale: 'en_US',
+	/** The site's timezone; every booking time is this clock. */
+	timezone: '',
 	assetsUrl: '',
 	workerUrl: '',
 	adminPath: '/wp-admin/',

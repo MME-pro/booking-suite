@@ -36,6 +36,26 @@ export const settingsService = {
 	async update( values, signal ) {
 		return unwrap( await http.put( RESOURCE, values, { signal } ) );
 	},
+
+	/**
+	 * Send the daily summary now, for the day it would cover.
+	 *
+	 * Deliberately separate from update(): sending is not saving, and an
+	 * owner pressing Save should never post mail as a side effect.
+	 *
+	 * @param {string}      [date]   Y-m-d. Defaults to the day the schedule
+	 *                               would report on.
+	 * @param {AbortSignal} [signal]
+	 * @return {Promise<Object>} How many recipients it went to, and the
+	 *                           figures it carried.
+	 */
+	async sendDailySummary( date, signal ) {
+		return http.post(
+			RESOURCE + '/daily-summary',
+			date ? { date } : {},
+			{ signal }
+		);
+	},
 };
 
 export default settingsService;

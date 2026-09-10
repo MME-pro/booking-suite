@@ -43,6 +43,19 @@ export const customerService = {
 
 		return payload?.bookings ?? [];
 	},
+
+	/**
+	 * Remove a customer.
+	 *
+	 * Refused by the server while any booking still points at them, so the
+	 * caller has an error to show rather than a silent no-op.
+	 *
+	 * @param {number}      id
+	 * @param {AbortSignal} [signal]
+	 */
+	async remove( id, signal ) {
+		return http.delete( `${ RESOURCE }/${ id }`, { signal } );
+	},
 };
 
 export default customerService;

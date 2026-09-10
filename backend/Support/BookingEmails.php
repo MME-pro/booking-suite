@@ -189,6 +189,28 @@ final class BookingEmails {
 	}
 
 	/**
+	 * Send a message that belongs to no booking.
+	 *
+	 * The daily summary is about a date rather than a reservation, so it has
+	 * no booking to render placeholders from — but it still wants the same
+	 * layout, the same plain-text alternative and the same content-type
+	 * handling as everything else this plugin sends.
+	 *
+	 * @param string $to      The recipient.
+	 * @param string $subject Already rendered.
+	 * @param string $body    Already rendered.
+	 *
+	 * @return bool Whether wp_mail accepted it.
+	 */
+	public static function send_raw( string $to, string $subject, string $body ): bool {
+		if ( ! SettingsRepository::emails_enabled() ) {
+			return false;
+		}
+
+		return self::deliver( $to, $subject, $body );
+	}
+
+	/**
 	 * Wrap a message in the plugin's layout and hand it to wp_mail.
 	 *
 	 * @param string                $to          The recipient.

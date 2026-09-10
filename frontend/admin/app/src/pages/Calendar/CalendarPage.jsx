@@ -66,7 +66,7 @@ import {
 } from './data/occupancy';
 import { daySegments, weekDays } from './data/segments';
 import { apartmentService, blockService, bookingService } from '../../services';
-import { dayKey } from '../../lib/dates';
+import { dayKey, siteNow } from '../../lib/dates';
 import { settings } from '../../settings';
 
 const toBcp47 = ( locale ) => String( locale || 'de_DE' ).replace( '_', '-' );
@@ -184,14 +184,112 @@ const STATUS_LEGEND = [
 	{ status: 'cancelled', label: __( 'Cancelled', 'booking-suite' ) },
 ];
 
+/**
+ * The calendar's loading state, built to the same measurements as the calendar.
+ *
+ * Not decoration. Two grey bars in place of a month grid meant the page grew by
+ * a few hundred pixels the moment the data landed, and — until the gutter was
+ * reserved in base.css — went from unscrollable to scrollable at the same
+ * moment, which moved the whole admin sideways as well as down.
+ *
+ * So this mirrors the real thing rather than suggesting it: the same card, the
+ * same header bar, the same seven-column weekday strip, and six week rows whose
+ * cells carry the same min-h-[7rem] / md:min-h-[8.5rem] as MonthGrid's. What is
+ * left is the amount a busy day's chips grow their row by, which is the one
+ * part no placeholder can know in advance.
+ */
+function CalendarSkeleton() {
+	// Six, always: react-day-picker draws a fixed six-week grid, so a five-week
+	// month still occupies six rows and the placeholder has to as well.
+	const weeks = [ 0, 1, 2, 3, 4, 5 ];
+	const days = [ 0, 1, 2, 3, 4, 5, 6 ];
+
+	return (
+		<div className="flex flex-col gap-4">
+			<Card className="overflow-hidden">
+				{ /* The header bar: navigation on the left, the two selects on
+				     the right, at the heights the real controls occupy. */ }
+				<div className="flex flex-wrap items-center justify-between gap-4 border-b px-4 py-3">
+					<div className="flex flex-wrap items-center gap-2">
+						<Skeleton className="h-8 w-20" />
+						<Skeleton className="h-6 w-40" />
+						<Skeleton className="h-8 w-20" />
+						<Skeleton className="h-8 w-20" />
+					</div>
+					<div className="flex flex-wrap items-center gap-2">
+						<Skeleton className="h-9 w-36" />
+						<Skeleton className="h-9 w-48" />
+					</div>
+				</div>
+
+				{ /*
+				 * data-slot="calendar", because that is what the reset in
+				 * tailwind.css keys the border style off — Preflight is off
+				 * here, so a `border-r` on an element that did not come
+				 * through cn() sets a width with no style and draws no line at
+				 * all. Without this the placeholder is a blank sheet where the
+				 * calendar has a grid.
+				 */ }
+				<div data-slot="calendar" className="flex w-full flex-col">
+					<div className="flex w-full border-b bg-muted/50">
+						{ days.map( ( day ) => (
+							<div
+								key={ day }
+								className="flex-1 border-r px-3 py-2.5 last:border-r-0"
+							>
+								<Skeleton className="h-3 w-8" />
+							</div>
+						) ) }
+					</div>
+
+					{ weeks.map( ( week ) => (
+						<div key={ week } className="flex w-full flex-1">
+							{ days.map( ( day ) => (
+								<div
+									key={ day }
+									className="flex min-h-[7rem] flex-1 flex-col gap-1 border-b border-r p-2 last:border-r-0 md:min-h-[8.5rem]"
+								>
+									<Skeleton className="h-6 w-6 rounded-full" />
+								</div>
+							) ) }
+						</div>
+					) ) }
+				</div>
+			</Card>
+
+			{ /* The status legend, which sits under the panel. */ }
+			<div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-1">
+				{ [ 0, 1, 2, 3, 4, 5 ].map( ( item ) => (
+					<Skeleton key={ item } className="h-3 w-20" />
+				) ) }
+			</div>
+
+			{ /*
+			 * And the selected day's bookings, which the page always shows
+			 * under the calendar. Leaving it out of the placeholder was 200
+			 * pixels of the jump on its own.
+			 */ }
+			<Card>
+				<CardContent className="flex flex-col gap-3 p-4">
+					<Skeleton className="h-5 w-64" />
+					<Skeleton className="h-4 w-40" />
+					<Skeleton className="h-10 w-full" />
+					<Skeleton className="h-10 w-full" />
+				</CardContent>
+			</Card>
+		</div>
+	);
+}
 export default function CalendarPage() {
 	const [ apartments, setApartments ] = useState( [] );
 	const [ bookings, setBookings ] = useState( [] );
 	const [ blocks, setBlocks ] = useState( [] );
 	const [ isLoading, setLoading ] = useState( true );
 	const [ error, setError ] = useState( null );
-	const [ selected, setSelected ] = useState( () => new Date() );
-	const [ month, setMonth ] = useState( () => new Date() );
+	// The property's today, not the viewer's: an owner opening this at 01:00
+	// from another timezone should land on the day their guests are living in.
+	const [ selected, setSelected ] = useState( siteNow );
+	const [ month, setMonth ] = useState( siteNow );
 
 	/**
 	 * Which view is on screen: the month, a week of hours, or one day.
@@ -404,7 +502,7 @@ export default function CalendarPage() {
 		goTo( addDays( selected, ( WEEK === view ? 7 : 1 ) * delta ) );
 	};
 
-	const goToToday = () => goTo( new Date() );
+	const goToToday = () => goTo( siteNow() );
 
 	/**
 	 * Switching view keeps the day in view rather than the month.
@@ -454,7 +552,7 @@ export default function CalendarPage() {
 			return [];
 		}
 
-		const today = new Date();
+		const today = siteNow();
 
 		return week.map( ( date ) => ( {
 			key: dayKey( date ),
@@ -469,64 +567,43 @@ export default function CalendarPage() {
 	}, [ view, week, selected, bookings, visibleIds, blockDays ] );
 
 	/*
-	 * The day view splits one day by APARTMENT rather than showing a single
-	 * column of everything. On a day with four apartments occupied, one column
-	 * would be four blocks squeezed side by side with nothing saying which is
-	 * which; a column each puts every apartment's day under its own name, in
-	 * its own colour, which is what the operator is actually comparing.
+	 * One column for the day, with every apartment in it — the same shape each
+	 * of the week view's days already has, and the shape a calendar
+	 * application's day view has.
+	 *
+	 * It used to be a column per apartment. That put each apartment's day under
+	 * its own name, but it meant most columns were empty on most days, every
+	 * block repeated the apartment name its own heading already carried, and
+	 * two stays an hour apart in different apartments were drawn as if they had
+	 * nothing to do with each other. In one column they sit on the same ruler,
+	 * and stays that genuinely overlap share the width in lanes — which is what
+	 * layoutSegments has always done for the week.
+	 *
+	 * The apartment is still on every block, in its own colour and by name; it
+	 * is simply carried by the block rather than by the column.
 	 */
 	const dayColumns = useMemo( () => {
 		if ( DAY !== view ) {
 			return [];
 		}
 
-		const shown = selectedApartment ? [ selectedApartment ] : apartments;
-
-		// Before any apartment exists there is still a day to draw, and it
-		// should not be a blank strip.
-		if ( 0 === shown.length ) {
-			return [
-				{
-					key: 'estate',
-					date: selected,
-					title: __( 'All apartments', 'booking-suite' ),
-					segments: daySegments( bookings, selected, visibleIds ),
-					locks: blocksForDay( blockDays, selected, visibleIds ),
-				},
-			];
-		}
-
-		return shown.map( ( apartment ) => {
-			const only = new Set( [ apartment.id ] );
-
-			return {
-				key: `apartment-${ apartment.id }`,
+		return [
+			{
+				key: dayKey( selected ),
 				date: selected,
-				title: apartment.name,
-				colour: apartment.colour,
-				segments: daySegments( bookings, selected, only ),
-				// An estate-wide lock closes this apartment too, so
-				// blocksForDay keeps it whatever the filter says.
-				locks: blocksForDay( blockDays, selected, only ),
-			};
-		} );
-	}, [
-		view,
-		selected,
-		apartments,
-		selectedApartment,
-		bookings,
-		visibleIds,
-		blockDays,
-	] );
+				title: formatWeekday( selected ),
+				subtitle: String( selected.getDate() ),
+				isToday: isSameDay( selected, siteNow() ),
+				segments: daySegments( bookings, selected, visibleIds ),
+				// An estate-wide lock closes every apartment, so blocksForDay
+				// keeps it whatever the filter says.
+				locks: blocksForDay( blockDays, selected, visibleIds ),
+			},
+		];
+	}, [ view, selected, bookings, visibleIds, blockDays ] );
 
 	if ( isLoading ) {
-		return (
-			<div className="flex flex-col gap-4">
-				<Skeleton className="h-10 w-full max-w-md" />
-				<Skeleton className="h-[560px] w-full" />
-			</div>
-		);
+		return <CalendarSkeleton />;
 	}
 
 	return (

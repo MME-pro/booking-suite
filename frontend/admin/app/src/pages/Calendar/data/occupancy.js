@@ -111,13 +111,12 @@ export function entriesForDay( occupancy, date, apartmentIds = null ) {
 /**
  * The days one lock covers, as day keys.
  *
- * Locks are indexed from their own strings rather than through toDate(), and
- * the reason is worth stating: toDate() reads a timestamp as UTC and then
- * buckets it by local day, which is right for a booking — a real instant — but
- * wrong for a lock. A lock is a wall-clock range, written by the operator as
- * plain dates or read out of a portal calendar as plain dates, and it means
- * those dates in the property's own reckoning. Sending it through a UTC parse
- * would drift it by an hour and, for anything at midnight, by a whole day.
+ * Read straight from the strings. A lock is a wall-clock range — written by
+ * the operator as plain dates, or read out of a portal calendar as plain dates
+ * — and it means those dates in the property's own reckoning. Taking the digits
+ * as they are is the shortest way to be sure nothing is ever applied to them.
+ * toDate() now does the same thing for bookings; this predates that and is kept
+ * because it is the more obviously correct of the two for a date-only range.
  *
  * The end is EXCLUSIVE, which is both the iCalendar convention and the one the
  * availability query already uses (`starts_at < to AND ends_at > from`). So a

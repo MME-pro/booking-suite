@@ -109,6 +109,7 @@ final class EmailLayout {
 		// A header cell labels the cell beside it, so it reads as "Label: value";
 		// a closing data cell ends the line. Doing both with one separator left
 		// a colon dangling at the end of every row.
+		$text = preg_replace( '#</span\s*>#i', ' ', $text ) ?? $text;
 		$text = preg_replace( '#</th\s*>#i', ': ', $text ) ?? $text;
 		$text = preg_replace( '#</td\s*>#i', "\n", $text ) ?? $text;
 		$text = wp_strip_all_tags( $text );
@@ -148,6 +149,17 @@ final class EmailLayout {
 			'<a '  => '<a style="color:' . $accent . ';text-decoration:underline;" ',
 			'<hr>' => '<hr style="border:0;border-top:1px solid ' . self::LINE . ';margin:24px 0;">',
 			'<blockquote>' => '<blockquote style="margin:0 0 16px 0;padding:12px 16px;border-left:3px solid ' . $accent . ';background-color:' . self::PAPER . ';">',
+			/*
+			 * The summary cards. A table of cells rather than flexbox or grid,
+			 * because Outlook renders neither: every email card layout that
+			 * survives a real inbox is a table underneath. cellspacing does the
+			 * gutter, since margin between table cells is not a thing.
+			 */
+			'<table class="bks-cards">' => '<table role="presentation" cellpadding="0" cellspacing="8" border="0" style="width:100%;border-collapse:separate;margin:0 0 8px 0;">',
+			'<td class="bks-card">' => '<td width="50%" valign="top" style="width:50%;padding:14px 16px;background-color:' . self::PAPER . ';border:1px solid ' . self::LINE . ';border-radius:8px;font-size:14px;">',
+			'<span class="bks-card__label">' => '<span style="display:block;font-size:11px;line-height:16px;text-transform:uppercase;letter-spacing:0.06em;color:' . self::MUTED . ';">',
+			'<span class="bks-card__figure">' => '<span style="display:block;padding:2px 0;font-size:24px;line-height:30px;font-weight:700;color:' . $accent . ';">',
+			'<span class="bks-card__note">' => '<span style="display:block;font-size:12px;line-height:18px;color:' . self::MUTED . ';">',
 			'<table>' => '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;margin:0 0 16px 0;">',
 			'<td>' => '<td style="padding:6px 0;border-bottom:1px solid ' . self::LINE . ';font-size:14px;">',
 			'<th>' => '<th align="left" style="padding:6px 0;border-bottom:1px solid ' . self::LINE . ';font-size:12px;text-transform:uppercase;letter-spacing:0.04em;color:' . self::MUTED . ';">',

@@ -16,6 +16,7 @@ namespace BookingSuite\Backend\PostTypes;
 
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\IcalFeedsRepository;
+use BookingSuite\Backend\Repositories\SettingsRepository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -65,15 +66,67 @@ final class ApartmentPostType {
 	 *
 	 * @return array<string, string> With the short link inserted.
 	 */
+	/**
+	 * The columns this list adds, in the order they are drawn.
+	 *
+	 * Declared once and read by the header, the cells and the stylesheet, so
+	 * adding a sixth means touching one array rather than three places that
+	 * have to agree.
+	 *
+	 * @return array<string, string> Column key => the apartment field it shows.
+	 */
+	private static function rate_columns(): array {
+		return array(
+			'bks_capacity'        => 'capacity',
+			'bks_weekday_rate'    => 'weekday_rate',
+			'bks_weekend_rate'    => 'weekend_rate',
+			'bks_surcharge_hour'  => 'surcharge_hour',
+			'bks_surcharge_guest' => 'surcharge_guest',
+		);
+	}
+
+	/**
+	 * What each of them is called.
+	 *
+	 * @return array<string, string>
+	 */
+	private static function rate_labels(): array {
+		return array(
+			'bks_capacity'        => __( 'Guests', 'booking-suite' ),
+			'bks_weekday_rate'    => __( 'Weekday', 'booking-suite' ),
+			'bks_weekend_rate'    => __( 'Weekend', 'booking-suite' ),
+			'bks_surcharge_hour'  => __( 'Per extra hour', 'booking-suite' ),
+			'bks_surcharge_guest' => __( 'Per extra guest', 'booking-suite' ),
+		);
+	}
+
 	public static function columns( array $columns ): array {
 		$out = array();
 
 		foreach ( $columns as $key => $label ) {
 			if ( 'date' === $key ) {
+				/*
+				 * Before the date, and in one block: capacity and the rates
+				 * are read together when comparing two apartments, and a
+				 * column of WordPress's own between them breaks the comparison
+				 * in half.
+				 */
+				foreach ( self::rate_labels() as $rate_key => $rate_label ) {
+					$out[ $rate_key ] = $rate_label;
+				}
+
 				$out['bks_short_link'] = __( 'Short link', 'booking-suite' );
 			}
 
 			$out[ $key ] = $label;
+		}
+
+		// The same guard the short link has: a list with Date switched off in
+		// Screen Options must not lose these with it.
+		foreach ( self::rate_labels() as $rate_key => $rate_label ) {
+			if ( ! isset( $out[ $rate_key ] ) ) {
+				$out[ $rate_key ] = $rate_label;
+			}
 		}
 
 		// A list with the Date column switched off in Screen Options would
@@ -96,6 +149,14 @@ final class ApartmentPostType {
 	 * @param int    $post_id The apartment.
 	 */
 	public static function column( string $column, int $post_id ): void {
+		$rates = self::rate_columns();
+
+		if ( isset( $rates[ $column ] ) ) {
+			self::rate_cell( $column, $rates[ $column ], $post_id );
+
+			return;
+		}
+
 		if ( 'bks_short_link' !== $column ) {
 			return;
 		}
@@ -134,6 +195,50 @@ final class ApartmentPostType {
 	}
 
 	/**
+	 * One capacity or rate cell.
+	 *
+	 * A rate of zero is drawn as a dash rather than as "0,00 €". Zero here
+	 * almost always means "not set yet" — the apartment is priced by the
+	 * fallback rules — and printing it as a price states something the owner
+	 * never said.
+	 *
+	 * @param string $column  The column being drawn.
+	 * @param string $field   The apartment field behind it.
+	 * @param int    $post_id The apartment.
+	 */
+	private static function rate_cell( string $column, string $field, int $post_id ): void {
+		$apartment = ApartmentsRepository::find( $post_id );
+
+		if ( null === $apartment ) {
+			echo '<span class="bks-rate__empty">&mdash;</span>';
+
+			return;
+		}
+
+		if ( 'capacity' === $field ) {
+			printf(
+				'<span class="bks-rate">%s</span>',
+				esc_html( number_format_i18n( (int) ( $apartment[ $field ] ?? 1 ) ) )
+			);
+
+			return;
+		}
+
+		$amount = (float) ( $apartment[ $field ] ?? 0 );
+
+		if ( $amount <= 0 ) {
+			echo '<span class="bks-rate__empty">&mdash;</span>';
+
+			return;
+		}
+
+		printf(
+			'<span class="bks-rate">%s</span>',
+			esc_html( number_format_i18n( $amount, 2 ) . ' ' . SettingsRepository::currency_symbol() )
+		);
+	}
+
+	/**
 	 * Keep the field from stretching the column across the table.
 	 */
 	public static function column_style(): void {
@@ -145,6 +250,15 @@ final class ApartmentPostType {
 
 		echo '<style>
 			.column-bks_short_link { width: 18em; }
+			/* Left, like every other column in a WordPress list table.
+			   Tabular figures still line the digits up under each other. */
+			.column-bks_capacity,
+			.column-bks_weekday_rate,
+			.column-bks_weekend_rate,
+			.column-bks_surcharge_hour,
+			.column-bks_surcharge_guest { width: 8em; text-align: left; }
+			.bks-rate { font-variant-numeric: tabular-nums; white-space: nowrap; }
+			.bks-rate__empty { color: #646970; }
 			.bks-short-link { width: 100%; font-family: monospace; font-size: 12px; }
 			.bks-short-link__open { font-family: monospace; font-size: 12px; }
 			.bks-short-link__empty { color: #646970; font-style: italic; }

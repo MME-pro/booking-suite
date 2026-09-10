@@ -65,6 +65,11 @@ final class CustomersController {
 					'callback'            => array( self::class, 'show' ),
 					'permission_callback' => array( self::class, 'can_manage' ),
 				),
+				array(
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => array( self::class, 'destroy' ),
+					'permission_callback' => array( self::class, 'can_manage' ),
+				),
 			)
 		);
 
@@ -79,6 +84,51 @@ final class CustomersController {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Remove a customer, if nothing is still attached to them.
+	 *
+	 * A customer with bookings is refused rather than deleted. `customer_id`
+	 * is nullable, so the database would happily take the row away and leave
+	 * bookings with nobody's name on them — a loss that only shows up later,
+	 * on an invoice nobody can attribute.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function destroy( WP_REST_Request $request ) {
+		$id = (int) $request['id'];
+
+		if ( null === CustomersRepository::find( $id ) ) {
+			return new WP_Error(
+				'booking_suite_not_found',
+				__( 'That customer no longer exists.', 'booking-suite' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		$bookings = CustomersRepository::booking_count( $id );
+
+		if ( $bookings > 0 ) {
+			return new WP_Error(
+				'booking_suite_customer_has_bookings',
+				sprintf(
+					/* translators: %d: how many bookings the customer still has. */
+					_n(
+						'This customer still has %d booking. Delete or reassign it first.',
+						'This customer still has %d bookings. Delete or reassign them first.',
+						$bookings,
+						'booking-suite'
+					),
+					$bookings
+				),
+				array( 'status' => 409 )
+			);
+		}
+
+		CustomersRepository::delete( $id );
+
+		return new WP_REST_Response( array( 'deleted' => true, 'id' => $id ), 200 );
 	}
 
 	public static function can_manage(): bool {

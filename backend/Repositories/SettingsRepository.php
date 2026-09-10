@@ -144,6 +144,21 @@ final class SettingsRepository {
 	/** The master switch for guest email. Off stops every template. */
 	public const EMAIL_NOTIFICATIONS = 'email_notifications';
 
+	/*
+	 * The daily summary: whether it goes, when, and to whom.
+	 *
+	 * The recipients are their own list rather than reusing admin_email. The
+	 * person who wants the day's takings is often not the person WordPress
+	 * sends password resets to, and a summary is the one message an owner may
+	 * want copied to a bookkeeper.
+	 */
+
+	public const DAILY_SUMMARY_ENABLED = 'daily_summary_enabled';
+
+	public const DAILY_SUMMARY_TIME = 'daily_summary_time';
+
+	public const DAILY_SUMMARY_RECIPIENTS = 'daily_summary_recipients';
+
 	/**
 	 * Whether a guest may book without paying first.
 	 *
@@ -220,6 +235,9 @@ final class SettingsRepository {
 		self::BANK_DETAILS     => '',
 		self::EMAIL_NOTIFICATIONS => '1',
 		self::ALLOW_PAY_LATER  => '1',
+		self::DAILY_SUMMARY_ENABLED    => '1',
+		self::DAILY_SUMMARY_TIME       => '00:00',
+		self::DAILY_SUMMARY_RECIPIENTS => '',
 		self::TERMS_URL        => '',
 		self::PRIVACY_URL      => '',
 	);
@@ -487,6 +505,29 @@ final class SettingsRepository {
 		return max( 0.0, min( 100.0, (float) self::get( self::TAX_RATE ) ) ) / 100;
 	}
 
+	/**
+	 * The symbol to print after an amount, or the code when there is none.
+	 *
+	 * Kept beside currency() rather than inside whichever class happens to be
+	 * printing: the invoice, the apartments list and anything added later all
+	 * have to agree, and a second copy of this map is a second answer waiting
+	 * to drift from the first.
+	 *
+	 * @param string $currency A three-letter code, or '' for the site's own.
+	 */
+	public static function currency_symbol( string $currency = '' ): string {
+		$symbols = array(
+			'EUR' => '€',
+			'USD' => '$',
+			'GBP' => '£',
+			'CHF' => 'CHF',
+		);
+
+		$code = '' === $currency ? self::currency() : $currency;
+
+		return $symbols[ strtoupper( $code ) ] ?? $code;
+	}
+
 	/** Whether guest email is switched on at all. */
 	public static function emails_enabled(): bool {
 		return '0' !== self::get( self::EMAIL_NOTIFICATIONS );
@@ -495,6 +536,42 @@ final class SettingsRepository {
 	/** Whether a guest may complete a booking without paying first. */
 	public static function pay_later_allowed(): bool {
 		return '0' !== self::get( self::ALLOW_PAY_LATER );
+	}
+
+	/** Whether the daily summary is sent at all. */
+	public static function daily_summary_enabled(): bool {
+		return '0' !== self::get( self::DAILY_SUMMARY_ENABLED );
+	}
+
+	/**
+	 * Who the daily summary goes to.
+	 *
+	 * Falls back to the owner's own address, so switching the summary on is
+	 * enough to receive one — an empty list would otherwise look like a
+	 * feature that silently does nothing.
+	 *
+	 * @return string[] Valid addresses, in the order they were written.
+	 */
+	public static function daily_summary_recipients(): array {
+		$raw = (string) self::get( self::DAILY_SUMMARY_RECIPIENTS );
+
+		$found = array_filter(
+			array_map( 'trim', preg_split( '/[,;
+]+/', $raw ) ?: array() ),
+			static fn( string $address ): bool => is_email( $address ) !== false
+		);
+
+		if ( $found ) {
+			return array_values( array_unique( $found ) );
+		}
+
+		$fallback = trim( (string) self::get( self::ADMIN_EMAIL ) );
+
+		if ( '' === $fallback ) {
+			$fallback = (string) get_option( 'admin_email' );
+		}
+
+		return is_email( $fallback ) ? array( $fallback ) : array();
 	}
 
 	public static function set( string $key, string $value, string $group = 'general', string $locale = '' ): void {

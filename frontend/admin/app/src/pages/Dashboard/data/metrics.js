@@ -9,7 +9,7 @@
  * both agree on which local day a booking belongs to.
  */
 
-import { dayKey, dayOffset, toDate } from '../../../lib/dates';
+import { dayKey, dayOffset, siteNow, toDate } from '../../../lib/dates';
 
 /** Booking statuses, in the order they progress. */
 export const STATUS_ORDER = [
@@ -33,9 +33,9 @@ export { dayKey, toDate };
  * @param {Object} counts     Status counts from the bookings endpoint.
  */
 export function summarise( bookings = [], apartments = [], counts = {} ) {
-	const todayKey = dayKey( new Date() );
+	const todayKey = dayKey( siteNow() );
 	const weekAhead = dayOffset( 7 );
-	const now = new Date();
+	const now = siteNow();
 
 	let bookingsToday = 0;
 	let revenue = 0;

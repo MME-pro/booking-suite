@@ -21,6 +21,7 @@ use BookingSuite\Backend\APIs\IcalController;
 use BookingSuite\Backend\APIs\PaymentsController;
 use BookingSuite\Backend\Installer;
 use BookingSuite\Backend\Support\BookingLifecycle;
+use BookingSuite\Backend\Support\DailySummary;
 use BookingSuite\Backend\Support\IcalFeed;
 use BookingSuite\Backend\Support\IcalSync;
 use BookingSuite\Backend\Support\Pwa;
@@ -83,6 +84,9 @@ final class Plugin {
 
 		// And the hourly sweep that settles bookings whose window has closed.
 		BookingLifecycle::register();
+
+		// And the day's figures, sent to whoever asked for them.
+		DailySummary::register();
 
 		// And the public URL the portals read this site's own calendar from.
 		// Not admin-only: nothing fetching it is ever logged in.

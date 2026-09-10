@@ -47,7 +47,13 @@ final class BookingsTable {
 
 		// `reference` is the human-facing booking number and is NULL-able so
 		// the UNIQUE key tolerates a row created before one is assigned.
-		// `starts_at`/`ends_at` are the time window, stored in UTC.
+		// `starts_at`/`ends_at` are the time window, stored as the SITE'S wall
+		// clock — the time it is at the apartment, which is what the guest was
+		// told and what the cleaner is given. Not UTC: PublicBookingController
+		// writes the chosen date and time as they were picked, and compares
+		// them against current_time( 'mysql' ). This comment used to say UTC,
+		// and the admin app believed it and shifted every time on screen by
+		// the viewer's own offset.
 		// `customer_id` is NULL-able so a booking can be taken down before the
 		// guest record exists.
 		return "CREATE TABLE $table (

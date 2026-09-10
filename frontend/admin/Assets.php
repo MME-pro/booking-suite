@@ -119,6 +119,13 @@ final class Assets {
 				'restUrl'    => esc_url_raw( rest_url( 'booking-suite/v1/' ) ),
 				'nonce'      => wp_create_nonce( 'wp_rest' ),
 				'locale'     => get_user_locale(),
+				/*
+				 * The apartments are in one place and the people looking at
+				 * this screen are not always in it. Every booking time here is
+				 * the property's own wall clock, so the app needs to know which
+				 * clock that is rather than falling back on the viewer's.
+				 */
+				'timezone'   => wp_timezone_string(),
 				'assetsUrl'  => PLUGIN_URL . 'frontend/admin/app/build/',
 				// Registered by the app; see Pwa for why it is scoped to wp-admin.
 				'workerUrl'  => esc_url_raw( Pwa::worker_url() ),

@@ -4,6 +4,53 @@
 
 @import url(https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap);
 
+/*
+ * The vertical scrollbar is always there, and always the same width.
+ *
+ * It used to come and go, and every appearance cost the layout about 15px —
+ * the whole admin, WordPress' own menu and toolbar included, jumped sideways.
+ * Two moments did it:
+ *
+ * 1. The calendar arriving. The loading state fits the window and the month
+ *    grid does not, so the page went from unscrollable to scrollable exactly
+ *    as the calendar rendered.
+ * 2. Any Radix dropdown, select or dialog opening. Radix locks the page behind
+ *    an open overlay by putting `overflow: hidden` on the body, which takes the
+ *    scrollbar away for as long as it is open and puts it back on close.
+ *
+ * `overflow-y: scroll` settles both: the scroll container is `html`, it keeps
+ * its scrollbar whatever the body does, and the width it occupies is reserved
+ * from the first paint. Preferred over `scrollbar-gutter: stable`, which
+ * reserves the space but still lets the bar itself blink out of view whenever
+ * something is open.
+ *
+ * On `html` because that is what scrolls in the admin, and this stylesheet is
+ * enqueued on Booking Suite screens only — so no other admin page is affected.
+ * Where the browser uses overlay scrollbars (macOS, and Windows when the
+ * setting is on) they take no width and this costs nothing.
+ */
+html {
+	overflow-y: scroll;
+}
+
+/*
+ * And stop Radix compensating for a scrollbar that never went away.
+ *
+ * react-remove-scroll, which every Radix overlay uses, measures the scrollbar
+ * as it locks the page and adds that much `margin-right` to the body to make up
+ * for the width it expects to lose. With the rule above, nothing is lost — so
+ * the compensation is 15px of pure movement, in the opposite direction from the
+ * bug it exists to prevent.
+ *
+ * Written as `html body[…]` rather than `body[…]`: its own declaration is
+ * `!important` too and is injected into the head at open time, so it wins on
+ * document order. One extra element in the selector wins on specificity
+ * instead, which order cannot overturn.
+ */
+html body[data-scroll-locked] {
+	margin-right: 0 !important;
+}
+
 .bks-root,
 :root {
 	box-sizing: border-box;

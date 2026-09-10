@@ -12,6 +12,7 @@ import { Eye, EyeOff, ImageIcon, Pencil, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
 	Table,
 	TableBody,
@@ -32,6 +33,7 @@ export default function ExtrasTable( {
 	onToggleActive,
 	busyId = null,
 	emptyContent = null,
+	selection = null,
 } ) {
 	if ( ! extras.length && emptyContent ) {
 		return <Card className="overflow-hidden">{ emptyContent }</Card>;
@@ -57,6 +59,24 @@ export default function ExtrasTable( {
 				<Table>
 					<TableHeader>
 						<TableRow className="hover:bg-transparent">
+							{ /*
+							 * One box with three meanings: it clears when
+							 * anything is ticked and selects the page when
+							 * nothing is. "Select all" over a part-made
+							 * selection would throw it away in one click.
+							 */ }
+							{ selection && (
+								<TableHead className="w-10">
+									<Checkbox
+										checked={ selection.allSelected }
+										aria-label={ __(
+											'Select all',
+											'booking-suite'
+										) }
+										onCheckedChange={ selection.toggleAll }
+									/>
+								</TableHead>
+							) }
 							<TableHead>
 								{ __( 'Extra', 'booking-suite' ) }
 							</TableHead>
@@ -90,7 +110,27 @@ export default function ExtrasTable( {
 							const isSoldOut = ! isUnlimited && extra.stock < 1;
 
 							return (
-								<TableRow key={ extra.id }>
+								<TableRow
+									key={ extra.id }
+									data-state={
+										selection?.isSelected( extra.id )
+											? 'selected'
+											: undefined
+									}
+								>
+									{ selection && (
+										<TableCell className="w-10">
+											<Checkbox
+												checked={ selection.isSelected(
+													extra.id
+												) }
+												aria-label={ extra.name }
+												onCheckedChange={ () =>
+													selection.toggle( extra.id )
+												}
+											/>
+										</TableCell>
+									) }
 									<TableCell>
 										<div className="flex items-center gap-3">
 											{ extra.imageUrl ? (

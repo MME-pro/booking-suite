@@ -48,7 +48,7 @@ import {
 } from '@/components/ui/table';
 
 import { StatCard } from '../../components/StatCard';
-import { dayKey, dayOffset } from '../../lib/dates';
+import { dayKey, dayOffset, siteNow } from '../../lib/dates';
 import { reportService } from '../../services';
 import { formatMoney } from '../Bookings/data/format';
 import { ReportCharts } from './components/ReportCharts';
@@ -70,7 +70,7 @@ const RANGES = {
  * @return {{from: string, to: string}} Inclusive day keys.
  */
 const resolveRange = ( preset ) => {
-	const today = new Date();
+	const today = siteNow();
 	const year = today.getFullYear();
 	const month = today.getMonth();
 

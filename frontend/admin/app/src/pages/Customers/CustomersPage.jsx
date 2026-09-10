@@ -24,6 +24,19 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { StatCard } from '../../components/StatCard';
 import { customerService } from '../../services';
+import { useRowSelection } from '../../hooks/useRowSelection';
+import { BulkBar } from '../../components/BulkBar';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+
 import { formatMoney } from '../Bookings/data/format';
 import { CustomerHistoryDialog } from './components/CustomerHistoryDialog';
 import { CustomersTable } from './components/CustomersTable';
@@ -85,6 +98,47 @@ export default function CustomersPage() {
 				.some( ( field ) => field.toLowerCase().includes( term ) )
 		);
 	}, [ customers, search ] );
+
+	/*
+	 * Ticked rows. The hook drops ticks for rows that leave the list, so the
+	 * number beside "selected" is always the number of boxes on screen.
+	 */
+	const selection = useRowSelection( visible );
+
+	const [ isBulkPending, setBulkPending ] = useState( false );
+	const [ isBulkBusy, setBulkBusy ] = useState( false );
+
+	const confirmBulkDelete = async () => {
+		const ids = selection.ids;
+
+		setBulkPending( false );
+		setBulkBusy( true );
+
+		/*
+		 * One request per row against the endpoint that already exists. A row
+		 * the server refuses then costs that row rather than the batch, and
+		 * whatever did go is still gone from the screen.
+		 */
+		const gone = [];
+		let failure = null;
+
+		for ( const id of ids ) {
+			try {
+				await customerService.remove( id );
+				gone.push( id );
+			} catch ( cause ) {
+				failure = cause.message;
+			}
+		}
+
+		setCustomers( ( current ) =>
+			current.filter( ( row ) => ! gone.includes( row.id ) )
+		);
+
+		selection.clear();
+		setError( failure );
+		setBulkBusy( false );
+	};
 
 	const statCards = [
 		{
@@ -221,8 +275,16 @@ export default function CustomersPage() {
 					 * CustomersTable puts the surface around the table and around
 					 * the empty state instead.
 					 */ }
+					<BulkBar
+						count={ selection.count }
+						isBusy={ isBulkBusy }
+						onClear={ selection.clear }
+						onDelete={ () => setBulkPending( true ) }
+					/>
+
 					<CustomersTable
 						customers={ visible }
+						selection={ selection }
 						onViewHistory={ setViewing }
 						emptyContent={
 							<EmptyCustomers hasAny={ customers.length > 0 } />
@@ -237,6 +299,45 @@ export default function CustomersPage() {
 					onClose={ () => setViewing( null ) }
 				/>
 			) }
+
+			<AlertDialog
+				open={ isBulkPending }
+				onOpenChange={ ( open ) => ! open && setBulkPending( false ) }
+			>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							{ sprintf(
+								/* translators: %d: how many rows are ticked. */
+								_n(
+									'Delete %d customer?',
+									'Delete %d customers?',
+									selection.count,
+									'booking-suite'
+								),
+								selection.count
+							) }
+						</AlertDialogTitle>
+						<AlertDialogDescription>
+							{ __(
+								'Only customers with no bookings can be removed. Any that still have one are left alone and reported. This cannot be undone.',
+								'booking-suite'
+							) }
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>
+							{ __( 'Cancel', 'booking-suite' ) }
+						</AlertDialogCancel>
+						<AlertDialogAction
+							onClick={ confirmBulkDelete }
+							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+						>
+							{ __( 'Delete', 'booking-suite' ) }
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</div>
 	);
 }

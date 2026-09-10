@@ -112,6 +112,70 @@ final class SlotGenerator {
 	}
 
 	/**
+	 * Why this hourly window may not be booked, or null if it may.
+	 *
+	 * Both the guest flow and the admin call this. The rules used to be guest
+	 * only and written inline in the public controller; holding the owner to
+	 * them as well would have meant a second copy, and a rule stated twice is
+	 * two rules as soon as either is edited.
+	 *
+	 * Overnight stays never reach here — they are a window this site chooses,
+	 * not one the booker describes.
+	 *
+	 * @param string $date  Y-m-d.
+	 * @param string $time  H:i, the proposed start.
+	 * @param float  $hours How long.
+	 *
+	 * @return string|null A sentence for whoever asked, or null when allowed.
+	 */
+	public static function rule_violation( string $date, string $time, float $hours ): ?string {
+		$minimum = max( 1, (int) SettingsRepository::number( SettingsRepository::MIN_HOURS ) );
+
+		if ( $hours < $minimum ) {
+			return sprintf(
+				/* translators: %d: the shortest bookable length, in hours. */
+				_n(
+					'Bookings start at %d hour.',
+					'Bookings start at %d hours.',
+					$minimum,
+					'booking-suite'
+				),
+				$minimum
+			);
+		}
+
+		if ( ! self::is_fixed_block_day( $date ) ) {
+			return null;
+		}
+
+		$start = self::at( $date, SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_START ) );
+		$end   = self::at( $date, SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_END ) );
+
+		if ( null === $start || null === $end ) {
+			return __( 'That day is no longer open for daytime bookings.', 'booking-suite' );
+		}
+
+		$asked_start = self::at( $date, $time );
+		$asked_end   = null === $asked_start
+			? null
+			: $asked_start->modify( '+' . (int) round( $hours * 60 ) . ' minutes' );
+
+		if ( null === $asked_start
+			|| $asked_start->format( 'H:i' ) !== $start->format( 'H:i' )
+			|| $asked_end->format( 'H:i' ) !== $end->format( 'H:i' )
+		) {
+			return sprintf(
+				/* translators: 1: start time, 2: end time, both 24-hour. */
+				__( 'On this day the daytime booking runs from %1$s to %2$s. For other times, please book an overnight stay.', 'booking-suite' ),
+				$start->format( 'H:i' ),
+				$end->format( 'H:i' )
+			);
+		}
+
+		return null;
+	}
+
+	/**
 	 * The fixed daytime block, if this date is one of the days it runs on.
 	 *
 	 * Deliberately not expressed as opening hours plus a duration. The guest is
@@ -408,6 +472,20 @@ final class SlotGenerator {
 		array $busy,
 		int $limit = 6
 	): array {
+		/*
+		 * A fixed-block day has no free start times to suggest.
+		 *
+		 * Walking the grid here would offer a guest 12:00 on a Saturday and
+		 * send them to a booking the endpoint refuses — a suggestion that
+		 * cannot be taken is worse than no suggestion, because it costs the
+		 * click to find out. The block itself is not proposed either: this
+		 * panel exists for the case where the asked-for day is full, and one
+		 * fixed block on a full day is exactly what is not available.
+		 */
+		if ( self::is_fixed_block_day( $date ) ) {
+			return array();
+		}
+
 		$step = max( 15, (int) SettingsRepository::number( SettingsRepository::SLOT_STEP ) );
 
 		$open  = new DateTimeImmutable( $date . ' ' . SettingsRepository::get( SettingsRepository::DAY_START ) );

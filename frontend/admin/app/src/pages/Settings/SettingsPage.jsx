@@ -11,7 +11,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { __ } from '@wordpress/i18n';
+import { __, _n, sprintf } from '@wordpress/i18n';
 import { useForm } from 'react-hook-form';
 import { AlertCircle, CheckCircle2 } from 'lucide-react';
 
@@ -49,6 +49,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { settingsService } from '../../services';
 import AccentColourField from './AccentColourField';
 import InvoiceLogoField from './InvoiceLogoField';
+import RecipientsField from './RecipientsField';
 
 /** Display names for the codes the API accepts. */
 const CURRENCY_LABELS = {
@@ -104,6 +105,9 @@ const blank = {
 	bankBic: '',
 	bankDetails: '',
 	emailNotifications: true,
+	dailySummaryEnabled: true,
+	dailySummaryTime: '00:00',
+	dailySummaryRecipients: '',
 	companyName: '',
 	companyAddress: '',
 	companyPhone: '',
@@ -188,6 +192,42 @@ export default function SettingsPage() {
 		onChange( value );
 	};
 
+	/**
+	 * Send the daily summary on demand.
+	 *
+	 * Its own error line rather than the page's `error` alert, which is
+	 * titled "Could not save settings" — a failed send is not a failed save,
+	 * and an owner told the wrong thing goes looking in the wrong place.
+	 */
+	const [ isSending, setSending ] = useState( false );
+	const [ summaryNote, setSummaryNote ] = useState( '' );
+
+	const sendSummaryNow = async () => {
+		setSending( true );
+		setSummaryNote( '' );
+
+		try {
+			const result = await settingsService.sendDailySummary();
+
+			setSummaryNote(
+				sprintf(
+					/* translators: 1: number of recipients, 2: the date covered. */
+					_n(
+						'Sent to %1$d address for %2$s.',
+						'Sent to %1$d addresses for %2$s.',
+						result?.sent ?? 0,
+						'booking-suite'
+					),
+					result?.sent ?? 0,
+					result?.date ?? ''
+				)
+			);
+		} catch ( cause ) {
+			setSummaryNote( cause.message );
+		} finally {
+			setSending( false );
+		}
+	};
 	const isSaving = form.formState.isSubmitting;
 
 	if ( isLoading ) {
@@ -721,6 +761,125 @@ export default function SettingsPage() {
 										</FormItem>
 									) }
 								/>
+							</Panel>
+							<Panel
+								title={ __( 'Daily summary', 'booking-suite' ) }
+								description={ __(
+									"One email a day with that day's figures: bookings, money in, cancellations, and the list of who is arriving.",
+									'booking-suite'
+								) }
+							>
+								<FormField
+									control={ form.control }
+									name="dailySummaryEnabled"
+									render={ ( { field } ) => (
+										<FormItem className="flex flex-row items-start gap-3 space-y-0 rounded-lg border p-4">
+											<FormControl>
+												<Switch
+													checked={ Boolean(
+														field.value
+													) }
+													onCheckedChange={ touched(
+														field.onChange
+													) }
+												/>
+											</FormControl>
+											<div className="flex flex-col gap-1">
+												<FormLabel>
+													{ __(
+														'Send the summary automatically',
+														'booking-suite'
+													) }
+												</FormLabel>
+												<FormDescription>
+													{ __(
+														'Off keeps the settings and the button below, but nothing is sent on a schedule.',
+														'booking-suite'
+													) }
+												</FormDescription>
+											</div>
+											<FormMessage />
+										</FormItem>
+									) }
+								/>
+
+								<Field
+									form={ form }
+									name="dailySummaryTime"
+									type="time"
+									touched={ touched }
+									label={ __( 'Send at', 'booking-suite' ) }
+									description={ __(
+										'Before 06:00 the summary reports on the day that has just ended; from 06:00 onwards it reports on the day in progress.',
+										'booking-suite'
+									) }
+								/>
+
+								<FormField
+									control={ form.control }
+									name="dailySummaryRecipients"
+									render={ ( { field } ) => (
+										<FormItem>
+											<FormLabel>
+												{ __(
+													'Send to',
+													'booking-suite'
+												) }
+											</FormLabel>
+											<FormControl>
+												<RecipientsField
+													value={ field.value }
+													onChange={ touched(
+														field.onChange
+													) }
+												/>
+											</FormControl>
+											<FormDescription>
+												{ __(
+													'Add as many as you like. Left empty, the summary goes to the notification address on the Company tab.',
+													'booking-suite'
+												) }
+											</FormDescription>
+											<FormMessage />
+										</FormItem>
+									) }
+								/>
+
+								{ /*
+								 * Sending reads what is stored, not what is on
+								 * screen — so an unsaved change would be a
+								 * silent no-op. Saying so beats an owner
+								 * wondering why the test email used the old
+								 * address.
+								 */ }
+								<div className="flex flex-col gap-2 rounded-lg border p-4">
+									<div className="flex flex-wrap items-center gap-3">
+										<Button
+											type="button"
+											variant="outline"
+											disabled={ isSending }
+											onClick={ sendSummaryNow }
+										>
+											{ isSending
+												? __( 'Sending…', 'booking-suite' )
+												: __(
+														'Send summary now',
+														'booking-suite'
+												  ) }
+										</Button>
+										{ summaryNote && (
+											<span className="text-sm text-muted-foreground">
+												{ summaryNote }
+											</span>
+										) }
+									</div>
+									<p className="text-sm text-muted-foreground">
+										{ __(
+											'Sends the saved settings, so save first if you have just changed the addresses.',
+											'booking-suite'
+										) }
+									</p>
+								</div>
 							</Panel>
 						</TabsContent>
 

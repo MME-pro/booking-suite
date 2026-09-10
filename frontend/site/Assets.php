@@ -250,6 +250,25 @@ final class Assets {
 				 * door rather than only hiding the handle.
 				 */
 				'allowPayLater' => SettingsRepository::pay_later_allowed(),
+
+				/*
+				 * Which weekdays offer one fixed block instead of free start
+				 * times, and what that block is. Sent rather than derived from
+				 * the slots response: the response only arrives once the form
+				 * is already valid, and the duration field has to be locked
+				 * before then — otherwise clearing it unlocks it.
+				 */
+				'daytimeSlotDays'  => array_values(
+					array_filter(
+						array_map(
+							'intval',
+							array_map( 'trim', explode( ',', SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_DAYS ) ) )
+						),
+						static fn( int $day ): bool => $day >= 1 && $day <= 7
+					)
+				),
+				'daytimeSlotStart' => SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_START ),
+				'daytimeSlotEnd'   => SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_END ),
 			)
 		);
 	}

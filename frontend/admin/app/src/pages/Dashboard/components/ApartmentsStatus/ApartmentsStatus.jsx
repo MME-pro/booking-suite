@@ -22,7 +22,7 @@ import {
 	CardTitle,
 } from '@/components/ui/card';
 
-import { toDate } from '../../../../lib/dates';
+import { siteNow, toDate } from '../../../../lib/dates';
 import { formatDateTime } from '../../../Bookings/data/format';
 
 /** Statuses that actually hold the dates; a completed stay is over. */
@@ -33,7 +33,7 @@ export default function ApartmentsStatus( {
 	bookings,
 	blocks = [],
 } ) {
-	const now = new Date();
+	const now = siteNow();
 
 	const rows = apartments.map( ( apartment ) => {
 		/*

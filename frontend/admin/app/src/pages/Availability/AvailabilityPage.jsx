@@ -45,7 +45,7 @@ import { cn } from '@/lib/utils';
 import { LockDialog } from './components/LockDialog';
 import { MonthGrid } from '../Calendar/components/MonthGrid';
 import { assignLanes, buildCoverage, runFrom } from './data/lockBars';
-import { dayKey } from '../../lib/dates';
+import { dayKey, siteNow } from '../../lib/dates';
 import { blockService } from '../../services';
 import { settings } from '../../settings';
 import { formatDateTime } from '../Bookings/data/format';
@@ -73,8 +73,8 @@ export default function AvailabilityPage() {
 	const [ scope, setScope ] = useState( 'apartment' );
 	const [ isLoading, setLoading ] = useState( true );
 	const [ error, setError ] = useState( null );
-	const [ month, setMonth ] = useState( () => new Date() );
-	const [ selected, setSelected ] = useState( () => new Date() );
+	const [ month, setMonth ] = useState( siteNow );
+	const [ selected, setSelected ] = useState( siteNow );
 
 	/** null, 'apartment' or 'master' — which lock dialog is open. */
 	const [ locking, setLocking ] = useState( null );

@@ -16,10 +16,23 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ListPager } from '@/components/ListPager';
 import { Skeleton } from '@/components/ui/skeleton';
 import { usePaged } from '@/hooks/usePaged';
+import { useRowSelection } from '../../hooks/useRowSelection';
+import { BulkBar } from '../../components/BulkBar';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 import { StatCard } from '../../components/StatCard';
 import { paymentService } from '../../services';
 import { formatMoney } from '../Bookings/data/format';
+import { toDate } from '../../lib/dates';
 import { PaymentViewDialog } from './components/PaymentViewDialog';
 import { PaymentsTable } from './components/PaymentsTable';
 import {
@@ -39,9 +52,10 @@ const toDayKey = ( value ) => {
 		return '';
 	}
 
-	const date = new Date( String( value ).replace( ' ', 'T' ) + 'Z' );
+	// The site's wall clock, not an instant to re-express; see lib/dates.js.
+	const date = toDate( value );
 
-	if ( Number.isNaN( date.getTime() ) ) {
+	if ( ! date ) {
 		return '';
 	}
 
@@ -143,6 +157,47 @@ export default function PaymentsPage() {
 	 * what is outstanding wants the total, not the total on this page.
 	 */
 	const paged = usePaged( visible );
+
+	/*
+	 * Ticked rows. The hook drops ticks for rows that leave the list, so the
+	 * number beside "selected" is always the number of boxes on screen.
+	 */
+	const selection = useRowSelection( paged.rows );
+
+	const [ isBulkPending, setBulkPending ] = useState( false );
+	const [ isBulkBusy, setBulkBusy ] = useState( false );
+
+	const confirmBulkDelete = async () => {
+		const ids = selection.ids;
+
+		setBulkPending( false );
+		setBulkBusy( true );
+
+		/*
+		 * One request per row against the endpoint that already exists. A row
+		 * the server refuses then costs that row rather than the batch, and
+		 * whatever did go is still gone from the screen.
+		 */
+		const gone = [];
+		let failure = null;
+
+		for ( const id of ids ) {
+			try {
+				await paymentService.remove( id );
+				gone.push( id );
+			} catch ( cause ) {
+				failure = cause.message;
+			}
+		}
+
+		setPayments( ( current ) =>
+			current.filter( ( row ) => ! gone.includes( row.id ) )
+		);
+
+		selection.clear();
+		setError( failure );
+		setBulkBusy( false );
+	};
 
 	const setStatus = async ( payment, status ) => {
 		setBusyId( payment.id );
@@ -296,8 +351,16 @@ export default function PaymentsPage() {
 					 * PaymentsTable puts the surface around the table and around
 					 * the empty state instead.
 					 */ }
+					<BulkBar
+						count={ selection.count }
+						isBusy={ isBulkBusy }
+						onClear={ selection.clear }
+						onDelete={ () => setBulkPending( true ) }
+					/>
+
 					<PaymentsTable
 						payments={ paged.rows }
+						selection={ selection }
 						busyId={ busyId }
 						onView={ setViewing }
 						onMarkPaid={ ( payment ) =>
@@ -327,6 +390,45 @@ export default function PaymentsPage() {
 					onSetStatus={ setStatus }
 				/>
 			) }
+
+			<AlertDialog
+				open={ isBulkPending }
+				onOpenChange={ ( open ) => ! open && setBulkPending( false ) }
+			>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							{ sprintf(
+								/* translators: %d: how many rows are ticked. */
+								_n(
+									'Delete %d payment?',
+									'Delete %d payments?',
+									selection.count,
+									'booking-suite'
+								),
+								selection.count
+							) }
+						</AlertDialogTitle>
+						<AlertDialogDescription>
+							{ __(
+								'The payments are removed and each booking is marked paid, part paid or unpaid again from what is left. This cannot be undone.',
+								'booking-suite'
+							) }
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>
+							{ __( 'Cancel', 'booking-suite' ) }
+						</AlertDialogCancel>
+						<AlertDialogAction
+							onClick={ confirmBulkDelete }
+							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+						>
+							{ __( 'Delete', 'booking-suite' ) }
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</div>
 	);
 }

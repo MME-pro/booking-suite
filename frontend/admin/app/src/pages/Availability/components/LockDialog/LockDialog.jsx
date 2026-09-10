@@ -40,6 +40,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 import { blockService } from '../../../../services';
 import { formatDateTime } from '../../../Bookings/data/format';
+import { dayKey, siteNow } from '../../../../lib/dates';
 
 const schema = z
 	.object( {
@@ -68,7 +69,9 @@ const schema = z
 		}
 	} );
 
-const today = () => new Date().toISOString().slice( 0, 10 );
+// The property's today. toISOString() would answer in UTC, which is a day
+// out for anyone opening this late in the evening.
+const today = () => dayKey( siteNow() );
 
 export default function LockDialog( {
 	master = false,

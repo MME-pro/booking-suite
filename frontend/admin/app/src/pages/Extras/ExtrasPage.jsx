@@ -36,6 +36,8 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { StatCard } from '../../components/StatCard';
 import { extraService } from '../../services';
+import { BulkBar } from '../../components/BulkBar';
+import { useRowSelection } from '../../hooks/useRowSelection';
 import { ExtraForm } from './components/ExtraForm';
 import { ExtrasTable } from './components/ExtrasTable';
 
@@ -171,6 +173,49 @@ export default function ExtrasPage() {
 		} finally {
 			setBusyId( null );
 		}
+	};
+
+	/*
+	 * Ticked rows, and whether a bulk delete is asking to be confirmed. The
+	 * count is captured at confirmation time rather than read again on the
+	 * way out: the list can change underneath a dialog that is already open.
+	 */
+	const selection = useRowSelection( visible );
+
+	const [ isBulkPending, setBulkPending ] = useState( false );
+	const [ isBulkBusy, setBulkBusy ] = useState( false );
+
+	const confirmBulkDelete = async () => {
+		const ids = selection.ids;
+
+		setBulkPending( false );
+		setBulkBusy( true );
+
+		/*
+		 * One request per row against the endpoint that already exists,
+		 * rather than a bulk route of its own. A row that refuses — an extra
+		 * held by a booking, say — then costs that row and not the batch, and
+		 * the rows that did go are still gone from the screen.
+		 */
+		const gone = [];
+		let failure = null;
+
+		for ( const id of ids ) {
+			try {
+				await extraService.remove( id );
+				gone.push( id );
+			} catch ( cause ) {
+				failure = cause.message;
+			}
+		}
+
+		setExtras( ( current ) =>
+			current.filter( ( item ) => ! gone.includes( item.id ) )
+		);
+
+		selection.clear();
+		setError( failure );
+		setBulkBusy( false );
 	};
 
 	const confirmDelete = async () => {
@@ -357,26 +402,36 @@ export default function ExtrasPage() {
 					 * the surface around the table and around the empty state instead.
 					 */ }
 					{ extras.length > 0 ? (
-						<ExtrasTable
-							extras={ visible }
-							booked={ booked }
-							busyId={ busyId }
-							onEdit={ setEditing }
-							onDelete={ setPendingDelete }
-							onToggleActive={ toggleActive }
-							emptyContent={
-								<EmptyExtras
-									title={ __(
-										'No extras match your search',
-										'booking-suite'
-									) }
-									description={ __(
-										'Try a different name, or clear the search to see all extras.',
-										'booking-suite'
-									) }
-								/>
-							}
-						/>
+						<>
+							<BulkBar
+								count={ selection.count }
+								isBusy={ isBulkBusy }
+								onClear={ selection.clear }
+								onDelete={ () => setBulkPending( true ) }
+							/>
+
+							<ExtrasTable
+								extras={ visible }
+								booked={ booked }
+								busyId={ busyId }
+								selection={ selection }
+								onEdit={ setEditing }
+								onDelete={ setPendingDelete }
+								onToggleActive={ toggleActive }
+								emptyContent={
+									<EmptyExtras
+										title={ __(
+											'No extras match your search',
+											'booking-suite'
+										) }
+										description={ __(
+											'Try a different name, or clear the search to see all extras.',
+											'booking-suite'
+										) }
+									/>
+								}
+							/>
+						</>
 					) : (
 						<Card className="overflow-hidden">
 							<EmptyExtras
@@ -435,6 +490,50 @@ export default function ExtrasPage() {
 						</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={ confirmDelete }
+							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+						>
+							{ __( 'Delete', 'booking-suite' ) }
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+
+			{ /*
+			 * A second dialog rather than one that changes its mind. Deleting
+			 * one named thing and deleting nine unnamed ones are different
+			 * questions, and a shared dialog ends up saying neither well.
+			 */ }
+			<AlertDialog
+				open={ isBulkPending }
+				onOpenChange={ ( open ) => ! open && setBulkPending( false ) }
+			>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							{ sprintf(
+								/* translators: %d: how many extras are ticked. */
+								_n(
+									'Delete %d extra?',
+									'Delete %d extras?',
+									selection.count,
+									'booking-suite'
+								),
+								selection.count
+							) }
+						</AlertDialogTitle>
+						<AlertDialogDescription>
+							{ __(
+								'They will be removed and detached from any booking they were added to. Those bookings keep the total they were taken at. This cannot be undone.',
+								'booking-suite'
+							) }
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>
+							{ __( 'Cancel', 'booking-suite' ) }
+						</AlertDialogCancel>
+						<AlertDialogAction
+							onClick={ confirmBulkDelete }
 							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
 						>
 							{ __( 'Delete', 'booking-suite' ) }

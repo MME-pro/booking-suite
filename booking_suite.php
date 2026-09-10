@@ -3,7 +3,7 @@
  * Plugin Name:       Booking Suite
  * Plugin URI:        https://mme-pro.de/
  * Description:       Booking Suite plugin scaffold.
- * Version:           0.11.0
+ * Version:           0.12.0
  * Requires at least: 6.6
  * Requires PHP:      8.1
  * Author:            MME-Pro
@@ -21,7 +21,7 @@ namespace BookingSuite;
 
 defined( 'ABSPATH' ) || exit;
 
-const VERSION     = '0.11.0';
+const VERSION     = '0.12.0';
 const PREFIX      = 'bksuite_';
 const TEXT_DOMAIN = 'booking-suite';
 
@@ -109,6 +109,7 @@ register_activation_hook(
 		Backend\Installer::install();
 		Backend\Support\IcalSync::schedule();
 		Backend\Support\BookingLifecycle::schedule();
+		Backend\Support\DailySummary::schedule();
 
 		// So the calendar export URL resolves from the first request onwards.
 		Backend\Support\IcalFeed::add_rewrite();
@@ -128,6 +129,9 @@ register_deactivation_hook(
 
 		// A plugin that is off has no business rewriting booking statuses.
 		Backend\Support\BookingLifecycle::unschedule();
+
+		// And no business mailing a summary of a system nobody is using.
+		Backend\Support\DailySummary::unschedule();
 		flush_rewrite_rules();
 	}
 );

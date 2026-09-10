@@ -30,6 +30,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
 	Table,
 	TableBody,
@@ -51,6 +52,7 @@ import { BookingCard } from '../BookingCard';
 
 export default function BookingsTable( {
 	bookings,
+	selection = null,
 	onSelectBooking,
 	onApprove,
 	onMarkPaid,
@@ -93,6 +95,18 @@ export default function BookingsTable( {
 				<Table>
 					<TableHeader>
 						<TableRow className="hover:bg-transparent">
+							{ selection && (
+								<TableHead className="w-10">
+									<Checkbox
+										checked={ selection.allSelected }
+										aria-label={ __(
+											'Select all',
+											'booking-suite'
+										) }
+										onCheckedChange={ selection.toggleAll }
+									/>
+								</TableHead>
+							) }
 							<TableHead className="w-[130px]">
 								{ __( 'Reference', 'booking-suite' ) }
 							</TableHead>
@@ -136,9 +150,34 @@ export default function BookingsTable( {
 							return (
 								<TableRow
 									key={ booking.id }
+									data-state={
+										selection?.isSelected( booking.id )
+											? 'selected'
+											: undefined
+									}
 									onClick={ () => onSelectBooking( booking ) }
 									className="cursor-pointer"
 								>
+									{ selection && (
+										<TableCell
+											className="w-10"
+											onClick={ ( event ) =>
+												event.stopPropagation()
+											}
+										>
+											<Checkbox
+												checked={ selection.isSelected(
+													booking.id
+												) }
+												aria-label={ booking.reference }
+												onCheckedChange={ () =>
+													selection.toggle(
+														booking.id
+													)
+												}
+											/>
+										</TableCell>
+									) }
 									<TableCell className="font-medium tabular-nums">
 										{ booking.reference ||
 											`#${ booking.id }` }

@@ -26,6 +26,17 @@ const settings = {
 	 */
 	allowPayLater: false,
 
+	/*
+	 * Which weekdays offer one fixed block, as ISO-8601 numbers — 1 Monday
+	 * through 7 Sunday — and the block itself. Empty here on purpose: with no
+	 * bootstrap the safe assumption is that no day is special, which leaves
+	 * the picker behaving as it always did rather than locking a field for a
+	 * rule this page never received.
+	 */
+	daytimeSlotDays: [],
+	daytimeSlotStart: '',
+	daytimeSlotEnd: '',
+
 	// WordPress's own defaults for Settings → General — except the clock.
 	dateFormat: 'F j, Y',
 	/*

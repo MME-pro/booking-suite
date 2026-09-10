@@ -52,6 +52,7 @@ import { cn } from '@/lib/utils';
 
 import { apartmentService, bookingService } from '../../../../services';
 import PriceBreakdown from './PriceBreakdown';
+import { dayKey, siteNow } from '../../../../lib/dates';
 import SlotPicker from './SlotPicker';
 import { useBookingQuote } from './useBookingQuote';
 import './BookingForm.css';
@@ -71,7 +72,9 @@ const PRICE_MODES = [
 	{ value: 'manual', label: __( 'Set the price myself', 'booking-suite' ) },
 ];
 
-const today = () => new Date().toISOString().slice( 0, 10 );
+// The property's today. toISOString() would answer in UTC, which is a day
+// out for anyone opening this late in the evening.
+const today = () => dayKey( siteNow() );
 
 const addDays = ( date, days ) => {
 	const result = new Date( `${ date }T00:00:00` );

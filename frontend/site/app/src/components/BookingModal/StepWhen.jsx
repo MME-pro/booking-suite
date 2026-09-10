@@ -6,7 +6,7 @@
  * so the row stays the same shape either way.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { __, sprintf, _n } from '@wordpress/i18n';
 
 import { bookingService } from '../../services/bookingService';
@@ -108,6 +108,35 @@ const endDate = ( slot ) => formatWpDate( slot.endsAt.slice( 0, 10 ) );
 const shiftKey = ( key, days ) =>
 	toKey( addDays( fromKey( key ) ?? startOfToday(), days ) );
 
+/**
+ * How long the fixed block runs, in hours, from the settings.
+ *
+ * Only needed before the server has answered; once it has, the block carries
+ * its own length. Returns 0 when the site defines no block, which reads as
+ * falsy at the one place it is used.
+ *
+ * @param {Object} config The bootstrap settings.
+ * @return {number} Hours, or 0.
+ */
+function blockLength( config ) {
+	const from = String( config.daytimeSlotStart ?? '' );
+	const to = String( config.daytimeSlotEnd ?? '' );
+
+	if ( ! /^\d{2}:\d{2}$/.test( from ) || ! /^\d{2}:\d{2}$/.test( to ) ) {
+		return 0;
+	}
+
+	const minutes = ( clock ) => {
+		const [ hours, mins ] = clock.split( ':' ).map( Number );
+
+		return hours * 60 + mins;
+	};
+
+	const span = minutes( to ) - minutes( from );
+
+	return span > 0 ? Math.round( ( span / 60 ) * 100 ) / 100 : 0;
+}
+
 export default function StepWhen( {
 	stay,
 	onChange,
@@ -148,7 +177,12 @@ export default function StepWhen( {
 		 * the "1" of an intended "12" — and firing on those means a grid of
 		 * one-hour slots flickering past on the way to a valid figure.
 		 */
-		if ( isOvernight || ! stay.date || ! ( stay.hours >= minHours ) ) {
+		/*
+		 * Fetched in both modes. The daytime options have to be on screen
+		 * while an overnight stay is selected, or choosing overnight is a
+		 * one-way door with nothing to click to come back.
+		 */
+		if ( ! stay.date || ! ( stay.hours >= minHours ) ) {
 			setStatus( 'idle' );
 			return undefined;
 		}
@@ -273,7 +307,52 @@ export default function StepWhen( {
 	 */
 	const block = 'ready' === status ? slotData?.daytimeSlot ?? null : null;
 
+	/*
+	 * Whether this date offers one fixed block instead of free start times.
+	 *
+	 * Read from the settings and the date alone. It used to come off the slots
+	 * response, which is only fetched once the form is valid — so typing a
+	 * duration under the minimum stopped the fetch and unlocked the field that
+	 * the block was meant to lock. The rule cannot depend on the control it
+	 * governs.
+	 */
+	const isBlockDay = useMemo( () => {
+		const days = settings.daytimeSlotDays ?? [];
+
+		if ( ! days.length || ! stay.date ) {
+			return false;
+		}
+
+		// Parsed as parts rather than through Date(string): a bare 'YYYY-MM-DD'
+		// is read as UTC, which lands on the previous day west of Greenwich.
+		const [ year, month, day ] = stay.date.split( '-' ).map( Number );
+		const weekday = new Date( year, month - 1, day ).getDay();
+
+		// getDay() is 0 for Sunday; the setting is ISO-8601, where Sunday is 7.
+		return days.includes( 0 === weekday ? 7 : weekday );
+	}, [ stay.date ] );
+
 	const hasFree = freeSlots.length > 0 || Boolean( block?.available );
+
+	/*
+	 * What the duration field shows. Empty for an overnight stay, which is
+	 * described by its window rather than a length; the block's own length on
+	 * a day that has one; otherwise whatever the guest has chosen.
+	 */
+	let shownHours = stay.hours;
+
+	if ( isOvernight ) {
+		shownHours = '';
+	} else if ( block ) {
+		shownHours = block.hours;
+	} else if ( isBlockDay ) {
+		/*
+		 * The block's own length, worked out from the settings, for the moment
+		 * before the slots response lands — otherwise the field would show the
+		 * guest's old duration under a label saying it is fixed.
+		 */
+		shownHours = blockLength( settings ) || stay.hours;
+	}
 
 	// The billing break means some lengths cost less than the one below them.
 	const chosen = durations.find( ( option ) => option.hours === stay.hours );
@@ -299,14 +378,13 @@ export default function StepWhen( {
 				/>
 
 				{ /*
-				 * The block is one length, so there is nothing to choose. A
-				 * number field the guest can change but whose value is ignored
-				 * is worse than no field.
+				 * On a fixed-block day the length is settled, so the field is
+				 * disabled rather than removed. A control that disappears
+				 * makes the step look different on a Friday for a reason the
+				 * guest cannot see; a greyed one still showing the hours says
+				 * what the booking is and that it is not theirs to change.
 				 */ }
-				<div
-					className="bks-field"
-					hidden={ Boolean( block ) && ! isOvernight }
-				>
+				<div className="bks-field">
 					<label htmlFor="bks-modal-duration">
 						{ __( 'Duration', 'booking-suite' ) }
 					</label>
@@ -316,8 +394,8 @@ export default function StepWhen( {
 						inputMode="numeric"
 						min={ minHours }
 						step="1"
-						disabled={ isOvernight }
-						value={ isOvernight ? '' : stay.hours }
+						disabled={ isOvernight || isBlockDay }
+						value={ shownHours }
 						placeholder={ isOvernight ? overnightWindow : '' }
 						onChange={ ( event ) =>
 							onDuration( event.target.value )
@@ -327,7 +405,13 @@ export default function StepWhen( {
 					{ saving && (
 						<span className="bks-field__hint">{ saving }</span>
 					) }
-					{ ! isOvernight && ! saving && (
+					{ ! isOvernight && ! saving && isBlockDay && (
+						<span className="bks-field__note">
+							{ __( 'Fixed on this day.', 'booking-suite' ) }
+						</span>
+					) }
+
+					{ ! isOvernight && ! saving && ! isBlockDay && (
 						<span className="bks-field__note">
 							{ sprintf(
 								/* translators: %d: the shortest bookable length, in hours. */
@@ -412,25 +496,33 @@ export default function StepWhen( {
 				</div>
 			</div>
 
-			<label className="bks-overnight" htmlFor="bks-modal-overnight">
-				<input
-					id="bks-modal-overnight"
-					type="checkbox"
-					checked={ isOvernight }
-					onChange={ ( event ) =>
-						onOvernight( event.target.checked )
-					}
-				/>
-				<span>
+			<h3 className="bks-when__heading">
+				{ __( 'Available start times', 'booking-suite' ) }
+			</h3>
+
+			{ /*
+			 * The overnight stay, offered as one of the times rather than as a
+			 * mode to switch into first. It is always here: every day can be
+			 * booked as a night, and on a weekend after 16:00 it is the only
+			 * thing that can be.
+			 */ }
+			<div className="bks-slots">
+				<button
+					type="button"
+					className={ `bks-slots__slot bks-slots__slot--block${
+						isOvernight ? ' is-selected' : ''
+					}` }
+					onClick={ () => onOvernight( true ) }
+				>
 					{ sprintf(
 						/* translators: %s: the overnight window, e.g. 16:00 – 11:00. */
 						__( 'Overnight stay (%s)', 'booking-suite' ),
 						overnightWindow
 					) }
-				</span>
-			</label>
+				</button>
+			</div>
 
-			{ isOvernight ? (
+			{ isOvernight && (
 				<p className="bks-when__note">
 					{ sprintf(
 						/* translators: %s: the overnight window. */
@@ -441,139 +533,140 @@ export default function StepWhen( {
 						overnightWindow
 					) }
 				</p>
-			) : (
-				<>
-					<h3 className="bks-when__heading">
-						{ __( 'Available start times', 'booking-suite' ) }
-					</h3>
-
-					{ 'idle' === status && (
-						<p className="bks-when__note">
-							{ __(
-								'Choose a date to see what is free.',
-								'booking-suite'
-							) }
-						</p>
-					) }
-
-					{ 'loading' === status && (
-						<p className="bks-when__note">
-							{ __( 'Checking availability…', 'booking-suite' ) }
-						</p>
-					) }
-
-					{ 'error' === status && (
-						<p className="bks-step__unavailable" role="alert">
-							{ slotError ||
-								__(
-									'Could not load the available times.',
-									'booking-suite'
-								) }
-						</p>
-					) }
-
-					{ 'ready' === status && ! hasFree && (
-						<Alternatives
-							date={ stay.date }
-							alternatives={ slotData?.alternatives }
-							currency={ currency }
-							onPick={ ( pick ) =>
-								onChange( {
-									...stay,
-									date: pick.date,
-									startTime: pick.start,
-								} )
-							}
-							onSwitch={ onSwitchApartment }
-						/>
-					) }
-
-					{ /*
-					 * Only the times that can actually be booked. A grid of
-					 * struck-through tiles is mostly noise — on a busy day it
-					 * pushed the handful of real options off the screen — and
-					 * a guest cannot act on a time that is gone.
-					 */ }
-					{ /*
-					 * Picking it sets the length as well as the start: the two
-					 * are one offer, and a start without its length would post
-					 * a window the server refuses.
-					 */ }
-					{ block && block.available && (
-						<div className="bks-slots">
-							<button
-								type="button"
-								className={ `bks-slots__slot bks-slots__slot--block${
-									stay.startTime === block.start
-										? ' is-selected'
-										: ''
-								}` }
-								onClick={ () =>
-									onChange( {
-										...stay,
-										startTime: block.start,
-										hours: block.hours,
-									} )
-								}
-							>
-								{ sprintf(
-									/* translators: 1: start time, 2: end time, both 24-hour. */
-									__( '%1$s – %2$s', 'booking-suite' ),
-									formatWpTime( block.start ),
-									formatWpTime( block.end )
-								) }
-							</button>
-						</div>
-					) }
-
-					{ block && ! block.available && (
-						<p className="bks-when__note">
-							{ __(
-								'The daytime booking on this day is already taken. An overnight stay may still be free.',
-								'booking-suite'
-							) }
-						</p>
-					) }
-
-					<div className="bks-slots">
-						{ freeSlots.map( ( slot ) => (
-							<button
-								key={ slot.startsAt }
-								type="button"
-								className={ `bks-slots__slot${
-									stay.startTime === slot.start
-										? ' is-selected'
-										: ''
-								}` }
-								onClick={ () =>
-									onChange( {
-										...stay,
-										startTime: slot.start,
-									} )
-								}
-								title={ sprintf(
-									/* translators: %s: when the booking ends, with the day if it is a later one. */
-									__( 'until %s', 'booking-suite' ),
-									endLabel( slot )
-								) }
-							>
-								{ formatWpTime( slot.start ) }
-
-								{ /*
-								 * A booking long enough to run past midnight
-								 * ends on a different date, and a tile showing
-								 * only "02:00" reads as ending before it
-								 * started. The day is spelled out whenever it
-								 * is not the one the guest picked.
-								 */ }
-								{ endsLater( slot ) && (
-									<span>{ endDate( slot ) }</span>
-								) }
-							</button>
-						) ) }
-					</div>
-				</>
 			) }
+
+			{ 'idle' === status && (
+				<p className="bks-when__note">
+					{ __(
+						'Choose a date to see what is free.',
+						'booking-suite'
+					) }
+				</p>
+			) }
+
+			{ 'loading' === status && (
+				<p className="bks-when__note">
+					{ __( 'Checking availability…', 'booking-suite' ) }
+				</p>
+			) }
+
+			{ 'error' === status && (
+				<p className="bks-step__unavailable" role="alert">
+					{ slotError ||
+						__(
+							'Could not load the available times.',
+							'booking-suite'
+						) }
+				</p>
+			) }
+
+			{ /*
+			 * Why, before what to do instead. On a fixed-block day the
+			 * reason the grid is empty is that the one slot has gone —
+			 * and the nearest alternative is an overnight stay on the
+			 * same day, not a different day. Printing this after the
+			 * other-days panel buried the one sentence that explains
+			 * the screen.
+			 */ }
+			{ block && ! block.available && (
+				<p className="bks-when__note">
+					{ __(
+						'The daytime booking on this day is already taken. An overnight stay may still be free.',
+						'booking-suite'
+					) }
+				</p>
+			) }
+
+			{ 'ready' === status && ! hasFree && (
+				<Alternatives
+					date={ stay.date }
+					fixedBlock={ Boolean( block ) }
+					alternatives={ slotData?.alternatives }
+					currency={ currency }
+					onPick={ ( pick ) =>
+						onChange( {
+							...stay,
+							date: pick.date,
+							startTime: pick.start,
+						} )
+					}
+					onSwitch={ onSwitchApartment }
+				/>
+			) }
+
+			{ /*
+			 * Only the times that can actually be booked. A grid of
+			 * struck-through tiles is mostly noise — on a busy day it
+			 * pushed the handful of real options off the screen — and
+			 * a guest cannot act on a time that is gone.
+			 */ }
+			{ /*
+			 * Picking it sets the length as well as the start: the two
+			 * are one offer, and a start without its length would post
+			 * a window the server refuses.
+			 */ }
+			{ block && block.available && (
+				<div className="bks-slots">
+					<button
+						type="button"
+						className={ `bks-slots__slot bks-slots__slot--block${
+							stay.startTime === block.start ? ' is-selected' : ''
+						}` }
+						onClick={ () =>
+							onChange( {
+								...stay,
+								mode: 'hourly',
+								startTime: block.start,
+								hours: block.hours,
+							} )
+						}
+					>
+						{ sprintf(
+							/* translators: 1: start time, 2: end time, both 24-hour. */
+							__( '%1$s – %2$s', 'booking-suite' ),
+							formatWpTime( block.start ),
+							formatWpTime( block.end )
+						) }
+					</button>
+				</div>
+			) }
+
+			<div className="bks-slots">
+				{ freeSlots.map( ( slot ) => (
+					<button
+						key={ slot.startsAt }
+						type="button"
+						className={ `bks-slots__slot${
+							stay.startTime === slot.start ? ' is-selected' : ''
+						}` }
+						onClick={ () =>
+							onChange( {
+								...stay,
+								mode: 'hourly',
+								startTime: slot.start,
+							} )
+						}
+						title={ sprintf(
+							/* translators: %s: when the booking ends, with the day if it is a later one. */
+							__( 'until %s', 'booking-suite' ),
+							endLabel( slot )
+						) }
+					>
+						{ formatWpTime( slot.start ) }
+
+						{ /*
+						 * A booking long enough to run past midnight
+						 * ends on a different date, and a tile showing
+						 * only "02:00" reads as ending before it
+						 * started. The day is spelled out whenever it
+						 * is not the one the guest picked.
+						 */ }
+						{ endsLater( slot ) && (
+							<span>{ endDate( slot ) }</span>
+						) }
+					</button>
+				) ) }
+			</div>
 
 			{ isOvernight && quote && (
 				<p

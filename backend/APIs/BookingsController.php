@@ -689,6 +689,28 @@ final class BookingsController {
 				);
 			}
 
+			/*
+			 * The owner is held to the same rules as a guest.
+			 *
+			 * This reverses what the brief originally asked for — "the admin
+			 * area can set 1-hour bookings and any special times freely" — on
+			 * the owner's later instruction that the rules apply on both
+			 * sides. Both create and update come through here, so there is one
+			 * gate rather than two.
+			 */
+			$refusal = SlotGenerator::rule_violation( $date, $time, $hours );
+
+			if ( null !== $refusal ) {
+				return new WP_Error(
+					'booking_suite_invalid_field',
+					$refusal,
+					array(
+						'status' => 400,
+						'field'  => 'hours',
+					)
+				);
+			}
+
 			$starts = new DateTimeImmutable( $date . ' ' . $time . ':00' );
 			$ends   = $starts->modify( '+' . (int) round( $hours * 60 ) . ' minutes' );
 		} else {
@@ -768,12 +790,32 @@ final class BookingsController {
 			array(
 				'date'      => $date,
 				'hours'     => $hours,
-				// Floor of one hour: the guest minimum is not the owner's.
-				'durations' => SlotGenerator::duration_options( $apartment, $date, $guests, 1 ),
-				'slots'     => SlotGenerator::for_date(
+				'durations' => SlotGenerator::duration_options( $apartment, $date, $guests ),
+				/*
+				 * The same grid the guest sees, and the same silence on a
+				 * fixed-block day. Offering the owner forty-eight start times
+				 * that the save now refuses would be a picker arguing with its
+				 * own endpoint.
+				 *
+				 * includePast stays: recording a walk-in after the event is
+				 * still the owner's job, and being late is not the rule this
+				 * change is about.
+				 */
+				'slots'     => SlotGenerator::is_fixed_block_day( $date )
+					? array()
+					: SlotGenerator::for_date(
+						$apartment,
+						$date,
+						$hours,
+						$guests,
+						array(
+							'includePast'     => true,
+							'ignoreBookingId' => $exclude ?: null,
+						)
+					),
+				'daytimeSlot' => SlotGenerator::daytime_slot(
 					$apartment,
 					$date,
-					$hours,
 					$guests,
 					array(
 						'includePast'     => true,

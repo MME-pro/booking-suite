@@ -54,21 +54,34 @@ export default function Alternatives( {
 	currency,
 	onPick,
 	onSwitch,
+	fixedBlock = false,
 } ) {
 	const sameApartment = alternatives?.sameApartment ?? null;
 	const others = alternatives?.otherApartments ?? [];
 
 	return (
 		<div className="bks-alt">
+			{ /*
+			 * "For this length" is only true where the length was the
+			 * guest's to choose. On a day whose daytime offer is one fixed
+			 * block it reads as an invitation to try a different duration —
+			 * of a field that is not even on the screen.
+			 */ }
 			<p className="bks-step__unavailable">
-				{ sprintf(
-					/* translators: %s: the date the guest asked for. */
-					__(
-						'Nothing free on %s for this length.',
-						'booking-suite'
-					),
-					formatWpDate( date )
-				) }
+				{ fixedBlock
+					? sprintf(
+							/* translators: %s: the date the guest asked for. */
+							__( 'Nothing free on %s.', 'booking-suite' ),
+							formatWpDate( date )
+					  )
+					: sprintf(
+							/* translators: %s: the date the guest asked for. */
+							__(
+								'Nothing free on %s for this length.',
+								'booking-suite'
+							),
+							formatWpDate( date )
+					  ) }
 			</p>
 
 			{ /*
