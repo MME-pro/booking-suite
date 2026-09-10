@@ -42,6 +42,22 @@ final class Installer {
 		self::backfill_short_links();
 		self::backfill_booking_types();
 
+		/*
+		 * The rewrite rules, too.
+		 *
+		 * An update installed through Updater never fires the activation hook,
+		 * so a release that adds a rule — the guest's payment page did — would
+		 * leave that URL answering 404 on every site that updated rather than
+		 * reinstalled. And the payment page's URL goes out in email, where a
+		 * dead link cannot be corrected afterwards.
+		 *
+		 * `false`, so the rules are recomputed and stored without touching the
+		 * server config. This runs only when the schema version moves, which is
+		 * exactly as often as it should.
+		 */
+		self::register_rewrites();
+		flush_rewrite_rules( false );
+
 		update_option( self::VERSION_OPTION, self::DB_VERSION, false );
 	}
 
@@ -212,6 +228,18 @@ final class Installer {
 				Schemas\BookingsTable::TYPE_OVERNIGHT
 			)
 		);
+	}
+
+	/**
+	 * Add every rule this plugin owns, so a flush has them all to write.
+	 *
+	 * Both are normally added on `init`. install() can run before that — from
+	 * the activation hook — so they are added again here rather than trusting
+	 * the ordering.
+	 */
+	private static function register_rewrites(): void {
+		Support\IcalFeed::add_rewrite();
+		Support\PaymentPage::add_rewrite();
 	}
 
 	/**
