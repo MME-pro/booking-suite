@@ -191,7 +191,7 @@ msgstr[0] "%d Gast"
 msgstr[1] "%d Gäste"
 
 #. translators: %d: number of hours.
-#: frontend/site/Shortcodes.php:1096 frontend/site/Shortcodes.php:1585 frontend/site/app/src/components/BookingModal/BookingModal.jsx:596 frontend/site/app/src/components/BookingModal/StepReview.jsx:122
+#: frontend/site/Shortcodes.php:1096 frontend/site/Shortcodes.php:1585 frontend/site/app/src/components/BookingModal/BookingModal.jsx:662 frontend/site/app/src/components/BookingModal/StepReview.jsx:122
 #: frontend/site/app/src/components/BookingModal/StepStay.jsx:217 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:26
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -240,7 +240,7 @@ msgid "%d minutes"
 msgstr "%d Minuten"
 
 #. translators: %d: number of nights.
-#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:608 frontend/site/app/src/components/BookingModal/StepReview.jsx:127 frontend/site/app/src/components/BookingModal/StepWhen.jsx:446
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:674 frontend/site/app/src/components/BookingModal/StepReview.jsx:127 frontend/site/app/src/components/BookingModal/StepWhen.jsx:446
 msgid "%d night"
 msgid_plural "%d nights"
 msgstr[0] "%d Nacht"
@@ -937,7 +937,7 @@ msgstr "BIC"
 msgid "BIC: %s"
 msgstr "BIC: %s"
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:638 frontend/site/app/src/components/BookingModal/BookingModal.jsx:643
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:638 frontend/site/app/src/components/BookingModal/BookingModal.jsx:709
 msgid "Back"
 msgstr "Zurück"
 
@@ -1011,11 +1011,11 @@ msgstr "Jetzt buchen"
 msgid "Book now button"
 msgstr "„Jetzt buchen“-Schaltfläche"
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:668
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:734
 msgid "Book subject to payment"
 msgstr "Zahlungspflichtig buchen"
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:440
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:506
 msgid "Book this apartment"
 msgstr "Dieses Apartment buchen"
 
@@ -1377,7 +1377,7 @@ msgstr "Wählen Sie mindestens ein Extra zum Sperren."
 msgid "Choose logo"
 msgstr "Logo wählen"
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:627
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:693
 msgid "Choose when you are coming"
 msgstr "Wählen Sie, wann Sie kommen"
 
@@ -1431,7 +1431,7 @@ msgid "Clear search"
 msgstr "Suche zurücksetzen"
 
 #: frontend/admin/app/src/components/Modal/Modal.jsx:77 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:725 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:183 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:268
-#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:197 frontend/site/app/src/components/BookingModal/BookingModal.jsx:453
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:197 frontend/site/app/src/components/BookingModal/BookingModal.jsx:519
 msgid "Close"
 msgstr "Schließen"
 
@@ -1488,7 +1488,7 @@ msgstr "Abgeschlossen"
 msgid "Comprehensive analytics and reports for your room booking business."
 msgstr "Ausführliche Auswertungen und Berichte zu Ihren Buchungen."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:544 frontend/site/app/src/components/BookingModal/BookingModal.jsx:419
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:544 frontend/site/app/src/components/BookingModal/BookingModal.jsx:485
 msgid "Confirm"
 msgstr "Bestätigen"
 
@@ -1508,7 +1508,7 @@ msgstr "Bestätigte Aufenthalte"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:680
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:746
 msgid "Continue"
 msgstr "Weiter"
 
@@ -1800,7 +1800,7 @@ msgstr "Beschreiben Sie das Apartment …"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:307 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:691 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:415 frontend/site/app/src/components/BookingModal/BookingModal.jsx:418
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:307 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:691 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:415 frontend/site/app/src/components/BookingModal/BookingModal.jsx:484
 msgid "Details"
 msgstr "Details"
 
@@ -2019,7 +2019,7 @@ msgid "Extra"
 msgstr "Extra"
 
 #: backend/PostTypes/ApartmentMetaBox.php:88 frontend/admin/Menu.php:191 frontend/admin/Menu.php:192 frontend/admin/app/src/App.jsx:65
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:260 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416 frontend/site/app/src/components/BookingModal/BookingModal.jsx:417
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:260 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416 frontend/site/app/src/components/BookingModal/BookingModal.jsx:483
 #: frontend/site/app/src/components/BookingModal/StepOptions.jsx:44 frontend/site/app/src/components/BookingModal/StepReview.jsx:313
 msgid "Extras"
 msgstr "Extras"
@@ -2422,7 +2422,7 @@ msgstr "Link zur Buchung im Adminbereich"
 msgid "Loading your booking…"
 msgstr "Buchung wird geladen …"
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:446 frontend/site/app/src/components/BookingModal/BookingModal.jsx:496
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:512 frontend/site/app/src/components/BookingModal/BookingModal.jsx:562
 msgid "Loading…"
 msgstr "Wird geladen …"
 
@@ -3043,7 +3043,7 @@ msgstr "Pfad"
 
 #: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:212 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:298 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:73 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:138
 #: frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:69 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:128 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:187 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:47
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:632 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:72 frontend/site/app/src/components/BookingModal/BookingModal.jsx:420
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:632 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:72 frontend/site/app/src/components/BookingModal/BookingModal.jsx:486
 msgid "Payment"
 msgstr "Zahlung"
 
@@ -3217,6 +3217,10 @@ msgstr "Bitte wählen Sie beide Daten."
 #: backend/APIs/PublicBookingController.php:848
 msgid "Please choose how long you need."
 msgstr "Bitte wählen Sie, wie lange Sie bleiben möchten."
+
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:369
+msgid "Please confirm your email address again — the earlier confirmation has expired."
+msgstr "Bitte bestätigen Sie Ihre E-Mail-Adresse erneut — die vorherige Bestätigung ist abgelaufen."
 
 #: backend/APIs/PublicBookingController.php:436
 msgid "Please confirm your email address before booking."
@@ -3488,7 +3492,7 @@ msgstr "Umsatzanalyse"
 msgid "Revenue per apartment across the window."
 msgstr "Umsatz je Apartment im Zeitraum."
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:421
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:487
 msgid "Review"
 msgstr "Prüfen"
 
@@ -3644,7 +3648,7 @@ msgstr "Diese Buchung wieder auf „ausstehend“ setzen? Der Zeitraum wird dadu
 msgid "Send to"
 msgstr "Senden an"
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:927 frontend/site/app/src/components/BookingModal/BookingModal.jsx:667
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:927 frontend/site/app/src/components/BookingModal/BookingModal.jsx:733
 msgid "Sending…"
 msgstr "Wird gesendet …"
 
@@ -4673,7 +4677,7 @@ msgstr "Was dem Gast berechnet wird, unabhängig von den Tarifen."
 msgid "What this apartment adds beyond the base rate. Both were once one figure for the whole site, which made a studio and a villa charge the same for a fifth guest."
 msgstr "Was diese Wohnung zusätzlich zum Grundpreis berechnet. Beide Werte galten früher für die gesamte Website — ein Studio und eine Villa berechneten damit denselben Betrag für einen fünften Gast."
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:416
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:482
 msgid "When"
 msgstr "Wann"
 
@@ -4742,11 +4746,11 @@ msgstr "Ihre Buchung ist bestätigt – bitte überweisen Sie jetzt"
 msgid "Your booking is confirmed — {{reference}}"
 msgstr "Ihre Buchung ist bestätigt — {{reference}}"
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:515
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:581
 msgid "Your booking is placed — taking you to the payment details…"
 msgstr "Ihre Buchung ist eingegangen — Sie werden zu den Zahlungsdaten weitergeleitet …"
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:306
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:355
 msgid "Your booking was placed. Please check your email for the payment details."
 msgstr "Ihre Buchung ist eingegangen. Die Zahlungsdaten finden Sie in Ihrer E-Mail."
 

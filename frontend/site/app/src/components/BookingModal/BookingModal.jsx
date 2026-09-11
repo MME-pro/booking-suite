@@ -45,19 +45,46 @@ const ALL_STEPS = [ 'when', 'extras', 'details', 'verify', 'review' ];
 const VERIFIED_KEY = 'bksVerifiedEmail';
 
 /**
+ * Whether a verification token is still inside its life.
+ *
+ * The token is `<expires>.<signature>` — the expiry is public, and reading it
+ * gives the browser no power it did not have. The signature is what makes the
+ * token mean anything, and only the server can check that.
+ *
+ * A minute of margin, so a token that lapses between the checkout rendering and
+ * the guest pressing the button is treated as gone before it is used rather
+ * than after.
+ *
+ * @param {string} token The stored token.
+ * @return {boolean} Whether it is worth sending.
+ */
+const stillValid = ( token ) => {
+	const expires = Number.parseInt( String( token ?? '' ).split( '.' )[ 0 ], 10 );
+
+	return Number.isFinite( expires ) && expires > Date.now() / 1000 + 60;
+};
+
+/**
  * The address proved earlier in this session, if any.
  *
  * Wrapped, because a browser set to block site data throws on the accessor
  * itself rather than returning nothing — and a booking form that will not open
  * in private browsing is a worse bug than one that asks for a code twice.
  *
+ * A stored proof whose token has lapsed is discarded here rather than carried
+ * forward. It used to be kept: the modal then believed the address was proved,
+ * left the verify step out, and the guest reached the order button only to be
+ * told by the server to confirm an address they had already confirmed — with no
+ * step on screen that would let them.
+ *
  * @return {{email: string, token: string}|null} What was proved.
  */
 const rememberedVerification = () => {
 	try {
 		const stored = window.sessionStorage?.getItem( VERIFIED_KEY );
+		const proof = stored ? JSON.parse( stored ) : null;
 
-		return stored ? JSON.parse( stored ) : null;
+		return proof && stillValid( proof.token ) ? proof : null;
 	} catch ( error ) {
 		return null;
 	}
@@ -264,6 +291,28 @@ export default function BookingModal( {
 		return () => controller.abort();
 	}, [ isStayComplete, payload, isDone ] );
 
+	/**
+	 * Forget that this address was ever proved, and ask again.
+	 *
+	 * The backstop to stillValid(): a token can stop being accepted for reasons
+	 * the browser cannot see — the site's salt rotated, the clock disagrees,
+	 * the address was edited after proving. Whatever the cause, the answer is
+	 * the same and the guest must be able to act on it, which means putting the
+	 * verify step back in front of them rather than printing a refusal on a
+	 * screen that offers no way to satisfy it.
+	 */
+	const forgetVerification = () => {
+		setVerified( null );
+
+		try {
+			window.sessionStorage?.removeItem( VERIFIED_KEY );
+		} catch ( blocked ) {
+			// Nothing to clear if it could never be written.
+		}
+
+		setStep( 'verify' );
+	};
+
 	const submit = async () => {
 		setBusy( true );
 		setError( null );
@@ -309,6 +358,23 @@ export default function BookingModal( {
 				)
 			);
 		} catch ( cause ) {
+			/*
+			 * The one refusal with a way out. Rather than leaving the guest
+			 * on the checkout being told to confirm an address they believe
+			 * they confirmed, take them to the step that confirms it.
+			 */
+			if ( 'booking_suite_unverified' === cause.code ) {
+				forgetVerification();
+				setError(
+					__(
+						'Please confirm your email address again — the earlier confirmation has expired.',
+						'booking-suite'
+					)
+				);
+
+				return;
+			}
+
 			setError( cause.message );
 		} finally {
 			setBusy( false );

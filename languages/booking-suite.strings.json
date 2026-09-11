@@ -368,7 +368,7 @@
         "refs": [
             "frontend/site/Shortcodes.php:1096",
             "frontend/site/Shortcodes.php:1585",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:596",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:662",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:122",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:217",
             "frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:26"
@@ -466,7 +466,7 @@
         "comment": "translators: %d: number of nights.",
         "refs": [
             "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:608",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:674",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:127",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:446"
         ],
@@ -2056,7 +2056,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460",
             "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:638",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:643"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:709"
         ],
         "comments": []
     },
@@ -2223,19 +2223,19 @@
     },
     {
         "single": "Book subject to payment",
-        "line": 668,
+        "line": 734,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:668"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:734"
         ],
         "comments": []
     },
     {
         "single": "Book this apartment",
-        "line": 440,
+        "line": 506,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:440"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:506"
         ],
         "comments": []
     },
@@ -3088,10 +3088,10 @@
     },
     {
         "single": "Choose when you are coming",
-        "line": 627,
+        "line": 693,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:627"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:693"
         ],
         "comments": []
     },
@@ -3219,7 +3219,7 @@
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:183",
             "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:268",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:197",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:453"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:519"
         ],
         "comments": []
     },
@@ -3351,7 +3351,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:544",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:419"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:485"
         ],
         "comments": []
     },
@@ -3396,10 +3396,10 @@
     },
     {
         "single": "Continue",
-        "line": 680,
+        "line": 746,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:680"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:746"
         ],
         "comments": []
     },
@@ -4062,7 +4062,7 @@
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:307",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:691",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:415",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:418"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:484"
         ],
         "comments": []
     },
@@ -4578,7 +4578,7 @@
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:260",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:417",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:483",
             "frontend/site/app/src/components/BookingModal/StepOptions.jsx:44",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:313"
         ],
@@ -5515,11 +5515,11 @@
     },
     {
         "single": "Loading…",
-        "line": 446,
+        "line": 512,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:446",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:496"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:512",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:562"
         ],
         "comments": []
     },
@@ -6938,7 +6938,7 @@
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:47",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:72",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:632",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:420"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:486"
         ],
         "comments": []
     },
@@ -7342,6 +7342,15 @@
         "comment": "",
         "refs": [
             "backend/APIs/PublicBookingController.php:848"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Please confirm your email address again — the earlier confirmation has expired.",
+        "line": 369,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:369"
         ],
         "comments": []
     },
@@ -7986,10 +7995,10 @@
     },
     {
         "single": "Review",
-        "line": 421,
+        "line": 487,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:421"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:487"
         ],
         "comments": []
     },
@@ -8349,7 +8358,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:927",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:667"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:733"
         ],
         "comments": []
     },
@@ -10687,10 +10696,10 @@
     },
     {
         "single": "When",
-        "line": 416,
+        "line": 482,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:416"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:482"
         ],
         "comments": []
     },
@@ -10842,19 +10851,19 @@
     },
     {
         "single": "Your booking is placed — taking you to the payment details…",
-        "line": 515,
+        "line": 581,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:515"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:581"
         ],
         "comments": []
     },
     {
         "single": "Your booking was placed. Please check your email for the payment details.",
-        "line": 306,
+        "line": 355,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:306"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:355"
         ],
         "comments": []
     },

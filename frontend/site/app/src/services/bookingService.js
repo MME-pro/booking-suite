@@ -33,6 +33,12 @@ const request = async ( path, { method = 'GET', body, signal } = {} ) => {
 			payload?.message ?? 'Something went wrong. Please try again.'
 		);
 
+		/*
+		 * The code, not only the sentence. A caller that wants to RECOVER
+		 * from a particular refusal — an address whose proof has lapsed, say
+		 * — cannot do it by matching on a message that is translated.
+		 */
+		error.code = payload?.code ?? '';
 		error.field = payload?.data?.field ?? '';
 		error.status = response.status;
 
