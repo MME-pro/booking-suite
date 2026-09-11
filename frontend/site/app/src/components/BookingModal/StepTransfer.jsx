@@ -14,9 +14,10 @@
  * thing this page must not have.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { __, sprintf } from '@wordpress/i18n';
 
+import { copyText } from '../../utils/clipboard';
 import { formatExactPrice } from '../../utils/format';
 import { settings } from '../../services/apartmentService';
 
@@ -94,66 +95,165 @@ function GiroCode( { payload } ) {
 	);
 }
 
+/** The two-rectangles glyph every interface uses for "copy". */
+function CopyGlyph() {
+	return (
+		<svg
+			className="bks-pay__icon"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			aria-hidden="true"
+		>
+			<rect x="9" y="9" width="11" height="11" rx="2" />
+			<path d="M5 15V5a2 2 0 0 1 2-2h10" />
+		</svg>
+	);
+}
+
+/** A tick, for the moment after. */
+function DoneGlyph() {
+	return (
+		<svg
+			className="bks-pay__icon"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2.5"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			aria-hidden="true"
+		>
+			<path d="m5 13 4 4L19 7" />
+		</svg>
+	);
+}
+
 /**
- * One line of the payment details, with a button to copy it.
+ * One line of the payment details.
  *
- * The copy button matters most for the IBAN and the reference: both are long,
- * both are transcribed into a banking app, and both fail silently when they are
- * wrong — a mistyped reference means the money arrives and cannot be matched to
- * anyone.
+ * Where the value is worth copying the whole row is the target, not a small
+ * button beside it. These are read on a phone with a banking app open in
+ * another tab, and an IBAN is twenty-two characters that must survive the
+ * journey exactly — a bigger target is the whole point, and "tap the row" needs
+ * no explaining.
+ *
+ * The outcome is always reported. Copying can fail for reasons the guest cannot
+ * see, and the earlier version swallowed every one of them: the button said
+ * "Copy" before and after, and the value was still only in the page. When it
+ * fails now the text is selected instead, which leaves them one keystroke away
+ * rather than stranded.
  *
  * @param {Object}  props
- * @param {string}  props.label     What the line is.
- * @param {string}  props.value     The value itself.
- * @param {boolean} [props.copyable] Whether to offer the copy button.
- * @param {boolean} [props.strong]  Draws the eye, for the purpose and amount.
+ * @param {string}  props.label      What the line is.
+ * @param {string}  props.value      The value itself.
+ * @param {boolean} [props.copyable] Whether the row can be tapped.
+ * @param {boolean} [props.strong]   Draws the eye, for the reference and amount.
  */
 function Line( { label, value, copyable = false, strong = false } ) {
-	const [ copied, setCopied ] = useState( false );
+	const [ state, setState ] = useState( 'idle' );
+	const valueRef = useRef( null );
 
 	if ( ! value ) {
 		return null;
 	}
 
+	const classes = [
+		'bks-pay__line',
+		strong ? 'bks-pay__line--strong' : '',
+		copyable ? 'bks-pay__line--copyable' : '',
+	]
+		.filter( Boolean )
+		.join( ' ' );
+
+	if ( ! copyable ) {
+		return (
+			<div className={ classes }>
+				<dt className="bks-pay__label">{ label }</dt>
+				<dd className="bks-pay__value">
+					<span className="bks-pay__text">{ value }</span>
+				</dd>
+			</div>
+		);
+	}
+
 	const copy = async () => {
-		try {
-			await window.navigator.clipboard.writeText( value );
-			setCopied( true );
-			window.setTimeout( () => setCopied( false ), 2000 );
-		} catch ( error ) {
-			// A browser that refuses the clipboard leaves the value on screen
-			// to be selected by hand, which is what it was before the button.
+		const done = await copyText( value );
+
+		if ( done ) {
+			setState( 'copied' );
+			window.setTimeout( () => setState( 'idle' ), 2000 );
+
+			return;
 		}
+
+		/*
+		 * Nothing reached the clipboard. Select the value on screen so the
+		 * guest can copy it themselves, and say so — a button that fails
+		 * quietly is worse than no button, because they walk away believing
+		 * they have the IBAN.
+		 */
+		setState( 'failed' );
+
+		const node = valueRef.current;
+
+		if ( node && window.getSelection ) {
+			const range = document.createRange();
+			range.selectNodeContents( node );
+
+			const selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange( range );
+		}
+
+		window.setTimeout( () => setState( 'idle' ), 4000 );
 	};
 
 	return (
-		<div
-			className={ `bks-pay__line${ strong ? ' bks-pay__line--strong' : '' }` }
-		>
+		<div className={ classes }>
 			<dt className="bks-pay__label">{ label }</dt>
 			<dd className="bks-pay__value">
-				<span className="bks-pay__text">{ value }</span>
-				{ copyable && (
-					<button
-						type="button"
-						className="bks-pay__copy"
-						onClick={ copy }
-						aria-label={ sprintf(
-							/* translators: %s: the name of the field being copied. */
-							__( 'Copy %s', 'booking-suite' ),
-							label
-						) }
+				<button
+					type="button"
+					className="bks-pay__copyrow"
+					onClick={ copy }
+					aria-label={ sprintf(
+						/* translators: 1: the field's name, 2: its value. */
+						__( 'Copy %1$s: %2$s', 'booking-suite' ),
+						label,
+						value
+					) }
+				>
+					<span className="bks-pay__text" ref={ valueRef }>
+						{ value }
+					</span>
+					<span
+						className={ `bks-pay__copyhint bks-pay__copyhint--${ state }` }
 					>
-						{ copied
-							? __( 'Copied', 'booking-suite' )
-							: __( 'Copy', 'booking-suite' ) }
-					</button>
-				) }
+						{ 'copied' === state && (
+							<>
+								<DoneGlyph />
+								{ __( 'Copied', 'booking-suite' ) }
+							</>
+						) }
+						{ 'failed' === state && (
+							<>{ __( 'Press Ctrl+C', 'booking-suite' ) }</>
+						) }
+						{ 'idle' === state && (
+							<>
+								<CopyGlyph />
+								{ __( 'Copy', 'booking-suite' ) }
+							</>
+						) }
+					</span>
+				</button>
 			</dd>
 		</div>
 	);
 }
-
 /**
  * @param {Object}   props
  * @param {Object}   props.payment   The payment payload from the server.

@@ -1698,4 +1698,6 @@ Gute Reise und bis bald.
 	'Your booking is confirmed' => 'Ihre Buchung ist bestätigt',
 	'There is nothing to transfer for this booking. Please get in touch so we can confirm it with you.' => 'Für diese Buchung ist nichts zu überweisen. Bitte melden Sie sich bei uns, damit wir sie mit Ihnen bestätigen können.',
 	'This apartment cannot be booked online yet — no price has been set for it. Please get in touch and we will arrange it with you.' => 'Dieses Apartment kann noch nicht online gebucht werden — es ist kein Preis hinterlegt. Bitte melden Sie sich bei uns, dann vereinbaren wir alles Weitere mit Ihnen.',
+	'Copy %1$s: %2$s' => '%1$s kopieren: %2$s',
+	'Press Ctrl+C' => 'Strg+C drücken',
 );

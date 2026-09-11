@@ -496,7 +496,7 @@ msgstr "Akzentfarbe als Hex-Wert"
 msgid "Access"
 msgstr "Zugriff"
 
-#: backend/Support/BookingEmails.php:475 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:733 frontend/site/app/src/components/BookingModal/StepDone.jsx:72 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:199
+#: backend/Support/BookingEmails.php:475 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:733 frontend/site/app/src/components/BookingModal/StepDone.jsx:72 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:299
 msgid "Account holder"
 msgstr "Kontoinhaber"
 
@@ -714,7 +714,7 @@ msgid "Also the hours a night imported from Airbnb or Booking.com occupies, so a
 msgstr "Zugleich die Zeiten, die eine von Airbnb oder Booking.com importierte Nacht belegt – ein Portal-Aufenthalt sperrt so dasselbe Zeitfenster wie eine Direktbuchung."
 
 #: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:79 frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:134 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:70 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:89
-#: frontend/site/app/src/components/BookingModal/StepDone.jsx:53 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:223
+#: frontend/site/app/src/components/BookingModal/StepDone.jsx:53 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:323
 msgid "Amount"
 msgstr "Betrag"
 
@@ -928,7 +928,7 @@ msgstr "Zahlung ausstehend"
 msgid "Awaiting payment"
 msgstr "Zahlung ausstehend"
 
-#: backend/Support/BookingEmails.php:485 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:763 frontend/site/app/src/components/BookingModal/StepDone.jsx:81 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:207
+#: backend/Support/BookingEmails.php:485 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:763 frontend/site/app/src/components/BookingModal/StepDone.jsx:81 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:307
 msgid "BIC"
 msgstr "BIC"
 
@@ -953,7 +953,7 @@ msgstr "Restbetrag nach Änderung der Buchung."
 msgid "Balance due"
 msgstr "Offener Betrag"
 
-#: backend/Support/BookingEmails.php:479 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:742 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:208
+#: backend/Support/BookingEmails.php:479 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:742 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:308
 msgid "Bank"
 msgstr "Bank"
 
@@ -1107,7 +1107,7 @@ msgstr "Buchungsverlauf, neueste zuerst."
 msgid "Booking not found."
 msgstr "Buchung nicht gefunden."
 
-#: frontend/site/app/src/PaymentApp.jsx:109 frontend/site/app/src/PaymentApp.jsx:135 frontend/site/app/src/components/BookingModal/StepDone.jsx:49 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:193
+#: frontend/site/app/src/PaymentApp.jsx:109 frontend/site/app/src/PaymentApp.jsx:135 frontend/site/app/src/components/BookingModal/StepDone.jsx:49 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:293
 msgid "Booking number"
 msgstr "Buchungsnummer"
 
@@ -1512,20 +1512,19 @@ msgstr "Kontakt"
 msgid "Continue"
 msgstr "Weiter"
 
-#. translators: %s: the name of the field being copied.
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:148
+#. translators: 1: the field's name, 2: its value.
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:239
 msgid "Copied"
 msgstr "Kopiert"
 
-#. translators: %s: the name of the field being copied.
-#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:435 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:149
+#: frontend/admin/app/src/pages/Guide/GuidePage.jsx:435 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:248
 msgid "Copy"
 msgstr "Kopieren"
 
-#. translators: %s: the name of the field being copied.
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:143
-msgid "Copy %s"
-msgstr "%s kopieren"
+#. translators: 1: the field's name, 2: its value.
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:225
+msgid "Copy %1$s: %2$s"
+msgstr "%1$s kopieren: %2$s"
 
 #. translators: %s: which feed, e.g. "For Airbnb".
 #: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:128 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ExportLinks.jsx:136
@@ -2268,7 +2267,7 @@ msgstr "Wie dieses Apartment im Kalender und auf der Website erkennbar ist."
 msgid "I accept the terms and conditions and the privacy policy."
 msgstr "Ich akzeptiere die AGB und die Datenschutzerklärung."
 
-#: backend/Support/BookingEmails.php:482 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:752 frontend/site/app/src/components/BookingModal/StepDone.jsx:76 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:203
+#: backend/Support/BookingEmails.php:482 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:752 frontend/site/app/src/components/BookingModal/StepDone.jsx:76 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:303
 msgid "IBAN"
 msgstr "IBAN"
 
@@ -2307,7 +2306,7 @@ msgstr "Inaktive Apartments bleiben in der Liste, sind aber nicht buchbar."
 msgid "Infants"
 msgstr "Kleinkinder"
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:284
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:384
 msgid "Initiate Transfer"
 msgstr "Überweisung veranlassen"
 
@@ -2347,7 +2346,7 @@ msgstr "Rechnungsnummer, sobald eine vergeben ist"
 msgid "Items offered at booking"
 msgstr "Beim Buchen angebotene Positionen"
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:283
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:383
 msgid "Just a moment…"
 msgstr "Einen Moment …"
 
@@ -2476,7 +2475,7 @@ msgid "Lower numbers appear first. Leave 0 for automatic ordering."
 msgstr "Kleinere Zahlen erscheinen zuerst. 0 bedeutet automatische Sortierung."
 
 #. translators: %d: hours the dates are held for.
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:258
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:358
 msgid "Make the transfer using the details above, within %d hours. Please quote the booking number as the payment reference — it is how we match your transfer to your booking."
 msgstr "Überweisen Sie den Betrag mit den obigen Daten innerhalb von %d Stunden. Bitte geben Sie die Buchungsnummer als Verwendungszweck an — daran ordnen wir Ihre Überweisung Ihrer Buchung zu."
 
@@ -3114,7 +3113,7 @@ msgstr "Zahlung eingegangen: {{amount_paid}} – {{reference}}"
 msgid "Payment recorded"
 msgstr "Zahlung erfasst"
 
-#: backend/Support/BookingEmails.php:489 frontend/site/app/src/components/BookingModal/StepDone.jsx:86 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:217
+#: backend/Support/BookingEmails.php:489 frontend/site/app/src/components/BookingModal/StepDone.jsx:86 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:317
 msgid "Payment reference"
 msgstr "Verwendungszweck"
 
@@ -3267,6 +3266,10 @@ msgstr "Die Gruppengröße im Buchungsfenster vorbelegen."
 #: frontend/site/Shortcodes.php:135 frontend/site/Shortcodes.php:188
 msgid "Preferred column count on wide screens."
 msgstr "Bevorzugte Spaltenanzahl auf breiten Bildschirmen."
+
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:243
+msgid "Press Ctrl+C"
+msgstr "Strg+C drücken"
 
 #: frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:117
 msgid "Preview"
@@ -3554,7 +3557,7 @@ msgstr "Wird mit dem Apartment gespeichert und beim nächsten planmäßigen Abgl
 msgid "Saving…"
 msgstr "Wird gespeichert …"
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:88
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:89
 msgid "Scan with your banking app to fill the transfer in automatically."
 msgstr "Mit der Banking-App scannen, um die Überweisung automatisch auszufüllen."
 
@@ -4247,7 +4250,7 @@ msgid "Their first name only"
 msgstr "Nur der Vorname"
 
 #. translators: %d: hours the dates are held for.
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:266
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:366
 msgid "Then press “Initiate Transfer” below. It tells us your payment is on its way — it does not move any money itself."
 msgstr "Klicken Sie anschließend unten auf „Überweisung veranlassen\". Damit teilen Sie uns mit, dass Ihre Zahlung unterwegs ist — es wird dadurch kein Geld bewegt."
 
@@ -4259,7 +4262,7 @@ msgstr "Es gibt noch keine Buchungen, daher lassen sich die Platzhalter nicht f�
 msgid "There is no right of withdrawal (§ 312g Abs. 2 Nr. 9 BGB). The cancellation conditions of the terms and conditions apply."
 msgstr "Es besteht kein Widerrufsrecht (§ 312g Abs. 2 Nr. 9 BGB). Es gelten die Stornobedingungen der AGB."
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:240
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:340
 msgid "There is nothing to transfer for this booking. Please get in touch so we can confirm it with you."
 msgstr "Für diese Buchung ist nichts zu überweisen. Bitte melden Sie sich bei uns, damit wir sie mit Ihnen bestätigen können."
 
@@ -4747,15 +4750,15 @@ msgstr "Ihre Bankverbindung, mit einem Hinweis zur Zahlung"
 msgid "Your booking has been cancelled — {{reference}}"
 msgstr "Ihre Buchung wurde storniert – {{reference}}"
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:288
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:388
 msgid "Your booking is already binding upon placing your order. This confirmation serves solely to expedite the processing of your payment."
 msgstr "Ihre Buchung ist bereits mit der Bestellung verbindlich. Diese Bestätigung dient ausschließlich der Beschleunigung der Zahlungsabwicklung."
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:189
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:289
 msgid "Your booking is confirmed"
 msgstr "Ihre Buchung ist bestätigt"
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:185
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:285
 msgid "Your booking is confirmed — please transfer the payment now"
 msgstr "Ihre Buchung ist bestätigt – bitte überweisen Sie jetzt"
 

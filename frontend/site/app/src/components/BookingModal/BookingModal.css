@@ -2842,20 +2842,88 @@
 	word-break: break-word;
 }
 
-.bks-pay__copy {
-	flex: none;
-	padding: 4px 10px;
-	border: 1px solid var(--bks-line, #e2e8f0);
-	border-radius: 999px;
-	background: #fff;
-	font-size: 12px;
-	color: var(--bks-muted, #64748b);
-	cursor: pointer;
+/*
+ * A copyable row is one target, edge to edge.
+ *
+ * These are read on a phone with a banking app in the next tab, and an IBAN is
+ * twenty-two characters that have to survive the journey exactly. A small
+ * button beside the value was a small target for the most important action on
+ * the page; the whole row is a large one, and needs no instruction.
+ */
+.bks-site-root .bks-pay__copyrow {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: flex-end !important;
+	gap: 10px !important;
+	width: 100% !important;
+	padding: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
+	color: inherit !important;
+	-webkit-text-fill-color: currentcolor !important;
+	font: inherit !important;
+	text-align: right !important;
+	cursor: pointer !important;
 }
 
-.bks-pay__copy:hover {
-	border-color: var(--bks-brand, #2563eb);
-	color: var(--bks-brand, #2563eb);
+/*
+ * The hint sits at a fixed width so the value does not slide sideways when the
+ * label changes from "Copy" to "Copied" — a row that jumps under the finger
+ * that just tapped it reads as a mis-tap.
+ */
+.bks-pay__copyhint {
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 4px;
+	min-width: 76px;
+	font-family: var(--bks-site-font, 'Inter', sans-serif);
+	font-size: 12px;
+	font-weight: 600;
+	white-space: nowrap;
+	color: var(--bks-muted, #64748b);
+	transition: color 120ms ease;
+}
+
+.bks-pay__icon {
+	width: 14px;
+	height: 14px;
+	flex: none;
+}
+
+.bks-site-root .bks-pay__copyrow:hover .bks-pay__copyhint,
+.bks-site-root .bks-pay__copyrow:focus-visible .bks-pay__copyhint {
+	color: var(--bks-site-brand, #7c3aed);
+}
+
+/* Taken, and said so. */
+.bks-pay__copyhint--copied {
+	color: var(--bks-success, #15803d) !important;
+}
+
+/*
+ * The clipboard refused — over plain HTTP the API is not there at all. The
+ * value has been selected on screen instead, so this says what to press.
+ */
+.bks-pay__copyhint--failed {
+	color: #b45309 !important;
+}
+
+/* The row lifts a little, so it reads as something to press. */
+.bks-pay__line--copyable {
+	transition: background-color 120ms ease;
+}
+
+.bks-pay__line--copyable:hover,
+.bks-pay__line--copyable:focus-within {
+	background-color: var(--bks-site-surface-muted, #f8fafc);
+}
+
+.bks-site-root .bks-pay__copyrow:focus-visible {
+	outline: 2px solid var(--bks-site-brand, #7c3aed) !important;
+	outline-offset: 2px !important;
+	border-radius: 6px !important;
 }
 
 .bks-giro {

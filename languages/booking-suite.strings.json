@@ -1024,7 +1024,7 @@
             "backend/Support/BookingEmails.php:475",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:733",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:72",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:199"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:299"
         ],
         "comments": []
     },
@@ -1535,7 +1535,7 @@
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:70",
             "frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:89",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:53",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:223"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:323"
         ],
         "comments": []
     },
@@ -2034,7 +2034,7 @@
             "backend/Support/BookingEmails.php:485",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:763",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:81",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:207"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:307"
         ],
         "comments": []
     },
@@ -2094,7 +2094,7 @@
         "refs": [
             "backend/Support/BookingEmails.php:479",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:742",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:208"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:308"
         ],
         "comments": []
     },
@@ -2456,7 +2456,7 @@
             "frontend/site/app/src/PaymentApp.jsx:109",
             "frontend/site/app/src/PaymentApp.jsx:135",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:49",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:193"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:293"
         ],
         "comments": []
     },
@@ -3405,13 +3405,13 @@
     },
     {
         "single": "Copied",
-        "line": 148,
-        "comment": "translators: %s: the name of the field being copied.",
+        "line": 239,
+        "comment": "translators: 1: the field's name, 2: its value.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:148"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:239"
         ],
         "comments": {
-            "translators: %s: the name of the field being copied.": true
+            "translators: 1: the field's name, 2: its value.": true
         }
     },
     {
@@ -3420,21 +3420,19 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Guide/GuidePage.jsx:435",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:149"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:248"
         ],
-        "comments": {
-            "translators: %s: the name of the field being copied.": true
-        }
+        "comments": []
     },
     {
-        "single": "Copy %s",
-        "line": 143,
-        "comment": "translators: %s: the name of the field being copied.",
+        "single": "Copy %1$s: %2$s",
+        "line": 225,
+        "comment": "translators: 1: the field's name, 2: its value.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:143"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:225"
         ],
         "comments": {
-            "translators: %s: the name of the field being copied.": true
+            "translators: 1: the field's name, 2: its value.": true
         }
     },
     {
@@ -5162,7 +5160,7 @@
             "backend/Support/BookingEmails.php:482",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:752",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:76",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:203"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:303"
         ],
         "comments": []
     },
@@ -5249,10 +5247,10 @@
     },
     {
         "single": "Initiate Transfer",
-        "line": 284,
+        "line": 384,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:284"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:384"
         ],
         "comments": []
     },
@@ -5340,10 +5338,10 @@
     },
     {
         "single": "Just a moment…",
-        "line": 283,
+        "line": 383,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:283"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:383"
         ],
         "comments": []
     },
@@ -5639,10 +5637,10 @@
     },
     {
         "single": "Make the transfer using the details above, within %d hours. Please quote the booking number as the payment reference — it is how we match your transfer to your booking.",
-        "line": 258,
+        "line": 358,
         "comment": "translators: %d: hours the dates are held for.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:258"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:358"
         ],
         "comments": {
             "translators: %d: hours the dates are held for.": true
@@ -7105,7 +7103,7 @@
         "refs": [
             "backend/Support/BookingEmails.php:489",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:86",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:217"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:317"
         ],
         "comments": []
     },
@@ -7456,6 +7454,15 @@
         "refs": [
             "frontend/site/Shortcodes.php:135",
             "frontend/site/Shortcodes.php:188"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Press Ctrl+C",
+        "line": 243,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:243"
         ],
         "comments": []
     },
@@ -8137,10 +8144,10 @@
     },
     {
         "single": "Scan with your banking app to fill the transfer in automatically.",
-        "line": 88,
+        "line": 89,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:88"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:89"
         ],
         "comments": []
     },
@@ -9721,10 +9728,10 @@
     },
     {
         "single": "Then press “Initiate Transfer” below. It tells us your payment is on its way — it does not move any money itself.",
-        "line": 266,
+        "line": 366,
         "comment": "translators: %d: hours the dates are held for.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:266"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:366"
         ],
         "comments": {
             "translators: %d: hours the dates are held for.": true
@@ -9750,10 +9757,10 @@
     },
     {
         "single": "There is nothing to transfer for this booking. Please get in touch so we can confirm it with you.",
-        "line": 240,
+        "line": 340,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:240"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:340"
         ],
         "comments": []
     },
@@ -10854,28 +10861,28 @@
     },
     {
         "single": "Your booking is already binding upon placing your order. This confirmation serves solely to expedite the processing of your payment.",
-        "line": 288,
+        "line": 388,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:288"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:388"
         ],
         "comments": []
     },
     {
         "single": "Your booking is confirmed",
-        "line": 189,
+        "line": 289,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:189"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:289"
         ],
         "comments": []
     },
     {
         "single": "Your booking is confirmed — please transfer the payment now",
-        "line": 185,
+        "line": 285,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:185"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:285"
         ],
         "comments": []
     },
