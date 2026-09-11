@@ -368,7 +368,7 @@
         "refs": [
             "frontend/site/Shortcodes.php:1096",
             "frontend/site/Shortcodes.php:1585",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:597",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:596",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:122",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:217",
             "frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:26"
@@ -466,7 +466,7 @@
         "comment": "translators: %d: number of nights.",
         "refs": [
             "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:609",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:608",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:127",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:446"
         ],
@@ -1023,7 +1023,7 @@
         "refs": [
             "backend/Support/BookingEmails.php:475",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:733",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:69",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:72",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:192"
         ],
         "comments": []
@@ -1534,7 +1534,7 @@
             "frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:134",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:70",
             "frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:89",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:50",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:53",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:216"
         ],
         "comments": []
@@ -2033,7 +2033,7 @@
         "refs": [
             "backend/Support/BookingEmails.php:485",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:763",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:78",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:81",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:200"
         ],
         "comments": []
@@ -2056,7 +2056,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460",
             "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:638",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:644"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:643"
         ],
         "comments": []
     },
@@ -2223,19 +2223,19 @@
     },
     {
         "single": "Book subject to payment",
-        "line": 669,
+        "line": 668,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:669"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:668"
         ],
         "comments": []
     },
     {
         "single": "Book this apartment",
-        "line": 445,
+        "line": 440,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:445"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:440"
         ],
         "comments": []
     },
@@ -2450,12 +2450,12 @@
     },
     {
         "single": "Booking number",
-        "line": 101,
+        "line": 109,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/PaymentApp.jsx:101",
-            "frontend/site/app/src/PaymentApp.jsx:127",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:46",
+            "frontend/site/app/src/PaymentApp.jsx:109",
+            "frontend/site/app/src/PaymentApp.jsx:135",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:49",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:186"
         ],
         "comments": []
@@ -3088,10 +3088,10 @@
     },
     {
         "single": "Choose when you are coming",
-        "line": 628,
+        "line": 627,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:628"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:627"
         ],
         "comments": []
     },
@@ -3219,7 +3219,7 @@
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:183",
             "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:268",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:197",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:458"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:453"
         ],
         "comments": []
     },
@@ -3351,7 +3351,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:544",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:424"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:419"
         ],
         "comments": []
     },
@@ -3396,10 +3396,10 @@
     },
     {
         "single": "Continue",
-        "line": 681,
+        "line": 680,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:681"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:680"
         ],
         "comments": []
     },
@@ -4062,7 +4062,7 @@
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:307",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:691",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:415",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:423"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:418"
         ],
         "comments": []
     },
@@ -4578,7 +4578,7 @@
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:260",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:422",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:417",
             "frontend/site/app/src/components/BookingModal/StepOptions.jsx:44",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:313"
         ],
@@ -5161,7 +5161,7 @@
         "refs": [
             "backend/Support/BookingEmails.php:482",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:752",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:73",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:76",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:196"
         ],
         "comments": []
@@ -5506,20 +5506,20 @@
     },
     {
         "single": "Loading your booking…",
-        "line": 69,
+        "line": 80,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/PaymentApp.jsx:69"
+            "frontend/site/app/src/PaymentApp.jsx:80"
         ],
         "comments": []
     },
     {
         "single": "Loading…",
-        "line": 451,
+        "line": 446,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:451",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:501"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:446",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:496"
         ],
         "comments": []
     },
@@ -6353,10 +6353,10 @@
     },
     {
         "single": "Nothing more to do — your booking is confirmed.",
-        "line": 131,
+        "line": 139,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/PaymentApp.jsx:131"
+            "frontend/site/app/src/PaymentApp.jsx:139"
         ],
         "comments": []
     },
@@ -6529,10 +6529,10 @@
     },
     {
         "single": "Once we have received your payment, you will receive a separate confirmation by email.",
-        "line": 38,
+        "line": 41,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:38"
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:41"
         ],
         "comments": []
     },
@@ -6938,7 +6938,7 @@
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:47",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:72",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:632",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:425"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:420"
         ],
         "comments": []
     },
@@ -7084,7 +7084,7 @@
         "comment": "",
         "refs": [
             "backend/Support/BookingEmails.php:489",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:83",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:86",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:210"
         ],
         "comments": []
@@ -7356,10 +7356,10 @@
     },
     {
         "single": "Please do not transfer anything. Get in touch if you would like to book these dates again.",
-        "line": 111,
+        "line": 119,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/PaymentApp.jsx:111"
+            "frontend/site/app/src/PaymentApp.jsx:119"
         ],
         "comments": []
     },
@@ -7986,10 +7986,10 @@
     },
     {
         "single": "Review",
-        "line": 426,
+        "line": 421,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:426"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:421"
         ],
         "comments": []
     },
@@ -8349,7 +8349,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:927",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:668"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:667"
         ],
         "comments": []
     },
@@ -9102,19 +9102,19 @@
     },
     {
         "single": "Thank you — you have told us the transfer is on its way. We will confirm your booking as soon as it reaches us.",
-        "line": 149,
+        "line": 168,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/PaymentApp.jsx:149"
+            "frontend/site/app/src/PaymentApp.jsx:168"
         ],
         "comments": []
     },
     {
         "single": "Thank you — your booking is placed",
-        "line": 34,
+        "line": 37,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:34"
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:37"
         ],
         "comments": []
     },
@@ -9832,10 +9832,10 @@
     },
     {
         "single": "This booking has been cancelled",
-        "line": 98,
+        "line": 106,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/PaymentApp.jsx:98"
+            "frontend/site/app/src/PaymentApp.jsx:106"
         ],
         "comments": []
     },
@@ -9877,7 +9877,7 @@
         "comment": "",
         "refs": [
             "backend/APIs/PublicBookingController.php:196",
-            "frontend/site/app/src/PaymentApp.jsx:82"
+            "frontend/site/app/src/PaymentApp.jsx:93"
         ],
         "comments": []
     },
@@ -10575,10 +10575,10 @@
     },
     {
         "single": "We could not open this booking",
-        "line": 78,
+        "line": 89,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/PaymentApp.jsx:78"
+            "frontend/site/app/src/PaymentApp.jsx:89"
         ],
         "comments": []
     },
@@ -10687,10 +10687,10 @@
     },
     {
         "single": "When",
-        "line": 421,
+        "line": 416,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:421"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:416"
         ],
         "comments": []
     },
@@ -10841,6 +10841,24 @@
         "comments": []
     },
     {
+        "single": "Your booking is placed — taking you to the payment details…",
+        "line": 515,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:515"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Your booking was placed. Please check your email for the payment details.",
+        "line": 306,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:306"
+        ],
+        "comments": []
+    },
+    {
         "single": "Your booking {{reference}} — please transfer {{total}}",
         "line": 169,
         "comment": "",
@@ -10851,10 +10869,10 @@
     },
     {
         "single": "Your payment has arrived",
-        "line": 124,
+        "line": 132,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/PaymentApp.jsx:124"
+            "frontend/site/app/src/PaymentApp.jsx:132"
         ],
         "comments": []
     },

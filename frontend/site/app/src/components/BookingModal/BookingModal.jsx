@@ -16,10 +16,8 @@ import { addDays, startOfToday, toKey } from '../../utils/date';
 import StepWhen from './StepWhen';
 import StepOptions from './StepOptions';
 import StepDetails from './StepDetails';
-import StepTransfer from './StepTransfer';
 import StepReview from './StepReview';
 import StepVerify from './StepVerify';
-import StepDone from './StepDone';
 import './BookingModal.css';
 
 /**
@@ -82,17 +80,14 @@ export default function BookingModal( {
 	const [ context, setContext ] = useState( null );
 	const [ step, setStep ] = useState( 'when' );
 	/**
-	 * Where the guest is: still filling the form, on the payment page, or
-	 * finished.
+	 * Set once the booking exists and the browser is on its way to the
+	 * payment page.
 	 *
-	 * One value rather than two booleans, because "paying" and "done" are
-	 * mutually exclusive and a pair of flags can express a state that is
-	 * neither — or both.
+	 * The modal has nothing left to draw at that point — the next screen is a
+	 * page of its own — so this only stops the form and the footer being
+	 * interactive in the moment before the navigation lands.
 	 */
-	const [ phase, setPhase ] = useState( 'form' );
-
-	/** Both post-order phases hide the stepper and the footer. */
-	const isDone = 'form' !== phase;
+	const [ isDone, setDone ] = useState( false );
 	const [ isLoading, setLoading ] = useState( true );
 	const [ isBusy, setBusy ] = useState( false );
 	const [ error, setError ] = useState( null );
@@ -269,50 +264,50 @@ export default function BookingModal( {
 		return () => controller.abort();
 	}, [ isStayComplete, payload, isDone ] );
 
-	/**
-	 * "I have sent it."
-	 *
-	 * A status marker with no legal weight — the booking was binding when the
-	 * order was placed. It fails soft on purpose: the guest has already done
-	 * the thing that matters, and an error here would suggest otherwise, so a
-	 * failed call still moves them on to the thank-you page.
-	 */
-	const declareTransfer = async () => {
-		setBusy( true );
-
-		try {
-			const updated = await bookingService.declareTransfer(
-				booking?.token
-			);
-
-			setBooking( ( current ) => ( { ...current, payment: updated } ) );
-		} catch ( cause ) {
-			// Deliberately swallowed; see above.
-		} finally {
-			setBusy( false );
-			setPhase( 'done' );
-		}
-	};
-
 	const submit = async () => {
 		setBusy( true );
 		setError( null );
 
 		try {
-			setBooking(
-				await bookingService.book( {
-					...payload(),
-					...guest,
-					verificationToken: verified?.token ?? '',
-				} )
-			);
+			const placed = await bookingService.book( {
+				...payload(),
+				...guest,
+				verificationToken: verified?.token ?? '',
+			} );
+
+			setBooking( placed );
+			setDone( true );
 
 			/*
-			 * Straight to the payment page, not to a thank-you. The booking
-			 * exists and the money is owed from this moment, so the next thing
-			 * on screen has to be where to send it.
+			 * Hand over to the payment page rather than becoming it.
+			 *
+			 * It is a real page at a real URL — the same one the booking email
+			 * links to — so the guest can bookmark it, reload it, send it to
+			 * the phone their banking app is on, and come back to it tomorrow.
+			 * None of that is true of a step inside a modal, which is gone the
+			 * moment the tab is closed.
+			 *
+			 * The modal is left showing "sending" until the browser navigates,
+			 * because anything else would flash a screen the guest is about to
+			 * lose.
 			 */
-			setPhase( 'transfer' );
+			if ( placed?.paymentUrl ) {
+				window.location.assign( placed.paymentUrl );
+
+				return;
+			}
+
+			/*
+			 * No link came back, which should not happen. Rather than strand
+			 * the guest on a checkout for a booking that now exists, show the
+			 * error — the booking is safe, and the email carries the link.
+			 */
+			setError(
+				__(
+					'Your booking was placed. Please check your email for the payment details.',
+					'booking-suite'
+				)
+			);
 		} catch ( cause ) {
 			setError( cause.message );
 		} finally {
@@ -508,16 +503,20 @@ export default function BookingModal( {
 						</p>
 					) }
 
-					{ ! isLoading && apartment && 'transfer' === phase && (
-						<StepTransfer
-							payment={ booking?.payment }
-							onDeclare={ declareTransfer }
-							isBusy={ isBusy }
-						/>
-					) }
-
-					{ ! isLoading && apartment && 'done' === phase && (
-						<StepDone booking={ booking } currency={ currency } />
+					{ /*
+					 * The booking is placed and the browser is navigating to
+					 * the payment page. A blank modal for that half-second
+					 * reads as something having gone wrong, and the one thing
+					 * a guest must not doubt at this moment is whether their
+					 * booking went through.
+					 */ }
+					{ ! isLoading && isDone && ! error && (
+						<p className="bks-booking__loading">
+							{ __(
+								'Your booking is placed — taking you to the payment details…',
+								'booking-suite'
+							) }
+						</p>
 					) }
 
 					{ ! isLoading && apartment && ! isDone && (

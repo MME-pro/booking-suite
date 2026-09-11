@@ -1689,4 +1689,6 @@ Gute Reise und bis bald.
 	'VAT on hourly bookings (%)' => 'MwSt. auf stundenweise Buchungen (%)',
 	'A stay that begins and ends on the same day. Usually 19%.' => 'Ein Aufenthalt, der am selben Tag beginnt und endet. Meist 19 %.',
 	'Each booking is filed as overnight or hourly from its dates, and carries that for good. Guests are only ever shown the gross amount and "incl. statutory VAT" — the split appears on the invoice alone.' => 'Jede Buchung wird anhand ihrer Zeiten als Übernachtung oder stundenweise eingestuft und behält diese Einstufung dauerhaft. Gästen wird ausschließlich der Bruttobetrag und "inkl. gesetzlicher MwSt." angezeigt — die Aufschlüsselung erscheint allein auf der Rechnung.',
+	'Your booking is placed — taking you to the payment details…' => 'Ihre Buchung ist eingegangen — Sie werden zu den Zahlungsdaten weitergeleitet …',
+	'Your booking was placed. Please check your email for the payment details.' => 'Ihre Buchung ist eingegangen. Die Zahlungsdaten finden Sie in Ihrer E-Mail.',
 );

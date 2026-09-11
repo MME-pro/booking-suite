@@ -192,7 +192,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of hours.
-#: frontend/site/Shortcodes.php:1096 frontend/site/Shortcodes.php:1585 frontend/site/app/src/components/BookingModal/BookingModal.jsx:597 frontend/site/app/src/components/BookingModal/StepReview.jsx:122
+#: frontend/site/Shortcodes.php:1096 frontend/site/Shortcodes.php:1585 frontend/site/app/src/components/BookingModal/BookingModal.jsx:596 frontend/site/app/src/components/BookingModal/StepReview.jsx:122
 #: frontend/site/app/src/components/BookingModal/StepStay.jsx:217 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:26
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -241,7 +241,7 @@ msgid "%d minutes"
 msgstr ""
 
 #. translators: %d: number of nights.
-#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:609 frontend/site/app/src/components/BookingModal/StepReview.jsx:127 frontend/site/app/src/components/BookingModal/StepWhen.jsx:446
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:608 frontend/site/app/src/components/BookingModal/StepReview.jsx:127 frontend/site/app/src/components/BookingModal/StepWhen.jsx:446
 msgid "%d night"
 msgid_plural "%d nights"
 msgstr[0] ""
@@ -497,7 +497,7 @@ msgstr ""
 msgid "Access"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:475 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:733 frontend/site/app/src/components/BookingModal/StepDone.jsx:69 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:192
+#: backend/Support/BookingEmails.php:475 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:733 frontend/site/app/src/components/BookingModal/StepDone.jsx:72 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:192
 msgid "Account holder"
 msgstr ""
 
@@ -715,7 +715,7 @@ msgid "Also the hours a night imported from Airbnb or Booking.com occupies, so a
 msgstr ""
 
 #: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:79 frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:134 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:70 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:89
-#: frontend/site/app/src/components/BookingModal/StepDone.jsx:50 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:216
+#: frontend/site/app/src/components/BookingModal/StepDone.jsx:53 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:216
 msgid "Amount"
 msgstr ""
 
@@ -929,7 +929,7 @@ msgstr ""
 msgid "Awaiting payment"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:485 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:763 frontend/site/app/src/components/BookingModal/StepDone.jsx:78 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:200
+#: backend/Support/BookingEmails.php:485 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:763 frontend/site/app/src/components/BookingModal/StepDone.jsx:81 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:200
 msgid "BIC"
 msgstr ""
 
@@ -938,7 +938,7 @@ msgstr ""
 msgid "BIC: %s"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:638 frontend/site/app/src/components/BookingModal/BookingModal.jsx:644
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:638 frontend/site/app/src/components/BookingModal/BookingModal.jsx:643
 msgid "Back"
 msgstr ""
 
@@ -1012,11 +1012,11 @@ msgstr ""
 msgid "Book now button"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:669
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:668
 msgid "Book subject to payment"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:445
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:440
 msgid "Book this apartment"
 msgstr ""
 
@@ -1108,7 +1108,7 @@ msgstr ""
 msgid "Booking not found."
 msgstr ""
 
-#: frontend/site/app/src/PaymentApp.jsx:101 frontend/site/app/src/PaymentApp.jsx:127 frontend/site/app/src/components/BookingModal/StepDone.jsx:46 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:186
+#: frontend/site/app/src/PaymentApp.jsx:109 frontend/site/app/src/PaymentApp.jsx:135 frontend/site/app/src/components/BookingModal/StepDone.jsx:49 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:186
 msgid "Booking number"
 msgstr ""
 
@@ -1378,7 +1378,7 @@ msgstr ""
 msgid "Choose logo"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:628
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:627
 msgid "Choose when you are coming"
 msgstr ""
 
@@ -1432,7 +1432,7 @@ msgid "Clear search"
 msgstr ""
 
 #: frontend/admin/app/src/components/Modal/Modal.jsx:77 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:725 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:183 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:268
-#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:197 frontend/site/app/src/components/BookingModal/BookingModal.jsx:458
+#: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:197 frontend/site/app/src/components/BookingModal/BookingModal.jsx:453
 msgid "Close"
 msgstr ""
 
@@ -1489,7 +1489,7 @@ msgstr ""
 msgid "Comprehensive analytics and reports for your room booking business."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:544 frontend/site/app/src/components/BookingModal/BookingModal.jsx:424
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:544 frontend/site/app/src/components/BookingModal/BookingModal.jsx:419
 msgid "Confirm"
 msgstr ""
 
@@ -1509,7 +1509,7 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:681
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:680
 msgid "Continue"
 msgstr ""
 
@@ -1801,7 +1801,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:307 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:691 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:415 frontend/site/app/src/components/BookingModal/BookingModal.jsx:423
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:307 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:691 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:415 frontend/site/app/src/components/BookingModal/BookingModal.jsx:418
 msgid "Details"
 msgstr ""
 
@@ -2020,7 +2020,7 @@ msgid "Extra"
 msgstr ""
 
 #: backend/PostTypes/ApartmentMetaBox.php:88 frontend/admin/Menu.php:191 frontend/admin/Menu.php:192 frontend/admin/app/src/App.jsx:65
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:260 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416 frontend/site/app/src/components/BookingModal/BookingModal.jsx:422
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:260 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416 frontend/site/app/src/components/BookingModal/BookingModal.jsx:417
 #: frontend/site/app/src/components/BookingModal/StepOptions.jsx:44 frontend/site/app/src/components/BookingModal/StepReview.jsx:313
 msgid "Extras"
 msgstr ""
@@ -2269,7 +2269,7 @@ msgstr ""
 msgid "I accept the terms and conditions and the privacy policy."
 msgstr ""
 
-#: backend/Support/BookingEmails.php:482 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:752 frontend/site/app/src/components/BookingModal/StepDone.jsx:73 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:196
+#: backend/Support/BookingEmails.php:482 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:752 frontend/site/app/src/components/BookingModal/StepDone.jsx:76 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:196
 msgid "IBAN"
 msgstr ""
 
@@ -2419,11 +2419,11 @@ msgstr ""
 msgid "Link to the booking in the admin"
 msgstr ""
 
-#: frontend/site/app/src/PaymentApp.jsx:69
+#: frontend/site/app/src/PaymentApp.jsx:80
 msgid "Loading your booking…"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:451 frontend/site/app/src/components/BookingModal/BookingModal.jsx:501
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:446 frontend/site/app/src/components/BookingModal/BookingModal.jsx:496
 msgid "Loading…"
 msgstr ""
 
@@ -2790,7 +2790,7 @@ msgstr ""
 msgid "Nothing locked"
 msgstr ""
 
-#: frontend/site/app/src/PaymentApp.jsx:131
+#: frontend/site/app/src/PaymentApp.jsx:139
 msgid "Nothing more to do — your booking is confirmed."
 msgstr ""
 
@@ -2867,7 +2867,7 @@ msgstr ""
 msgid "On this day the daytime booking runs from %1$s to %2$s. For other times, please book an overnight stay."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepDone.jsx:38
+#: frontend/site/app/src/components/BookingModal/StepDone.jsx:41
 msgid "Once we have received your payment, you will receive a separate confirmation by email."
 msgstr ""
 
@@ -3044,7 +3044,7 @@ msgstr ""
 
 #: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:212 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:298 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:73 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:138
 #: frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:69 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:128 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:187 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:47
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:632 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:72 frontend/site/app/src/components/BookingModal/BookingModal.jsx:425
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:632 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:72 frontend/site/app/src/components/BookingModal/BookingModal.jsx:420
 msgid "Payment"
 msgstr ""
 
@@ -3106,7 +3106,7 @@ msgstr ""
 msgid "Payment recorded"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:489 frontend/site/app/src/components/BookingModal/StepDone.jsx:83 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:210
+#: backend/Support/BookingEmails.php:489 frontend/site/app/src/components/BookingModal/StepDone.jsx:86 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:210
 msgid "Payment reference"
 msgstr ""
 
@@ -3223,7 +3223,7 @@ msgstr ""
 msgid "Please confirm your email address before booking."
 msgstr ""
 
-#: frontend/site/app/src/PaymentApp.jsx:111
+#: frontend/site/app/src/PaymentApp.jsx:119
 msgid "Please do not transfer anything. Get in touch if you would like to book these dates again."
 msgstr ""
 
@@ -3489,7 +3489,7 @@ msgstr ""
 msgid "Revenue per apartment across the window."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:426
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:421
 msgid "Review"
 msgstr ""
 
@@ -3645,7 +3645,7 @@ msgstr ""
 msgid "Send to"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:927 frontend/site/app/src/components/BookingModal/BookingModal.jsx:668
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:927 frontend/site/app/src/components/BookingModal/BookingModal.jsx:667
 msgid "Sending…"
 msgstr ""
 
@@ -3974,11 +3974,11 @@ msgstr ""
 msgid "Text of the booking button on each card."
 msgstr ""
 
-#: frontend/site/app/src/PaymentApp.jsx:149
+#: frontend/site/app/src/PaymentApp.jsx:168
 msgid "Thank you — you have told us the transfer is on its way. We will confirm your booking as soon as it reaches us."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepDone.jsx:34
+#: frontend/site/app/src/components/BookingModal/StepDone.jsx:37
 msgid "Thank you — your booking is placed"
 msgstr ""
 
@@ -4299,7 +4299,7 @@ msgstr[1] ""
 msgid "This booking could not be found."
 msgstr ""
 
-#: frontend/site/app/src/PaymentApp.jsx:98
+#: frontend/site/app/src/PaymentApp.jsx:106
 msgid "This booking has been cancelled"
 msgstr ""
 
@@ -4319,7 +4319,7 @@ msgstr[1] ""
 msgid "This is a different day to the one you picked. Choosing a time moves your booking to it."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:196 frontend/site/app/src/PaymentApp.jsx:82
+#: backend/APIs/PublicBookingController.php:196 frontend/site/app/src/PaymentApp.jsx:93
 msgid "This payment link is not valid any more. Please use the link in your booking email, or get in touch."
 msgstr ""
 
@@ -4625,7 +4625,7 @@ msgstr ""
 msgid "Was %1$s to %2$s."
 msgstr ""
 
-#: frontend/site/app/src/PaymentApp.jsx:78
+#: frontend/site/app/src/PaymentApp.jsx:89
 msgid "We could not open this booking"
 msgstr ""
 
@@ -4674,7 +4674,7 @@ msgstr ""
 msgid "What this apartment adds beyond the base rate. Both were once one figure for the whole site, which made a studio and a villa charge the same for a fifth guest."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:421
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:416
 msgid "When"
 msgstr ""
 
@@ -4743,11 +4743,19 @@ msgstr ""
 msgid "Your booking is confirmed — {{reference}}"
 msgstr ""
 
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:515
+msgid "Your booking is placed — taking you to the payment details…"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:306
+msgid "Your booking was placed. Please check your email for the payment details."
+msgstr ""
+
 #: backend/Repositories/EmailTemplatesRepository.php:169
 msgid "Your booking {{reference}} — please transfer {{total}}"
 msgstr ""
 
-#: frontend/site/app/src/PaymentApp.jsx:124
+#: frontend/site/app/src/PaymentApp.jsx:132
 msgid "Your payment has arrived"
 msgstr ""
 

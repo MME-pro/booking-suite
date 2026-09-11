@@ -15,16 +15,26 @@
 import { useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 
+import StepDone from './components/BookingModal/StepDone';
 import StepTransfer from './components/BookingModal/StepTransfer';
 import { bookingService } from './services/bookingService';
-import { formatPrice } from './utils/format';
-import { settings } from './services/apartmentService';
 
 export default function PaymentApp( { token } ) {
 	const [ payment, setPayment ] = useState( null );
 	const [ error, setError ] = useState( null );
 	const [ isLoading, setLoading ] = useState( true );
 	const [ isBusy, setBusy ] = useState( false );
+
+	/**
+	 * Set when the guest presses the button in this visit.
+	 *
+	 * Deliberately not the same thing as the booking's own declaredAt. Pressing
+	 * it here is the last step of the flow and earns the thank-you screen;
+	 * opening the link again tomorrow is a different errand — usually checking
+	 * the IBAN — and lands back on the details, with a note saying we already
+	 * know the money is coming.
+	 */
+	const [ justDeclared, setJustDeclared ] = useState( false );
 
 	useEffect( () => {
 		const controller = new AbortController();
@@ -60,6 +70,7 @@ export default function PaymentApp( { token } ) {
 			// Deliberately swallowed; see above.
 		} finally {
 			setBusy( false );
+			setJustDeclared( true );
 		}
 	};
 
@@ -87,9 +98,6 @@ export default function PaymentApp( { token } ) {
 			</div>
 		);
 	}
-
-	const money = () =>
-		formatPrice( payment.total, payment.currency, settings.locale );
 
 	if ( 'cancelled' === payment.status ) {
 		return (
@@ -137,12 +145,23 @@ export default function PaymentApp( { token } ) {
 		);
 	}
 
+	/*
+	 * The end of the flow: order → payment page → transfer initiated → here.
+	 */
+	if ( justDeclared ) {
+		return (
+			<div className="bks-paypage__card">
+				<StepDone payment={ payment } />
+			</div>
+		);
+	}
+
 	return (
 		<div className="bks-paypage__card">
 			{ /*
-			 * Already told us once. The details stay on screen, because the
-			 * likeliest reason to come back to this page is to check the IBAN
-			 * again — but the button has nothing left to say.
+			 * Told us on an earlier visit. The details stay on screen, because
+			 * the likeliest reason to come back to this page is to check the
+			 * IBAN again — but the button has nothing left to say.
 			 */ }
 			{ payment.declaredAt && (
 				<p className="bks-paypage__declared">
@@ -158,7 +177,6 @@ export default function PaymentApp( { token } ) {
 				onDeclare={ declare }
 				isBusy={ isBusy }
 				isDeclared={ Boolean( payment.declaredAt ) }
-				amount={ money() }
 			/>
 		</div>
 	);

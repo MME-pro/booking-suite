@@ -3,7 +3,7 @@
  * Plugin Name:       Booking Suite
  * Plugin URI:        https://mme-pro.de/
  * Description:       Booking Suite plugin scaffold.
- * Version:           0.13.1
+ * Version:           0.14.0
  * Requires at least: 6.6
  * Requires PHP:      8.1
  * Author:            MME-Pro
@@ -21,7 +21,7 @@ namespace BookingSuite;
 
 defined( 'ABSPATH' ) || exit;
 
-const VERSION     = '0.13.1';
+const VERSION     = '0.14.0';
 const PREFIX      = 'bksuite_';
 const TEXT_DOMAIN = 'booking-suite';
 
