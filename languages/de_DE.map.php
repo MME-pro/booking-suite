@@ -1695,4 +1695,7 @@ Gute Reise und bis bald.
 	'Initiate Transfer' => 'Überweisung veranlassen',
 	'Make the transfer using the details above, within %d hours. Please quote the booking number as the payment reference — it is how we match your transfer to your booking.' => 'Überweisen Sie den Betrag mit den obigen Daten innerhalb von %d Stunden. Bitte geben Sie die Buchungsnummer als Verwendungszweck an — daran ordnen wir Ihre Überweisung Ihrer Buchung zu.',
 	'Then press “Initiate Transfer” below. It tells us your payment is on its way — it does not move any money itself.' => 'Klicken Sie anschließend unten auf „Überweisung veranlassen". Damit teilen Sie uns mit, dass Ihre Zahlung unterwegs ist — es wird dadurch kein Geld bewegt.',
+	'Your booking is confirmed' => 'Ihre Buchung ist bestätigt',
+	'There is nothing to transfer for this booking. Please get in touch so we can confirm it with you.' => 'Für diese Buchung ist nichts zu überweisen. Bitte melden Sie sich bei uns, damit wir sie mit Ihnen bestätigen können.',
+	'This apartment cannot be booked online yet — no price has been set for it. Please get in touch and we will arrange it with you.' => 'Dieses Apartment kann noch nicht online gebucht werden — es ist kein Preis hinterlegt. Bitte melden Sie sich bei uns, dann vereinbaren wir alles Weitere mit Ihnen.',
 );

@@ -471,6 +471,30 @@ final class PublicBookingController {
 		}
 
 		/*
+		 * An apartment nobody has priced cannot take a booking.
+		 *
+		 * Without this the stay is quoted at nothing, the booking is taken
+		 * for nothing, and the guest lands on a payment page asking them to
+		 * transfer zero euro — with no GiroCode, because a code that opens an
+		 * empty transfer is worse than no code. The dates come off the board
+		 * and the owner is owed nothing and can never be paid.
+		 *
+		 * Checked on the total rather than only on the apartment's rates, so
+		 * any other route to zero is caught by the same guard.
+		 */
+		if ( $quote['total'] <= 0 ) {
+			return self::error(
+				'booking_suite_not_priced',
+				__(
+					'This apartment cannot be booked online yet — no price has been set for it. Please get in touch and we will arrange it with you.',
+					'booking-suite'
+				),
+				409,
+				'apartment'
+			);
+		}
+
+		/*
 		 * There is nothing to decide here any more.
 		 *
 		 * One way to pay — advance bank transfer — so no choice is offered and
@@ -811,6 +835,12 @@ final class PublicBookingController {
 			'extrasAvailable' => (object) $availability,
 			'extrasShortfall' => $shortfall,
 			'extrasTotal'    => round( $extra_sum, 2 ),
+			/*
+			 * Whether this apartment has a rate at all. The server refuses an
+			 * unpriced booking either way; this lets the form say so before
+			 * the guest has filled it in rather than at the last click.
+			 */
+			'priced'         => RateCalculator::is_priced( $parsed['apartment'] ),
 			'gross'          => $gross,
 			'prepayPercent'  => round( $fraction * 100, 2 ),
 			'prepayDiscount' => $discount,

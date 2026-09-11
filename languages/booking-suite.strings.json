@@ -1024,7 +1024,7 @@
             "backend/Support/BookingEmails.php:475",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:733",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:72",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:192"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:199"
         ],
         "comments": []
     },
@@ -1535,7 +1535,7 @@
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:70",
             "frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:89",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:53",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:216"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:223"
         ],
         "comments": []
     },
@@ -2034,7 +2034,7 @@
             "backend/Support/BookingEmails.php:485",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:763",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:81",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:200"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:207"
         ],
         "comments": []
     },
@@ -2094,7 +2094,7 @@
         "refs": [
             "backend/Support/BookingEmails.php:479",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:742",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:201"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:208"
         ],
         "comments": []
     },
@@ -2223,10 +2223,10 @@
     },
     {
         "single": "Book subject to payment",
-        "line": 734,
+        "line": 735,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:734"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:735"
         ],
         "comments": []
     },
@@ -2456,7 +2456,7 @@
             "frontend/site/app/src/PaymentApp.jsx:109",
             "frontend/site/app/src/PaymentApp.jsx:135",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:49",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:186"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:193"
         ],
         "comments": []
     },
@@ -2917,10 +2917,10 @@
     },
     {
         "single": "Check-in cannot be in the past.",
-        "line": 681,
+        "line": 705,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:681"
+            "backend/APIs/PublicBookingController.php:705"
         ],
         "comments": []
     },
@@ -2947,10 +2947,10 @@
     },
     {
         "single": "Check-out must be after check-in.",
-        "line": 664,
+        "line": 688,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:664",
+            "backend/APIs/PublicBookingController.php:688",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:147"
         ],
         "comments": []
@@ -3396,10 +3396,10 @@
     },
     {
         "single": "Continue",
-        "line": 746,
+        "line": 747,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:746"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:747"
         ],
         "comments": []
     },
@@ -5147,10 +5147,10 @@
     },
     {
         "single": "I accept the terms and conditions and the privacy policy.",
-        "line": 395,
+        "line": 410,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:395"
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:410"
         ],
         "comments": []
     },
@@ -5162,7 +5162,7 @@
             "backend/Support/BookingEmails.php:482",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:752",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:76",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:196"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:203"
         ],
         "comments": []
     },
@@ -5249,10 +5249,10 @@
     },
     {
         "single": "Initiate Transfer",
-        "line": 259,
+        "line": 284,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:259"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:284"
         ],
         "comments": []
     },
@@ -5340,10 +5340,10 @@
     },
     {
         "single": "Just a moment…",
-        "line": 258,
+        "line": 283,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:258"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:283"
         ],
         "comments": []
     },
@@ -5639,10 +5639,10 @@
     },
     {
         "single": "Make the transfer using the details above, within %d hours. Please quote the booking number as the payment reference — it is how we match your transfer to your booking.",
-        "line": 234,
+        "line": 258,
         "comment": "translators: %d: hours the dates are held for.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:234"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:258"
         ],
         "comments": {
             "translators: %d: hours the dates are held for.": true
@@ -6973,10 +6973,10 @@
     },
     {
         "single": "Payment exclusively by advance bank transfer. Your reservation is valid for %d hours.",
-        "line": 412,
+        "line": 427,
         "comment": "translators: %d: hours the dates are held for.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:412"
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:427"
         ],
         "comments": {
             "translators: %d: hours the dates are held for.": true
@@ -7105,7 +7105,7 @@
         "refs": [
             "backend/Support/BookingEmails.php:489",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:86",
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:210"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:217"
         ],
         "comments": []
     },
@@ -7334,34 +7334,34 @@
         "comment": "",
         "refs": [
             "backend/APIs/PublicBookingController.php:320",
-            "backend/APIs/PublicBookingController.php:834"
+            "backend/APIs/PublicBookingController.php:864"
         ],
         "comments": []
     },
     {
         "single": "Please choose a start time.",
-        "line": 840,
+        "line": 870,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:840"
+            "backend/APIs/PublicBookingController.php:870"
         ],
         "comments": []
     },
     {
         "single": "Please choose both dates.",
-        "line": 658,
+        "line": 682,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:658"
+            "backend/APIs/PublicBookingController.php:682"
         ],
         "comments": []
     },
     {
         "single": "Please choose how long you need.",
-        "line": 848,
+        "line": 878,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:848"
+            "backend/APIs/PublicBookingController.php:878"
         ],
         "comments": []
     },
@@ -8367,7 +8367,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:927",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:733"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:734"
         ],
         "comments": []
     },
@@ -8774,10 +8774,10 @@
     },
     {
         "single": "Stays are limited to %d nights.",
-        "line": 672,
+        "line": 696,
         "comment": "translators: %d: maximum number of nights.",
         "refs": [
-            "backend/APIs/PublicBookingController.php:672"
+            "backend/APIs/PublicBookingController.php:696"
         ],
         "comments": {
             "translators: %d: maximum number of nights.": true
@@ -9339,10 +9339,10 @@
     },
     {
         "single": "That time has already passed.",
-        "line": 872,
+        "line": 902,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:872"
+            "backend/APIs/PublicBookingController.php:902"
         ],
         "comments": []
     },
@@ -9388,7 +9388,7 @@
         "comment": "",
         "refs": [
             "backend/APIs/BookingsController.php:213",
-            "backend/APIs/PublicBookingController.php:533"
+            "backend/APIs/PublicBookingController.php:557"
         ],
         "comments": []
     },
@@ -9721,10 +9721,10 @@
     },
     {
         "single": "Then press “Initiate Transfer” below. It tells us your payment is on its way — it does not move any money itself.",
-        "line": 242,
+        "line": 266,
         "comment": "translators: %d: hours the dates are held for.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:242"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:266"
         ],
         "comments": {
             "translators: %d: hours the dates are held for.": true
@@ -9741,10 +9741,19 @@
     },
     {
         "single": "There is no right of withdrawal (§ 312g Abs. 2 Nr. 9 BGB). The cancellation conditions of the terms and conditions apply.",
-        "line": 403,
+        "line": 418,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepReview.jsx:403"
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:418"
+        ],
+        "comments": []
+    },
+    {
+        "single": "There is nothing to transfer for this booking. Please get in touch so we can confirm it with you.",
+        "line": 240,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:240"
         ],
         "comments": []
     },
@@ -9796,13 +9805,23 @@
         "comments": []
     },
     {
+        "single": "This apartment cannot be booked online yet — no price has been set for it. Please get in touch and we will arrange it with you.",
+        "line": 488,
+        "comment": "",
+        "refs": [
+            "backend/APIs/PublicBookingController.php:488",
+            "frontend/site/app/src/components/BookingModal/StepReview.jsx:388"
+        ],
+        "comments": []
+    },
+    {
         "single": "This apartment cannot be booked.",
         "line": 269,
         "comment": "",
         "refs": [
             "backend/APIs/PublicBookingController.php:269",
             "backend/APIs/PublicBookingController.php:314",
-            "backend/APIs/PublicBookingController.php:617"
+            "backend/APIs/PublicBookingController.php:641"
         ],
         "comments": []
     },
@@ -9840,11 +9859,11 @@
     },
     {
         "single": "This apartment takes at most %d guest.",
-        "line": 637,
+        "line": 661,
         "plural": "This apartment takes at most %d guests.",
         "comment": "translators: %d: the largest party the apartment takes.",
         "refs": [
-            "backend/APIs/PublicBookingController.php:637"
+            "backend/APIs/PublicBookingController.php:661"
         ],
         "comments": {
             "translators: %d: the largest party the apartment takes.": true
@@ -10835,19 +10854,28 @@
     },
     {
         "single": "Your booking is already binding upon placing your order. This confirmation serves solely to expedite the processing of your payment.",
-        "line": 263,
+        "line": 288,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:263"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:288"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Your booking is confirmed",
+        "line": 189,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:189"
         ],
         "comments": []
     },
     {
         "single": "Your booking is confirmed — please transfer the payment now",
-        "line": 179,
+        "line": 185,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:179"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:185"
         ],
         "comments": []
     },

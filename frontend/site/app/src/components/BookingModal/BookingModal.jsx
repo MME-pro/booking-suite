@@ -718,6 +718,7 @@ export default function BookingModal( {
 									disabled={
 										isBusy ||
 										! quote?.available ||
+										false === quote?.priced ||
 										! accepted
 									}
 								>

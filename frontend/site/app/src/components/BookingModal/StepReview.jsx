@@ -378,6 +378,21 @@ export default function StepReview( {
 			</div>
 
 			{ /*
+			 * An apartment with no rate. The server refuses the booking, so
+			 * this is not the guard — it is the difference between learning
+			 * that on the last click and learning it here, with the consent
+			 * box still unticked.
+			 */ }
+			{ false === quote.priced && (
+				<p className="bks-review__unpriced">
+					{ __(
+						'This apartment cannot be booked online yet — no price has been set for it. Please get in touch and we will arrange it with you.',
+						'booking-suite'
+					) }
+				</p>
+			) }
+
+			{ /*
 			 * The two things a guest has to be told before they can be bound,
 			 * and the box that records that they were.
 			 */ }

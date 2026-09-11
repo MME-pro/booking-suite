@@ -73,3 +73,29 @@ export function formatPrice( amount, currency = 'EUR', locale = 'de_DE' ) {
 		return `${ amount } ${ currency }`;
 	}
 }
+
+/**
+ * Money as it must be transcribed, not as it reads best.
+ *
+ * formatPrice() drops trailing zeros, which is right on a price list — "€155"
+ * beats "€155.00" when the eye is scanning. It is wrong on the payment page:
+ * the guest is copying that figure into a banking app, and the GiroCode beside
+ * it carries EUR155.00, so the two would disagree on screen for no reason.
+ *
+ * @param {number} amount
+ * @param {string} [currency]
+ * @param {string} [locale]
+ * @return {string} The amount with both decimal places.
+ */
+export function formatExactPrice( amount, currency = 'EUR', locale = 'de_DE' ) {
+	try {
+		return new Intl.NumberFormat( toBcp47( locale ), {
+			style: 'currency',
+			currency,
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 2,
+		} ).format( amount );
+	} catch ( error ) {
+		return `${ Number( amount ).toFixed( 2 ) } ${ currency }`;
+	}
+}

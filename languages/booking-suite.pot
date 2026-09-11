@@ -497,7 +497,7 @@ msgstr ""
 msgid "Access"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:475 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:733 frontend/site/app/src/components/BookingModal/StepDone.jsx:72 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:192
+#: backend/Support/BookingEmails.php:475 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:733 frontend/site/app/src/components/BookingModal/StepDone.jsx:72 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:199
 msgid "Account holder"
 msgstr ""
 
@@ -715,7 +715,7 @@ msgid "Also the hours a night imported from Airbnb or Booking.com occupies, so a
 msgstr ""
 
 #: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:79 frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:134 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:70 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:89
-#: frontend/site/app/src/components/BookingModal/StepDone.jsx:53 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:216
+#: frontend/site/app/src/components/BookingModal/StepDone.jsx:53 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:223
 msgid "Amount"
 msgstr ""
 
@@ -929,7 +929,7 @@ msgstr ""
 msgid "Awaiting payment"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:485 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:763 frontend/site/app/src/components/BookingModal/StepDone.jsx:81 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:200
+#: backend/Support/BookingEmails.php:485 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:763 frontend/site/app/src/components/BookingModal/StepDone.jsx:81 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:207
 msgid "BIC"
 msgstr ""
 
@@ -954,7 +954,7 @@ msgstr ""
 msgid "Balance due"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:479 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:742 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:201
+#: backend/Support/BookingEmails.php:479 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:742 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:208
 msgid "Bank"
 msgstr ""
 
@@ -1012,7 +1012,7 @@ msgstr ""
 msgid "Book now button"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:734
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:735
 msgid "Book subject to payment"
 msgstr ""
 
@@ -1108,7 +1108,7 @@ msgstr ""
 msgid "Booking not found."
 msgstr ""
 
-#: frontend/site/app/src/PaymentApp.jsx:109 frontend/site/app/src/PaymentApp.jsx:135 frontend/site/app/src/components/BookingModal/StepDone.jsx:49 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:186
+#: frontend/site/app/src/PaymentApp.jsx:109 frontend/site/app/src/PaymentApp.jsx:135 frontend/site/app/src/components/BookingModal/StepDone.jsx:49 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:193
 msgid "Booking number"
 msgstr ""
 
@@ -1305,7 +1305,7 @@ msgstr ""
 msgid "Check-in"
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:681
+#: backend/APIs/PublicBookingController.php:705
 msgid "Check-in cannot be in the past."
 msgstr ""
 
@@ -1317,7 +1317,7 @@ msgstr ""
 msgid "Check-out"
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:664 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:147
+#: backend/APIs/PublicBookingController.php:688 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:147
 msgid "Check-out must be after check-in."
 msgstr ""
 
@@ -1509,7 +1509,7 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:746
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:747
 msgid "Continue"
 msgstr ""
 
@@ -2265,11 +2265,11 @@ msgstr ""
 msgid "How this apartment is identified across the calendar and the website."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepReview.jsx:395
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:410
 msgid "I accept the terms and conditions and the privacy policy."
 msgstr ""
 
-#: backend/Support/BookingEmails.php:482 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:752 frontend/site/app/src/components/BookingModal/StepDone.jsx:76 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:196
+#: backend/Support/BookingEmails.php:482 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:752 frontend/site/app/src/components/BookingModal/StepDone.jsx:76 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:203
 msgid "IBAN"
 msgstr ""
 
@@ -2308,7 +2308,7 @@ msgstr ""
 msgid "Infants"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:259
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:284
 msgid "Initiate Transfer"
 msgstr ""
 
@@ -2348,7 +2348,7 @@ msgstr ""
 msgid "Items offered at booking"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:258
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:283
 msgid "Just a moment…"
 msgstr ""
 
@@ -2477,7 +2477,7 @@ msgid "Lower numbers appear first. Leave 0 for automatic ordering."
 msgstr ""
 
 #. translators: %d: hours the dates are held for.
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:234
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:258
 msgid "Make the transfer using the details above, within %d hours. Please quote the booking number as the payment reference — it is how we match your transfer to your booking."
 msgstr ""
 
@@ -3062,7 +3062,7 @@ msgid "Payment amount changed"
 msgstr ""
 
 #. translators: %d: hours the dates are held for.
-#: frontend/site/app/src/components/BookingModal/StepReview.jsx:412
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:427
 msgid "Payment exclusively by advance bank transfer. Your reservation is valid for %d hours."
 msgstr ""
 
@@ -3115,7 +3115,7 @@ msgstr ""
 msgid "Payment recorded"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:489 frontend/site/app/src/components/BookingModal/StepDone.jsx:86 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:210
+#: backend/Support/BookingEmails.php:489 frontend/site/app/src/components/BookingModal/StepDone.jsx:86 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:217
 msgid "Payment reference"
 msgstr ""
 
@@ -3212,19 +3212,19 @@ msgstr ""
 msgid "Placeholders"
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:320 backend/APIs/PublicBookingController.php:834
+#: backend/APIs/PublicBookingController.php:320 backend/APIs/PublicBookingController.php:864
 msgid "Please choose a date."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:840
+#: backend/APIs/PublicBookingController.php:870
 msgid "Please choose a start time."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:658
+#: backend/APIs/PublicBookingController.php:682
 msgid "Please choose both dates."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:848
+#: backend/APIs/PublicBookingController.php:878
 msgid "Please choose how long you need."
 msgstr ""
 
@@ -3653,7 +3653,7 @@ msgstr ""
 msgid "Send to"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:927 frontend/site/app/src/components/BookingModal/BookingModal.jsx:733
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:927 frontend/site/app/src/components/BookingModal/BookingModal.jsx:734
 msgid "Sending…"
 msgstr ""
 
@@ -3830,7 +3830,7 @@ msgid "Stays"
 msgstr ""
 
 #. translators: %d: maximum number of nights.
-#: backend/APIs/PublicBookingController.php:672
+#: backend/APIs/PublicBookingController.php:696
 msgid "Stays are limited to %d nights."
 msgstr ""
 
@@ -4078,7 +4078,7 @@ msgstr ""
 msgid "That should be a link starting with https:// or webcal://"
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:872
+#: backend/APIs/PublicBookingController.php:902
 msgid "That time has already passed."
 msgstr ""
 
@@ -4098,7 +4098,7 @@ msgstr ""
 msgid "The booking could not be deleted."
 msgstr ""
 
-#: backend/APIs/BookingsController.php:213 backend/APIs/PublicBookingController.php:533
+#: backend/APIs/BookingsController.php:213 backend/APIs/PublicBookingController.php:557
 msgid "The booking could not be saved."
 msgstr ""
 
@@ -4248,7 +4248,7 @@ msgid "Their first name only"
 msgstr ""
 
 #. translators: %d: hours the dates are held for.
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:242
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:266
 msgid "Then press “Initiate Transfer” below. It tells us your payment is on its way — it does not move any money itself."
 msgstr ""
 
@@ -4256,8 +4256,12 @@ msgstr ""
 msgid "There are no bookings yet, so there is nothing to fill the placeholders with."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepReview.jsx:403
+#: frontend/site/app/src/components/BookingModal/StepReview.jsx:418
 msgid "There is no right of withdrawal (§ 312g Abs. 2 Nr. 9 BGB). The cancellation conditions of the terms and conditions apply."
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:240
+msgid "There is nothing to transfer for this booking. Please get in touch so we can confirm it with you."
 msgstr ""
 
 #: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:215
@@ -4281,7 +4285,11 @@ msgstr ""
 msgid "This apartment already subscribes to that calendar."
 msgstr ""
 
-#: backend/APIs/PublicBookingController.php:269 backend/APIs/PublicBookingController.php:314 backend/APIs/PublicBookingController.php:617
+#: backend/APIs/PublicBookingController.php:488 frontend/site/app/src/components/BookingModal/StepReview.jsx:388
+msgid "This apartment cannot be booked online yet — no price has been set for it. Please get in touch and we will arrange it with you."
+msgstr ""
+
+#: backend/APIs/PublicBookingController.php:269 backend/APIs/PublicBookingController.php:314 backend/APIs/PublicBookingController.php:641
 msgid "This apartment cannot be booked."
 msgstr ""
 
@@ -4302,7 +4310,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: the largest party the apartment takes.
-#: backend/APIs/PublicBookingController.php:637
+#: backend/APIs/PublicBookingController.php:661
 msgid "This apartment takes at most %d guest."
 msgid_plural "This apartment takes at most %d guests."
 msgstr[0] ""
@@ -4740,11 +4748,15 @@ msgstr ""
 msgid "Your booking has been cancelled — {{reference}}"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:263
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:288
 msgid "Your booking is already binding upon placing your order. This confirmation serves solely to expedite the processing of your payment."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:179
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:189
+msgid "Your booking is confirmed"
+msgstr ""
+
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:185
 msgid "Your booking is confirmed — please transfer the payment now"
 msgstr ""
 

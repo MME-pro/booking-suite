@@ -17,7 +17,7 @@
 import { useEffect, useState } from 'react';
 import { __, sprintf } from '@wordpress/i18n';
 
-import { formatPrice } from '../../utils/format';
+import { formatExactPrice } from '../../utils/format';
 import { settings } from '../../services/apartmentService';
 
 /**
@@ -175,11 +175,18 @@ export default function StepTransfer( {
 
 	return (
 		<div className="bks-pay">
+			{ /*
+			 * The headline follows the amount. Telling a guest to transfer
+			 * now, above a line reading €0.00 and a note saying there is
+			 * nothing to transfer, is the page arguing with itself.
+			 */ }
 			<h3 className="bks-pay__title">
-				{ __(
-					'Your booking is confirmed — please transfer the payment now',
-					'booking-suite'
-				) }
+				{ total > 0
+					? __(
+							'Your booking is confirmed — please transfer the payment now',
+							'booking-suite'
+					  )
+					: __( 'Your booking is confirmed', 'booking-suite' ) }
 			</h3>
 
 			<p className="bks-pay__reference">
@@ -214,12 +221,28 @@ export default function StepTransfer( {
 				/>
 				<Line
 					label={ __( 'Amount', 'booking-suite' ) }
-					value={ formatPrice( total, currency, settings.locale ) }
+					value={ formatExactPrice( total, currency, settings.locale ) }
 					strong
 				/>
 			</dl>
 
-			<GiroCode payload={ payment.giroCode } />
+			{ /*
+			 * A booking with nothing to pay has no transfer to make and no
+			 * GiroCode to scan — EpcQr refuses to build one, correctly, since
+			 * a code that opens a zero-euro transfer is worse than none. Say
+			 * so, rather than leaving a guest looking at "€0.00" and a gap
+			 * where the square should be.
+			 */ }
+			{ total > 0 ? (
+				<GiroCode payload={ payment.giroCode } />
+			) : (
+				<p className="bks-pay__note">
+					{ __(
+						'There is nothing to transfer for this booking. Please get in touch so we can confirm it with you.',
+						'booking-suite'
+					) }
+				</p>
+			) }
 
 			{ /*
 			 * What to do, in the order it has to be done in. The button below
@@ -227,6 +250,7 @@ export default function StepTransfer( {
 			 * on its own it tells the owner money is coming when none is, and
 			 * they will hold the dates and watch their account for a day.
 			 */ }
+			{ total > 0 && (
 			<ol className="bks-pay__steps">
 				<li>
 					{ sprintf(
@@ -245,8 +269,9 @@ export default function StepTransfer( {
 					) }
 				</li>
 			</ol>
+			) }
 
-			{ ! isDeclared && (
+			{ total > 0 && ! isDeclared && (
 				<>
 					<button
 						type="button"
