@@ -5248,6 +5248,15 @@
         "comments": []
     },
     {
+        "single": "Initiate Transfer",
+        "line": 259,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:259"
+        ],
+        "comments": []
+    },
+    {
         "single": "Install app",
         "line": 144,
         "comment": "",
@@ -5331,10 +5340,10 @@
     },
     {
         "single": "Just a moment…",
-        "line": 244,
+        "line": 258,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:244"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:258"
         ],
         "comments": []
     },
@@ -5627,6 +5636,17 @@
             "frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:464"
         ],
         "comments": []
+    },
+    {
+        "single": "Make the transfer using the details above, within %d hours. Please quote the booking number as the payment reference — it is how we match your transfer to your booking.",
+        "line": 234,
+        "comment": "translators: %d: hours the dates are held for.",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:234"
+        ],
+        "comments": {
+            "translators: %d: hours the dates are held for.": true
+        }
     },
     {
         "single": "Manage apartments",
@@ -7400,17 +7420,6 @@
         ],
         "comments": {
             "translators: %s: the booking reference.": true
-        }
-    },
-    {
-        "single": "Please transfer the payment within %d hours, and be sure to include the booking number as the payment reference.",
-        "line": 227,
-        "comment": "translators: %d: hours the dates are held for.",
-        "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:227"
-        ],
-        "comments": {
-            "translators: %d: hours the dates are held for.": true
         }
     },
     {
@@ -9711,6 +9720,17 @@
         "comments": []
     },
     {
+        "single": "Then press “Initiate Transfer” below. It tells us your payment is on its way — it does not move any money itself.",
+        "line": 242,
+        "comment": "translators: %d: hours the dates are held for.",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:242"
+        ],
+        "comments": {
+            "translators: %d: hours the dates are held for.": true
+        }
+    },
+    {
         "single": "There are no bookings yet, so there is nothing to fill the placeholders with.",
         "line": 263,
         "comment": "",
@@ -10112,15 +10132,6 @@
         "comments": {
             "translators: %d: number of pending payments.": true
         }
-    },
-    {
-        "single": "Transfer initiated",
-        "line": 245,
-        "comment": "",
-        "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:245"
-        ],
-        "comments": []
     },
     {
         "single": "Tripadvisor",
@@ -10824,10 +10835,10 @@
     },
     {
         "single": "Your booking is already binding upon placing your order. This confirmation serves solely to expedite the processing of your payment.",
-        "line": 249,
+        "line": 263,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:249"
+            "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:263"
         ],
         "comments": []
     },

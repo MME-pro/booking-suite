@@ -1692,4 +1692,7 @@ Gute Reise und bis bald.
 	'Your booking is placed — taking you to the payment details…' => 'Ihre Buchung ist eingegangen — Sie werden zu den Zahlungsdaten weitergeleitet …',
 	'Your booking was placed. Please check your email for the payment details.' => 'Ihre Buchung ist eingegangen. Die Zahlungsdaten finden Sie in Ihrer E-Mail.',
 	'Please confirm your email address again — the earlier confirmation has expired.' => 'Bitte bestätigen Sie Ihre E-Mail-Adresse erneut — die vorherige Bestätigung ist abgelaufen.',
+	'Initiate Transfer' => 'Überweisung veranlassen',
+	'Make the transfer using the details above, within %d hours. Please quote the booking number as the payment reference — it is how we match your transfer to your booking.' => 'Überweisen Sie den Betrag mit den obigen Daten innerhalb von %d Stunden. Bitte geben Sie die Buchungsnummer als Verwendungszweck an — daran ordnen wir Ihre Überweisung Ihrer Buchung zu.',
+	'Then press “Initiate Transfer” below. It tells us your payment is on its way — it does not move any money itself.' => 'Klicken Sie anschließend unten auf „Überweisung veranlassen". Damit teilen Sie uns mit, dass Ihre Zahlung unterwegs ist — es wird dadurch kein Geld bewegt.',
 );

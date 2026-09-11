@@ -2308,6 +2308,10 @@ msgstr ""
 msgid "Infants"
 msgstr ""
 
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:259
+msgid "Initiate Transfer"
+msgstr ""
+
 #: frontend/admin/app/src/components/InstallApp/InstallApp.jsx:144
 msgid "Install app"
 msgstr ""
@@ -2344,7 +2348,7 @@ msgstr ""
 msgid "Items offered at booking"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:244
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:258
 msgid "Just a moment…"
 msgstr ""
 
@@ -2470,6 +2474,11 @@ msgstr ""
 
 #: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:464
 msgid "Lower numbers appear first. Leave 0 for automatic ordering."
+msgstr ""
+
+#. translators: %d: hours the dates are held for.
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:234
+msgid "Make the transfer using the details above, within %d hours. Please quote the booking number as the payment reference — it is how we match your transfer to your booking."
 msgstr ""
 
 #: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:148
@@ -3242,11 +3251,6 @@ msgstr ""
 #. translators: %s: the booking reference.
 #: backend/Support/BookingEmails.php:523
 msgid "Please quote %s as the payment reference so we can match your transfer to your booking."
-msgstr ""
-
-#. translators: %d: hours the dates are held for.
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:227
-msgid "Please transfer the payment within %d hours, and be sure to include the booking number as the payment reference."
 msgstr ""
 
 #: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:58
@@ -4243,6 +4247,11 @@ msgstr ""
 msgid "Their first name only"
 msgstr ""
 
+#. translators: %d: hours the dates are held for.
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:242
+msgid "Then press “Initiate Transfer” below. It tells us your payment is on its way — it does not move any money itself."
+msgstr ""
+
 #: backend/APIs/EmailTemplatesController.php:263
 msgid "There are no bookings yet, so there is nothing to fill the placeholders with."
 msgstr ""
@@ -4419,10 +4428,6 @@ msgstr ""
 #. translators: %d: number of pending payments.
 #: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:264
 msgid "Transactions"
-msgstr ""
-
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:245
-msgid "Transfer initiated"
 msgstr ""
 
 #: backend/Support/IcalParser.php:89
@@ -4735,7 +4740,7 @@ msgstr ""
 msgid "Your booking has been cancelled — {{reference}}"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:249
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:263
 msgid "Your booking is already binding upon placing your order. This confirmation serves solely to expedite the processing of your payment."
 msgstr ""
 

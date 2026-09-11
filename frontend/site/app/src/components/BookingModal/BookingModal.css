@@ -3061,3 +3061,71 @@
 	line-height: 1.5;
 	color: var(--bks-success, #15803d);
 }
+
+/*
+ * The payment page's button, filled.
+ *
+ * armour.css paints every button inside a plugin root transparent by default,
+ * at `.bks-site-root button` — (0,1,1) and loaded last — and each component
+ * opts back in. The modal's own opt-in is `.bks-booking .bks-booking__button`,
+ * which the standalone payment page never matches because there is no modal
+ * around it. The button therefore came out as bare text and only found its
+ * colour on hover, where `:hover` added the specificity that the default state
+ * lacked.
+ *
+ * Written with the root in front, as that file's second rule requires: (0,2,0)
+ * outranks (0,1,1). The colours are the component's own, repeated rather than
+ * invented, so changing the accent in Settings still moves both.
+ */
+.bks-site-root .bks-pay__declare {
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+	border-color: transparent !important;
+}
+
+.bks-site-root .bks-pay__declare:hover:not(:disabled),
+.bks-site-root .bks-pay__declare:focus:not(:disabled) {
+	background-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	color: #fff !important;
+	-webkit-text-fill-color: #fff !important;
+}
+
+.bks-site-root .bks-pay__declare:disabled {
+	opacity: 0.55 !important;
+}
+
+/*
+ * The two steps, above the button they explain.
+ *
+ * A guest who presses the button without having transferred anything costs the
+ * owner a booking they then wait on for a day, so the order of the two actions
+ * is spelled out rather than implied by the layout.
+ *
+ * armour.css strips the marker and the indent from every list inside a plugin
+ * root — deliberately, so a theme cannot decorate ours — and this opts back in
+ * with the root in front, as that file requires. The marker rule there sets
+ * `content: none`, so it is answered directly rather than hoped around.
+ */
+.bks-site-root .bks-pay__steps {
+	margin: 0 !important;
+	padding-left: 22px !important;
+	list-style: decimal !important;
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--bks-ink, #0f172a);
+}
+
+.bks-site-root .bks-pay__steps > li {
+	display: list-item !important;
+}
+
+.bks-site-root .bks-pay__steps > li::marker {
+	content: normal !important;
+	color: var(--bks-muted, #64748b);
+	font-weight: 600;
+}
+
+.bks-site-root .bks-pay__steps > li + li {
+	margin-top: 6px !important;
+}

@@ -2307,6 +2307,10 @@ msgstr "Inaktive Apartments bleiben in der Liste, sind aber nicht buchbar."
 msgid "Infants"
 msgstr "Kleinkinder"
 
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:259
+msgid "Initiate Transfer"
+msgstr "Überweisung veranlassen"
+
 #: frontend/admin/app/src/components/InstallApp/InstallApp.jsx:144
 msgid "Install app"
 msgstr "App installieren"
@@ -2343,7 +2347,7 @@ msgstr "Rechnungsnummer, sobald eine vergeben ist"
 msgid "Items offered at booking"
 msgstr "Beim Buchen angebotene Positionen"
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:244
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:258
 msgid "Just a moment…"
 msgstr "Einen Moment …"
 
@@ -2470,6 +2474,11 @@ msgstr "Längste Buchung (Stunden)"
 #: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:464
 msgid "Lower numbers appear first. Leave 0 for automatic ordering."
 msgstr "Kleinere Zahlen erscheinen zuerst. 0 bedeutet automatische Sortierung."
+
+#. translators: %d: hours the dates are held for.
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:234
+msgid "Make the transfer using the details above, within %d hours. Please quote the booking number as the payment reference — it is how we match your transfer to your booking."
+msgstr "Überweisen Sie den Betrag mit den obigen Daten innerhalb von %d Stunden. Bitte geben Sie die Buchungsnummer als Verwendungszweck an — daran ordnen wir Ihre Überweisung Ihrer Buchung zu."
 
 #: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:148
 msgid "Manage apartments"
@@ -3242,11 +3251,6 @@ msgstr "Bitte geben Sie Vor- und Nachnamen an."
 #: backend/Support/BookingEmails.php:523
 msgid "Please quote %s as the payment reference so we can match your transfer to your booking."
 msgstr "Bitte geben Sie %s als Verwendungszweck an, damit wir Ihre Überweisung Ihrer Buchung zuordnen können."
-
-#. translators: %d: hours the dates are held for.
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:227
-msgid "Please transfer the payment within %d hours, and be sure to include the booking number as the payment reference."
-msgstr "Bitte überweisen Sie den Betrag innerhalb von %d Stunden und geben Sie unbedingt die Buchungsnummer als Verwendungszweck an."
 
 #: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:58
 msgid "Pound Sterling (£)"
@@ -4242,6 +4246,11 @@ msgstr "Das Update konnte nicht heruntergeladen werden (HTTP %d). Prüfen Sie de
 msgid "Their first name only"
 msgstr "Nur der Vorname"
 
+#. translators: %d: hours the dates are held for.
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:242
+msgid "Then press “Initiate Transfer” below. It tells us your payment is on its way — it does not move any money itself."
+msgstr "Klicken Sie anschließend unten auf „Überweisung veranlassen\". Damit teilen Sie uns mit, dass Ihre Zahlung unterwegs ist — es wird dadurch kein Geld bewegt."
+
 #: backend/APIs/EmailTemplatesController.php:263
 msgid "There are no bookings yet, so there is nothing to fill the placeholders with."
 msgstr "Es gibt noch keine Buchungen, daher lassen sich die Platzhalter nicht füllen."
@@ -4419,10 +4428,6 @@ msgstr "Insgesamt verfügbare Menge dieses Extras (z. B. 3 für 3 Beamer)."
 #: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:264
 msgid "Transactions"
 msgstr "Transaktionen"
-
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:245
-msgid "Transfer initiated"
-msgstr "Überweisung veranlasst"
 
 #: backend/Support/IcalParser.php:89
 msgid "Tripadvisor"
@@ -4734,7 +4739,7 @@ msgstr "Ihre Bankverbindung, mit einem Hinweis zur Zahlung"
 msgid "Your booking has been cancelled — {{reference}}"
 msgstr "Ihre Buchung wurde storniert – {{reference}}"
 
-#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:249
+#: frontend/site/app/src/components/BookingModal/StepTransfer.jsx:263
 msgid "Your booking is already binding upon placing your order. This confirmation serves solely to expedite the processing of your payment."
 msgstr "Ihre Buchung ist bereits mit der Bestellung verbindlich. Diese Bestätigung dient ausschließlich der Beschleunigung der Zahlungsabwicklung."
 

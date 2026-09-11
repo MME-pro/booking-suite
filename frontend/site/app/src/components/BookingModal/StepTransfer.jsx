@@ -221,16 +221,30 @@ export default function StepTransfer( {
 
 			<GiroCode payload={ payment.giroCode } />
 
-			<p className="bks-pay__note">
-				{ sprintf(
-					/* translators: %d: hours the dates are held for. */
-					__(
-						'Please transfer the payment within %d hours, and be sure to include the booking number as the payment reference.',
+			{ /*
+			 * What to do, in the order it has to be done in. The button below
+			 * is the second step and only makes sense after the first: pressed
+			 * on its own it tells the owner money is coming when none is, and
+			 * they will hold the dates and watch their account for a day.
+			 */ }
+			<ol className="bks-pay__steps">
+				<li>
+					{ sprintf(
+						/* translators: %d: hours the dates are held for. */
+						__(
+							'Make the transfer using the details above, within %d hours. Please quote the booking number as the payment reference — it is how we match your transfer to your booking.',
+							'booking-suite'
+						),
+						reservationHours || 24
+					) }
+				</li>
+				<li>
+					{ __(
+						'Then press “Initiate Transfer” below. It tells us your payment is on its way — it does not move any money itself.',
 						'booking-suite'
-					),
-					reservationHours || 24
-				) }
-			</p>
+					) }
+				</li>
+			</ol>
 
 			{ ! isDeclared && (
 				<>
@@ -242,7 +256,7 @@ export default function StepTransfer( {
 					>
 						{ isBusy
 							? __( 'Just a moment…', 'booking-suite' )
-							: __( 'Transfer initiated', 'booking-suite' ) }
+							: __( 'Initiate Transfer', 'booking-suite' ) }
 					</button>
 
 					<p className="bks-pay__smallprint">
