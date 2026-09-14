@@ -1,0 +1,95 @@
+/*
+ * Record a payment.
+ *
+ * Tailwind's preflight is off in this app, so anything that needs a border
+ * states its style as well as its width, and the list below resets its own
+ * margins rather than relying on a reset that is not there.
+ */
+
+.bks-recordpay__searchicon {
+	position: absolute !important;
+	top: 50% !important;
+	left: 10px !important;
+	width: 16px !important;
+	height: 16px !important;
+	transform: translateY(-50%) !important;
+	color: var(--bks-color-text-muted) !important;
+	pointer-events: none !important;
+}
+
+.bks-recordpay__chosen {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: space-between !important;
+	gap: var(--bks-space-3) !important;
+	padding: var(--bks-space-2) var(--bks-space-3) !important;
+	border: 1px solid var(--bks-color-border) !important;
+	border-radius: var(--bks-radius-md) !important;
+	background: var(--bks-color-surface-muted) !important;
+	color: var(--bks-color-text) !important;
+	font-size: 14px !important;
+}
+
+.bks-recordpay__matches {
+	display: flex !important;
+	flex-direction: column !important;
+	max-height: 200px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow-y: auto !important;
+	border: 1px solid var(--bks-color-border) !important;
+	border-radius: var(--bks-radius-md) !important;
+	list-style: none !important;
+}
+
+.bks-recordpay__matches button {
+	display: flex !important;
+	align-items: baseline !important;
+	gap: var(--bks-space-2) !important;
+	width: 100% !important;
+	padding: var(--bks-space-2) var(--bks-space-3) !important;
+	border: 0 !important;
+	background: transparent !important;
+	color: var(--bks-color-text) !important;
+	font-size: 14px !important;
+	text-align: left !important;
+	cursor: pointer !important;
+}
+
+.bks-recordpay__matches button:hover {
+	background: var(--bks-color-surface-muted) !important;
+}
+
+.bks-recordpay__matches span {
+	flex: 1 1 auto !important;
+	overflow: hidden !important;
+	color: var(--bks-color-text-muted) !important;
+	text-overflow: ellipsis !important;
+	white-space: nowrap !important;
+}
+
+.bks-recordpay__matches em {
+	color: var(--bks-color-text-muted) !important;
+	font-style: normal !important;
+	font-variant-numeric: tabular-nums !important;
+}
+
+/* What the booking will read once this is written. */
+.bks-recordpay__after {
+	margin: -4px 0 0 !important;
+	color: var(--bks-color-text-muted) !important;
+	font-size: 12px !important;
+	font-weight: var(--bks-font-weight-semibold) !important;
+}
+
+.bks-recordpay__hint {
+	margin: 0 !important;
+	color: var(--bks-color-text-muted) !important;
+	font-size: 12px !important;
+}
+
+.bks-recordpay__error {
+	margin: 0 !important;
+	color: var(--bks-color-danger, #b91c1c) !important;
+	font-size: 13px !important;
+}

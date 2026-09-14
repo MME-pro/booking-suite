@@ -827,15 +827,8 @@ final class BookingsController {
 
 		$difference = round( $paid - $total, 2 );
 
-		if ( $difference > 0.005 ) {
-			$state = 'overpaid';
-		} elseif ( $difference > -0.005 ) {
-			$state = $paid > 0 ? 'paid' : 'unpaid';
-		} elseif ( $paid > 0 ) {
-			$state = 'partial';
-		} else {
-			$state = 'unpaid';
-		}
+		// The same rule the badge is set from, so the two cannot disagree.
+		$state = PaymentsRepository::state_for( $paid, $total );
 
 		return array(
 			'total'       => $total,

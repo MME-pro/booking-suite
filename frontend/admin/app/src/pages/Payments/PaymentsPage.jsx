@@ -29,6 +29,7 @@ import {
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
+import { RecordPaymentDialog } from '../../components/RecordPaymentDialog';
 import { StatCard } from '../../components/StatCard';
 import { paymentService } from '../../services';
 import { formatMoney } from '../Bookings/data/format';
@@ -74,6 +75,9 @@ export default function PaymentsPage() {
 	const [ error, setError ] = useState( null );
 	const [ busyId, setBusyId ] = useState( null );
 	const [ viewing, setViewing ] = useState( null );
+
+	/** Whether the "money has arrived" dialog is open. */
+	const [ recording, setRecording ] = useState( false );
 
 	/** What the filter bar is editing, and what the table is actually using. */
 	const [ draft, setDraft ] = useState( EMPTY_FILTERS );
@@ -309,6 +313,24 @@ export default function PaymentsPage() {
 					<StatCard key={ id } icon={ Icon } { ...card } />
 				) ) }
 			</div>
+
+			{ /*
+			 * Above the filters, because this is the one control on this screen
+			 * that adds rather than sifts. An operator working down a bank
+			 * statement arrives here, not at a booking.
+			 */ }
+			<div className="flex justify-end">
+				<Button onClick={ () => setRecording( true ) }>
+					<BadgeEuro className="h-4 w-4" />
+					{ __( 'Record a payment', 'booking-suite' ) }
+				</Button>
+			</div>
+
+			<RecordPaymentDialog
+				open={ recording }
+				onOpenChange={ setRecording }
+				onRecorded={ () => load() }
+			/>
 
 			<PaymentsFilters
 				draft={ draft }

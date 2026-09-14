@@ -30,6 +30,23 @@ export const paymentService = {
 	get: ( id, signal ) => http.get( `${ RESOURCE }/${ id }`, {}, { signal } ),
 
 	/**
+	 * Write down money that has arrived against a booking.
+	 *
+	 * The booking's own payment status is re-derived on the server from every
+	 * payment against it, so recording part of what is owed leaves the booking
+	 * reading "partial" without this having to say so.
+	 *
+	 * @param {Object}      values
+	 * @param {number}      values.bookingId
+	 * @param {number}      values.amount    Negative for a refund.
+	 * @param {string}      [values.method]  transfer | cash | card
+	 * @param {string}      [values.paidAt]  YYYY-MM-DD, site time.
+	 * @param {string}      [values.notes]
+	 * @param {AbortSignal} [signal]
+	 */
+	record: ( values, signal ) => http.post( RESOURCE, values, { signal } ),
+
+	/**
 	 * Move a payment along. The booking's own payment status follows on the
 	 * server, so the bookings screen never disagrees with this one.
 	 *

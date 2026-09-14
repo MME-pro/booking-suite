@@ -78,6 +78,64 @@ final class PaymentsRepository {
 	}
 
 	/**
+	 * What a booking's payment status is, given what has been settled.
+	 *
+	 * The one place this is decided. Every screen that shows a booking's
+	 * money — the badge, the line under the total, the Payments ledger — reads
+	 * the same answer from here, because two copies of this sum are two answers
+	 * waiting to disagree, and they did.
+	 *
+	 * Half a cent of tolerance: transfers arrive rounded, and a booking stuck
+	 * on "partial" for ever over half a cent is worse than one that calls
+	 * itself settled.
+	 *
+	 * @param float $paid  What has actually come in.
+	 * @param float $total What is owed.
+	 */
+	public static function state_for( float $paid, float $total ): string {
+		$difference = round( $paid - $total, 2 );
+
+		if ( $difference > 0.005 ) {
+			return 'overpaid';
+		}
+
+		if ( $difference > -0.005 ) {
+			return $paid > 0 ? 'paid' : 'unpaid';
+		}
+
+		return $paid > 0 ? 'partial' : 'unpaid';
+	}
+
+	/**
+	 * Put a booking's payment status back in step with its payments.
+	 *
+	 * Called after anything that changes what has been settled — recording a
+	 * payment, marking one off, deleting one. A booking left marked paid for
+	 * money no longer recorded anywhere is the one state nobody can reconcile
+	 * against a bank statement.
+	 *
+	 * @return string The status the booking now carries.
+	 */
+	public static function resync_booking( int $booking_id ): string {
+		$booking = BookingsRepository::find( $booking_id );
+
+		if ( null === $booking ) {
+			return '';
+		}
+
+		$state = self::state_for(
+			self::settled_for( $booking_id ),
+			(float) ( $booking['total'] ?? 0 )
+		);
+
+		// Through the repository, so the change leaves a trace like every other
+		// edit to a booking rather than being the one silent one.
+		BookingsRepository::update( $booking_id, array( 'payment_status' => $state ) );
+
+		return $state;
+	}
+
+	/**
 	 * Every payment, newest first, with the booking and guest it belongs to.
 	 *
 	 * @param string $status Restrict to one payment status, or '' for all.
@@ -530,27 +588,7 @@ final class PaymentsRepository {
 			return false;
 		}
 
-		$booking_id = (int) $payment['bookingId'];
-		$booking    = BookingsRepository::find( $booking_id );
-
-		if ( null === $booking ) {
-			return true;
-		}
-
-		$paid  = self::settled_for( $booking_id );
-		$total = (float) ( $booking['totalAmount'] ?? $booking['total_amount'] ?? 0 );
-
-		if ( $paid + 0.005 >= $total && $total > 0 ) {
-			$status = 'paid';
-		} elseif ( $paid > 0.005 ) {
-			$status = 'partial';
-		} else {
-			$status = 'unpaid';
-		}
-
-		// Through the repository, so the change leaves a trace like every
-		// other edit to a booking rather than being the one silent one.
-		BookingsRepository::update( $booking_id, array( 'payment_status' => $status ) );
+		self::resync_booking( (int) $payment['bookingId'] );
 
 		return true;
 	}}

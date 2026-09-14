@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { __, sprintf } from '@wordpress/i18n';
 import {
 	ArrowLeft,
+	BadgeEuro,
 	FileText,
 	Mail,
 	Pencil,
@@ -45,6 +46,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 
 import { bookingService } from '../../../../services';
+import { RecordPaymentDialog } from '../../../../components/RecordPaymentDialog';
 import { BookingHistory } from '../BookingHistory';
 import { BookingPayments } from '../BookingPayments';
 import { formatDateTime, formatMoney } from '../../data/format';
@@ -228,6 +230,9 @@ export default function BookingDetail( {
 
 	/** Whether the "this changes the tax treatment" warning is open. */
 	const [ typeChange, setTypeChange ] = useState( false );
+
+	/** Whether the "money has arrived" dialog is open. */
+	const [ recordOpen, setRecordOpen ] = useState( false );
 
 	/** The invoice dialog: whether it is open, the rate it will use, the result. */
 	const [ invoiceOpen, setInvoiceOpen ] = useState( false );
@@ -526,6 +531,15 @@ export default function BookingDetail( {
 						<Button
 							variant="outline"
 							disabled={ isBusy }
+							onClick={ () => setRecordOpen( true ) }
+						>
+							<BadgeEuro className="h-4 w-4" />
+							{ __( 'Record a payment', 'booking-suite' ) }
+						</Button>
+
+						<Button
+							variant="outline"
+							disabled={ isBusy }
 							onClick={ () => setInvoiceOpen( true ) }
 						>
 							<FileText className="h-4 w-4" />
@@ -786,6 +800,24 @@ export default function BookingDetail( {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
+
+			{ /*
+			 * Recording money. Reloads rather than patching state by hand: one
+			 * payment moves the settlement line, the payment badge and the
+			 * payment history, and three hand-updates are three chances for the
+			 * screen to disagree with the database.
+			 */ }
+			<RecordPaymentDialog
+				open={ recordOpen }
+				onOpenChange={ setRecordOpen }
+				booking={ booking }
+				onRecorded={ async () => {
+					const full = await bookingService.get( booking.id );
+
+					setBooking( ( current ) => ( { ...current, ...full } ) );
+					onUpdated?.( full );
+				} }
+			/>
 
 			{ /*
 			 * Changing the type. The warning is the whole reason this is a

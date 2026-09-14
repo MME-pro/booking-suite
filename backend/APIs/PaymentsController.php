@@ -76,6 +76,39 @@ final class PaymentsController {
 
 		register_rest_route(
 			self::NAMESPACE,
+			'/' . self::ROUTE,
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( self::class, 'store' ),
+				'permission_callback' => array( self::class, 'can_manage' ),
+				'args'                => array(
+					'bookingId' => array(
+						'type'     => 'integer',
+						'required' => true,
+					),
+					'amount'    => array(
+						'type'     => 'number',
+						'required' => true,
+					),
+					'method'    => array(
+						'type'     => 'string',
+						'required' => false,
+						'enum'     => PaymentsTable::METHODS,
+					),
+					'paidAt'    => array(
+						'type'     => 'string',
+						'required' => false,
+					),
+					'notes'     => array(
+						'type'     => 'string',
+						'required' => false,
+					),
+				),
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
 			'/' . self::ROUTE . '/(?P<id>\d+)',
 			array(
 				array(
@@ -163,6 +196,90 @@ final class PaymentsController {
 	/**
 	 * @return WP_REST_Response|WP_Error
 	 */
+	/**
+	 * Write down money that has arrived.
+	 *
+	 * The missing half of this screen. Everything else here could only move a
+	 * payment the booking flow had already created, for the amount that flow
+	 * decided — so a guest who transferred part of what they owed could not be
+	 * recorded at all, and "partially paid" was a state the software could
+	 * describe but nobody could reach.
+	 *
+	 * Recorded as settled, because that is what it is: this is the operator
+	 * saying the money is in the account. A negative amount is a refund, which
+	 * is how refunds are already stored.
+	 *
+	 * No email and no invoice. Those follow marking a payment off in the
+	 * ledger, where the decision to tell the guest is made deliberately — a
+	 * part payment being written down is bookkeeping, and a guest who has paid
+	 * half does not want a receipt saying so.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function store( WP_REST_Request $request ) {
+		$booking_id = (int) $request->get_param( 'bookingId' );
+		$booking    = BookingsRepository::find( $booking_id );
+
+		if ( null === $booking ) {
+			return new WP_Error(
+				'booking_suite_not_found',
+				__( 'That booking no longer exists.', 'booking-suite' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		$amount = round( (float) $request->get_param( 'amount' ), 2 );
+
+		if ( abs( $amount ) < 0.005 ) {
+			return new WP_Error(
+				'booking_suite_invalid_field',
+				__( 'Enter how much was received.', 'booking-suite' ),
+				array(
+					'status' => 400,
+					'field'  => 'amount',
+				)
+			);
+		}
+
+		/*
+		 * A date the operator typed, kept as the site's wall clock like every
+		 * other timestamp here. Anything unreadable falls back to now rather
+		 * than being stored as a zero date nobody can sort by.
+		 */
+		$paid_at = trim( (string) $request->get_param( 'paidAt' ) );
+		$stamp   = '' !== $paid_at ? strtotime( $paid_at ) : false;
+
+		$created = PaymentsRepository::create(
+			array(
+				'booking_id' => $booking_id,
+				'method'     => (string) ( $request->get_param( 'method' ) ?: 'transfer' ),
+				'status'     => 'paid',
+				'amount'     => $amount,
+				'reference'  => (string) ( $booking['reference'] ?? '' ),
+				'paid_at'    => false !== $stamp ? gmdate( 'Y-m-d H:i:s', $stamp ) : current_time( 'mysql' ),
+				'notes'      => (string) $request->get_param( 'notes' ),
+			)
+		);
+
+		if ( null === $created ) {
+			return new WP_Error(
+				'booking_suite_create_failed',
+				__( 'The payment could not be recorded.', 'booking-suite' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		$state = PaymentsRepository::resync_booking( $booking_id );
+
+		return new WP_REST_Response(
+			array(
+				'payment'       => PaymentsRepository::find( $created ),
+				'paymentStatus' => $state,
+			),
+			201
+		);
+	}
+
 	public static function update( WP_REST_Request $request ) {
 		$id       = (int) $request['id'];
 		$status   = (string) $request->get_param( 'status' );
@@ -215,20 +332,19 @@ final class PaymentsController {
 			return;
 		}
 
-		$next = self::BOOKING_STATUS[ $status ];
-
+		/*
+		 * Settling a payment is the one case where the answer is arithmetic
+		 * rather than a mapping: what the booking now reads depends on every
+		 * other payment against it, not on this one. Refunded and failed keep
+		 * their mapping, because those say something the sum cannot.
+		 */
 		if ( 'paid' === $status ) {
-			$settled = 0.0;
+			PaymentsRepository::resync_booking( $booking_id );
 
-			foreach ( PaymentsRepository::for_booking( $booking_id ) as $row ) {
-				if ( 'paid' === $row['status'] ) {
-					$settled += (float) $row['amount'];
-				}
-			}
-
-			// A rounding tolerance, so cents cannot leave a booking "partial".
-			$next = $settled + 0.01 >= (float) $booking['total'] ? 'paid' : 'partial';
+			return;
 		}
+
+		$next = self::BOOKING_STATUS[ $status ];
 
 		$wpdb->update(
 			BookingsTable::table(),
