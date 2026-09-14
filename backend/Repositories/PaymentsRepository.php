@@ -283,6 +283,38 @@ final class PaymentsRepository {
 	 * Assigning is a one-way step: an invoice that has been issued keeps its
 	 * number for good, however many times the PDF is regenerated.
 	 */
+	/**
+	 * Fix the VAT rate this invoice is drawn at.
+	 *
+	 * Written once and then left alone: an invoice that has gone to a guest is
+	 * a document, and a rate that changed underneath it would silently reissue
+	 * different paper under the same number. Re-drawing at a different rate is
+	 * a credit note and a new invoice, which is a decision rather than an edit.
+	 *
+	 * @param int   $id   The payment carrying the invoice.
+	 * @param float $rate The rate as a percentage — 7, not 0.07.
+	 */
+	public static function set_tax_rate( int $id, float $rate ): bool {
+		global $wpdb;
+
+		$existing = self::find( $id );
+
+		if ( null === $existing || null !== ( $existing['taxRate'] ?? null ) ) {
+			return false;
+		}
+
+		return false !== $wpdb->update(
+			PaymentsTable::table(),
+			array(
+				'tax_rate'   => max( 0.0, min( 100.0, $rate ) ),
+				'updated_at' => current_time( 'mysql' ),
+			),
+			array( 'id' => $id ),
+			array( '%f', '%s' ),
+			array( '%d' )
+		);
+	}
+
 	public static function assign_invoice_number( int $id ): string {
 		global $wpdb;
 
@@ -455,6 +487,11 @@ final class PaymentsRepository {
 			'currency'  => (string) $row['currency'],
 			'reference' => (string) ( $row['reference'] ?? '' ),
 			'paidAt'    => (string) ( $row['paid_at'] ?? '' ),
+			/*
+			 * Null until an invoice is drawn, which is what lets Invoice
+			 * tell "never invoiced" from "invoiced at zero per cent".
+			 */
+			'taxRate'   => null === ( $row['tax_rate'] ?? null ) ? null : (float) $row['tax_rate'],
 			'notes'     => (string) ( $row['notes'] ?? '' ),
 			'proof'     => $attachment_id
 				? array(

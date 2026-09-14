@@ -108,6 +108,32 @@ final class BookingsController {
 			)
 		);
 
+		/*
+		 * The invoice, drawn on request.
+		 *
+		 * A separate route because an invoice is a deliberate act, not a side
+		 * effect: the operator picks which VAT treatment applies and presses a
+		 * button, and the rate they pick is written onto the invoice so
+		 * reprinting it later produces the same document.
+		 */
+		register_rest_route(
+			self::NAMESPACE,
+			'/' . self::ROUTE . '/(?P<id>\d+)/invoice',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( self::class, 'create_invoice' ),
+				'permission_callback' => array( self::class, 'can_manage' ),
+				'args'                => array(
+					'taxRate' => array(
+						'type'              => 'number',
+						'required'          => false,
+						'validate_callback' => static fn( $value ): bool =>
+							is_numeric( $value ) && (float) $value >= 0 && (float) $value <= 100,
+					),
+				),
+			)
+		);
+
 		register_rest_route(
 			self::NAMESPACE,
 			'/' . self::ROUTE . '/(?P<id>\d+)',
@@ -131,6 +157,11 @@ final class BookingsController {
 							'type'     => 'string',
 							'required' => false,
 							'enum'     => BookingsTable::PAYMENT_STATUSES,
+						),
+						'bookingType'    => array(
+							'type'     => 'string',
+							'required' => false,
+							'enum'     => array( BookingsTable::TYPE_OVERNIGHT, BookingsTable::TYPE_HOURLY ),
 						),
 					),
 				),
@@ -235,6 +266,14 @@ final class BookingsController {
 		$payment = (string) $request->get_param( 'payment_status' );
 
 		/*
+		 * The type is what decides the VAT, so it is not something an edit
+		 * screen should be able to change in passing. The admin app asks the
+		 * operator to confirm the tax consequence first and then sends this on
+		 * its own; the enum above is what keeps a stray value out of the column.
+		 */
+		$type = (string) $request->get_param( 'bookingType' );
+
+		/*
 		 * Pending requests do not hold their dates, so two guests can be
 		 * waiting on the same slot. Taking one off the board has to check that
 		 * nobody else already has it.
@@ -259,7 +298,7 @@ final class BookingsController {
 			}
 		}
 
-		if ( '' === $status && '' === $payment ) {
+		if ( '' === $status && '' === $payment && '' === $type ) {
 			return new WP_Error(
 				'booking_suite_invalid_field',
 				__( 'Nothing to change.', 'booking-suite' ),
@@ -270,6 +309,7 @@ final class BookingsController {
 		$changes = array(
 			'status'         => $status,
 			'payment_status' => $payment,
+			'booking_type'   => $type,
 			'notes'          => (string) $request->get_param( 'notes' ),
 		);
 
@@ -351,9 +391,11 @@ final class BookingsController {
 		}
 
 		$booking             = BookingsRepository::find( $id );
-		$booking['extras']   = BookingsRepository::extras_for( $id );
-		$booking['payments'] = PaymentsRepository::for_booking( $id );
-		$booking['history']  = BookingEventsRepository::for_booking( $id );
+		$booking['extras']     = BookingsRepository::extras_for( $id );
+		$booking['payments']   = PaymentsRepository::for_booking( $id );
+		$booking['history']    = BookingEventsRepository::for_booking( $id );
+		$booking['settlement'] = self::settlement( $booking );
+		$booking['taxOptions'] = self::tax_options( $booking );
 
 		return new WP_REST_Response( $booking, 200 );
 	}
@@ -635,6 +677,90 @@ final class BookingsController {
 	}
 
 	/**
+	 * Draw the invoice for a booking, at the rate the operator chose.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function create_invoice( WP_REST_Request $request ) {
+		$id      = (int) $request['id'];
+		$booking = BookingsRepository::find( $id );
+
+		if ( null === $booking ) {
+			return self::not_found();
+		}
+
+		/*
+		 * Every invoice hangs off a payment row, because that is what carries
+		 * the number and what the Payments screen reconciles against. A
+		 * booking taken through the guest flow already has one; a booking
+		 * entered by hand may not.
+		 */
+		$payment = PaymentsRepository::pending_for( $id );
+
+		if ( null === $payment ) {
+			foreach ( PaymentsRepository::for_booking( $id ) as $row ) {
+				if ( '' !== ( $row['invoiceNo'] ?? '' ) ) {
+					$payment = PaymentsRepository::find( (int) $row['id'] );
+					break;
+				}
+			}
+		}
+
+		if ( null === $payment ) {
+			$created = PaymentsRepository::create(
+				array(
+					'booking_id' => $id,
+					'method'     => 'transfer',
+					'status'     => 'pending',
+					'amount'     => (float) ( $booking['total'] ?? 0 ),
+					'reference'  => (string) ( $booking['reference'] ?? '' ),
+				)
+			);
+
+			// create() answers with an id, not a row — unlike some of its
+			// siblings, which is exactly the sort of thing worth being explicit
+			// about at the call site.
+			$payment = $created ? PaymentsRepository::find( (int) $created ) : null;
+		}
+
+		if ( null === $payment ) {
+			return new WP_Error(
+				'booking_suite_invoice_failed',
+				__( 'The invoice could not be prepared for this booking.', 'booking-suite' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		$payment_id = (int) $payment['id'];
+
+		/*
+		 * The rate, fixed now and not revisited. Defaults to the one the
+		 * booking's own type calls for, which is what the picker offers first.
+		 */
+		$chosen = $request->get_param( 'taxRate' );
+
+		if ( null === $chosen ) {
+			$chosen = SettingsRepository::tax_fraction_for(
+				(string) ( $booking['bookingType'] ?? '' )
+			) * 100;
+		}
+
+		PaymentsRepository::set_tax_rate( $payment_id, (float) $chosen );
+		PaymentsRepository::assign_invoice_number( $payment_id );
+
+		$payment = PaymentsRepository::find( $payment_id );
+
+		return new WP_REST_Response(
+			array(
+				'invoiceNo' => (string) ( $payment['invoiceNo'] ?? '' ),
+				'taxRate'   => $payment['taxRate'] ?? null,
+				'url'       => Invoice::attachment( $payment_id )['url'] ?? '',
+			),
+			200
+		);
+	}
+
+	/**
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public static function show( WP_REST_Request $request ) {
@@ -645,11 +771,82 @@ final class BookingsController {
 			return self::not_found();
 		}
 
-		$booking['extras']   = BookingsRepository::extras_for( $id );
-		$booking['payments'] = PaymentsRepository::for_booking( $id );
-		$booking['history']  = BookingEventsRepository::for_booking( $id );
+		$booking['extras']     = BookingsRepository::extras_for( $id );
+		$booking['payments']   = PaymentsRepository::for_booking( $id );
+		$booking['history']    = BookingEventsRepository::for_booking( $id );
+		$booking['settlement'] = self::settlement( $booking );
+		$booking['taxOptions'] = self::tax_options( $booking );
 
 		return new WP_REST_Response( $booking, 200 );
+	}
+
+	/**
+	 * The VAT rates the invoice dialog offers, as percentages.
+	 *
+	 * Sent with the booking rather than fetched separately, because the picker
+	 * has to name real rates — "Overnight (7%)" — and a dialog that opens
+	 * before a second request lands would have to name them wrongly first.
+	 *
+	 * @param array<string, mixed> $booking
+	 * @return array<string, float>
+	 */
+	private static function tax_options( array $booking ): array {
+		$rates = array(
+			'overnight' => round( SettingsRepository::tax_fraction_for( 'overnight' ) * 100, 2 ),
+			'hourly'    => round( SettingsRepository::tax_fraction_for( 'hourly' ) * 100, 2 ),
+		);
+
+		$type = (string) ( $booking['bookingType'] ?? '' );
+
+		$rates['current'] = isset( $rates[ $type ] )
+			? $rates[ $type ]
+			: round( SettingsRepository::tax_fraction() * 100, 2 );
+
+		return $rates;
+	}
+
+	/**
+	 * How a booking stands financially, in the terms the screen uses.
+	 *
+	 * The arithmetic lives here rather than in the browser because it decides
+	 * a status, not only a sentence: "partially paid" and "overpaid" are things
+	 * the owner acts on, and two copies of the sum are two answers waiting to
+	 * disagree.
+	 *
+	 * A cent of tolerance on the paid side. Bank transfers arrive rounded, and
+	 * a booking left reading "outstanding: 0,00 €" forever because of half a
+	 * cent is worse than one that calls itself settled.
+	 *
+	 * @param array<string, mixed> $booking
+	 * @return array<string, mixed>
+	 */
+	private static function settlement( array $booking ): array {
+		$id    = (int) ( $booking['id'] ?? 0 );
+		$total = round( (float) ( $booking['total'] ?? 0 ), 2 );
+		$paid  = PaymentsRepository::settled_for( $id );
+
+		$difference = round( $paid - $total, 2 );
+
+		if ( $difference > 0.005 ) {
+			$state = 'overpaid';
+		} elseif ( $difference > -0.005 ) {
+			$state = $paid > 0 ? 'paid' : 'unpaid';
+		} elseif ( $paid > 0 ) {
+			$state = 'partial';
+		} else {
+			$state = 'unpaid';
+		}
+
+		return array(
+			'total'       => $total,
+			'paid'        => $paid,
+			// Positive when money is still owed, zero otherwise.
+			'outstanding' => max( 0.0, round( $total - $paid, 2 ) ),
+			// Positive when too much came in. The owner has money that is not
+			// theirs until somebody decides what happens to it.
+			'overpaid'    => max( 0.0, $difference ),
+			'state'       => $state,
+		);
 	}
 
 	/**

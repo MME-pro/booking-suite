@@ -117,7 +117,7 @@ final class BookingLifecycle {
 		 * payment_deadline, set when the booking was taken and promised to the
 		 * guest on the checkout and again on the payment page.
 		 *
-		 * `transfer_declared` expires too. Saying the money was sent is a
+		 * `transfer_declared` goes the same way. Saying the money was sent is a
 		 * courtesy to the owner and has no legal weight of its own — if it
 		 * never arrives, the claim that it was sent cannot keep the room shut.
 		 *
@@ -128,11 +128,26 @@ final class BookingLifecycle {
 		$awaiting     = BookingsTable::AWAITING_STATUSES;
 		$placeholders = implode( ',', array_fill( 0, count( $awaiting ), '%s' ) );
 
+		/*
+		 * Overdue, not cancelled.
+		 *
+		 * The flow diagram is explicit: a deadline the cron notices moves the
+		 * booking to payment_overdue, and only the operator cancels. The
+		 * distinction is worth keeping — a guest whose transfer crossed with
+		 * the deadline can still be marked paid from here, which is exactly
+		 * what the diagram's "manual recording of incoming payments" arrow
+		 * out of payment_overdue is for. A cancelled booking has had that
+		 * decision taken for it by a clock.
+		 *
+		 * The dates are released either way: payment_overdue is absent from
+		 * BLOCKING_STATUSES, so the room is back on sale the moment the hold
+		 * lapses.
+		 */
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$expired = (int) $wpdb->query(
 			$wpdb->prepare(
 				"UPDATE $table
-				SET status = 'cancelled', updated_at = %s
+				SET status = 'payment_overdue', updated_at = %s
 				WHERE status IN ( $placeholders )
 					AND payment_deadline IS NOT NULL
 					AND payment_deadline < %s",

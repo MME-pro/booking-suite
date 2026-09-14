@@ -100,10 +100,10 @@
     },
     {
         "single": "%1$s (Extra) — %2$s je Stück",
-        "line": 402,
+        "line": 583,
         "comment": "translators: 1: name of the extra, 2: price of one of them.",
         "refs": [
-            "backend/Support/Invoice.php:402"
+            "backend/Support/Invoice.php:583"
         ],
         "comments": {
             "translators: 1: name of the extra, 2: price of one of them.": true
@@ -634,11 +634,11 @@
     },
     {
         "single": "%dx",
-        "line": 410,
+        "line": 591,
         "comment": "translators: %d: how many were booked.",
         "refs": [
-            "backend/Support/Invoice.php:410",
-            "backend/Support/Invoice.php:434"
+            "backend/Support/Invoice.php:591",
+            "backend/Support/Invoice.php:615"
         ],
         "comments": {
             "translators: %d: how many were booked.": true,
@@ -647,10 +647,10 @@
     },
     {
         "single": "%s Std.",
-        "line": 390,
+        "line": 571,
         "comment": "translators: %s: number of hours, to two decimals.",
         "refs": [
-            "backend/Support/Invoice.php:390"
+            "backend/Support/Invoice.php:571"
         ],
         "comments": {
             "translators: %s: number of hours, to two decimals.": true
@@ -669,10 +669,10 @@
     },
     {
         "single": "%s gebuchtes Zimmer",
-        "line": 381,
+        "line": 562,
         "comment": "translators: %s: the apartment's name.",
         "refs": [
-            "backend/Support/Invoice.php:381"
+            "backend/Support/Invoice.php:562"
         ],
         "comments": {
             "translators: %s: the apartment's name.": true
@@ -691,10 +691,10 @@
     },
     {
         "single": "%s is no longer available for these dates. Please adjust it and try again.",
-        "line": 462,
+        "line": 475,
         "comment": "translators: %s: name of the extra.",
         "refs": [
-            "backend/APIs/PublicBookingController.php:462"
+            "backend/APIs/PublicBookingController.php:475"
         ],
         "comments": {
             "translators: %s: name of the extra.": true
@@ -720,6 +720,17 @@
         ],
         "comments": {
             "translators: %s: total booked value across all guests.": true
+        }
+    },
+    {
+        "single": "%s%%",
+        "line": 924,
+        "comment": "translators: %s: a VAT rate.",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:924"
+        ],
+        "comments": {
+            "translators: %s: a VAT rate.": true
         }
     },
     {
@@ -982,10 +993,10 @@
     },
     {
         "single": "Absender:",
-        "line": 235,
+        "line": 416,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:235"
+            "backend/Support/Invoice.php:416"
         ],
         "comments": []
     },
@@ -1017,13 +1028,22 @@
         "comments": []
     },
     {
+        "single": "Accommodation",
+        "line": 289,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:289"
+        ],
+        "comments": []
+    },
+    {
         "single": "Account holder",
         "line": 475,
         "comment": "",
         "refs": [
             "backend/Support/BookingEmails.php:475",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:733",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:72",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:90",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:299"
         ],
         "comments": []
@@ -1569,19 +1589,19 @@
     },
     {
         "single": "Another booking already holds those dates.",
-        "line": 954,
+        "line": 1151,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:954"
+            "backend/APIs/BookingsController.php:1151"
         ],
         "comments": []
     },
     {
         "single": "Another booking already holds those dates. Cancel that one first.",
-        "line": 253,
+        "line": 292,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:253"
+            "backend/APIs/BookingsController.php:292"
         ],
         "comments": []
     },
@@ -1634,10 +1654,10 @@
     },
     {
         "single": "Anzahl der Std.",
-        "line": 268,
+        "line": 449,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:268"
+            "backend/Support/Invoice.php:449"
         ],
         "comments": []
     },
@@ -1649,7 +1669,7 @@
             "backend/PostTypes/ApartmentPostType.php:320",
             "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:106",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:164",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:364",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:604",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:427",
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:71",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:117",
@@ -1829,7 +1849,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:269",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:73"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:168"
         ],
         "comments": []
     },
@@ -1855,10 +1875,10 @@
     },
     {
         "single": "Arrival",
-        "line": 368,
+        "line": 608,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:368",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:608",
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:75",
             "frontend/site/Shortcodes.php:1172"
         ],
@@ -2033,8 +2053,17 @@
         "refs": [
             "backend/Support/BookingEmails.php:485",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:763",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:81",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:99",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:307"
+        ],
+        "comments": []
+    },
+    {
+        "single": "BIC:",
+        "line": 314,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:314"
         ],
         "comments": []
     },
@@ -2050,6 +2079,15 @@
         }
     },
     {
+        "single": "BUCHUNGSBESTÄTIGUNG",
+        "line": 248,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:248"
+        ],
+        "comments": []
+    },
+    {
         "single": "Back",
         "line": 460,
         "comment": "",
@@ -2062,19 +2100,19 @@
     },
     {
         "single": "Back to bookings",
-        "line": 203,
+        "line": 388,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:203"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:388"
         ],
         "comments": []
     },
     {
         "single": "Balance after the booking was changed.",
-        "line": 484,
+        "line": 526,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:484"
+            "backend/APIs/BookingsController.php:526"
         ],
         "comments": []
     },
@@ -2117,11 +2155,20 @@
         "comments": []
     },
     {
-        "single": "Bankverbindung:",
-        "line": 568,
+        "single": "Bank:",
+        "line": 315,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:568"
+            "backend/Support/Invoice.php:315"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Bankverbindung:",
+        "line": 792,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:792"
         ],
         "comments": []
     },
@@ -2156,19 +2203,19 @@
     },
     {
         "single": "Bereits bezahlt:",
-        "line": 489,
+        "line": 670,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:489"
+            "backend/Support/Invoice.php:670"
         ],
         "comments": []
     },
     {
         "single": "Beschreibung",
-        "line": 265,
+        "line": 446,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:265"
+            "backend/Support/Invoice.php:446"
         ],
         "comments": []
     },
@@ -2441,10 +2488,10 @@
     },
     {
         "single": "Booking not found.",
-        "line": 965,
+        "line": 1162,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:965"
+            "backend/APIs/BookingsController.php:1162"
         ],
         "comments": []
     },
@@ -2466,7 +2513,7 @@
         "comment": "",
         "refs": [
             "backend/Repositories/EmailTemplatesRepository.php:118",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:238"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:435"
         ],
         "comments": []
     },
@@ -2633,11 +2680,30 @@
         "comments": []
     },
     {
-        "single": "Buchungsnummer:",
-        "line": 190,
+        "single": "Buchung für:",
+        "line": 222,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:190"
+            "backend/Support/Invoice.php:222"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Buchungsbestaetigung",
+        "line": 194,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:194"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Buchungsnummer:",
+        "line": 252,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:252",
+            "backend/Support/Invoice.php:367"
         ],
         "comments": []
     },
@@ -2780,7 +2846,7 @@
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:379",
             "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:320",
             "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:706",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:533",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:773",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:874",
             "frontend/admin/app/src/pages/Customers/CustomersPage.jsx:330",
             "frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:489",
@@ -2868,6 +2934,33 @@
         "comments": []
     },
     {
+        "single": "Change the type",
+        "line": 825,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:825"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Change to hourly",
+        "line": 510,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:510"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Change to overnight",
+        "line": 514,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:514"
+        ],
+        "comments": []
+    },
+    {
         "single": "Charged for each guest beyond the party size the rate covers.",
         "line": 593,
         "comment": "",
@@ -2887,10 +2980,10 @@
     },
     {
         "single": "Charges",
-        "line": 391,
+        "line": 631,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:391"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:631"
         ],
         "comments": []
     },
@@ -2917,10 +3010,10 @@
     },
     {
         "single": "Check-in cannot be in the past.",
-        "line": 705,
+        "line": 718,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:705"
+            "backend/APIs/PublicBookingController.php:718"
         ],
         "comments": []
     },
@@ -2947,10 +3040,10 @@
     },
     {
         "single": "Check-out must be after check-in.",
-        "line": 688,
+        "line": 701,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:688",
+            "backend/APIs/PublicBookingController.php:701",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:147"
         ],
         "comments": []
@@ -3033,10 +3126,10 @@
     },
     {
         "single": "Choose an apartment.",
-        "line": 666,
+        "line": 863,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:666",
+            "backend/APIs/BookingsController.php:863",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:91"
         ],
         "comments": []
@@ -3316,10 +3409,10 @@
     },
     {
         "single": "Complete your payment — %s",
-        "line": 128,
+        "line": 178,
         "comment": "translators: %s: the site name.",
         "refs": [
-            "backend/Support/PaymentPage.php:128"
+            "backend/Support/PaymentPage.php:178"
         ],
         "comments": {
             "translators: %s: the site name.": true
@@ -3347,10 +3440,10 @@
     },
     {
         "single": "Confirm",
-        "line": 544,
+        "line": 784,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:544",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:784",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:485"
         ],
         "comments": []
@@ -3599,6 +3692,38 @@
         "comments": []
     },
     {
+        "single": "Create invoice",
+        "line": 532,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:532",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:846"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Create the invoice",
+        "line": 937,
+        "comment": "translators: %s: a VAT rate.",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:937"
+        ],
+        "comments": {
+            "translators: %s: a VAT rate.": true
+        }
+    },
+    {
+        "single": "Creating…",
+        "line": 936,
+        "comment": "translators: %s: a VAT rate.",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:936"
+        ],
+        "comments": {
+            "translators: %s: a VAT rate.": true
+        }
+    },
+    {
         "single": "Currency",
         "line": 343,
         "comment": "",
@@ -3740,19 +3865,20 @@
     },
     {
         "single": "Datum",
-        "line": 266,
+        "line": 447,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:266"
+            "backend/Support/Invoice.php:447"
         ],
         "comments": []
     },
     {
         "single": "Datum:",
-        "line": 188,
+        "line": 253,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:188"
+            "backend/Support/Invoice.php:253",
+            "backend/Support/Invoice.php:365"
         ],
         "comments": []
     },
@@ -3933,7 +4059,7 @@
             "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:326",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:317",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:321",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:291",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:492",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:441"
         ],
         "comments": []
@@ -4016,10 +4142,10 @@
     },
     {
         "single": "Departure",
-        "line": 372,
+        "line": 612,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:372",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:612",
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:76"
         ],
         "comments": []
@@ -4074,6 +4200,15 @@
         "comments": {
             "translators: %s: booking reference.": true
         }
+    },
+    {
+        "single": "Dies ist keine Rechnung. Ihre Rechnung erhalten Sie, sobald Ihre Zahlung bei uns eingegangen ist.",
+        "line": 332,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:332"
+        ],
+        "comments": []
     },
     {
         "single": "Direct bookings + %s",
@@ -4136,6 +4271,15 @@
         "comments": []
     },
     {
+        "single": "Download your booking confirmation (PDF)",
+        "line": 78,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:78"
+        ],
+        "comments": []
+    },
+    {
         "single": "Drop any of these into a subject or message and the booking fills them in. Anything unrecognised is left alone.",
         "line": 114,
         "comment": "",
@@ -4168,10 +4312,10 @@
     },
     {
         "single": "E-Mail:",
-        "line": 552,
+        "line": 766,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:552"
+            "backend/Support/Invoice.php:766"
         ],
         "comments": []
     },
@@ -4254,10 +4398,10 @@
     },
     {
         "single": "Edit booking",
-        "line": 272,
+        "line": 473,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:272",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:473",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:395"
         ],
         "comments": []
@@ -4516,6 +4660,15 @@
         "comments": []
     },
     {
+        "single": "Everything else",
+        "line": 295,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:295"
+        ],
+        "comments": []
+    },
+    {
         "single": "Example",
         "line": 397,
         "comment": "",
@@ -4575,7 +4728,7 @@
             "frontend/admin/app/src/App.jsx:65",
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:260",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:416",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:656",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:483",
             "frontend/site/app/src/components/BookingModal/StepOptions.jsx:44",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:313"
@@ -4720,19 +4873,19 @@
     },
     {
         "single": "Fälligkeitsdatum:",
-        "line": 189,
+        "line": 366,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:189"
+            "backend/Support/Invoice.php:366"
         ],
         "comments": []
     },
     {
         "single": "Gebuchte Uhrzeit",
-        "line": 267,
+        "line": 448,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:267"
+            "backend/Support/Invoice.php:448"
         ],
         "comments": []
     },
@@ -4748,37 +4901,38 @@
     },
     {
         "single": "Gesamt:",
-        "line": 480,
+        "line": 661,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:480"
+            "backend/Support/Invoice.php:661"
         ],
         "comments": []
     },
     {
         "single": "Gesamtbetrag:",
-        "line": 514,
+        "line": 290,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:514"
+            "backend/Support/Invoice.php:290",
+            "backend/Support/Invoice.php:695"
         ],
         "comments": []
     },
     {
         "single": "Give a date, a start time and a length.",
-        "line": 684,
+        "line": 881,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:684"
+            "backend/APIs/BookingsController.php:881"
         ],
         "comments": []
     },
     {
         "single": "Give a date.",
-        "line": 769,
+        "line": 966,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:769"
+            "backend/APIs/BookingsController.php:966"
         ],
         "comments": []
     },
@@ -4802,10 +4956,10 @@
     },
     {
         "single": "Give an arrival and a departure date.",
-        "line": 723,
+        "line": 920,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:723"
+            "backend/APIs/BookingsController.php:920"
         ],
         "comments": []
     },
@@ -4865,7 +5019,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:314",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:107",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:319",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:559",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:114",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:196",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:74",
@@ -4892,19 +5046,19 @@
     },
     {
         "single": "Guest notes",
-        "line": 505,
+        "line": 745,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:505"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:745"
         ],
         "comments": []
     },
     {
         "single": "Guest paid on",
-        "line": 493,
+        "line": 733,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:493",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:733",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:105"
         ],
         "comments": []
@@ -4919,7 +5073,7 @@
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:437",
             "frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:109",
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:376",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:616",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:516",
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:74",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:129",
@@ -5009,10 +5163,10 @@
     },
     {
         "single": "Hinweis:",
-        "line": 583,
+        "line": 807,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:583"
+            "backend/Support/Invoice.php:807"
         ],
         "comments": []
     },
@@ -5031,6 +5185,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:650"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Hourly booking",
+        "line": 87,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:87"
         ],
         "comments": []
     },
@@ -5159,8 +5322,17 @@
         "refs": [
             "backend/Support/BookingEmails.php:482",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:752",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:76",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:94",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:303"
+        ],
+        "comments": []
+    },
+    {
+        "single": "IBAN:",
+        "line": 309,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:309"
         ],
         "comments": []
     },
@@ -5283,6 +5455,17 @@
         "comments": []
     },
     {
+        "single": "Invoice %1$s, drawn at %2$s%% VAT.",
+        "line": 866,
+        "comment": "translators: 1: the invoice number, 2: the VAT rate as a percentage.",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:866"
+        ],
+        "comments": {
+            "translators: 1: the invoice number, 2: the VAT rate as a percentage.": true
+        }
+    },
+    {
         "single": "Invoice counter",
         "line": 1111,
         "comment": "",
@@ -5364,11 +5547,20 @@
         "comments": []
     },
     {
-        "single": "Kosten",
-        "line": 269,
+        "single": "Kontoinhaber:",
+        "line": 307,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:269"
+            "backend/Support/Invoice.php:307"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Kosten",
+        "line": 450,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:450"
         ],
         "comments": []
     },
@@ -5452,6 +5644,15 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:497"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Leave it as it is",
+        "line": 822,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:822"
         ],
         "comments": []
     },
@@ -5686,10 +5887,10 @@
     },
     {
         "single": "Mark as paid",
-        "line": 91,
+        "line": 186,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:91",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:186",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:360",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:190",
             "frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:158",
@@ -5700,10 +5901,10 @@
     },
     {
         "single": "Mark completed",
-        "line": 82,
+        "line": 177,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:82"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:177"
         ],
         "comments": []
     },
@@ -5924,10 +6125,10 @@
     },
     {
         "single": "Netto:",
-        "line": 466,
+        "line": 647,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:466"
+            "backend/Support/Invoice.php:647"
         ],
         "comments": []
     },
@@ -6154,10 +6355,10 @@
     },
     {
         "single": "No extras were booked. The total is accommodation and any guest charge.",
-        "line": 438,
+        "line": 678,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:438"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:678"
         ],
         "comments": []
     },
@@ -6181,10 +6382,10 @@
     },
     {
         "single": "No name given",
-        "line": 330,
+        "line": 570,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:330"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:570"
         ],
         "comments": []
     },
@@ -6380,10 +6581,10 @@
     },
     {
         "single": "Nothing to change.",
-        "line": 265,
+        "line": 304,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:265"
+            "backend/APIs/BookingsController.php:304"
         ],
         "comments": []
     },
@@ -6508,10 +6709,10 @@
     },
     {
         "single": "Offener Betrag:",
-        "line": 513,
+        "line": 694,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:513"
+            "backend/Support/Invoice.php:694"
         ],
         "comments": []
     },
@@ -6702,6 +6903,15 @@
         "comments": []
     },
     {
+        "single": "Open the invoice",
+        "line": 882,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:882"
+        ],
+        "comments": []
+    },
+    {
         "single": "Open the payment page",
         "line": 429,
         "comment": "",
@@ -6712,10 +6922,10 @@
     },
     {
         "single": "Open uploaded receipt",
-        "line": 483,
+        "line": 723,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:483",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:723",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:159",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:168"
         ],
@@ -6833,6 +7043,15 @@
         "comments": []
     },
     {
+        "single": "Overnight stay",
+        "line": 86,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:86"
+        ],
+        "comments": []
+    },
+    {
         "single": "Overnight stay (%s)",
         "line": 519,
         "comment": "translators: %s: the overnight window, e.g. 16:00 – 11:00.",
@@ -6855,6 +7074,17 @@
         }
     },
     {
+        "single": "Overpayment — difference: %s",
+        "line": 132,
+        "comment": "translators: %s: how much too much came in, with currency.",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:132"
+        ],
+        "comments": {
+            "translators: %s: how much too much came in, with currency.": true
+        }
+    },
+    {
         "single": "Owner emails",
         "line": 30,
         "comment": "",
@@ -6873,6 +7103,17 @@
         "comments": []
     },
     {
+        "single": "Paid in full — %s received",
+        "line": 143,
+        "comment": "translators: %s: the amount received, with currency.",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:143"
+        ],
+        "comments": {
+            "translators: %s: the amount received, with currency.": true
+        }
+    },
+    {
         "single": "Paid, net of refunds",
         "line": 240,
         "comment": "",
@@ -6889,6 +7130,17 @@
             "frontend/admin/app/src/pages/Guide/GuidePage.jsx:210"
         ],
         "comments": []
+    },
+    {
+        "single": "Partially paid — outstanding: %s",
+        "line": 120,
+        "comment": "translators: %s: the amount still owed, with currency.",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:120"
+        ],
+        "comments": {
+            "translators: %s: the amount still owed, with currency.": true
+        }
     },
     {
         "single": "Partly offline",
@@ -7000,10 +7252,10 @@
     },
     {
         "single": "Payment proof",
-        "line": 456,
+        "line": 696,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:456",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:696",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:117",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:130"
         ],
@@ -7042,10 +7294,10 @@
     },
     {
         "single": "Payment receipt uploaded by the guest",
-        "line": 469,
+        "line": 709,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:469",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:709",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:142",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:151"
         ],
@@ -7102,7 +7354,7 @@
         "comment": "",
         "refs": [
             "backend/Support/BookingEmails.php:489",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:86",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:104",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:317"
         ],
         "comments": []
@@ -7318,6 +7570,15 @@
         "comments": []
     },
     {
+        "single": "Pick the VAT treatment. It is written onto the invoice and kept, so the same document prints the same way later even if the rates change.",
+        "line": 854,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:854"
+        ],
+        "comments": []
+    },
+    {
         "single": "Placeholders",
         "line": 93,
         "comment": "",
@@ -7328,38 +7589,38 @@
     },
     {
         "single": "Please choose a date.",
-        "line": 320,
+        "line": 333,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:320",
-            "backend/APIs/PublicBookingController.php:864"
+            "backend/APIs/PublicBookingController.php:333",
+            "backend/APIs/PublicBookingController.php:877"
         ],
         "comments": []
     },
     {
         "single": "Please choose a start time.",
-        "line": 870,
+        "line": 883,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:870"
+            "backend/APIs/PublicBookingController.php:883"
         ],
         "comments": []
     },
     {
         "single": "Please choose both dates.",
-        "line": 682,
+        "line": 695,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:682"
+            "backend/APIs/PublicBookingController.php:695"
         ],
         "comments": []
     },
     {
         "single": "Please choose how long you need.",
-        "line": 878,
+        "line": 891,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:878"
+            "backend/APIs/PublicBookingController.php:891"
         ],
         "comments": []
     },
@@ -7374,10 +7635,10 @@
     },
     {
         "single": "Please confirm your email address before booking.",
-        "line": 436,
+        "line": 449,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:436"
+            "backend/APIs/PublicBookingController.php:449"
         ],
         "comments": []
     },
@@ -7392,20 +7653,20 @@
     },
     {
         "single": "Please give a valid email address.",
-        "line": 418,
+        "line": 431,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:418",
+            "backend/APIs/PublicBookingController.php:431",
             "backend/Support/EmailVerification.php:81"
         ],
         "comments": []
     },
     {
         "single": "Please give your first and last name.",
-        "line": 414,
+        "line": 427,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:414"
+            "backend/APIs/PublicBookingController.php:427"
         ],
         "comments": []
     },
@@ -7599,10 +7860,10 @@
     },
     {
         "single": "RECHNUNG",
-        "line": 183,
+        "line": 360,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:183"
+            "backend/Support/Invoice.php:360"
         ],
         "comments": []
     },
@@ -7656,10 +7917,10 @@
     },
     {
         "single": "Received",
-        "line": 244,
+        "line": 441,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:244",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:441",
             "frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:121",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:105",
             "frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:86"
@@ -7677,19 +7938,19 @@
     },
     {
         "single": "Rechnungsempfänger:",
-        "line": 236,
+        "line": 395,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:236"
+            "backend/Support/Invoice.php:395"
         ],
         "comments": []
     },
     {
         "single": "Rechnungsnummer:",
-        "line": 187,
+        "line": 364,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:187"
+            "backend/Support/Invoice.php:364"
         ],
         "comments": []
     },
@@ -7716,19 +7977,19 @@
     },
     {
         "single": "Recorded from the booking, which was already marked paid.",
-        "line": 549,
+        "line": 591,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:549"
+            "backend/APIs/BookingsController.php:591"
         ],
         "comments": []
     },
     {
         "single": "Recorded when the booking was marked paid.",
-        "line": 401,
+        "line": 443,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:401"
+            "backend/APIs/BookingsController.php:443"
         ],
         "comments": []
     },
@@ -7812,10 +8073,10 @@
     },
     {
         "single": "Release dates",
-        "line": 107,
+        "line": 202,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:107"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:202"
         ],
         "comments": []
     },
@@ -7937,10 +8198,10 @@
     },
     {
         "single": "Reserve",
-        "line": 64,
+        "line": 159,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:64"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:159"
         ],
         "comments": []
     },
@@ -8134,7 +8395,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:733",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:307",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:547",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:882",
             "frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:196",
             "frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:589",
@@ -8352,10 +8613,10 @@
     },
     {
         "single": "Send this booking back to pending? The dates become bookable again.",
-        "line": 109,
+        "line": 204,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:109"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:204"
         ],
         "comments": []
     },
@@ -8711,10 +8972,10 @@
     },
     {
         "single": "Source",
-        "line": 380,
+        "line": 620,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:380"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:620"
         ],
         "comments": []
     },
@@ -8751,10 +9012,10 @@
     },
     {
         "single": "Stay",
-        "line": 358,
+        "line": 598,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:358",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:598",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:419",
             "frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:122",
             "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:181"
@@ -8781,10 +9042,10 @@
     },
     {
         "single": "Stays are limited to %d nights.",
-        "line": 696,
+        "line": 709,
         "comment": "translators: %d: maximum number of nights.",
         "refs": [
-            "backend/APIs/PublicBookingController.php:696"
+            "backend/APIs/PublicBookingController.php:709"
         ],
         "comments": {
             "translators: %d: maximum number of nights.": true
@@ -9028,7 +9289,7 @@
         "comment": "translators: %s: the company's telephone number.",
         "refs": [
             "backend/Repositories/SettingsRepository.php:422",
-            "backend/Support/Invoice.php:229"
+            "backend/Support/Invoice.php:410"
         ],
         "comments": {
             "translators: %s: the company's telephone number.": true,
@@ -9037,10 +9298,10 @@
     },
     {
         "single": "Telefon:",
-        "line": 551,
+        "line": 765,
         "comment": "",
         "refs": [
-            "backend/Support/Invoice.php:551"
+            "backend/Support/Invoice.php:765"
         ],
         "comments": []
     },
@@ -9154,10 +9415,10 @@
     },
     {
         "single": "That apartment does not exist.",
-        "line": 759,
+        "line": 956,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:759"
+            "backend/APIs/BookingsController.php:956"
         ],
         "comments": []
     },
@@ -9346,10 +9607,10 @@
     },
     {
         "single": "That time has already passed.",
-        "line": 902,
+        "line": 915,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:902"
+            "backend/APIs/PublicBookingController.php:915"
         ],
         "comments": []
     },
@@ -9382,29 +9643,29 @@
     },
     {
         "single": "The booking could not be deleted.",
-        "line": 622,
+        "line": 664,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:622"
+            "backend/APIs/BookingsController.php:664"
         ],
         "comments": []
     },
     {
         "single": "The booking could not be saved.",
-        "line": 213,
+        "line": 244,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:213",
-            "backend/APIs/PublicBookingController.php:557"
+            "backend/APIs/BookingsController.php:244",
+            "backend/APIs/PublicBookingController.php:570"
         ],
         "comments": []
     },
     {
         "single": "The booking could not be updated.",
-        "line": 309,
+        "line": 349,
         "comment": "",
         "refs": [
-            "backend/APIs/BookingsController.php:309"
+            "backend/APIs/BookingsController.php:349"
         ],
         "comments": []
     },
@@ -9572,6 +9833,24 @@
         "comment": "",
         "refs": [
             "frontend/site/Shortcodes.php:125"
+        ],
+        "comments": []
+    },
+    {
+        "single": "The invoice could not be prepared for this booking.",
+        "line": 729,
+        "comment": "",
+        "refs": [
+            "backend/APIs/BookingsController.php:729"
+        ],
+        "comments": []
+    },
+    {
+        "single": "The invoice has been issued. Its number and rate are fixed from here on.",
+        "line": 850,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:850"
         ],
         "comments": []
     },
@@ -9813,22 +10092,22 @@
     },
     {
         "single": "This apartment cannot be booked online yet — no price has been set for it. Please get in touch and we will arrange it with you.",
-        "line": 488,
+        "line": 501,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:488",
+            "backend/APIs/PublicBookingController.php:501",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:388"
         ],
         "comments": []
     },
     {
         "single": "This apartment cannot be booked.",
-        "line": 269,
+        "line": 282,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:269",
-            "backend/APIs/PublicBookingController.php:314",
-            "backend/APIs/PublicBookingController.php:641"
+            "backend/APIs/PublicBookingController.php:282",
+            "backend/APIs/PublicBookingController.php:327",
+            "backend/APIs/PublicBookingController.php:654"
         ],
         "comments": []
     },
@@ -9866,11 +10145,11 @@
     },
     {
         "single": "This apartment takes at most %d guest.",
-        "line": 661,
+        "line": 674,
         "plural": "This apartment takes at most %d guests.",
         "comment": "translators: %d: the largest party the apartment takes.",
         "refs": [
-            "backend/APIs/PublicBookingController.php:661"
+            "backend/APIs/PublicBookingController.php:674"
         ],
         "comments": {
             "translators: %d: the largest party the apartment takes.": true
@@ -9878,10 +10157,10 @@
     },
     {
         "single": "This booking could not be found.",
-        "line": 206,
+        "line": 207,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:206"
+            "backend/APIs/PublicBookingController.php:207"
         ],
         "comments": []
     },
@@ -9891,6 +10170,26 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/PaymentApp.jsx:106"
+        ],
+        "comments": []
+    },
+    {
+        "single": "This booking is filed as “%1$s”. Filing it as “%2$s” instead changes the VAT rate its invoice is drawn at. Any invoice already issued keeps the rate it was issued with.",
+        "line": 807,
+        "comment": "translators: 1: the current booking type, 2: the type it would become.",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:807"
+        ],
+        "comments": {
+            "translators: 1: the current booking type, 2: the type it would become.": true
+        }
+    },
+    {
+        "single": "This changes the tax treatment",
+        "line": 799,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:799"
         ],
         "comments": []
     },
@@ -9928,10 +10227,10 @@
     },
     {
         "single": "This payment link is not valid any more. Please use the link in your booking email, or get in touch.",
-        "line": 196,
+        "line": 197,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:196",
+            "backend/APIs/PublicBookingController.php:197",
             "frontend/site/app/src/PaymentApp.jsx:93"
         ],
         "comments": []
@@ -9957,10 +10256,10 @@
     },
     {
         "single": "Those dates have just been taken. Please choose another window.",
-        "line": 446,
+        "line": 459,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:446"
+            "backend/APIs/PublicBookingController.php:459"
         ],
         "comments": []
     },
@@ -10046,8 +10345,8 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:205",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:251",
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:430",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:448",
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:670",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/PriceBreakdown.jsx:174",
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:77",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:132",
@@ -10506,6 +10805,15 @@
         "comments": {
             "translators: %s: the guest's email address.": true
         }
+    },
+    {
+        "single": "Verwendungszweck:",
+        "line": 316,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:316"
+        ],
+        "comments": []
     },
     {
         "single": "View Apartment",
@@ -10977,11 +11285,29 @@
         "comments": []
     },
     {
+        "single": "Zahlung bis:",
+        "line": 259,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:259"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Zahlung per Überweisung",
+        "line": 303,
+        "comment": "",
+        "refs": [
+            "backend/Support/Invoice.php:303"
+        ],
+        "comments": []
+    },
+    {
         "single": "Zusätzliche Person — %1$s je Person (%2$d im Preis enthalten)",
-        "line": 426,
+        "line": 607,
         "comment": "translators: 1: price per additional guest, 2: guests included in the rate.",
         "refs": [
-            "backend/Support/Invoice.php:426"
+            "backend/Support/Invoice.php:607"
         ],
         "comments": {
             "translators: 1: price per additional guest, 2: guests included in the rate.": true
@@ -11103,10 +11429,10 @@
     },
     {
         "single": "zzgl. %s%% MwSt.:",
-        "line": 473,
+        "line": 654,
         "comment": "translators: %s: the VAT rate as a percentage.",
         "refs": [
-            "backend/Support/Invoice.php:473"
+            "backend/Support/Invoice.php:654"
         ],
         "comments": {
             "translators: %s: the VAT rate as a percentage.": true

@@ -10,8 +10,16 @@
  */
 
 import { useEffect, useState } from 'react';
-import { __ } from '@wordpress/i18n';
-import { ArrowLeft, Mail, Phone, Pencil, Trash2 } from 'lucide-react';
+import { __, sprintf } from '@wordpress/i18n';
+import {
+	ArrowLeft,
+	FileText,
+	Mail,
+	Pencil,
+	Phone,
+	Repeat,
+	Trash2,
+} from 'lucide-react';
 
 import {
 	AlertDialog,
@@ -27,6 +35,13 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 
 import { bookingService } from '../../../../services';
@@ -36,21 +51,101 @@ import { formatDateTime, formatMoney } from '../../data/format';
 import './BookingDetail.css';
 
 const STATUS_CLASSES = {
-	pending: 'bg-warning/10 text-warning hover:bg-warning/10',
-	reserved: 'bg-primary/10 text-primary hover:bg-primary/10',
+	awaiting_transfer: 'bg-warning/10 text-warning hover:bg-warning/10',
+	transfer_declared: 'bg-primary/10 text-primary hover:bg-primary/10',
+	/*
+	 * Amber, not red. An overdue booking is not a cancelled one — the
+	 * money may still arrive, and the operator may still honour it. Red is
+	 * reserved for the decision they take themselves.
+	 */
+	payment_overdue: 'bg-warning/10 text-warning hover:bg-warning/10',
 	confirmed: 'bg-success/10 text-success hover:bg-success/10',
 	completed: 'bg-muted text-muted-foreground hover:bg-muted',
 	cancelled: 'bg-destructive/10 text-destructive hover:bg-destructive/10',
+	// Retired names, still on older rows.
+	pending: 'bg-warning/10 text-warning hover:bg-warning/10',
+	reserved: 'bg-primary/10 text-primary hover:bg-primary/10',
 };
 
 const PAYMENT_CLASSES = {
 	unpaid: 'bg-warning/10 text-warning hover:bg-warning/10',
 	partial: 'bg-primary/10 text-primary hover:bg-primary/10',
 	paid: 'bg-success/10 text-success hover:bg-success/10',
+	// Money the owner is holding that is not theirs yet.
+	overpaid: 'bg-warning/10 text-warning hover:bg-warning/10',
 	refunded: 'bg-muted text-muted-foreground hover:bg-muted',
 };
 
+/**
+ * What the two booking types are called on screen.
+ *
+ * Named rather than shown raw, because the operator is being asked to
+ * understand a tax consequence and "hourly" alone does not carry one.
+ */
+const TYPE_LABELS = {
+	overnight: __( 'Overnight stay', 'booking-suite' ),
+	hourly: __( 'Hourly booking', 'booking-suite' ),
+};
+
 const label = ( value ) => String( value || '' ).replace( /_/g, ' ' );
+
+/**
+ * Where a booking stands financially, in one line.
+ *
+ * The figure the operator needs is not "how much was paid" but "how much is
+ * missing" or "how much is spare" — a number they act on, in the sentence that
+ * says what to do about it. The arithmetic is the server's; this only draws it,
+ * so the screen and the status badge can never disagree.
+ *
+ * @param {Object} props
+ * @param {Object} props.settlement From the booking payload.
+ * @param {string} props.currency
+ */
+function Settlement( { settlement, currency } ) {
+	if ( ! settlement ) {
+		return null;
+	}
+
+	const { state, outstanding, overpaid, paid } = settlement;
+
+	if ( 'unpaid' === state ) {
+		return null;
+	}
+
+	if ( 'partial' === state ) {
+		return (
+			<p className="bks-settlement bks-settlement--partial">
+				{ sprintf(
+					/* translators: %s: the amount still owed, with currency. */
+					__( 'Partially paid — outstanding: %s', 'booking-suite' ),
+					formatMoney( outstanding, currency )
+				) }
+			</p>
+		);
+	}
+
+	if ( 'overpaid' === state ) {
+		return (
+			<p className="bks-settlement bks-settlement--overpaid">
+				{ sprintf(
+					/* translators: %s: how much too much came in, with currency. */
+					__( 'Overpayment — difference: %s', 'booking-suite' ),
+					formatMoney( overpaid, currency )
+				) }
+			</p>
+		);
+	}
+
+	return (
+		<p className="bks-settlement bks-settlement--paid">
+			{ sprintf(
+				/* translators: %s: the amount received, with currency. */
+				__( 'Paid in full — %s received', 'booking-suite' ),
+				formatMoney( paid, currency )
+			) }
+		</p>
+	);
+}
 
 // What can be done next, given where the booking is now. Only the moves that
 // make sense are offered — a cancelled booking is not "completed" from here.
@@ -131,6 +226,14 @@ export default function BookingDetail( {
 	/** The action awaiting confirmation, if it asks for one. */
 	const [ pendingAction, setPendingAction ] = useState( null );
 
+	/** Whether the "this changes the tax treatment" warning is open. */
+	const [ typeChange, setTypeChange ] = useState( false );
+
+	/** The invoice dialog: whether it is open, the rate it will use, the result. */
+	const [ invoiceOpen, setInvoiceOpen ] = useState( false );
+	const [ invoiceRate, setInvoiceRate ] = useState( null );
+	const [ invoice, setInvoice ] = useState( null );
+
 	useEffect( () => {
 		const controller = new AbortController();
 
@@ -167,7 +270,89 @@ export default function BookingDetail( {
 		.toUpperCase()
 		.slice( 0, 2 );
 
+	/**
+	 * The rates the invoice may be drawn at.
+	 *
+	 * Named, not typed in. The operator is picking a tax treatment, and the two
+	 * that exist are the two the settings define — a free-text box would invite
+	 * a rate the business does not use, on a document that cannot be reissued.
+	 * The third entry only appears where the settings carry a general rate that
+	 * is neither of them.
+	 */
+	const taxOptions = booking.taxOptions ?? {};
+
+	const taxChoices = [
+		{
+			key: 'overnight',
+			rate: taxOptions.overnight,
+			label: TYPE_LABELS.overnight,
+			hint: __( 'Accommodation', 'booking-suite' ),
+		},
+		{
+			key: 'hourly',
+			rate: taxOptions.hourly,
+			label: TYPE_LABELS.hourly,
+			hint: __( 'Everything else', 'booking-suite' ),
+		},
+	].filter( ( choice ) => undefined !== choice.rate && null !== choice.rate );
+
+	// What the dialog opens on: the rate this booking's own type calls for.
+	const chosenRate = invoiceRate ?? taxOptions.current ?? taxChoices[ 0 ]?.rate;
+
+	/**
+	 * Flip the booking between its two kinds.
+	 *
+	 * Only reachable from behind the warning, because the type is what sets the
+	 * VAT: changing it changes what an invoice drawn afterwards will say the
+	 * guest owed.
+	 */
+	const changeType = async () => {
+		const next =
+			'overnight' === booking.bookingType ? 'hourly' : 'overnight';
+
+		setBusyAction( 'type' );
+		setError( null );
+		setTypeChange( false );
+
+		try {
+			const updated = await bookingService.update( booking.id, {
+				bookingType: next,
+			} );
+
+			setBooking( ( current ) => ( { ...current, ...updated } ) );
+			onUpdated?.( updated );
+		} catch ( cause ) {
+			setError( cause.message );
+		} finally {
+			setBusyAction( '' );
+		}
+	};
+
+	/** Draw the invoice at whichever rate the dialog is showing. */
+	const createInvoice = async () => {
+		setBusyAction( 'invoice' );
+		setError( null );
+
+		try {
+			const drawn = await bookingService.invoice( booking.id, invoiceRate );
+
+			setInvoice( drawn );
+
+			// The payment row now carries a number and a rate; reload so the
+			// payments card shows them instead of claiming there are none.
+			const full = await bookingService.get( booking.id );
+
+			setBooking( ( current ) => ( { ...current, ...full } ) );
+			onUpdated?.( full );
+		} catch ( cause ) {
+			setError( cause.message );
+		} finally {
+			setBusyAction( '' );
+		}
+	};
+
 	const runAction = async ( action ) => {
+
 		setBusyAction( action.key );
 		setError( null );
 
@@ -221,6 +406,18 @@ export default function BookingDetail( {
 					>
 						{ label( booking.paymentStatus ) }
 					</Badge>
+
+					{ /*
+					 * Which of the two kinds this booking is. On screen because
+					 * it decides the VAT on the invoice — an operator drawing
+					 * one up should not have to infer it from the dates.
+					 */ }
+					{ booking.bookingType && (
+						<Badge variant="outline">
+							{ TYPE_LABELS[ booking.bookingType ] ??
+								label( booking.bookingType ) }
+						</Badge>
+					) }
 				</div>
 			</div>
 
@@ -256,6 +453,10 @@ export default function BookingDetail( {
 									booking.currency
 								) }
 							</strong>
+							<Settlement
+								settlement={ booking.settlement }
+								currency={ booking.currency }
+							/>
 						</div>
 					</div>
 
@@ -291,6 +492,45 @@ export default function BookingDetail( {
 								{ __( 'Delete booking', 'booking-suite' ) }
 							</Button>
 						) }
+
+						{ /*
+						 * Changing the type is deliberately a two-step action.
+						 * It decides the VAT on the invoice, so flipping it
+						 * quietly would change what the guest is held to have
+						 * owed — the dialog says so before anything moves.
+						 */ }
+						{ booking.bookingType && (
+							<Button
+								variant="outline"
+								disabled={ isBusy }
+								onClick={ () => setTypeChange( true ) }
+							>
+								<Repeat className="h-4 w-4" />
+								{ 'overnight' === booking.bookingType
+									? __(
+											'Change to hourly',
+											'booking-suite'
+									  )
+									: __(
+											'Change to overnight',
+											'booking-suite'
+									  ) }
+							</Button>
+						) }
+
+						{ /*
+						 * The invoice is drawn on request and never on its own,
+						 * because the operator chooses which VAT treatment
+						 * applies before a number is assigned to it.
+						 */ }
+						<Button
+							variant="outline"
+							disabled={ isBusy }
+							onClick={ () => setInvoiceOpen( true ) }
+						>
+							<FileText className="h-4 w-4" />
+							{ __( 'Create invoice', 'booking-suite' ) }
+						</Button>
 
 						{ nextActions( booking ).map( ( action ) => (
 							<Button
@@ -546,6 +786,163 @@ export default function BookingDetail( {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
+
+			{ /*
+			 * Changing the type. The warning is the whole reason this is a
+			 * dialog and not a toggle: the type decides the VAT, so flipping it
+			 * silently would change what the booking is recorded as owing.
+			 */ }
+			<AlertDialog open={ typeChange } onOpenChange={ setTypeChange }>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							{ __(
+								'This changes the tax treatment',
+								'booking-suite'
+							) }
+						</AlertDialogTitle>
+						<AlertDialogDescription>
+							{ sprintf(
+								/* translators: 1: the current booking type, 2: the type it would become. */
+								__(
+									'This booking is filed as “%1$s”. Filing it as “%2$s” instead changes the VAT rate its invoice is drawn at. Any invoice already issued keeps the rate it was issued with.',
+									'booking-suite'
+								),
+								TYPE_LABELS[ booking.bookingType ] ?? '',
+								TYPE_LABELS[
+									'overnight' === booking.bookingType
+										? 'hourly'
+										: 'overnight'
+								] ?? ''
+							) }
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>
+							{ __( 'Leave it as it is', 'booking-suite' ) }
+						</AlertDialogCancel>
+						<AlertDialogAction onClick={ changeType }>
+							{ __( 'Change the type', 'booking-suite' ) }
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+
+			{ /* The invoice, and the rate it is drawn at. */ }
+			<Dialog
+				open={ invoiceOpen }
+				onOpenChange={ ( next ) => {
+					setInvoiceOpen( next );
+
+					if ( ! next ) {
+						setInvoice( null );
+						setInvoiceRate( null );
+					}
+				} }
+			>
+				<DialogContent className="sm:max-w-md">
+					<DialogHeader>
+						<DialogTitle>
+							{ __( 'Create invoice', 'booking-suite' ) }
+						</DialogTitle>
+						<DialogDescription>
+							{ invoice
+								? __(
+										'The invoice has been issued. Its number and rate are fixed from here on.',
+										'booking-suite'
+								  )
+								: __(
+										'Pick the VAT treatment. It is written onto the invoice and kept, so the same document prints the same way later even if the rates change.',
+										'booking-suite'
+								  ) }
+						</DialogDescription>
+					</DialogHeader>
+
+					{ invoice ? (
+						<div className="flex flex-col gap-3">
+							<p className="text-sm text-card-foreground">
+								{ sprintf(
+									/* translators: 1: the invoice number, 2: the VAT rate as a percentage. */
+									__(
+										'Invoice %1$s, drawn at %2$s%% VAT.',
+										'booking-suite'
+									),
+									invoice.invoiceNo,
+									invoice.taxRate
+								) }
+							</p>
+
+							{ invoice.url && (
+								<Button asChild variant="outline">
+									<a
+										href={ invoice.url }
+										target="_blank"
+										rel="noreferrer"
+									>
+										{ __(
+											'Open the invoice',
+											'booking-suite'
+										) }
+									</a>
+								</Button>
+							) }
+						</div>
+					) : (
+						<div className="flex flex-col gap-3">
+							{ taxChoices.map( ( choice ) => (
+								<label
+									key={ choice.key }
+									className="bks-taxpick"
+									data-selected={
+										choice.rate === chosenRate
+											? 'true'
+											: 'false'
+									}
+								>
+									<input
+										type="radio"
+										name="bks-invoice-rate"
+										className="bks-taxpick__input"
+										checked={ choice.rate === chosenRate }
+										onChange={ () =>
+											setInvoiceRate( choice.rate )
+										}
+									/>
+									<span className="bks-taxpick__body">
+										<span className="bks-taxpick__label">
+											{ choice.label }
+										</span>
+										{ choice.hint && (
+											<span className="bks-taxpick__hint">
+												{ choice.hint }
+											</span>
+										) }
+									</span>
+									<span className="bks-taxpick__rate">
+										{ sprintf(
+											/* translators: %s: a VAT rate. */
+											__( '%s%%', 'booking-suite' ),
+											choice.rate
+										) }
+									</span>
+								</label>
+							) ) }
+
+							<Button
+								disabled={ isBusy }
+								onClick={ createInvoice }
+							>
+								{ 'invoice' === busyAction
+									? __( 'Creating…', 'booking-suite' )
+									: __(
+											'Create the invoice',
+											'booking-suite'
+									  ) }
+							</Button>
+						</div>
+					) }
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }

@@ -62,6 +62,24 @@ export default function StepDone( { payment } ) {
 			</dl>
 
 			{ /*
+			 * The same thing on paper.
+			 *
+			 * Not an invoice and labelled so — nothing has been received
+			 * yet, and the file says as much on its face. A guest who needs
+			 * something to forward to whoever is paying, or to keep for an
+			 * expenses claim, needs it now rather than after the transfer
+			 * clears.
+			 */ }
+			{ payment.confirmationUrl && (
+				<a
+					className="bks-done__download"
+					href={ payment.confirmationUrl }
+				>
+					{ __( 'Download your booking confirmation (PDF)', 'booking-suite' ) }
+				</a>
+			) }
+
+			{ /*
 			 * Shown again rather than linked to. A guest on a phone who has
 			 * closed their banking app and come back here should not have to
 			 * navigate anywhere to read the IBAN a second time.

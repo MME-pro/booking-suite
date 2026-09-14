@@ -52,6 +52,24 @@ export const bookingService = {
 	 * @param {number}      id
 	 * @param {AbortSignal} [signal]
 	 */
+	/**
+	 * Draw the invoice for a booking, at a chosen VAT rate.
+	 *
+	 * Its own call rather than part of update(): an invoice is a deliberate
+	 * act with a number attached, not a field that can be saved by accident.
+	 *
+	 * @param {number}      id        The booking.
+	 * @param {number|null} taxRate   Percentage, or null for the booking's own.
+	 * @param {AbortSignal} [signal]
+	 * @return {Promise<Object>} The invoice number, rate and file.
+	 */
+	invoice: ( id, taxRate, signal ) =>
+		http.post(
+			`${ RESOURCE }/${ id }/invoice`,
+			null === taxRate || undefined === taxRate ? {} : { taxRate },
+			{ signal }
+		),
+
 	remove: ( id, signal ) =>
 		http.delete( `${ RESOURCE }/${ id }`, { signal } ),
 

@@ -46,6 +46,15 @@ final class PaymentPage {
 	/** The path the pretty URL is built on. */
 	public const PATH = 'booking/pay';
 
+	/**
+	 * Asks for the confirmation as a file rather than the page.
+	 *
+	 * Served from here rather than over REST because it is a download: the
+	 * token has already been checked a few lines above, and a second route
+	 * would mean a second place that decides who may read a booking.
+	 */
+	public const DOCUMENT_VAR = 'bks_doc';
+
 	public static function register(): void {
 		add_action( 'init', array( self::class, 'add_rewrite' ) );
 		add_filter( 'query_vars', array( self::class, 'add_query_var' ) );
@@ -106,6 +115,12 @@ final class PaymentPage {
 		 * serving a stale copy would show the guest a status that has moved on.
 		 */
 		nocache_headers();
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( 'confirmation' === ( $_GET[ self::DOCUMENT_VAR ] ?? '' ) ) {
+			self::send_confirmation( $token );
+		}
+
 		status_header( 200 );
 
 		add_filter( 'wp_robots', 'wp_robots_no_robots' );
@@ -113,6 +128,41 @@ final class PaymentPage {
 		SiteAssets::enqueue_app();
 
 		self::render( $token );
+
+		exit;
+	}
+
+	/**
+	 * Hand over the booking confirmation as a PDF, then stop.
+	 *
+	 * Returns instead of exiting when there is nothing to send, so a booking
+	 * whose PDF could not be built falls through to the page rather than
+	 * answering a download with a blank screen.
+	 *
+	 * @param string $token The payment token, already checked for shape.
+	 */
+	private static function send_confirmation( string $token ): void {
+		$id = PaymentLink::booking_id( $token );
+
+		if ( null === $id ) {
+			return;
+		}
+
+		$file = Invoice::confirmation( $id );
+
+		if ( ! $file ) {
+			return;
+		}
+
+		$name  = (string) array_key_first( $file );
+		$bytes = (string) reset( $file );
+
+		header( 'Content-Type: application/pdf' );
+		header( 'Content-Length: ' . strlen( $bytes ) );
+		header( 'Content-Disposition: attachment; filename="' . $name . '"' );
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $bytes;
 
 		exit;
 	}

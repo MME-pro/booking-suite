@@ -236,3 +236,82 @@
 	color: var(--bks-color-text) !important;
 	white-space: pre-wrap !important;
 }
+
+/*
+ * Where a booking stands financially, under its total.
+ *
+ * Three states, three colours, and none of them red: money still owed is a
+ * thing to chase and money over is a thing to decide about, but neither is an
+ * error the operator has made.
+ */
+.bks-settlement {
+	margin: 4px 0 0;
+	font-size: 12px;
+	font-weight: 600;
+	text-align: right;
+}
+
+.bks-settlement--partial {
+	color: var(--bks-color-warning, #b45309);
+}
+
+.bks-settlement--overpaid {
+	color: var(--bks-color-warning, #b45309);
+}
+
+.bks-settlement--paid {
+	color: var(--bks-color-success, #15803d);
+}
+
+/*
+ * The VAT variants the invoice can be drawn at.
+ *
+ * A row, not a number field: the operator is choosing between two tax
+ * treatments the business actually uses, and the rate is the consequence of
+ * that choice rather than the thing being decided. Typing 12 into a box would
+ * put a rate on a document that cannot be reissued.
+ */
+.bks-taxpick {
+	display: flex !important;
+	align-items: center !important;
+	gap: var(--bks-space-3) !important;
+	padding: var(--bks-space-3) var(--bks-space-4) !important;
+	border: 1px solid var(--bks-color-border) !important;
+	border-radius: var(--bks-radius-md) !important;
+	background: var(--bks-color-surface) !important;
+	cursor: pointer !important;
+}
+
+.bks-taxpick[data-selected='true'] {
+	border-color: var(--bks-color-brand) !important;
+	box-shadow: 0 0 0 1px var(--bks-color-brand) !important;
+	background: var(--bks-color-surface-muted) !important;
+}
+
+.bks-taxpick__input {
+	margin: 0 !important;
+	accent-color: var(--bks-color-brand) !important;
+}
+
+.bks-taxpick__body {
+	display: flex !important;
+	flex-direction: column !important;
+	flex: 1 1 auto !important;
+	min-width: 0 !important;
+}
+
+.bks-taxpick__label {
+	color: var(--bks-color-text) !important;
+	font-weight: var(--bks-font-weight-semibold) !important;
+}
+
+.bks-taxpick__hint {
+	color: var(--bks-color-text-muted) !important;
+	font-size: 12px !important;
+}
+
+.bks-taxpick__rate {
+	color: var(--bks-color-text) !important;
+	font-variant-numeric: tabular-nums !important;
+	font-weight: var(--bks-font-weight-semibold) !important;
+}

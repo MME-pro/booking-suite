@@ -156,11 +156,188 @@ final class Invoice {
 		$y = self::header( $pdf, $booking, $payment, $y );
 		$y = self::parties( $pdf, $booking, $y );
 		$y = self::items( $pdf, $booking, $y );
-		$y = self::totals( $pdf, $booking, $y );
+		$y = self::totals( $pdf, $booking, $payment, $y );
 
 		self::footer( $pdf, $y );
 
 		return $pdf->render();
+	}
+
+	/**
+	 * The booking confirmation, as a file the guest can keep.
+	 *
+	 * Deliberately not an invoice. Nothing has been received at the point this
+	 * is issued, so it carries no invoice number and no VAT breakdown — putting
+	 * either on it would make a document that looks settled and, worse, one the
+	 * guest's own bookkeeping might treat as a receipt. What it carries instead
+	 * is the request: what to send, where, and quoting what.
+	 *
+	 * @return array<string, string> Filename => PDF bytes; empty when the
+	 *                               booking has gone.
+	 */
+	public static function confirmation( int $booking_id ): array {
+		$booking = BookingsRepository::find( $booking_id );
+
+		if ( null === $booking ) {
+			return array();
+		}
+
+		$pdf = self::render_confirmation( $booking );
+
+		if ( null === $pdf ) {
+			return array();
+		}
+
+		$name = sanitize_file_name(
+			sprintf(
+				'%s-%s.pdf',
+				__( 'Buchungsbestaetigung', 'booking-suite' ),
+				(string) ( $booking['reference'] ?? $booking_id )
+			)
+		);
+
+		return array( $name => $pdf );
+	}
+
+	/**
+	 * Draw it.
+	 *
+	 * @param array<string, mixed> $booking A BookingsRepository row.
+	 */
+	public static function render_confirmation( array $booking ): ?string {
+		$booking_id = (int) ( $booking['id'] ?? 0 );
+
+		if ( ! $booking_id ) {
+			return null;
+		}
+
+		// As in render(): without these the extras' cost is quietly folded into
+		// the room line, because that line is worked out by subtraction.
+		$booking['extras'] = BookingsRepository::extras_for( $booking_id );
+
+		$pdf = new Pdf();
+		$y   = self::MARGIN;
+
+		$y = self::confirmation_header( $pdf, $booking, $y );
+		$y = self::parties( $pdf, $booking, $y, __( 'Buchung für:', 'booking-suite' ) );
+		$y = self::items( $pdf, $booking, $y );
+		$y = self::payment_request( $pdf, $booking, $y );
+
+		self::footer( $pdf, $y, false );
+
+		return $pdf->render();
+	}
+
+	/**
+	 * The head of the confirmation.
+	 *
+	 * Same furniture as the invoice's, with the meta it has no business
+	 * carrying left off — there is no invoice number to print and no due date
+	 * for one, only the deadline the dates are held until.
+	 *
+	 * @param array<string, mixed> $booking
+	 */
+	private static function confirmation_header( Pdf $pdf, array $booking, float $y ): float {
+		$logo = self::logo();
+
+		if ( null !== $logo ) {
+			$pdf->logo( $logo, self::MARGIN, $y, 150, 55 );
+			$y += 66;
+		}
+
+		$pdf->text_right( __( 'BUCHUNGSBESTÄTIGUNG', 'booking-suite' ), self::RIGHT, $y, 20, Pdf::BOLD, self::INK );
+		$y += 34;
+
+		$meta = array(
+			array( __( 'Buchungsnummer:', 'booking-suite' ), (string) ( $booking['reference'] ?? '' ) ),
+			array( __( 'Datum:', 'booking-suite' ), self::date( new DateTimeImmutable( 'now', wp_timezone() ) ) ),
+		);
+
+		$deadline = self::local( (string) ( $booking['paymentDeadline'] ?? '' ) );
+
+		if ( null !== $deadline ) {
+			$meta[] = array( __( 'Zahlung bis:', 'booking-suite' ), self::date( $deadline ) );
+		}
+
+		$values_right = self::RIGHT;
+		$labels_right = $values_right - self::META_VALUE_WIDTH;
+
+		foreach ( $meta as [ $label, $value ] ) {
+			$pdf->text_right( $label, $labels_right, $y, 9, Pdf::BOLD, self::INK );
+			$pdf->text_right( $value, $values_right, $y, 9, Pdf::REGULAR, self::BODY );
+			$y += 14;
+		}
+
+		return $y + 14;
+	}
+
+	/**
+	 * What to send, where, and quoting what.
+	 *
+	 * The amount is the whole total and says so plainly — there is no "already
+	 * paid" line, because a confirmation is issued before anything arrives and
+	 * a zero on that line reads like a receipt.
+	 *
+	 * @param array<string, mixed> $booking
+	 */
+	private static function payment_request( Pdf $pdf, array $booking, float $y ): float {
+		$total    = (float) ( $booking['total'] ?? 0 );
+		$currency = (string) ( $booking['currency'] ?? 'EUR' );
+
+		$y += 14;
+
+		$pdf->text_right(
+			__( 'Gesamtbetrag:', 'booking-suite' ) . ' ' . self::money( $total, $currency ),
+			self::RIGHT,
+			$y,
+			12,
+			Pdf::BOLD,
+			self::INK
+		);
+
+		$y += 30;
+
+		$pdf->line( self::MARGIN, $y, self::RIGHT, $y, self::HAIRLINE );
+		$y += 18;
+
+		$pdf->text( __( 'Zahlung per Überweisung', 'booking-suite' ), self::MARGIN, $y, 10, Pdf::BOLD, self::INK );
+		$y += 16;
+
+		$rows = array(
+			array( __( 'Kontoinhaber:', 'booking-suite' ), SettingsRepository::get( SettingsRepository::BANK_HOLDER ) ),
+			array(
+				__( 'IBAN:', 'booking-suite' ),
+				// Grouped in fours, the way it is read back off a screen and
+				// typed into a banking app.
+				SettingsRepository::format_iban( SettingsRepository::get( SettingsRepository::BANK_IBAN ) ),
+			),
+			array( __( 'BIC:', 'booking-suite' ), SettingsRepository::get( SettingsRepository::BANK_BIC ) ),
+			array( __( 'Bank:', 'booking-suite' ), SettingsRepository::get( SettingsRepository::BANK_NAME ) ),
+			array( __( 'Verwendungszweck:', 'booking-suite' ), (string) ( $booking['reference'] ?? '' ) ),
+		);
+
+		foreach ( $rows as [ $label, $value ] ) {
+			if ( '' === trim( (string) $value ) ) {
+				continue;
+			}
+
+			$pdf->text( $label, self::MARGIN, $y, 9, Pdf::BOLD, self::INK );
+			$pdf->text( (string) $value, self::MARGIN + 110, $y, 9, Pdf::REGULAR, self::BODY );
+			$y += 14;
+		}
+
+		$y += 8;
+
+		$pdf->text(
+			__( 'Dies ist keine Rechnung. Ihre Rechnung erhalten Sie, sobald Ihre Zahlung bei uns eingegangen ist.', 'booking-suite' ),
+			self::MARGIN,
+			$y,
+			9,
+			Pdf::REGULAR,
+			self::MUTED
+		);
+
+		return $y + 26;
 	}
 
 	/* ── Header ──────────────────────────────────────────────────────── */
@@ -212,7 +389,11 @@ final class Invoice {
 	 *
 	 * @param array<string, mixed> $booking
 	 */
-	private static function parties( Pdf $pdf, array $booking, float $y ): float {
+	private static function parties( Pdf $pdf, array $booking, float $y, string $recipient_label = '' ): float {
+		$recipient_label = '' !== $recipient_label
+			? $recipient_label
+			: __( 'Rechnungsempfänger:', 'booking-suite' );
+
 		$pdf->line( self::MARGIN, $y, self::RIGHT, $y, self::HAIRLINE );
 		$y += 18;
 
@@ -233,7 +414,7 @@ final class Invoice {
 		);
 
 		$pdf->text( __( 'Absender:', 'booking-suite' ), self::MARGIN, $y, 10, Pdf::BOLD, self::INK );
-		$pdf->text( __( 'Rechnungsempfänger:', 'booking-suite' ), self::COLUMN_TWO, $y, 10, Pdf::BOLD, self::INK );
+		$pdf->text( $recipient_label, self::COLUMN_TWO, $y, 10, Pdf::BOLD, self::INK );
 
 		$y += 16;
 
@@ -446,7 +627,7 @@ final class Invoice {
 	/**
 	 * @param array<string, mixed> $booking
 	 */
-	private static function totals( Pdf $pdf, array $booking, float $y ): float {
+	private static function totals( Pdf $pdf, array $booking, array $payment, float $y ): float {
 		$total    = (float) ( $booking['total'] ?? 0 );
 		$currency = (string) ( $booking['currency'] ?? 'EUR' );
 		$settled  = self::settled( (int) ( $booking['id'] ?? 0 ) );
@@ -458,7 +639,7 @@ final class Invoice {
 		 * rate is set, the net and the tax are worked back out of it rather
 		 * than added on top — adding it on would change what is charged.
 		 */
-		$rate = SettingsRepository::tax_fraction();
+		$rate = self::tax_fraction( $booking, $payment );
 		$net  = $rate > 0 ? round( $total / ( 1 + $rate ), 2 ) : $total;
 		$tax  = round( $total - $net, 2 );
 
@@ -523,11 +704,44 @@ final class Invoice {
 		return $y + 34;
 	}
 
+	/**
+	 * The VAT rate this invoice is drawn at, as a fraction.
+	 *
+	 * Three sources, in order of authority:
+	 *
+	 *   1. The rate stored on the invoice itself. An invoice is a document, and
+	 *      reprinting one after the rates have changed must produce the same
+	 *      paper rather than a corrected version of it.
+	 *   2. The rate for the booking's own type — accommodation and an hourly
+	 *      let are taxed differently, which is the entire reason a booking
+	 *      carries a type at all.
+	 *   3. The single older rate, for an installation configured before the
+	 *      pair existed.
+	 *
+	 * @param array<string, mixed> $booking
+	 * @param array<string, mixed> $payment
+	 */
+	private static function tax_fraction( array $booking, array $payment ): float {
+		$stored = $payment['taxRate'] ?? null;
+
+		if ( null !== $stored && '' !== $stored ) {
+			return max( 0.0, min( 100.0, (float) $stored ) ) / 100;
+		}
+
+		$type = (string) ( $booking['bookingType'] ?? '' );
+
+		if ( '' !== $type ) {
+			return SettingsRepository::tax_fraction_for( $type );
+		}
+
+		return SettingsRepository::tax_fraction();
+	}
+
 	private static function settled( int $booking_id ): float {
 		return $booking_id ? PaymentsRepository::settled_for( $booking_id ) : 0.0;
 	}
 
-	private static function footer( Pdf $pdf, float $y ): void {
+	private static function footer( Pdf $pdf, float $y, bool $full = true ): void {
 		$pdf->line( self::MARGIN, $y, self::RIGHT, $y, self::HAIRLINE );
 		$y += 16;
 
@@ -560,7 +774,17 @@ final class Invoice {
 			$y += 13;
 		}
 
-		// Where to send the money, on the document that asks for it.
+		/*
+		 * Where to send the money, on the document that asks for it — and
+		 * only there. The confirmation has already printed the account
+		 * details as its main business, and the notice that follows them is
+		 * written for an invoice: on this site it says the amount is settled
+		 * on site, which is the opposite of what a confirmation is asking for.
+		 */
+		if ( ! $full ) {
+			return;
+		}
+
 		$bank = SettingsRepository::bank_lines();
 
 		if ( $bank ) {

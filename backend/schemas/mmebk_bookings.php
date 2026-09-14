@@ -45,6 +45,20 @@ final class BookingsTable {
 	public const STATUSES = array(
 		'awaiting_transfer',
 		'transfer_declared',
+		/*
+		 * The deadline passed and the money never came.
+		 *
+		 * Not the same thing as cancelled, and the flow diagram is explicit
+		 * about it: cancelling is the operator's decision and nobody else's.
+		 * An overdue booking is still a booking — the guest may yet pay, and
+		 * the owner may yet decide to honour it — so it keeps its record, its
+		 * number and its history rather than being written off by a cron job.
+		 *
+		 * It does NOT hold its dates. That is the whole purpose of the
+		 * deadline: the room goes back on sale the moment the hold lapses, or
+		 * one unpaid booking would keep a room shut indefinitely.
+		 */
+		'payment_overdue',
 		'confirmed',
 		'completed',
 		'cancelled',
@@ -118,7 +132,15 @@ final class BookingsTable {
 	 */
 	public const AWAITING_STATUSES = array( 'awaiting_transfer', 'transfer_declared' );
 	/** Settlement state, tracked separately from the booking status. */
-	public const PAYMENT_STATUSES = array( 'unpaid', 'partial', 'paid', 'refunded' );
+	/**
+	 * Settlement state, tracked separately from the booking status.
+	 *
+	 * `overpaid` is its own state rather than a variety of `paid`: the owner
+	 * has money that is not theirs until somebody decides what happens to it,
+	 * and a difference the system quietly rounded into "paid" is a difference
+	 * nobody ever looks at again.
+	 */
+	public const PAYMENT_STATUSES = array( 'unpaid', 'partial', 'paid', 'overpaid', 'refunded' );
 
 	public static function table(): string {
 		return Db::table( self::NAME );

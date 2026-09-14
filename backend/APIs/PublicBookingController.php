@@ -31,6 +31,7 @@ use BookingSuite\Backend\Schemas\BookingsTable;
 use BookingSuite\Backend\Support\EmailVerification;
 use BookingSuite\Backend\Support\EpcQr;
 use BookingSuite\Backend\Support\PaymentLink;
+use BookingSuite\Backend\Support\PaymentPage;
 use DateTimeImmutable;
 use WP_Error;
 use WP_REST_Request;
@@ -254,6 +255,18 @@ final class PublicBookingController {
 				(string) ( $booking['reference'] ?? '' )
 			),
 			'reservationHours' => SettingsRepository::reservation_hours(),
+
+			/*
+			 * The confirmation as a file. A fresh link rather than the one in
+			 * the address bar: the page may have been reached by the plain
+			 * query-string form, and building it here keeps the download
+			 * working either way.
+			 */
+			'confirmationUrl'  => add_query_arg(
+				PaymentPage::DOCUMENT_VAR,
+				'confirmation',
+				PaymentLink::url( (int) ( $booking['id'] ?? 0 ) )
+			),
 		);
 	}
 
