@@ -71,7 +71,7 @@ msgid "%1$s · %2$s"
 msgstr "%1$s · %2$s"
 
 #. translators: 1: start time, 2: end time, both 24-hour.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:626
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:684
 msgid "%1$s – %2$s"
 msgstr "%1$s – %2$s"
 
@@ -240,7 +240,7 @@ msgid "%d minutes"
 msgstr "%d Minuten"
 
 #. translators: %d: number of nights.
-#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:674 frontend/site/app/src/components/BookingModal/StepReview.jsx:127 frontend/site/app/src/components/BookingModal/StepWhen.jsx:446
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:674 frontend/site/app/src/components/BookingModal/StepReview.jsx:127 frontend/site/app/src/components/BookingModal/StepWhen.jsx:504
 msgid "%d night"
 msgid_plural "%d nights"
 msgstr[0] "%d Nacht"
@@ -351,7 +351,7 @@ msgid "%s hours"
 msgstr "%s Stunden"
 
 #. translators: %s: name of the extra.
-#: backend/APIs/PublicBookingController.php:475
+#: backend/APIs/PublicBookingController.php:547
 msgid "%s is no longer available for these dates. Please adjust it and try again."
 msgstr "%s ist für diesen Zeitraum nicht mehr verfügbar. Bitte passen Sie die Auswahl an und versuchen Sie es erneut."
 
@@ -908,11 +908,11 @@ msgid "Available for"
 msgstr "Verfügbar für"
 
 #. translators: %d: the largest party the apartment takes.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:500
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:558
 msgid "Available start times"
 msgstr "Verfügbare Startzeiten"
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:333 frontend/site/app/src/components/BookingModal/StepWhen.jsx:681
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:333 frontend/site/app/src/components/BookingModal/StepWhen.jsx:739
 msgid "Available — you can continue."
 msgstr "Verfügbar — Sie können fortfahren."
 
@@ -1353,7 +1353,7 @@ msgstr "Schauen Sie bitte auch im Spam-Ordner nach. Es ist noch nichts gebucht, 
 msgid "Check-in"
 msgstr "Anreise"
 
-#: backend/APIs/PublicBookingController.php:718
+#: backend/APIs/PublicBookingController.php:790
 msgid "Check-in cannot be in the past."
 msgstr "Die Anreise kann nicht in der Vergangenheit liegen."
 
@@ -1365,11 +1365,11 @@ msgstr "Anreisen diese Woche"
 msgid "Check-out"
 msgstr "Abreise"
 
-#: backend/APIs/PublicBookingController.php:701 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:147
+#: backend/APIs/PublicBookingController.php:773 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:147
 msgid "Check-out must be after check-in."
 msgstr "Die Abreise muss nach der Anreise liegen."
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:259 frontend/site/app/src/components/BookingModal/StepWhen.jsx:549
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:259 frontend/site/app/src/components/BookingModal/StepWhen.jsx:607
 msgid "Checking availability…"
 msgstr "Verfügbarkeit wird geprüft …"
 
@@ -1385,12 +1385,12 @@ msgstr "Kinder"
 msgid "Choose a calendar file to import."
 msgstr "Wählen Sie eine Kalenderdatei zum Importieren."
 
-#: frontend/site/app/src/components/DateField/DateField.jsx:39 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:89
+#: frontend/site/app/src/components/DateField/DateField.jsx:41 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:89
 msgid "Choose a date"
 msgstr "Datum wählen"
 
 #. translators: %s: the overnight window.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:540
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:598
 msgid "Choose a date to see what is free."
 msgstr "Wählen Sie ein Datum, um zu sehen, was frei ist."
 
@@ -1610,7 +1610,7 @@ msgstr "Buchungen konnten nicht geladen werden"
 msgid "Could not load customers"
 msgstr "Kunden konnten nicht geladen werden"
 
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:556
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:614
 msgid "Could not load the available times."
 msgstr "Die verfügbaren Zeiten konnten nicht geladen werden."
 
@@ -1706,7 +1706,7 @@ msgid "Database"
 msgstr "Datenbank"
 
 #. translators: %s: amount saved at this length.
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:601 frontend/site/app/src/components/BookingModal/StepStay.jsx:156 frontend/site/app/src/components/BookingModal/StepWhen.jsx:374 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:601 frontend/site/app/src/components/BookingModal/StepStay.jsx:156 frontend/site/app/src/components/BookingModal/StepWhen.jsx:431 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59
 msgid "Date"
 msgstr "Datum"
 
@@ -1910,7 +1910,7 @@ msgid "Drop any of these into a subject or message and the booking fills them in
 msgstr "Setzen Sie diese Platzhalter in Betreff oder Text ein — die Buchung füllt sie aus. Unbekannte Platzhalter bleiben unverändert."
 
 #. translators: %d: number of hours.
-#: frontend/site/Shortcodes.php:1103 frontend/site/app/src/components/BookingModal/StepWhen.jsx:389 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:33
+#: frontend/site/Shortcodes.php:1103 frontend/site/app/src/components/BookingModal/StepWhen.jsx:447 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:33
 msgid "Duration"
 msgstr "Dauer"
 
@@ -2130,7 +2130,7 @@ msgstr "Nach Status filtern"
 msgid "First name"
 msgstr "Vorname"
 
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:410
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:468
 msgid "Fixed on this day."
 msgstr "An diesem Tag festgelegt."
 
@@ -2156,7 +2156,7 @@ msgid "From"
 msgstr "Von"
 
 #. translators: %d: the shortest bookable length, in hours.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:418
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:476
 msgid "From %d hour."
 msgid_plural "From %d hours."
 msgstr[0] "Ab %d Stunde."
@@ -2190,7 +2190,7 @@ msgstr "Geben Sie Datum, Startzeit und Dauer an."
 msgid "Give a date."
 msgstr "Geben Sie ein Datum an."
 
-#: backend/APIs/HolidaysController.php:83
+#: backend/APIs/HolidaysController.php:83 backend/APIs/PublicBookingController.php:356
 msgid "Give a start and an end date."
 msgstr "Geben Sie ein Start- und ein Enddatum an."
 
@@ -2245,7 +2245,7 @@ msgstr "Gast hat gezahlt am"
 #: backend/PostTypes/ApartmentMetaBox.php:179 backend/PostTypes/ApartmentPostType.php:95 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:437 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:109
 #: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:630 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:516 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:74
 #: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:129 frontend/site/Shortcodes.php:1058 frontend/site/app/src/components/BookingModal/StepStay.jsx:137 frontend/site/app/src/components/BookingModal/StepStay.jsx:175
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:462 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:520 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107
 msgid "Guests"
 msgstr "Gäste"
 
@@ -2729,7 +2729,7 @@ msgstr "Nächste: %s"
 msgid "Next free day — %s"
 msgstr "Nächster freier Tag — %s"
 
-#: frontend/site/app/src/components/Calendar/Calendar.jsx:178
+#: frontend/site/app/src/components/Calendar/Calendar.jsx:200
 msgid "Next month"
 msgstr "Nächster Monat"
 
@@ -2738,7 +2738,7 @@ msgid "Next photo"
 msgstr "Nächstes Foto"
 
 #. translators: %d: the shortest bookable length, in hours.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:433
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:491
 msgid "Nights"
 msgstr "Nächte"
 
@@ -2838,7 +2838,7 @@ msgstr "Noch keine Zahlungen"
 msgid "No start times for this date. Check the opening hours in Settings."
 msgstr "Keine Startzeiten für dieses Datum. Prüfen Sie die Öffnungszeiten in den Einstellungen."
 
-#: backend/Support/IcalExporter.php:268 backend/Support/IcalImporter.php:320
+#: backend/Support/IcalExporter.php:268 backend/Support/IcalImporter.php:320 frontend/site/app/src/components/Calendar/Calendar.jsx:61
 msgid "Not available"
 msgstr "Nicht verfügbar"
 
@@ -3122,12 +3122,12 @@ msgid "Overnight stay"
 msgstr "Übernachtung"
 
 #. translators: %s: the overnight window, e.g. 16:00 – 11:00.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:519
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:577
 msgid "Overnight stay (%s)"
 msgstr "Übernachtung (%s)"
 
 #. translators: %s: the overnight window.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:529
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:587
 msgid "Overnight stays run %s and always take priority over hourly bookings."
 msgstr "Übernachtungen laufen %s und haben immer Vorrang vor stundenweisen Buchungen."
 
@@ -3359,19 +3359,19 @@ msgstr "Wählen Sie die steuerliche Behandlung. Sie wird auf der Rechnung festge
 msgid "Placeholders"
 msgstr "Platzhalter"
 
-#: backend/APIs/PublicBookingController.php:333 backend/APIs/PublicBookingController.php:877
+#: backend/APIs/PublicBookingController.php:405 backend/APIs/PublicBookingController.php:949
 msgid "Please choose a date."
 msgstr "Bitte wählen Sie ein Datum."
 
-#: backend/APIs/PublicBookingController.php:883
+#: backend/APIs/PublicBookingController.php:955
 msgid "Please choose a start time."
 msgstr "Bitte wählen Sie eine Startzeit."
 
-#: backend/APIs/PublicBookingController.php:695
+#: backend/APIs/PublicBookingController.php:767
 msgid "Please choose both dates."
 msgstr "Bitte wählen Sie beide Daten."
 
-#: backend/APIs/PublicBookingController.php:891
+#: backend/APIs/PublicBookingController.php:963
 msgid "Please choose how long you need."
 msgstr "Bitte wählen Sie, wie lange Sie bleiben möchten."
 
@@ -3379,7 +3379,7 @@ msgstr "Bitte wählen Sie, wie lange Sie bleiben möchten."
 msgid "Please confirm your email address again — the earlier confirmation has expired."
 msgstr "Bitte bestätigen Sie Ihre E-Mail-Adresse erneut — die vorherige Bestätigung ist abgelaufen."
 
-#: backend/APIs/PublicBookingController.php:449
+#: backend/APIs/PublicBookingController.php:521
 msgid "Please confirm your email address before booking."
 msgstr "Bitte bestätigen Sie Ihre E-Mail-Adresse, bevor Sie buchen."
 
@@ -3387,11 +3387,11 @@ msgstr "Bitte bestätigen Sie Ihre E-Mail-Adresse, bevor Sie buchen."
 msgid "Please do not transfer anything. Get in touch if you would like to book these dates again."
 msgstr "Bitte überweisen Sie nichts. Melden Sie sich bei uns, wenn Sie diesen Zeitraum erneut buchen möchten."
 
-#: backend/APIs/PublicBookingController.php:431 backend/Support/EmailVerification.php:81
+#: backend/APIs/PublicBookingController.php:503 backend/Support/EmailVerification.php:81
 msgid "Please give a valid email address."
 msgstr "Bitte geben Sie eine gültige E-Mail-Adresse an."
 
-#: backend/APIs/PublicBookingController.php:427
+#: backend/APIs/PublicBookingController.php:499
 msgid "Please give your first and last name."
 msgstr "Bitte geben Sie Vor- und Nachnamen an."
 
@@ -3424,7 +3424,7 @@ msgstr "Strg+C drücken"
 msgid "Preview"
 msgstr "Vorschau"
 
-#: frontend/site/app/src/components/Calendar/Calendar.jsx:164
+#: frontend/site/app/src/components/Calendar/Calendar.jsx:186
 msgid "Previous month"
 msgstr "Vorheriger Monat"
 
@@ -3693,7 +3693,7 @@ msgid "Save"
 msgstr "Speichern"
 
 #. translators: %s: amount saved at this length.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:364
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:421
 msgid "Save %s at this length"
 msgstr "Bei dieser Dauer %s sparen"
 
@@ -4005,7 +4005,7 @@ msgid "Stays"
 msgstr "Aufenthalte"
 
 #. translators: %d: maximum number of nights.
-#: backend/APIs/PublicBookingController.php:709
+#: backend/APIs/PublicBookingController.php:781
 msgid "Stays are limited to %d nights."
 msgstr "Aufenthalte sind auf %d Nächte begrenzt."
 
@@ -4262,7 +4262,7 @@ msgstr "Dieser Kurzlink wird bereits von einem anderen Apartment verwendet."
 msgid "That should be a link starting with https:// or webcal://"
 msgstr "Das sollte ein Link sein, der mit https:// oder webcal:// beginnt."
 
-#: backend/APIs/PublicBookingController.php:915
+#: backend/APIs/PublicBookingController.php:987
 msgid "That time has already passed."
 msgstr "Dieser Zeitpunkt liegt bereits in der Vergangenheit."
 
@@ -4282,7 +4282,7 @@ msgstr "Die Apartments konnten nicht geladen werden."
 msgid "The booking could not be deleted."
 msgstr "Die Buchung konnte nicht gelöscht werden."
 
-#: backend/APIs/BookingsController.php:244 backend/APIs/PublicBookingController.php:570
+#: backend/APIs/BookingsController.php:244 backend/APIs/PublicBookingController.php:642
 msgid "The booking could not be saved."
 msgstr "Die Buchung konnte nicht gespeichert werden."
 
@@ -4320,7 +4320,7 @@ msgstr "Die Farbe muss ein Hex-Wert wie #3858e9 sein."
 msgid "The day's figures, sent on a schedule rather than against a booking. The time and the recipients are set under Settings → Notifications."
 msgstr "Die Zahlen des Tages, zeitgesteuert versendet statt zu einer einzelnen Buchung. Uhrzeit und Empfänger stehen unter Einstellungen → Benachrichtigungen."
 
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:573
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:631
 msgid "The daytime booking on this day is already taken. An overnight stay may still be free."
 msgstr "Die Tagesbuchung an diesem Tag ist bereits vergeben. Eine Übernachtung ist möglicherweise noch frei."
 
@@ -4481,11 +4481,11 @@ msgstr "Dieses Jahr"
 msgid "This apartment already subscribes to that calendar."
 msgstr "Dieses Apartment hat diesen Kalender bereits abonniert."
 
-#: backend/APIs/PublicBookingController.php:501 frontend/site/app/src/components/BookingModal/StepReview.jsx:388
+#: backend/APIs/PublicBookingController.php:573 frontend/site/app/src/components/BookingModal/StepReview.jsx:388
 msgid "This apartment cannot be booked online yet — no price has been set for it. Please get in touch and we will arrange it with you."
 msgstr "Dieses Apartment kann noch nicht online gebucht werden — es ist kein Preis hinterlegt. Bitte melden Sie sich bei uns, dann vereinbaren wir alles Weitere mit Ihnen."
 
-#: backend/APIs/PublicBookingController.php:282 backend/APIs/PublicBookingController.php:327 backend/APIs/PublicBookingController.php:654
+#: backend/APIs/PublicBookingController.php:292 backend/APIs/PublicBookingController.php:347 backend/APIs/PublicBookingController.php:399 backend/APIs/PublicBookingController.php:726
 msgid "This apartment cannot be booked."
 msgstr "Dieses Apartment kann nicht gebucht werden."
 
@@ -4506,13 +4506,13 @@ msgstr[0] "Dieses Apartment bietet Platz für bis zu %d Gast."
 msgstr[1] "Dieses Apartment bietet Platz für bis zu %d Gäste."
 
 #. translators: %d: the largest party the apartment takes.
-#: backend/APIs/PublicBookingController.php:674
+#: backend/APIs/PublicBookingController.php:746
 msgid "This apartment takes at most %d guest."
 msgid_plural "This apartment takes at most %d guests."
 msgstr[0] "Diese Wohnung ist für höchstens %d Gast ausgelegt."
 msgstr[1] "Diese Wohnung ist für höchstens %d Gäste ausgelegt."
 
-#: backend/APIs/PublicBookingController.php:207
+#: backend/APIs/PublicBookingController.php:217
 msgid "This booking could not be found."
 msgstr "Diese Buchung wurde nicht gefunden."
 
@@ -4545,11 +4545,11 @@ msgstr[1] "Dieser Kunde hat noch %d Buchungen. Löschen oder übertragen Sie sie
 msgid "This is a different day to the one you picked. Choosing a time moves your booking to it."
 msgstr "Das ist ein anderer Tag als der von Ihnen gewählte. Wenn Sie eine Uhrzeit wählen, wird Ihre Buchung auf diesen Tag verschoben."
 
-#: backend/APIs/PublicBookingController.php:197 frontend/site/app/src/PaymentApp.jsx:93
+#: backend/APIs/PublicBookingController.php:207 frontend/site/app/src/PaymentApp.jsx:93
 msgid "This payment link is not valid any more. Please use the link in your booking email, or get in touch."
 msgstr "Dieser Zahlungslink ist nicht mehr gültig. Bitte nutzen Sie den Link aus Ihrer Buchungs-E-Mail oder melden Sie sich bei uns."
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:334 frontend/site/app/src/components/BookingModal/StepWhen.jsx:682
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:334 frontend/site/app/src/components/BookingModal/StepWhen.jsx:740
 msgid "Those dates are already taken. Please try another window."
 msgstr "Dieser Zeitraum ist bereits vergeben. Bitte wählen Sie einen anderen."
 
@@ -4557,7 +4557,7 @@ msgstr "Dieser Zeitraum ist bereits vergeben. Bitte wählen Sie einen anderen."
 msgid "Those dates go back on the board and can be booked again."
 msgstr "Dieser Zeitraum wird wieder freigegeben und ist erneut buchbar."
 
-#: backend/APIs/PublicBookingController.php:459
+#: backend/APIs/PublicBookingController.php:531
 msgid "Those dates have just been taken. Please choose another window."
 msgstr "Dieser Zeitraum wurde soeben vergeben. Bitte wählen Sie einen anderen."
 
@@ -4740,7 +4740,7 @@ msgstr[0] "Bis zu %d Gast"
 msgstr[1] "Bis zu %d Gäste"
 
 #. translators: %d: the largest party the apartment takes.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:486
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:544
 msgid "Up to %d guest."
 msgid_plural "Up to %d guests."
 msgstr[0] "Bis zu %d Gast."
@@ -5072,7 +5072,7 @@ msgstr "%s sparen"
 
 #. translators: %s: end time.
 #. translators: %s: when the booking ends, with the day if it is a later one.
-#: frontend/site/app/src/components/BookingModal/Alternatives.jsx:39 frontend/site/app/src/components/BookingModal/StepWhen.jsx:651
+#: frontend/site/app/src/components/BookingModal/Alternatives.jsx:39 frontend/site/app/src/components/BookingModal/StepWhen.jsx:709
 msgid "until %s"
 msgstr "bis %s"
 

@@ -284,6 +284,81 @@ final class BookingsRepository {
 	}
 
 	/**
+	 * Which nights an apartment cannot be booked for.
+	 *
+	 * The guest's date picker needs this. Without it every future day looks
+	 * bookable, the guest picks one the owner has locked, and the modal only
+	 * says so after the fact — which reads as "the booking went through" to
+	 * anyone watching, and as a broken lock to the owner who set it.
+	 *
+	 * A night is named by the day it STARTS on, and runs the property's own
+	 * window — 16:00 to 11:00 the next morning — because that is the window a
+	 * guest actually occupies and the one is_available() is asked about. The
+	 * departure day is therefore not itself taken: one guest leaving at 11:00
+	 * and another arriving at 16:00 is a normal turnaround, not a clash.
+	 *
+	 * Read through busy_windows(), so bookings, apartment locks and estate-wide
+	 * locks are all counted, each already grown by the cleaning turnaround. Two
+	 * queries for a whole year rather than one per night.
+	 *
+	 * @param int    $room_id   The apartment.
+	 * @param string $from_day  First night to consider, 'Y-m-d'.
+	 * @param string $to_day    Last night to consider, 'Y-m-d'.
+	 * @param string $check_in  The overnight window's start, 'H:i:s'.
+	 * @param string $check_out Its end the next morning, 'H:i:s'.
+	 *
+	 * @return string[] The day keys whose night is not free, in order.
+	 */
+	public static function taken_nights(
+		int $room_id,
+		string $from_day,
+		string $to_day,
+		string $check_in,
+		string $check_out
+	): array {
+		$first = strtotime( $from_day . ' 00:00:00' );
+		$last  = strtotime( $to_day . ' 00:00:00' );
+
+		if ( false === $first || false === $last || $last < $first ) {
+			return array();
+		}
+
+		/*
+		 * A night beginning on the last day ends on the day after it, so the
+		 * range asked of busy_windows reaches one day further than the range
+		 * of nights being tested.
+		 */
+		$windows = self::busy_windows(
+			array( $room_id ),
+			$from_day . ' 00:00:00',
+			gmdate( 'Y-m-d', $last + DAY_IN_SECONDS ) . ' 23:59:59'
+		)[ $room_id ] ?? array();
+
+		if ( ! $windows ) {
+			return array();
+		}
+
+		$taken = array();
+
+		// The same runaway guard the rest of this class uses: a picker asks
+		// for a year, never for a century.
+		for ( $day = $first, $guard = 0; $day <= $last && $guard < 800; $day += DAY_IN_SECONDS, $guard++ ) {
+			$starts = gmdate( 'Y-m-d', $day ) . ' ' . $check_in;
+			$ends   = gmdate( 'Y-m-d', $day + DAY_IN_SECONDS ) . ' ' . $check_out;
+
+			foreach ( $windows as $window ) {
+				if ( $window[0] < $ends && $window[1] > $starts ) {
+					$taken[] = gmdate( 'Y-m-d', $day );
+
+					break;
+				}
+			}
+		}
+
+		return $taken;
+	}
+
+	/**
 	 * @param array<string, mixed> $data
 	 *
 	 * @return int|null Inserted id, or null when the insert failed.

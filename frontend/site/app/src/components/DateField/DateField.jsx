@@ -23,12 +23,14 @@ import './DateField.css';
 
 /**
  * @param {Object}   props
- * @param {string}   props.id            Element id, for the label association.
- * @param {string}   props.label         The field label.
- * @param {string}   props.value         'yyyy-mm-dd', or ''.
- * @param {Function} props.onChange      Called with the new 'yyyy-mm-dd'.
- * @param {string}   [props.min]         Earliest selectable date, 'yyyy-mm-dd'.
- * @param {string}   [props.placeholder] Shown when no date is chosen.
+ * @param {string}   props.id              Element id, for the label association.
+ * @param {string}   props.label           The field label.
+ * @param {string}   props.value           'yyyy-mm-dd', or ''.
+ * @param {Function} props.onChange        Called with the new 'yyyy-mm-dd'.
+ * @param {string}   [props.min]           Earliest date, 'yyyy-mm-dd'.
+ * @param {string}   [props.placeholder]   Shown when no date is chosen.
+ * @param {Function} [props.isUnavailable] Days the calendar must refuse;
+ *                                         see Calendar.
  */
 export default function DateField( {
 	id,
@@ -37,6 +39,8 @@ export default function DateField( {
 	onChange,
 	min,
 	placeholder = __( 'Choose a date', 'booking-suite' ),
+	/** Days the calendar must refuse; see Calendar. */
+	isUnavailable = null,
 } ) {
 	const [ isOpen, setOpen ] = useState( false );
 	const popoverRef = useRef( null );
@@ -117,6 +121,7 @@ export default function DateField( {
 						onSelect={ choose }
 						minDate={ floor }
 						locale={ settings.locale }
+						isUnavailable={ isUnavailable }
 						focusOnMount
 					/>
 				</div>

@@ -150,6 +150,16 @@ export default function StepWhen( {
 	const [ slotData, setSlotData ] = useState( null );
 
 	/**
+	 * Nights this apartment cannot take, as a Set of 'YYYY-MM-DD' keys.
+	 *
+	 * Fetched once for the year ahead rather than per month: the payload is a
+	 * handful of short strings even for a property that closes for the winter,
+	 * and a request on every arrow press would make paging through the
+	 * calendar feel like it was loading.
+	 */
+	const [ takenNights, setTakenNights ] = useState( () => new Set() );
+
+	/**
 	 * idle | loading | ready | error.
 	 *
 	 * Kept as one value rather than a boolean plus null data, so "still
@@ -169,6 +179,37 @@ export default function StepWhen( {
 		1,
 		Number.parseInt( settings.minHours, 10 ) || 1
 	);
+
+	useEffect( () => {
+		if ( ! apartmentId ) {
+			return undefined;
+		}
+
+		const controller = new AbortController();
+		const from = today();
+
+		bookingService
+			.nights(
+				{
+					apartmentId,
+					from,
+					to: toKey( addDays( fromKey( from ), 365 ) ),
+				},
+				controller.signal
+			)
+			.then( ( data ) => setTakenNights( new Set( data?.taken ?? [] ) ) )
+			.catch( () => {
+				/*
+				 * A picker that cannot reach this still works: every day stays
+				 * selectable and the quote refuses the ones that are taken,
+				 * which is exactly how it behaved before. Failing the whole
+				 * step over a decoration would be worse than the decoration
+				 * being missing.
+				 */
+			} );
+
+		return () => controller.abort();
+	}, [ apartmentId ] );
 
 	useEffect( () => {
 		/*
@@ -357,6 +398,22 @@ export default function StepWhen( {
 	// The billing break means some lengths cost less than the one below them.
 	const chosen = durations.find( ( option ) => option.hours === stay.hours );
 
+	/**
+	 * Whether a day cannot be the start of this stay.
+	 *
+	 * Only applied to OVERNIGHT stays. A night is a fixed 16:00-to-11:00
+	 * window, so "is this night free" has one answer and the picker can give
+	 * it. A daytime booking is not a fixed window — the same day can be full
+	 * at ten and empty at four — so a day is never greyed out there; the slot
+	 * grid below already shows exactly which hours are left, which is a truer
+	 * answer than a struck-out date would be.
+	 *
+	 * @param {Date} day The day being drawn.
+	 * @return {boolean} Whether to refuse it.
+	 */
+	const isUnavailable = ( day ) =>
+		isOvernight && takenNights.has( toKey( day ) );
+
 	const saving =
 		chosen?.discount > 0
 			? sprintf(
@@ -375,6 +432,7 @@ export default function StepWhen( {
 					value={ stay.date }
 					min={ today() }
 					onChange={ onDate }
+					isUnavailable={ isUnavailable }
 				/>
 
 				{ /*

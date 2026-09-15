@@ -33,11 +33,15 @@ import './Calendar.css';
 
 /**
  * @param {Object}    props
- * @param {Date|null} props.value          The selected day, or null.
- * @param {Function}  props.onSelect       Called with the chosen Date.
- * @param {Date}      props.minDate        Earliest selectable day.
- * @param {string}    props.locale         WordPress locale.
- * @param {boolean}   [props.focusOnMount] Move focus into the grid on mount.
+ * @param {Date|null} props.value              The selected day, or null.
+ * @param {Function}  props.onSelect           Called with the chosen Date.
+ * @param {Date}      props.minDate            Earliest selectable day.
+ * @param {string}    props.locale             WordPress locale.
+ * @param {boolean}   [props.focusOnMount]     Focus the grid on mount.
+ * @param {Function}  [props.isUnavailable]    Given a Date, whether it
+ *                                             must be refused.
+ * @param {string}    [props.unavailableLabel] What a screen reader is
+ *                                             told about such a day.
  */
 export default function Calendar( {
 	value,
@@ -45,6 +49,16 @@ export default function Calendar( {
 	minDate,
 	locale,
 	focusOnMount = false,
+	/**
+	 * Days that cannot be chosen however far in the future they are — a night
+	 * already booked, or one the owner has locked.
+	 *
+	 * A predicate rather than a list, because the caller knows what closed a
+	 * day and this does not need to: it only has to stop offering it.
+	 */
+	isUnavailable = null,
+	/** What a screen reader should say about one of those days. */
+	unavailableLabel = __( 'Not available', 'booking-suite' ),
 } ) {
 	const floor = minDate ?? startOfToday();
 
@@ -106,8 +120,16 @@ export default function Calendar( {
 		[ viewMonth, locale ]
 	);
 
-	const isDisabled = ( day ) => day < floor;
+	const isTaken = ( day ) => Boolean( isUnavailable?.( day ) );
 
+	const isDisabled = ( day ) => day < floor || isTaken( day );
+
+	/*
+	 * Keyboard movement steps ONTO an unavailable day rather than over it. The
+	 * day is still announced and still refuses to be chosen, which is how
+	 * someone arrowing through a month learns where the gaps are; skipping
+	 * them would make the calendar jump for no stated reason.
+	 */
 	const move = ( days ) => {
 		const next = addDays( focusedDay, days );
 
@@ -219,6 +241,7 @@ export default function Calendar( {
 										isChosen && 'is-selected',
 										isSameDay( day, startOfToday() ) &&
 											'is-today',
+										isTaken( day ) && 'is-taken',
 									]
 										.filter( Boolean )
 										.join( ' ' ) }
@@ -241,6 +264,14 @@ export default function Calendar( {
 											month: 'long',
 											year: 'numeric',
 										} ) }
+										{ /*
+										 * Said aloud, not only struck through:
+										 * a disabled button with no reason
+										 * given is a dead end to anyone who
+										 * cannot see the strike.
+										 */ }
+										{ isTaken( day ) &&
+											` — ${ unavailableLabel }` }
 									</span>
 								</button>
 							);

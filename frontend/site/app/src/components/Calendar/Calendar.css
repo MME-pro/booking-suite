@@ -161,3 +161,24 @@
 		font-size: 14px;
 	}
 }
+
+/*
+ * A night that is already taken — booked, or locked by the owner.
+ *
+ * Struck through rather than simply greyed: `is-outside` is already a grey
+ * day, and a guest scanning a month should not have to work out which grey
+ * means "last month" and which means "you cannot have this one". The strike
+ * says it at a glance, and Calendar.jsx says it aloud for anyone who cannot
+ * see it.
+ */
+.bks-cal__day.is-taken {
+	color: var(--bks-site-text-muted);
+	text-decoration: line-through;
+	text-decoration-thickness: 1.5px;
+	opacity: 0.55;
+	cursor: not-allowed;
+}
+
+.bks-cal__day.is-taken:hover {
+	background: none;
+}

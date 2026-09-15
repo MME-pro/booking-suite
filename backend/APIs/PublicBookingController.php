@@ -72,6 +72,16 @@ final class PublicBookingController {
 
 		register_rest_route(
 			self::NAMESPACE,
+			'/public/nights',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( self::class, 'nights' ),
+				'permission_callback' => '__return_true',
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
 			'/public/slots',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
@@ -310,6 +320,68 @@ final class PublicBookingController {
 				 * instead of leaving a wall nobody can get past.
 				 */
 				'verifyEmail' => EmailVerification::is_enabled(),
+			),
+			200
+		);
+	}
+
+	/**
+	 * The nights this apartment cannot be booked for.
+	 *
+	 * Feeds the guest's date picker, which otherwise offers every day in the
+	 * calendar and finds out what is taken only after one has been chosen. An
+	 * owner who locks a week expects that week to be unpickable, not pickable
+	 * and then refused.
+	 *
+	 * Says nothing about WHY a night is closed — a booking, a lock, a portal
+	 * import are all the same "not available" to a guest, and naming them
+	 * would publish the property's occupancy to anyone who asked.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function nights( WP_REST_Request $request ) {
+		$id        = absint( $request->get_param( 'apartmentId' ) );
+		$apartment = ApartmentsRepository::find( $id );
+
+		if ( null === $apartment || ! $apartment['active'] ) {
+			return self::error( 'booking_suite_not_bookable', __( 'This apartment cannot be booked.', 'booking-suite' ), 404 );
+		}
+
+		$from = self::date( (string) $request->get_param( 'from' ) );
+		$to   = self::date( (string) $request->get_param( 'to' ) );
+
+		if ( null === $from || null === $to ) {
+			return self::error(
+				'booking_suite_invalid_field',
+				__( 'Give a start and an end date.', 'booking-suite' ),
+				400,
+				'from'
+			);
+		}
+
+		/*
+		 * Capped rather than rejected. A picker asking for two years gets the
+		 * year it can actually use, and the nights beyond it stay selectable —
+		 * the quote still refuses them, so the guest is never told something
+		 * untrue, only something incomplete.
+		 */
+		$limit = gmdate( 'Y-m-d', strtotime( $from . ' 00:00:00' ) + 400 * DAY_IN_SECONDS );
+
+		if ( $to > $limit ) {
+			$to = $limit;
+		}
+
+		return new WP_REST_Response(
+			array(
+				'from'  => $from,
+				'to'    => $to,
+				'taken' => BookingsRepository::taken_nights(
+					$id,
+					$from,
+					$to,
+					self::check_in_time(),
+					self::check_out_time()
+				),
 			),
 			200
 		);

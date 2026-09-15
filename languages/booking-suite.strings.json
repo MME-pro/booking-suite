@@ -133,10 +133,10 @@
     },
     {
         "single": "%1$s – %2$s",
-        "line": 626,
+        "line": 684,
         "comment": "translators: 1: start time, 2: end time, both 24-hour.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:626"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:684"
         ],
         "comments": {
             "translators: 1: start time, 2: end time, both 24-hour.": true
@@ -468,7 +468,7 @@
             "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:674",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:127",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:446"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:504"
         ],
         "comments": {
             "translators: %d: number of nights.": true
@@ -691,10 +691,10 @@
     },
     {
         "single": "%s is no longer available for these dates. Please adjust it and try again.",
-        "line": 475,
+        "line": 547,
         "comment": "translators: %s: name of the extra.",
         "refs": [
-            "backend/APIs/PublicBookingController.php:475"
+            "backend/APIs/PublicBookingController.php:547"
         ],
         "comments": {
             "translators: %s: name of the extra.": true
@@ -1979,10 +1979,10 @@
     },
     {
         "single": "Available start times",
-        "line": 500,
+        "line": 558,
         "comment": "translators: %d: the largest party the apartment takes.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:500"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:558"
         ],
         "comments": {
             "translators: %d: the largest party the apartment takes.": true
@@ -1994,7 +1994,7 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:333",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:681"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:739"
         ],
         "comments": []
     },
@@ -3031,10 +3031,10 @@
     },
     {
         "single": "Check-in cannot be in the past.",
-        "line": 718,
+        "line": 790,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:718"
+            "backend/APIs/PublicBookingController.php:790"
         ],
         "comments": []
     },
@@ -3061,10 +3061,10 @@
     },
     {
         "single": "Check-out must be after check-in.",
-        "line": 701,
+        "line": 773,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:701",
+            "backend/APIs/PublicBookingController.php:773",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:147"
         ],
         "comments": []
@@ -3075,7 +3075,7 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:259",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:549"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:607"
         ],
         "comments": []
     },
@@ -3108,20 +3108,20 @@
     },
     {
         "single": "Choose a date",
-        "line": 39,
+        "line": 41,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/DateField/DateField.jsx:39",
+            "frontend/site/app/src/components/DateField/DateField.jsx:41",
             "frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:89"
         ],
         "comments": []
     },
     {
         "single": "Choose a date to see what is free.",
-        "line": 540,
+        "line": 598,
         "comment": "translators: %s: the overnight window.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:540"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:598"
         ],
         "comments": {
             "translators: %s: the overnight window.": true
@@ -3631,10 +3631,10 @@
     },
     {
         "single": "Could not load the available times.",
-        "line": 556,
+        "line": 614,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:556"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:614"
         ],
         "comments": []
     },
@@ -3858,7 +3858,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:601",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:156",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:374",
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:431",
             "frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59"
         ],
         "comments": {
@@ -4315,7 +4315,7 @@
         "comment": "",
         "refs": [
             "frontend/site/Shortcodes.php:1103",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:389",
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:447",
             "frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:33"
         ],
         "comments": {
@@ -4831,10 +4831,10 @@
     },
     {
         "single": "Fixed on this day.",
-        "line": 410,
+        "line": 468,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:410"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:468"
         ],
         "comments": []
     },
@@ -4892,10 +4892,10 @@
     {
         "single": "From %d hour.",
         "plural": "From %d hours.",
-        "line": 418,
+        "line": 476,
         "comment": "translators: %d: the shortest bookable length, in hours.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:418"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:476"
         ],
         "comments": {
             "translators: %d: the shortest bookable length, in hours.": true
@@ -4971,7 +4971,8 @@
         "line": 83,
         "comment": "",
         "refs": [
-            "backend/APIs/HolidaysController.php:83"
+            "backend/APIs/HolidaysController.php:83",
+            "backend/APIs/PublicBookingController.php:356"
         ],
         "comments": []
     },
@@ -5110,7 +5111,7 @@
             "frontend/site/Shortcodes.php:1058",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:137",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:175",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:462",
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:520",
             "frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107"
         ],
         "comments": {
@@ -6223,10 +6224,10 @@
     },
     {
         "single": "Next month",
-        "line": 178,
+        "line": 200,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/Calendar/Calendar.jsx:178"
+            "frontend/site/app/src/components/Calendar/Calendar.jsx:200"
         ],
         "comments": []
     },
@@ -6241,10 +6242,10 @@
     },
     {
         "single": "Nights",
-        "line": 433,
+        "line": 491,
         "comment": "translators: %d: the shortest bookable length, in hours.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:433"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:491"
         ],
         "comments": {
             "translators: %d: the shortest bookable length, in hours.": true
@@ -6470,7 +6471,8 @@
         "comment": "",
         "refs": [
             "backend/Support/IcalExporter.php:268",
-            "backend/Support/IcalImporter.php:320"
+            "backend/Support/IcalImporter.php:320",
+            "frontend/site/app/src/components/Calendar/Calendar.jsx:61"
         ],
         "comments": []
     },
@@ -7110,10 +7112,10 @@
     },
     {
         "single": "Overnight stay (%s)",
-        "line": 519,
+        "line": 577,
         "comment": "translators: %s: the overnight window, e.g. 16:00 – 11:00.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:519"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:577"
         ],
         "comments": {
             "translators: %s: the overnight window, e.g. 16:00 – 11:00.": true
@@ -7121,10 +7123,10 @@
     },
     {
         "single": "Overnight stays run %s and always take priority over hourly bookings.",
-        "line": 529,
+        "line": 587,
         "comment": "translators: %s: the overnight window.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:529"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:587"
         ],
         "comments": {
             "translators: %s: the overnight window.": true
@@ -7668,38 +7670,38 @@
     },
     {
         "single": "Please choose a date.",
-        "line": 333,
+        "line": 405,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:333",
-            "backend/APIs/PublicBookingController.php:877"
+            "backend/APIs/PublicBookingController.php:405",
+            "backend/APIs/PublicBookingController.php:949"
         ],
         "comments": []
     },
     {
         "single": "Please choose a start time.",
-        "line": 883,
+        "line": 955,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:883"
+            "backend/APIs/PublicBookingController.php:955"
         ],
         "comments": []
     },
     {
         "single": "Please choose both dates.",
-        "line": 695,
+        "line": 767,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:695"
+            "backend/APIs/PublicBookingController.php:767"
         ],
         "comments": []
     },
     {
         "single": "Please choose how long you need.",
-        "line": 891,
+        "line": 963,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:891"
+            "backend/APIs/PublicBookingController.php:963"
         ],
         "comments": []
     },
@@ -7714,10 +7716,10 @@
     },
     {
         "single": "Please confirm your email address before booking.",
-        "line": 449,
+        "line": 521,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:449"
+            "backend/APIs/PublicBookingController.php:521"
         ],
         "comments": []
     },
@@ -7732,20 +7734,20 @@
     },
     {
         "single": "Please give a valid email address.",
-        "line": 431,
+        "line": 503,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:431",
+            "backend/APIs/PublicBookingController.php:503",
             "backend/Support/EmailVerification.php:81"
         ],
         "comments": []
     },
     {
         "single": "Please give your first and last name.",
-        "line": 427,
+        "line": 499,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:427"
+            "backend/APIs/PublicBookingController.php:499"
         ],
         "comments": []
     },
@@ -7817,10 +7819,10 @@
     },
     {
         "single": "Previous month",
-        "line": 164,
+        "line": 186,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/Calendar/Calendar.jsx:164"
+            "frontend/site/app/src/components/Calendar/Calendar.jsx:186"
         ],
         "comments": []
     },
@@ -8452,10 +8454,10 @@
     },
     {
         "single": "Save %s at this length",
-        "line": 364,
+        "line": 421,
         "comment": "translators: %s: amount saved at this length.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:364"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:421"
         ],
         "comments": {
             "translators: %s: amount saved at this length.": true
@@ -9177,10 +9179,10 @@
     },
     {
         "single": "Stays are limited to %d nights.",
-        "line": 709,
+        "line": 781,
         "comment": "translators: %d: maximum number of nights.",
         "refs": [
-            "backend/APIs/PublicBookingController.php:709"
+            "backend/APIs/PublicBookingController.php:781"
         ],
         "comments": {
             "translators: %d: maximum number of nights.": true
@@ -9762,10 +9764,10 @@
     },
     {
         "single": "That time has already passed.",
-        "line": 915,
+        "line": 987,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:915"
+            "backend/APIs/PublicBookingController.php:987"
         ],
         "comments": []
     },
@@ -9811,7 +9813,7 @@
         "comment": "",
         "refs": [
             "backend/APIs/BookingsController.php:244",
-            "backend/APIs/PublicBookingController.php:570"
+            "backend/APIs/PublicBookingController.php:642"
         ],
         "comments": []
     },
@@ -9893,10 +9895,10 @@
     },
     {
         "single": "The daytime booking on this day is already taken. An overnight stay may still be free.",
-        "line": 573,
+        "line": 631,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:573"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:631"
         ],
         "comments": []
     },
@@ -10256,22 +10258,23 @@
     },
     {
         "single": "This apartment cannot be booked online yet — no price has been set for it. Please get in touch and we will arrange it with you.",
-        "line": 501,
+        "line": 573,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:501",
+            "backend/APIs/PublicBookingController.php:573",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:388"
         ],
         "comments": []
     },
     {
         "single": "This apartment cannot be booked.",
-        "line": 282,
+        "line": 292,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:282",
-            "backend/APIs/PublicBookingController.php:327",
-            "backend/APIs/PublicBookingController.php:654"
+            "backend/APIs/PublicBookingController.php:292",
+            "backend/APIs/PublicBookingController.php:347",
+            "backend/APIs/PublicBookingController.php:399",
+            "backend/APIs/PublicBookingController.php:726"
         ],
         "comments": []
     },
@@ -10309,11 +10312,11 @@
     },
     {
         "single": "This apartment takes at most %d guest.",
-        "line": 674,
+        "line": 746,
         "plural": "This apartment takes at most %d guests.",
         "comment": "translators: %d: the largest party the apartment takes.",
         "refs": [
-            "backend/APIs/PublicBookingController.php:674"
+            "backend/APIs/PublicBookingController.php:746"
         ],
         "comments": {
             "translators: %d: the largest party the apartment takes.": true
@@ -10321,10 +10324,10 @@
     },
     {
         "single": "This booking could not be found.",
-        "line": 207,
+        "line": 217,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:207"
+            "backend/APIs/PublicBookingController.php:217"
         ],
         "comments": []
     },
@@ -10391,10 +10394,10 @@
     },
     {
         "single": "This payment link is not valid any more. Please use the link in your booking email, or get in touch.",
-        "line": 197,
+        "line": 207,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:197",
+            "backend/APIs/PublicBookingController.php:207",
             "frontend/site/app/src/PaymentApp.jsx:93"
         ],
         "comments": []
@@ -10405,7 +10408,7 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:334",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:682"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:740"
         ],
         "comments": []
     },
@@ -10420,10 +10423,10 @@
     },
     {
         "single": "Those dates have just been taken. Please choose another window.",
-        "line": 459,
+        "line": 531,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:459"
+            "backend/APIs/PublicBookingController.php:531"
         ],
         "comments": []
     },
@@ -10839,10 +10842,10 @@
     {
         "single": "Up to %d guest.",
         "plural": "Up to %d guests.",
-        "line": 486,
+        "line": 544,
         "comment": "translators: %d: the largest party the apartment takes.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:486"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:544"
         ],
         "comments": {
             "translators: %d: the largest party the apartment takes.": true
@@ -11593,7 +11596,7 @@
         "comment": "translators: %s: end time.",
         "refs": [
             "frontend/site/app/src/components/BookingModal/Alternatives.jsx:39",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:651"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:709"
         ],
         "comments": {
             "translators: %s: end time.": true,

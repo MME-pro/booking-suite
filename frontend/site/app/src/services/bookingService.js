@@ -58,6 +58,23 @@ export const bookingService = {
 			{ signal }
 		),
 
+	/**
+	 * The nights this apartment cannot be booked for, so the picker can
+	 * refuse them instead of offering them and then objecting.
+	 *
+	 * @param {Object}      range             The window to ask about.
+	 * @param {number}      range.apartmentId The apartment.
+	 * @param {string}      range.from        First night, 'YYYY-MM-DD'.
+	 * @param {string}      range.to          Last night, 'YYYY-MM-DD'.
+	 * @param {AbortSignal} [signal]          Cancels the request.
+	 * @return {Promise<Object>} { from, to, taken }.
+	 */
+	nights: ( { apartmentId, from, to }, signal ) =>
+		request(
+			`public/nights?apartmentId=${ apartmentId }&from=${ from }&to=${ to }`,
+			{ signal }
+		),
+
 	quote: ( payload, signal ) =>
 		request( 'public/quote', { method: 'POST', body: payload, signal } ),
 
