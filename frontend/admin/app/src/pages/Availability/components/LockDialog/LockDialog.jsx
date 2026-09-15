@@ -40,7 +40,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 import { blockService } from '../../../../services';
 import { formatDateTime } from '../../../Bookings/data/format';
-import { dayKey, siteNow } from '../../../../lib/dates';
+import { clockLang, dayKey, siteNow } from '../../../../lib/dates';
 
 const schema = z
 	.object( {
@@ -415,6 +415,7 @@ function DateTimeField( { form, dateName, timeName, label } ) {
 							<FormControl>
 								<Input
 									type="time"
+									lang={ clockLang() }
 									className="mt-2"
 									{ ...timeField }
 								/>

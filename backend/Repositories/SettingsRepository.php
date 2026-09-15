@@ -242,11 +242,18 @@ final class SettingsRepository {
 		self::MIN_HOURS        => '4',
 		self::MAX_HOURS        => '8',
 		/*
-		 * Friday and Saturday, 11:30 to 15:30 — four hours, finishing half an
-		 * hour before the overnight window opens at 16:00, so a day guest is
-		 * out before an evening arrival is due.
+		 * Off. An empty day list means guests pick their own start time every
+		 * day of the week, which is what an hourly property normally wants.
+		 *
+		 * This used to default to Friday and Saturday, 11:30 to 15:30 — on
+		 * those days one fixed block replaced the whole slot grid. It was a
+		 * strong default for something nobody had asked for, and since the
+		 * setting is no longer on the Settings screen, a site that inherited
+		 * it had no way to see it was on, let alone turn it off. The times
+		 * stay here so the feature still works for anyone who sets the days
+		 * back through the REST layer.
 		 */
-		self::DAYTIME_SLOT_DAYS  => '5,6',
+		self::DAYTIME_SLOT_DAYS  => '',
 		self::DAYTIME_SLOT_START => '11:30',
 		self::DAYTIME_SLOT_END   => '15:30',
 		self::INVOICE_LOGO     => '',
@@ -642,7 +649,8 @@ final class SettingsRepository {
 		$raw = (string) self::get( self::DAILY_SUMMARY_RECIPIENTS );
 
 		$found = array_filter(
-			array_map( 'trim', preg_split( '/[,;
+			array_map( 'trim', preg_split( '/[,;
+
 ]+/', $raw ) ?: array() ),
 			static fn( string $address ): bool => is_email( $address ) !== false
 		);

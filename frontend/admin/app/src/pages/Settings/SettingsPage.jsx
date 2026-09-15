@@ -47,6 +47,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
 import { settingsService } from '../../services';
+import { clockLang } from '../../lib/dates';
 import AccentColourField from './AccentColourField';
 import InvoiceLogoField from './InvoiceLogoField';
 import RecipientsField from './RecipientsField';
@@ -94,14 +95,7 @@ const blank = {
 	maxHours: 8,
 	baseHours: 3,
 	includedGuests: 2,
-	dayStart: '00:00',
-	dayEnd: '23:30',
 	slotStep: 30,
-	overnightStart: '16:00',
-	overnightEnd: '11:00',
-	daytimeSlotDays: '5,6',
-	daytimeSlotStart: '11:30',
-	daytimeSlotEnd: '15:30',
 	reservationHours: 24,
 	prepayDiscount: 0,
 	taxRateOvernight: 7,
@@ -477,104 +471,6 @@ export default function SettingsPage() {
 										) }
 									/>
 								</div>
-
-								<div className="grid gap-4 sm:grid-cols-2">
-									<Field
-										form={ form }
-										name="dayStart"
-										type="time"
-										touched={ touched }
-										label={ __(
-											'Earliest start time',
-											'booking-suite'
-										) }
-									/>
-									<Field
-										form={ form }
-										name="dayEnd"
-										type="time"
-										touched={ touched }
-										label={ __(
-											'Latest start time',
-											'booking-suite'
-										) }
-										description={ __(
-											'The last time a booking may begin. A booking may still finish after it.',
-											'booking-suite'
-										) }
-									/>
-								</div>
-
-								<div className="grid gap-4 sm:grid-cols-2">
-									<Field
-										form={ form }
-										name="overnightStart"
-										type="time"
-										touched={ touched }
-										label={ __(
-											'Check-in',
-											'booking-suite'
-										) }
-									/>
-									<Field
-										form={ form }
-										name="overnightEnd"
-										type="time"
-										touched={ touched }
-										label={ __(
-											'Check-out',
-											'booking-suite'
-										) }
-										description={ __(
-											'Also the hours a night imported from Airbnb or Booking.com occupies, so a portal stay blocks the same window a direct one does.',
-											'booking-suite'
-										) }
-									/>
-								</div>
-
-								<div className="grid gap-4 sm:grid-cols-3">
-									<Field
-										form={ form }
-										name="daytimeSlotDays"
-										touched={ touched }
-										label={ __(
-											'Daytime slot days',
-											'booking-suite'
-										) }
-										placeholder="5,6"
-										description={ __(
-											'1 is Monday, 7 is Sunday. Separate with commas, or leave empty for no daytime slot.',
-											'booking-suite'
-										) }
-									/>
-									<Field
-										form={ form }
-										name="daytimeSlotStart"
-										type="time"
-										touched={ touched }
-										label={ __(
-											'Daytime slot from',
-											'booking-suite'
-										) }
-									/>
-									<Field
-										form={ form }
-										name="daytimeSlotEnd"
-										type="time"
-										touched={ touched }
-										label={ __(
-											'Daytime slot until',
-											'booking-suite'
-										) }
-									/>
-								</div>
-
-								<p className="text-sm text-muted-foreground">
-									{ __(
-										'On the days listed above, that one fixed block is the whole daytime offer — free start times are not shown, and an overnight stay is the other option. On every other day guests pick their own start time.',
-										'booking-suite'
-									) }
-								</p>
 
 								<div className="grid gap-4 sm:grid-cols-2">
 									<Field
@@ -1249,6 +1145,16 @@ function Field( {
 							/>
 						) : (
 							<Input
+								/*
+								 * A time field is shown on a 24-hour clock
+								 * whatever the browser's own language is; see
+								 * clockLang(). Harmless on every other type.
+								 */
+								lang={
+									'time' === rest.type
+										? clockLang()
+										: undefined
+								}
 								{ ...rest }
 								{ ...field }
 								onChange={ ( event ) =>

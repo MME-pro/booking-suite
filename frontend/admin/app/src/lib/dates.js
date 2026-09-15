@@ -170,3 +170,32 @@ export function formatClock( date ) {
 		{ hour: '2-digit', minute: '2-digit', hour12: false }
 	).format( date );
 }
+
+/**
+ * The `lang` a time input must carry to show a 24-hour clock.
+ *
+ * `<input type="time">` has no attribute for this. Browsers pick the clock
+ * from the element's language, and an admin whose browser is set to US English
+ * gets an AM/PM field with a third box to tab through — in a plugin whose
+ * every other time, from the calendar to the invoices, is 24-hour. The stored
+ * value is "14:30" either way; only what the operator types is different.
+ *
+ * The site's own locale is used where it is already a 24-hour one, so a German
+ * admin gets a German field. Where it is not, en-GB stands in: still English,
+ * still 24-hour.
+ *
+ * @return {string} A BCP-47 tag for the input's lang attribute.
+ */
+export function clockLang() {
+	const locale = String( settings.locale || 'de_DE' ).replace( '_', '-' );
+
+	try {
+		const { hour12 } = new Intl.DateTimeFormat( locale, {
+			hour: 'numeric',
+		} ).resolvedOptions();
+
+		return hour12 ? 'en-GB' : locale;
+	} catch ( error ) {
+		return 'en-GB';
+	}
+}
