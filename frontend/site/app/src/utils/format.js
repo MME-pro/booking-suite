@@ -9,7 +9,40 @@ import { settings } from '../services/apartmentService';
 const toBcp47 = ( locale ) => String( locale || 'de_DE' ).replace( '_', '-' );
 
 /**
+ * WordPress' factory date format.
+ *
+ * Every site has this until somebody changes it, and changing the site
+ * LANGUAGE does not change it — so an install set up in English and later
+ * switched to German keeps writing dates the American way. That is how a
+ * German booking flow ends up saying "Am September 19, 2026 ist nichts frei":
+ * the month name is translated, because wpFormat asks Intl for it, but the
+ * ORDER comes from this string and this string is not German.
+ *
+ * So it is read as "nobody chose a format" rather than as a choice.
+ */
+const UNCHOSEN_DATE_FORMAT = 'F j, Y';
+
+/**
+ * A date written the way the guest's own language writes dates.
+ *
+ * @param {Date} date The date.
+ * @return {string} '19. September 2026' in German, 'September 19, 2026' in
+ *                  American English, and so on.
+ */
+const localeDate = ( date ) =>
+	new Intl.DateTimeFormat( toBcp47( settings.locale ), {
+		day: 'numeric',
+		month: 'long',
+		year: 'numeric',
+	} ).format( date );
+
+/**
  * A 'yyyy-mm-dd' date, written the way Settings → General says.
+ *
+ * Except when Settings → General has never been touched — see above. A format
+ * the owner actually picked is still honoured exactly as typed, tokens and
+ * punctuation and all; only WordPress' own default gives way to the language
+ * the page is being read in.
  *
  * Returns the input unchanged when it will not parse, so a malformed value
  * shows as itself rather than as "Invalid Date" in the middle of a booking
@@ -21,9 +54,17 @@ const toBcp47 = ( locale ) => String( locale || 'de_DE' ).replace( '_', '-' );
 export function formatWpDate( key ) {
 	const date = fromKey( key );
 
-	return date
-		? wpFormat( date, settings.dateFormat || 'j F Y', settings.locale )
-		: String( key ?? '' );
+	if ( ! date ) {
+		return String( key ?? '' );
+	}
+
+	const format = String( settings.dateFormat ?? '' ).trim();
+
+	if ( '' === format || UNCHOSEN_DATE_FORMAT === format ) {
+		return localeDate( date );
+	}
+
+	return wpFormat( date, format, settings.locale );
 }
 
 /**
