@@ -3222,11 +3222,20 @@
  * and long-press like one, and armour.css only strips the background off
  * buttons — so this needs no root-first selector to hold its own.
  */
+/* The two ways onward, side by side and wrapping on a phone. */
+.bks-done__actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	margin: 16px 0 0;
+}
+
+.bks-done__link,
 .bks-done__download {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
-	margin: 16px 0 0;
 	padding: 10px 16px;
 	border: 1px solid var(--bks-line, #e2e8f0);
 	border-radius: 999px;
@@ -3236,6 +3245,8 @@
 	text-decoration: none;
 }
 
+.bks-done__link:hover,
+.bks-done__link:focus-visible,
 .bks-done__download:hover,
 .bks-done__download:focus-visible {
 	border-color: var(--bks-accent, #6d28d9);

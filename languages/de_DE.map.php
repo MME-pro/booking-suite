@@ -1753,4 +1753,5 @@ Gute Reise und bis bald.
 	'Enter how much was received.' => 'Bitte geben Sie den erhaltenen Betrag an.',
 	'That booking no longer exists.' => 'Diese Buchung existiert nicht mehr.',
 	'The payment could not be recorded.' => 'Die Zahlung konnte nicht erfasst werden.',
+	'Open your booking page' => 'Buchungsseite öffnen',
 );

@@ -71,11 +71,36 @@ final class BookingEmails {
 		$stored = (string) $definition['body'];
 
 		/*
+		 * The same for the link to the payment page, and for the same reason
+		 * only more so — it is the one thing in this email that does the
+		 * guest's work for them.
+		 *
+		 * This catches the case that actually happens: the shipped default
+		 * carries {{payment_link}}, but a template someone edited before the
+		 * payment page existed carries whatever it carried then, and a saved
+		 * copy always beats the default. Without this, updating the plugin
+		 * silently leaves those sites sending an email with no way back into
+		 * the booking.
+		 *
+		 * Either token counts. An owner who has placed the raw {{payment_url}}
+		 * inside a sentence of their own has already said where it goes, and a
+		 * button under it would be the same link twice.
+		 */
+		if ( ! str_contains( $stored, '{{payment_link}}' )
+			&& ! str_contains( $stored, '{{payment_url}}' )
+			&& self::owes( $booking ) ) {
+			$stored .= "\n{{payment_link}}";
+		}
+
+		/*
 		 * If the template does not place the account itself, and the guest
 		 * still owes something, it goes on the end. Telling somebody what is
 		 * outstanding without telling them where to send it is the email they
 		 * have to reply to — and every one of those replies is the owner's
 		 * evening.
+		 *
+		 * After the link, not before: the page is the easy way and the typed
+		 * details are the fallback.
 		 */
 		if ( ! str_contains( $stored, '{{bank_details}}' ) && self::owes( $booking ) ) {
 			$stored .= "\n{{bank_details}}";

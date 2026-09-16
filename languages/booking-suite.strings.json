@@ -691,10 +691,10 @@
     },
     {
         "single": "%s is no longer available for these dates. Please adjust it and try again.",
-        "line": 547,
+        "line": 555,
         "comment": "translators: %s: name of the extra.",
         "refs": [
-            "backend/APIs/PublicBookingController.php:547"
+            "backend/APIs/PublicBookingController.php:555"
         ],
         "comments": {
             "translators: %s: name of the extra.": true
@@ -1029,12 +1029,12 @@
     },
     {
         "single": "Account holder",
-        "line": 475,
+        "line": 500,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:475",
+            "backend/Support/BookingEmails.php:500",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:629",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:90",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:104",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:299"
         ],
         "comments": []
@@ -1552,19 +1552,19 @@
     },
     {
         "single": "Anna",
-        "line": 328,
+        "line": 353,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:328"
+            "backend/Support/BookingEmails.php:353"
         ],
         "comments": []
     },
     {
         "single": "Anna Schmidt",
-        "line": 327,
+        "line": 352,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:327"
+            "backend/Support/BookingEmails.php:352"
         ],
         "comments": []
     },
@@ -2039,12 +2039,12 @@
     },
     {
         "single": "BIC",
-        "line": 485,
+        "line": 510,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:485",
+            "backend/Support/BookingEmails.php:510",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:659",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:99",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:113",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:307"
         ],
         "comments": []
@@ -2118,10 +2118,10 @@
     },
     {
         "single": "Bank",
-        "line": 479,
+        "line": 504,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:479",
+            "backend/Support/BookingEmails.php:504",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:638",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:308"
         ],
@@ -2129,10 +2129,10 @@
     },
     {
         "single": "Bank details",
-        "line": 492,
+        "line": 517,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:492"
+            "backend/Support/BookingEmails.php:517"
         ],
         "comments": []
     },
@@ -3012,10 +3012,10 @@
     },
     {
         "single": "Check-in cannot be in the past.",
-        "line": 790,
+        "line": 798,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:790"
+            "backend/APIs/PublicBookingController.php:798"
         ],
         "comments": []
     },
@@ -3041,10 +3041,10 @@
     },
     {
         "single": "Check-out must be after check-in.",
-        "line": 773,
+        "line": 781,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:773",
+            "backend/APIs/PublicBookingController.php:781",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:147"
         ],
         "comments": []
@@ -4246,10 +4246,10 @@
     },
     {
         "single": "Download your booking confirmation (PDF)",
-        "line": 78,
+        "line": 88,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:78"
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:88"
         ],
         "comments": []
     },
@@ -4805,10 +4805,10 @@
     },
     {
         "single": "For your records, these are the account details your payment was made to.",
-        "line": 501,
+        "line": 526,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:501"
+            "backend/Support/BookingEmails.php:526"
         ],
         "comments": []
     },
@@ -4916,7 +4916,7 @@
         "comment": "",
         "refs": [
             "backend/APIs/HolidaysController.php:83",
-            "backend/APIs/PublicBookingController.php:356"
+            "backend/APIs/PublicBookingController.php:364"
         ],
         "comments": []
     },
@@ -5301,12 +5301,12 @@
     },
     {
         "single": "IBAN",
-        "line": 482,
+        "line": 507,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:482",
+            "backend/Support/BookingEmails.php:507",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:648",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:94",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:108",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:303"
         ],
         "comments": []
@@ -5333,10 +5333,10 @@
     },
     {
         "single": "If you have not paid yet, please transfer %s to the account below. Once it arrives we will confirm your booking by email.",
-        "line": 498,
+        "line": 523,
         "comment": "translators: %s: the amount still outstanding, with currency.",
         "refs": [
-            "backend/Support/BookingEmails.php:498"
+            "backend/Support/BookingEmails.php:523"
         ],
         "comments": {
             "translators: %s: the amount still outstanding, with currency.": true
@@ -6898,10 +6898,10 @@
     },
     {
         "single": "Open the payment page",
-        "line": 429,
+        "line": 454,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:429"
+            "backend/Support/BookingEmails.php:454"
         ],
         "comments": []
     },
@@ -6913,6 +6913,15 @@
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:737",
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:159",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:168"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Open your booking page",
+        "line": 79,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:79"
         ],
         "comments": []
     },
@@ -7357,11 +7366,11 @@
     },
     {
         "single": "Payment reference",
-        "line": 489,
+        "line": 514,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:489",
-            "frontend/site/app/src/components/BookingModal/StepDone.jsx:104",
+            "backend/Support/BookingEmails.php:514",
+            "frontend/site/app/src/components/BookingModal/StepDone.jsx:118",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:317"
         ],
         "comments": []
@@ -7596,38 +7605,38 @@
     },
     {
         "single": "Please choose a date.",
-        "line": 405,
+        "line": 413,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:405",
-            "backend/APIs/PublicBookingController.php:949"
+            "backend/APIs/PublicBookingController.php:413",
+            "backend/APIs/PublicBookingController.php:957"
         ],
         "comments": []
     },
     {
         "single": "Please choose a start time.",
-        "line": 955,
+        "line": 963,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:955"
+            "backend/APIs/PublicBookingController.php:963"
         ],
         "comments": []
     },
     {
         "single": "Please choose both dates.",
-        "line": 767,
+        "line": 775,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:767"
+            "backend/APIs/PublicBookingController.php:775"
         ],
         "comments": []
     },
     {
         "single": "Please choose how long you need.",
-        "line": 963,
+        "line": 971,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:963"
+            "backend/APIs/PublicBookingController.php:971"
         ],
         "comments": []
     },
@@ -7642,10 +7651,10 @@
     },
     {
         "single": "Please confirm your email address before booking.",
-        "line": 521,
+        "line": 529,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:521"
+            "backend/APIs/PublicBookingController.php:529"
         ],
         "comments": []
     },
@@ -7660,29 +7669,29 @@
     },
     {
         "single": "Please give a valid email address.",
-        "line": 503,
+        "line": 511,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:503",
+            "backend/APIs/PublicBookingController.php:511",
             "backend/Support/EmailVerification.php:81"
         ],
         "comments": []
     },
     {
         "single": "Please give your first and last name.",
-        "line": 499,
+        "line": 507,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:499"
+            "backend/APIs/PublicBookingController.php:507"
         ],
         "comments": []
     },
     {
         "single": "Please quote %s as the payment reference so we can match your transfer to your booking.",
-        "line": 523,
+        "line": 548,
         "comment": "translators: %s: the booking reference.",
         "refs": [
-            "backend/Support/BookingEmails.php:523"
+            "backend/Support/BookingEmails.php:548"
         ],
         "comments": {
             "translators: %s: the booking reference.": true
@@ -9105,10 +9114,10 @@
     },
     {
         "single": "Stays are limited to %d nights.",
-        "line": 781,
+        "line": 789,
         "comment": "translators: %d: maximum number of nights.",
         "refs": [
-            "backend/APIs/PublicBookingController.php:781"
+            "backend/APIs/PublicBookingController.php:789"
         ],
         "comments": {
             "translators: %d: maximum number of nights.": true
@@ -9193,10 +9202,10 @@
     },
     {
         "single": "Studio Rheinblick",
-        "line": 330,
+        "line": 355,
         "comment": "",
         "refs": [
-            "backend/Support/BookingEmails.php:330"
+            "backend/Support/BookingEmails.php:355"
         ],
         "comments": []
     },
@@ -9690,10 +9699,10 @@
     },
     {
         "single": "That time has already passed.",
-        "line": 987,
+        "line": 995,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:987"
+            "backend/APIs/PublicBookingController.php:995"
         ],
         "comments": []
     },
@@ -9739,7 +9748,7 @@
         "comment": "",
         "refs": [
             "backend/APIs/BookingsController.php:244",
-            "backend/APIs/PublicBookingController.php:642"
+            "backend/APIs/PublicBookingController.php:650"
         ],
         "comments": []
     },
@@ -10175,23 +10184,23 @@
     },
     {
         "single": "This apartment cannot be booked online yet — no price has been set for it. Please get in touch and we will arrange it with you.",
-        "line": 573,
+        "line": 581,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:573",
+            "backend/APIs/PublicBookingController.php:581",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:388"
         ],
         "comments": []
     },
     {
         "single": "This apartment cannot be booked.",
-        "line": 292,
+        "line": 300,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:292",
-            "backend/APIs/PublicBookingController.php:347",
-            "backend/APIs/PublicBookingController.php:399",
-            "backend/APIs/PublicBookingController.php:726"
+            "backend/APIs/PublicBookingController.php:300",
+            "backend/APIs/PublicBookingController.php:355",
+            "backend/APIs/PublicBookingController.php:407",
+            "backend/APIs/PublicBookingController.php:734"
         ],
         "comments": []
     },
@@ -10229,11 +10238,11 @@
     },
     {
         "single": "This apartment takes at most %d guest.",
-        "line": 746,
+        "line": 754,
         "plural": "This apartment takes at most %d guests.",
         "comment": "translators: %d: the largest party the apartment takes.",
         "refs": [
-            "backend/APIs/PublicBookingController.php:746"
+            "backend/APIs/PublicBookingController.php:754"
         ],
         "comments": {
             "translators: %d: the largest party the apartment takes.": true
@@ -10340,10 +10349,10 @@
     },
     {
         "single": "Those dates have just been taken. Please choose another window.",
-        "line": 531,
+        "line": 539,
         "comment": "",
         "refs": [
-            "backend/APIs/PublicBookingController.php:531"
+            "backend/APIs/PublicBookingController.php:539"
         ],
         "comments": []
     },

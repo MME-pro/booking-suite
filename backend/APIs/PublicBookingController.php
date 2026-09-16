@@ -272,6 +272,14 @@ final class PublicBookingController {
 			 * query-string form, and building it here keeps the download
 			 * working either way.
 			 */
+			/*
+			 * The page itself. The thank-you screen sits on this same URL,
+			 * so a guest who has just pressed the button has nowhere obvious
+			 * to go back to — and the commonest thing they want next is the
+			 * IBAN they were looking at a moment ago.
+			 */
+			'bookingUrl'       => PaymentLink::url( (int) ( $booking['id'] ?? 0 ) ),
+
 			'confirmationUrl'  => add_query_arg(
 				PaymentPage::DOCUMENT_VAR,
 				'confirmation',

@@ -70,14 +70,28 @@ export default function StepDone( { payment } ) {
 			 * expenses claim, needs it now rather than after the transfer
 			 * clears.
 			 */ }
-			{ payment.confirmationUrl && (
-				<a
-					className="bks-done__download"
-					href={ payment.confirmationUrl }
-				>
-					{ __( 'Download your booking confirmation (PDF)', 'booking-suite' ) }
-				</a>
-			) }
+			<div className="bks-done__actions">
+				{ payment.bookingUrl && (
+					<a
+						className="bks-done__link"
+						href={ payment.bookingUrl }
+					>
+						{ __( 'Open your booking page', 'booking-suite' ) }
+					</a>
+				) }
+
+				{ payment.confirmationUrl && (
+					<a
+						className="bks-done__download"
+						href={ payment.confirmationUrl }
+					>
+						{ __(
+							'Download your booking confirmation (PDF)',
+							'booking-suite'
+						) }
+					</a>
+				) }
+			</div>
 
 			{ /*
 			 * Shown again rather than linked to. A guest on a phone who has
