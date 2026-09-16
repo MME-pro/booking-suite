@@ -79,20 +79,12 @@ export default function SystemStatus() {
 			return __( 'All templates off', 'booking-suite' );
 		}
 
-		const counts = sprintf(
+		return sprintf(
 			/* translators: 1: enabled templates, 2: total templates. */
 			__( '%1$d of %2$d templates on', 'booking-suite' ),
 			email.enabled ?? 0,
 			email.total ?? 0
 		);
-
-		/*
-		 * Worth flagging: on most live hosts the stock PHP mailer is silently
-		 * dropped, and nothing else in the admin would say so.
-		 */
-		return email.smtp
-			? counts
-			: `${ counts } · ${ __( 'no SMTP plugin', 'booking-suite' ) }`;
 	};
 
 	return (
@@ -113,11 +105,7 @@ export default function SystemStatus() {
 				icon={ Mail }
 				label={ __( 'Email', 'booking-suite' ) }
 				detail={ emailDetail() }
-				/*
-				 * Amber without SMTP, not green: templates being switched on is
-				 * not the same as mail arriving.
-				 */
-				ok={ Boolean( status && email.ok && email.smtp ) }
+				ok={ Boolean( status && email.ok ) }
 				unknown={ ! status }
 			/>
 

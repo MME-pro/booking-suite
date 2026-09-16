@@ -1072,7 +1072,7 @@ msgid "Booking Suite"
 msgstr "Booking Suite"
 
 #. translators: %s: plugin version.
-#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:128
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:116
 msgid "Booking Suite %s"
 msgstr "Booking Suite %s"
 
@@ -1693,7 +1693,7 @@ msgstr "Tagesübersicht (Betreiber)"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:106
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:98
 msgid "Database"
 msgstr "Datenbank"
 
@@ -1939,7 +1939,7 @@ msgstr "Buchung bearbeiten"
 msgid "Edited"
 msgstr "Bearbeitet"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:710 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:114 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:931 frontend/site/app/src/components/BookingModal/StepDetails.jsx:31
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:710 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:106 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:931 frontend/site/app/src/components/BookingModal/StepDetails.jsx:31
 msgid "Email"
 msgstr "E-Mail"
 
@@ -4048,7 +4048,8 @@ msgid "Sync now"
 msgstr "Jetzt synchronisieren"
 
 #. translators: 1: who made the change, 2: when.
-#: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:261 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:101
+#. translators: 1: enabled templates, 2: total templates.
+#: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:261 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:93
 msgid "System"
 msgstr "System"
 
@@ -5022,11 +5023,6 @@ msgstr "inkl. %s Rabatt"
 #: frontend/admin/app/src/pages/Settings/RecipientsField.jsx:117
 msgid "name@example.com"
 msgstr "name@example.com"
-
-#. translators: 1: enabled templates, 2: total templates.
-#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:95
-msgid "no SMTP plugin"
-msgstr "kein SMTP-Plugin"
 
 #. translators: %s: the reason the last read failed.
 #: backend/APIs/IcalController.php:544 backend/PostTypes/ApartmentMetaBox.php:695 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:945

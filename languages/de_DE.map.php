@@ -814,7 +814,6 @@ return array(
 	'e.g. Studio Rheinblick' => 'z. B. Studio Rheinblick',
 	'from' => 'ab',
 	'holiday' => 'Feiertag',
-	'no SMTP plugin' => 'kein SMTP-Plugin',
 	'save %s' => '%s sparen',
 	'until %s' => 'bis %s',
 	'weekend' => 'Wochenende',

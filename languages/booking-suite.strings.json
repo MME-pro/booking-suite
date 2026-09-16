@@ -2369,10 +2369,10 @@
     },
     {
         "single": "Booking Suite %s",
-        "line": 128,
+        "line": 116,
         "comment": "translators: %s: plugin version.",
         "refs": [
-            "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:128"
+            "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:116"
         ],
         "comments": {
             "translators: %s: plugin version.": true
@@ -3824,10 +3824,10 @@
     },
     {
         "single": "Database",
-        "line": 106,
+        "line": 98,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:106"
+            "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:98"
         ],
         "comments": []
     },
@@ -4387,7 +4387,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:710",
-            "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:114",
+            "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:106",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:931",
             "frontend/site/app/src/components/BookingModal/StepDetails.jsx:31"
         ],
@@ -9279,10 +9279,11 @@
         "comment": "translators: 1: who made the change, 2: when.",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:261",
-            "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:101"
+            "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:93"
         ],
         "comments": {
-            "translators: 1: who made the change, 2: when.": true
+            "translators: 1: who made the change, 2: when.": true,
+            "translators: 1: enabled templates, 2: total templates.": true
         }
     },
     {
@@ -11480,17 +11481,6 @@
             "frontend/admin/app/src/pages/Settings/RecipientsField.jsx:117"
         ],
         "comments": []
-    },
-    {
-        "single": "no SMTP plugin",
-        "line": 95,
-        "comment": "translators: 1: enabled templates, 2: total templates.",
-        "refs": [
-            "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:95"
-        ],
-        "comments": {
-            "translators: 1: enabled templates, 2: total templates.": true
-        }
     },
     {
         "single": "no reason given",

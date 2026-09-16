@@ -1073,7 +1073,7 @@ msgid "Booking Suite"
 msgstr ""
 
 #. translators: %s: plugin version.
-#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:128
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:116
 msgid "Booking Suite %s"
 msgstr ""
 
@@ -1694,7 +1694,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:106
+#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:98
 msgid "Database"
 msgstr ""
 
@@ -1940,7 +1940,7 @@ msgstr ""
 msgid "Edited"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:710 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:114 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:931 frontend/site/app/src/components/BookingModal/StepDetails.jsx:31
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:710 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:106 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:931 frontend/site/app/src/components/BookingModal/StepDetails.jsx:31
 msgid "Email"
 msgstr ""
 
@@ -4049,7 +4049,8 @@ msgid "Sync now"
 msgstr ""
 
 #. translators: 1: who made the change, 2: when.
-#: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:261 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:101
+#. translators: 1: enabled templates, 2: total templates.
+#: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:261 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:93
 msgid "System"
 msgstr ""
 
@@ -5022,11 +5023,6 @@ msgstr ""
 
 #: frontend/admin/app/src/pages/Settings/RecipientsField.jsx:117
 msgid "name@example.com"
-msgstr ""
-
-#. translators: 1: enabled templates, 2: total templates.
-#: frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:95
-msgid "no SMTP plugin"
 msgstr ""
 
 #. translators: %s: the reason the last read failed.
