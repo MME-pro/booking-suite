@@ -35,6 +35,7 @@ use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Repositories\CustomersRepository;
 use BookingSuite\Backend\Repositories\ExtrasRepository;
 use BookingSuite\Backend\Repositories\PaymentsRepository;
+use BookingSuite\Backend\Repositories\SettingsRepository;
 use BookingSuite\Backend\Schemas\BookingsTable;
 use BookingSuite\Backend\Schemas\CustomersTable;
 use BookingSuite\Backend\Schemas\ExtraBookingTable;
@@ -234,8 +235,11 @@ foreach ( $specs as $index => $spec ) {
 		$ends   = $starts->modify( sprintf( '+%d hours', (int) $spec['hours'] ) );
 		$base   = $hourly * (int) $spec['hours'];
 	} else {
-		$starts = $day->modify( '15:00' );
-		$ends   = $day->modify( sprintf( '+%d days', (int) $spec['nights'] ) )->modify( '11:00' );
+		// The window has to match the configured overnight times exactly, or
+		// BookingsTable::type_for() files the stay as hourly.
+		$starts = $day->modify( SettingsRepository::get( SettingsRepository::OVERNIGHT_START ) );
+		$ends   = $day->modify( sprintf( '+%d days', (int) $spec['nights'] ) )
+			->modify( SettingsRepository::get( SettingsRepository::OVERNIGHT_END ) );
 		$base   = $nightly * (int) $spec['nights'];
 	}
 
