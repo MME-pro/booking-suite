@@ -766,10 +766,10 @@
     },
     {
         "single": "1 is Monday, 7 is Sunday. Separate with commas, or leave empty for no daytime slot.",
-        "line": 546,
+        "line": 550,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:546"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:550"
         ],
         "comments": []
     },
@@ -966,19 +966,19 @@
     },
     {
         "single": "A stay that begins and ends on the same day. Usually 19%.",
-        "line": 709,
+        "line": 713,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:709"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:713"
         ],
         "comments": []
     },
     {
         "single": "A stay that crosses midnight. In Germany accommodation is usually 7%.",
-        "line": 692,
+        "line": 696,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:692"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:696"
         ],
         "comments": []
     },
@@ -1042,7 +1042,7 @@
         "comment": "",
         "refs": [
             "backend/Support/BookingEmails.php:500",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:734",
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:738",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:104",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:299"
         ],
@@ -1218,10 +1218,10 @@
     },
     {
         "single": "Add as many as you like. Left empty, the summary goes to the notification address on the Company tab.",
-        "line": 902,
+        "line": 906,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:902"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:906"
         ],
         "comments": []
     },
@@ -1290,10 +1290,10 @@
     },
     {
         "single": "Additional details",
-        "line": 774,
+        "line": 778,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:774"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:778"
         ],
         "comments": []
     },
@@ -1311,10 +1311,10 @@
     },
     {
         "single": "Address",
-        "line": 1014,
+        "line": 1018,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1014"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1018"
         ],
         "comments": []
     },
@@ -1329,10 +1329,10 @@
     },
     {
         "single": "Admin email",
-        "line": 1045,
+        "line": 1049,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1045"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1049"
         ],
         "comments": []
     },
@@ -1538,10 +1538,10 @@
     },
     {
         "single": "Also the hours a night imported from Airbnb or Booking.com occupies, so a portal stay blocks the same window a direct one does.",
-        "line": 529,
+        "line": 533,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:529"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:533"
         ],
         "comments": []
     },
@@ -1645,10 +1645,10 @@
     },
     {
         "single": "Anything else to print under the account.",
-        "line": 778,
+        "line": 782,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:778"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:782"
         ],
         "comments": []
     },
@@ -2061,7 +2061,7 @@
         "comment": "",
         "refs": [
             "backend/Support/BookingEmails.php:510",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:764",
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:768",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:113",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:307"
         ],
@@ -2140,7 +2140,7 @@
         "comment": "",
         "refs": [
             "backend/Support/BookingEmails.php:504",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:743",
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:747",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:308"
         ],
         "comments": []
@@ -2204,10 +2204,10 @@
     },
     {
         "single": "Before 06:00 the summary reports on the day that has just ended; from 06:00 onwards it reports on the day in progress.",
-        "line": 876,
+        "line": 880,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:876"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:880"
         ],
         "comments": []
     },
@@ -2231,10 +2231,10 @@
     },
     {
         "single": "Beyond this, the per-hour surcharge applies. A price, not a limit.",
-        "line": 592,
+        "line": 596,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:592"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:596"
         ],
         "comments": []
     },
@@ -2660,6 +2660,18 @@
         "comments": []
     },
     {
+        "single": "Bookings run to %d hour at most.",
+        "line": 164,
+        "plural": "Bookings run to %d hours at most.",
+        "comment": "translators: %d: the longest bookable length, in hours.",
+        "refs": [
+            "backend/Pricing/SlotGenerator.php:164"
+        ],
+        "comments": {
+            "translators: %d: the longest bookable length, in hours.": true
+        }
+    },
+    {
         "single": "Bookings start at %d hour.",
         "line": 137,
         "plural": "Bookings start at %d hours.",
@@ -3024,7 +3036,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:190",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:542",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:515",
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:519",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:107"
         ],
         "comments": []
@@ -3054,7 +3066,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:197",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:564",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:525",
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:529",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:122"
         ],
         "comments": []
@@ -3357,10 +3369,10 @@
     },
     {
         "single": "Closing line",
-        "line": 1165,
+        "line": 1169,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1165"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1169"
         ],
         "comments": []
     },
@@ -3403,28 +3415,28 @@
     },
     {
         "single": "Company information",
-        "line": 953,
+        "line": 957,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:953"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:957"
         ],
         "comments": []
     },
     {
         "single": "Company logo",
-        "line": 968,
+        "line": 972,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:968"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:972"
         ],
         "comments": []
     },
     {
         "single": "Company name",
-        "line": 1002,
+        "line": 1006,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1002"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1006"
         ],
         "comments": []
     },
@@ -3815,10 +3827,10 @@
     },
     {
         "single": "Daily summary",
-        "line": 830,
+        "line": 834,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:830"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:834"
         ],
         "comments": []
     },
@@ -3914,10 +3926,10 @@
     },
     {
         "single": "Days from the invoice date to the due date.",
-        "line": 1152,
+        "line": 1156,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1152"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1156"
         ],
         "comments": []
     },
@@ -3932,28 +3944,28 @@
     },
     {
         "single": "Daytime slot days",
-        "line": 541,
+        "line": 545,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:541"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:545"
         ],
         "comments": []
     },
     {
         "single": "Daytime slot from",
-        "line": 556,
+        "line": 560,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:556"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:560"
         ],
         "comments": []
     },
     {
         "single": "Daytime slot until",
-        "line": 566,
+        "line": 570,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:566"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:570"
         ],
         "comments": []
     },
@@ -4266,10 +4278,10 @@
     },
     {
         "single": "Discount for paying in advance (%)",
-        "line": 669,
+        "line": 673,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:669"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:673"
         ],
         "comments": []
     },
@@ -4353,19 +4365,19 @@
     },
     {
         "single": "Each booking is filed as overnight or hourly from its dates, and carries that for good. Guests are only ever shown the gross amount and \"incl. statutory VAT\" — the split appears on the invoice alone.",
-        "line": 723,
+        "line": 727,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:723"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:727"
         ],
         "comments": []
     },
     {
         "single": "Earliest start time",
-        "line": 488,
+        "line": 492,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:488"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:492"
         ],
         "comments": []
     },
@@ -4444,7 +4456,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:710",
             "frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:106",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1036",
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1040",
             "frontend/site/app/src/components/BookingModal/StepDetails.jsx:31"
         ],
         "comments": []
@@ -4471,10 +4483,10 @@
     },
     {
         "single": "Email notifications",
-        "line": 812,
+        "line": 816,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:812"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:816"
         ],
         "comments": []
     },
@@ -4489,10 +4501,10 @@
     },
     {
         "single": "Email sent by the plugin.",
-        "line": 790,
+        "line": 794,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:790"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:794"
         ],
         "comments": []
     },
@@ -4619,10 +4631,10 @@
     },
     {
         "single": "Entered once here, and used on the invoice and in the header of every guest email.",
-        "line": 957,
+        "line": 961,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:957"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:961"
         ],
         "comments": []
     },
@@ -5128,20 +5140,11 @@
         "comments": []
     },
     {
-        "single": "Guests only. The booking form opens on this length, and anything shorter is refused. You are not held to it when booking from the admin.",
-        "line": 450,
-        "comment": "",
-        "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:450"
-        ],
-        "comments": []
-    },
-    {
         "single": "Guests the base rate covers",
-        "line": 604,
+        "line": 608,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:604"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:608"
         ],
         "comments": []
     },
@@ -5212,10 +5215,10 @@
     },
     {
         "single": "Hold the dates for (hours)",
-        "line": 651,
+        "line": 655,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:651"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:655"
         ],
         "comments": []
     },
@@ -5239,10 +5242,10 @@
     },
     {
         "single": "Hours the base rate covers",
-        "line": 588,
+        "line": 592,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:588"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:592"
         ],
         "comments": []
     },
@@ -5257,19 +5260,19 @@
     },
     {
         "single": "How guests pay you.",
-        "line": 634,
+        "line": 638,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:634"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:638"
         ],
         "comments": []
     },
     {
         "single": "How long a booking keeps its dates while the transfer is awaited. The guest is told this number at checkout and again on the payment page, and a booking whose money has not arrived by then is cancelled and its dates released.",
-        "line": 655,
+        "line": 659,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:655"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:659"
         ],
         "comments": []
     },
@@ -5361,7 +5364,7 @@
         "comment": "",
         "refs": [
             "backend/Support/BookingEmails.php:507",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:753",
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:757",
             "frontend/site/app/src/components/BookingModal/StepDone.jsx:108",
             "frontend/site/app/src/components/BookingModal/StepTransfer.jsx:303"
         ],
@@ -5507,10 +5510,10 @@
     },
     {
         "single": "Invoice counter",
-        "line": 1112,
+        "line": 1116,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1112"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1116"
         ],
         "comments": []
     },
@@ -5534,10 +5537,10 @@
     },
     {
         "single": "Invoice number prefix",
-        "line": 1097,
+        "line": 1101,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1097"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1101"
         ],
         "comments": []
     },
@@ -5680,10 +5683,10 @@
     },
     {
         "single": "Latest start time",
-        "line": 498,
+        "line": 502,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:498"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:502"
         ],
         "comments": []
     },
@@ -5702,7 +5705,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:76",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1060"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1064"
         ],
         "comments": []
     },
@@ -6097,10 +6100,10 @@
     },
     {
         "single": "Minutes between start times",
-        "line": 475,
+        "line": 479,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:475"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:479"
         ],
         "comments": []
     },
@@ -6676,10 +6679,10 @@
     },
     {
         "single": "Notice",
-        "line": 1177,
+        "line": 1181,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1177"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1181"
         ],
         "comments": []
     },
@@ -6689,7 +6692,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:74",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:789"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:793"
         ],
         "comments": []
     },
@@ -6704,10 +6707,10 @@
     },
     {
         "single": "Numbers run PREFIX-YEAR-0001 and restart each year.",
-        "line": 1101,
+        "line": 1105,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1101"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1105"
         ],
         "comments": []
     },
@@ -6759,10 +6762,10 @@
     },
     {
         "single": "Off keeps the settings and the button below, but nothing is sent on a schedule.",
-        "line": 859,
+        "line": 863,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:859"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:863"
         ],
         "comments": []
     },
@@ -6787,19 +6790,19 @@
     },
     {
         "single": "On the days listed above, that one fixed block is the whole daytime offer — free start times are not shown, and an overnight stay is the other option. On every other day guests pick their own start time.",
-        "line": 574,
+        "line": 578,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:574"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:578"
         ],
         "comments": []
     },
     {
         "single": "On this day the daytime booking runs from %1$s to %2$s. For other times, please book an overnight stay.",
-        "line": 169,
+        "line": 196,
         "comment": "translators: 1: start time, 2: end time, both 24-hour.",
         "refs": [
-            "backend/Pricing/SlotGenerator.php:169"
+            "backend/Pricing/SlotGenerator.php:196"
         ],
         "comments": {
             "translators: 1: start time, 2: end time, both 24-hour.": true
@@ -6816,10 +6819,10 @@
     },
     {
         "single": "One email a day with that day's figures: bookings, money in, cancellations, and the list of who is arriving.",
-        "line": 831,
+        "line": 835,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:831"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:835"
         ],
         "comments": []
     },
@@ -6854,10 +6857,10 @@
     },
     {
         "single": "One line per line, as it should appear on the invoice.",
-        "line": 1015,
+        "line": 1019,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1015"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1019"
         ],
         "comments": []
     },
@@ -7297,7 +7300,7 @@
             "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:187",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:47",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:73",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:633",
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:637",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:486"
         ],
         "comments": []
@@ -7470,10 +7473,10 @@
     },
     {
         "single": "Payment term (days)",
-        "line": 1148,
+        "line": 1152,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1148"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1152"
         ],
         "comments": []
     },
@@ -7896,37 +7899,37 @@
     },
     {
         "single": "Printed at the top of the invoice and shown in the header of every guest email.",
-        "line": 988,
+        "line": 992,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:988"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:992"
         ],
         "comments": []
     },
     {
         "single": "Printed last, after a bold \"Hinweis:\" label.",
-        "line": 1178,
+        "line": 1182,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1178"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1182"
         ],
         "comments": []
     },
     {
         "single": "Printed on the invoice in groups of four, so a guest can read it across without losing their place.",
-        "line": 754,
+        "line": 758,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:754"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:758"
         ],
         "comments": []
     },
     {
         "single": "Privacy policy page",
-        "line": 1085,
+        "line": 1089,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1085"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1089"
         ],
         "comments": []
     },
@@ -8501,10 +8504,10 @@
     },
     {
         "single": "Save settings",
-        "line": 1192,
+        "line": 1196,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1192"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1196"
         ],
         "comments": []
     },
@@ -8536,7 +8539,7 @@
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:882",
             "frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:196",
             "frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:589",
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1191"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1195"
         ],
         "comments": []
     },
@@ -8723,19 +8726,19 @@
     },
     {
         "single": "Send at",
-        "line": 875,
+        "line": 879,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:875"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:879"
         ],
         "comments": []
     },
     {
         "single": "Send summary now",
-        "line": 929,
+        "line": 933,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:929"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:933"
         ],
         "comments": []
     },
@@ -8750,10 +8753,10 @@
     },
     {
         "single": "Send the summary automatically",
-        "line": 853,
+        "line": 857,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:853"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:857"
         ],
         "comments": []
     },
@@ -8768,29 +8771,29 @@
     },
     {
         "single": "Send to",
-        "line": 888,
+        "line": 892,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:888"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:892"
         ],
         "comments": []
     },
     {
         "single": "Sending…",
-        "line": 928,
+        "line": 932,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:928",
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:932",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:734"
         ],
         "comments": []
     },
     {
         "single": "Sends the saved settings, so save first if you have just changed the addresses.",
-        "line": 941,
+        "line": 945,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:941"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:945"
         ],
         "comments": []
     },
@@ -9389,10 +9392,10 @@
     },
     {
         "single": "Taken off the whole bill. At 0 there is no discount and no discount line anywhere — not on the checkout, not on the invoice.",
-        "line": 673,
+        "line": 677,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:673"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:677"
         ],
         "comments": []
     },
@@ -9434,10 +9437,10 @@
     },
     {
         "single": "Tax rate (%)",
-        "line": 1132,
+        "line": 1136,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1132"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1136"
         ],
         "comments": []
     },
@@ -9465,10 +9468,10 @@
     },
     {
         "single": "Telephone",
-        "line": 1026,
+        "line": 1030,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1026"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1030"
         ],
         "comments": []
     },
@@ -9510,10 +9513,10 @@
     },
     {
         "single": "Terms & conditions page",
-        "line": 1075,
+        "line": 1079,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1075"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1079"
         ],
         "comments": []
     },
@@ -9655,10 +9658,10 @@
     },
     {
         "single": "That day is no longer open for daytime bookings.",
-        "line": 155,
+        "line": 182,
         "comment": "",
         "refs": [
-            "backend/Pricing/SlotGenerator.php:155"
+            "backend/Pricing/SlotGenerator.php:182"
         ],
         "comments": []
     },
@@ -9833,6 +9836,15 @@
         "comment": "",
         "refs": [
             "backend/APIs/BookingsController.php:349"
+        ],
+        "comments": []
+    },
+    {
+        "single": "The booking form opens on this length, and anything shorter is refused — on the guest form and in the admin alike.",
+        "line": 450,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:450"
         ],
         "comments": []
     },
@@ -10023,19 +10035,19 @@
     },
     {
         "single": "The invoice the guest receives, and the pages it and the booking flow link to.",
-        "line": 1064,
+        "line": 1068,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1064"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1068"
         ],
         "comments": []
     },
     {
         "single": "The last time a booking may begin. A booking may still finish after it.",
-        "line": 502,
+        "line": 506,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:502"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:506"
         ],
         "comments": []
     },
@@ -10068,6 +10080,15 @@
         "comments": []
     },
     {
+        "single": "The longest a single booking may run. Anything longer is refused, wherever it is booked from.",
+        "line": 466,
+        "comment": "",
+        "refs": [
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:466"
+        ],
+        "comments": []
+    },
+    {
         "single": "The longest stay cannot be shorter than the shortest one.",
         "line": 556,
         "comment": "",
@@ -10078,19 +10099,19 @@
     },
     {
         "single": "The master switch. Off stops every guest email, whatever the individual templates say.",
-        "line": 818,
+        "line": 822,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:818"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:822"
         ],
         "comments": []
     },
     {
         "single": "The next number to issue. Only ever raises the sequence — it cannot reuse a number already sent.",
-        "line": 1116,
+        "line": 1120,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1116"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1120"
         ],
         "comments": []
     },
@@ -10727,10 +10748,10 @@
     },
     {
         "single": "Turnaround time is set per apartment. Open an apartment and choose its cleaning time — 30, 45 or 60 minutes — and that gap is kept free before and after every booking in it.",
-        "line": 622,
+        "line": 626,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:622"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:626"
         ],
         "comments": []
     },
@@ -10938,19 +10959,19 @@
     },
     {
         "single": "VAT on hourly bookings (%)",
-        "line": 705,
+        "line": 709,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:705"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:709"
         ],
         "comments": []
     },
     {
         "single": "VAT on overnight stays (%)",
-        "line": 688,
+        "line": 692,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:688"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:692"
         ],
         "comments": []
     },
@@ -11263,10 +11284,10 @@
     },
     {
         "single": "Where notifications for you are sent. Leave empty to use the WordPress admin address.",
-        "line": 1049,
+        "line": 1053,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1049"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1053"
         ],
         "comments": []
     },
@@ -11317,10 +11338,10 @@
     },
     {
         "single": "Worked back out of the price, which is what the guest pays. 0 shows no tax line.",
-        "line": 1136,
+        "line": 1140,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1136"
+            "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1140"
         ],
         "comments": []
     },

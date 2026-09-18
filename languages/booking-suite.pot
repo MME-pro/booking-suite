@@ -385,7 +385,7 @@ msgstr ""
 msgid "/ night"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:546
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:550
 msgid "1 is Monday, 7 is Sunday. Separate with commas, or leave empty for no daytime slot."
 msgstr ""
 
@@ -474,11 +474,11 @@ msgstr ""
 msgid "A star marks a required parameter. Hover any parameter for its type, or its allowed values where it has a fixed set."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:709
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:713
 msgid "A stay that begins and ends on the same day. Usually 19%."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:692
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:696
 msgid "A stay that crosses midnight. In Germany accommodation is usually 7%."
 msgstr ""
 
@@ -506,7 +506,7 @@ msgstr ""
 msgid "Accommodation"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:500 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:734 frontend/site/app/src/components/BookingModal/StepDone.jsx:104 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:299
+#: backend/Support/BookingEmails.php:500 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:738 frontend/site/app/src/components/BookingModal/StepDone.jsx:104 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:299
 msgid "Account holder"
 msgstr ""
 
@@ -579,7 +579,7 @@ msgstr ""
 msgid "Add an extra — a breakfast, a parking space, a projector — and guests can add it while booking."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:902
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:906
 msgid "Add as many as you like. Left empty, the summary goes to the notification address on the Company tab."
 msgstr ""
 
@@ -611,7 +611,7 @@ msgstr ""
 msgid "Add your first apartment to start taking bookings for it."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:774
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:778
 msgid "Additional details"
 msgstr ""
 
@@ -622,7 +622,7 @@ msgid_plural "Additional guests (%d)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1014
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1018
 msgid "Address"
 msgstr ""
 
@@ -630,7 +630,7 @@ msgstr ""
 msgid "Admin"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1045
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1049
 msgid "Admin email"
 msgstr ""
 
@@ -719,7 +719,7 @@ msgstr ""
 msgid "Already over."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:529
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:533
 msgid "Also the hours a night imported from Airbnb or Booking.com occupies, so a portal stay blocks the same window a direct one does."
 msgstr ""
 
@@ -766,7 +766,7 @@ msgstr ""
 msgid "Any time"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:778
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:782
 msgid "Anything else to print under the account."
 msgstr ""
 
@@ -942,7 +942,7 @@ msgstr ""
 msgid "Awaiting payment"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:510 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:764 frontend/site/app/src/components/BookingModal/StepDone.jsx:113 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:307
+#: backend/Support/BookingEmails.php:510 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:768 frontend/site/app/src/components/BookingModal/StepDone.jsx:113 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:307
 msgid "BIC"
 msgstr ""
 
@@ -975,7 +975,7 @@ msgstr ""
 msgid "Balance due"
 msgstr ""
 
-#: backend/Support/BookingEmails.php:504 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:743 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:308
+#: backend/Support/BookingEmails.php:504 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:747 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:308
 msgid "Bank"
 msgstr ""
 
@@ -1004,7 +1004,7 @@ msgstr ""
 msgid "Base rate — first %d h"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:876
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:880
 msgid "Before 06:00 the summary reports on the day that has just ended; from 06:00 onwards it reports on the day in progress."
 msgstr ""
 
@@ -1016,7 +1016,7 @@ msgstr ""
 msgid "Beschreibung"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:592
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:596
 msgid "Beyond this, the per-hour surcharge applies. A price, not a limit."
 msgstr ""
 
@@ -1196,6 +1196,13 @@ msgstr ""
 msgid "Bookings are priced and invoiced in this currency."
 msgstr ""
 
+#. translators: %d: the longest bookable length, in hours.
+#: backend/Pricing/SlotGenerator.php:164
+msgid "Bookings run to %d hour at most."
+msgid_plural "Bookings run to %d hours at most."
+msgstr[0] ""
+msgstr[1] ""
+
 #. translators: %d: the shortest bookable length, in hours.
 #: backend/Pricing/SlotGenerator.php:137
 msgid "Bookings start at %d hour."
@@ -1350,7 +1357,7 @@ msgstr ""
 msgid "Check your spam folder if it has not arrived. Nothing is booked until you finish."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:190 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:542 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:515 frontend/site/app/src/components/BookingModal/StepStay.jsx:107
+#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:190 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:542 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:519 frontend/site/app/src/components/BookingModal/StepStay.jsx:107
 msgid "Check-in"
 msgstr ""
 
@@ -1362,7 +1369,7 @@ msgstr ""
 msgid "Check-ins this week"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:197 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:564 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:525 frontend/site/app/src/components/BookingModal/StepStay.jsx:122
+#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:197 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:564 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:529 frontend/site/app/src/components/BookingModal/StepStay.jsx:122
 msgid "Check-out"
 msgstr ""
 
@@ -1493,7 +1500,7 @@ msgstr ""
 msgid "Closes the apartments you choose for the window."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1165
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1169
 msgid "Closing line"
 msgstr ""
 
@@ -1513,15 +1520,15 @@ msgstr ""
 msgid "Company"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:953
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:957
 msgid "Company information"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:968
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:972
 msgid "Company logo"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1002
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1006
 msgid "Company name"
 msgstr ""
 
@@ -1690,7 +1697,7 @@ msgstr ""
 msgid "Daily"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:830
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:834
 msgid "Daily summary"
 msgstr ""
 
@@ -1731,7 +1738,7 @@ msgstr ""
 msgid "Day"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1152
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1156
 msgid "Days from the invoice date to the due date."
 msgstr ""
 
@@ -1739,15 +1746,15 @@ msgstr ""
 msgid "Daytime"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:541
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:545
 msgid "Daytime slot days"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:556
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:560
 msgid "Daytime slot from"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:566
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:570
 msgid "Daytime slot until"
 msgstr ""
 
@@ -1890,7 +1897,7 @@ msgstr ""
 msgid "Discount for advance payment (%s)"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:669
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:673
 msgid "Discount for paying in advance (%)"
 msgstr ""
 
@@ -1928,11 +1935,11 @@ msgstr ""
 msgid "E-Mail: %s"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:723
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:727
 msgid "Each booking is filed as overnight or hourly from its dates, and carries that for good. Guests are only ever shown the gross amount and \"incl. statutory VAT\" — the split appears on the invoice alone."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:488
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:492
 msgid "Earliest start time"
 msgstr ""
 
@@ -1964,7 +1971,7 @@ msgstr ""
 msgid "Edited"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:710 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:106 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1036 frontend/site/app/src/components/BookingModal/StepDetails.jsx:31
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:710 frontend/admin/app/src/pages/Dashboard/components/SystemStatus/SystemStatus.jsx:106 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1040 frontend/site/app/src/components/BookingModal/StepDetails.jsx:31
 msgid "Email"
 msgstr ""
 
@@ -1976,7 +1983,7 @@ msgstr ""
 msgid "Email confirmed."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:812
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:816
 msgid "Email notifications"
 msgstr ""
 
@@ -1984,7 +1991,7 @@ msgstr ""
 msgid "Email preview"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:790
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:794
 msgid "Email sent by the plugin."
 msgstr ""
 
@@ -2040,7 +2047,7 @@ msgstr ""
 msgid "Enter the name of the extra item."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:957
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:961
 msgid "Entered once here, and used on the invoice and in the header of every guest email."
 msgstr ""
 
@@ -2254,11 +2261,7 @@ msgstr ""
 msgid "Guests must be between 1 and 65535."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:450
-msgid "Guests only. The booking form opens on this length, and anything shorter is refused. You are not held to it when booking from the admin."
-msgstr ""
-
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:604
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:608
 msgid "Guests the base rate covers"
 msgstr ""
 
@@ -2291,7 +2294,7 @@ msgstr ""
 msgid "History"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:651
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:655
 msgid "Hold the dates for (hours)"
 msgstr ""
 
@@ -2303,7 +2306,7 @@ msgstr ""
 msgid "Hours"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:588
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:592
 msgid "Hours the base rate covers"
 msgstr ""
 
@@ -2311,11 +2314,11 @@ msgstr ""
 msgid "How"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:634
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:638
 msgid "How guests pay you."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:655
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:659
 msgid "How long a booking keeps its dates while the transfer is awaited. The guest is told this number at checkout and again on the payment page, and a booking whose money has not arrived by then is cancelled and its dates released."
 msgstr ""
 
@@ -2355,7 +2358,7 @@ msgstr ""
 msgid "I accept the terms and conditions and the privacy policy."
 msgstr ""
 
-#: backend/Support/BookingEmails.php:507 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:753 frontend/site/app/src/components/BookingModal/StepDone.jsx:108 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:303
+#: backend/Support/BookingEmails.php:507 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:757 frontend/site/app/src/components/BookingModal/StepDone.jsx:108 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:303
 msgid "IBAN"
 msgstr ""
 
@@ -2419,7 +2422,7 @@ msgstr ""
 msgid "Invoice %1$s, drawn at %2$s%% VAT."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1112
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1116
 msgid "Invoice counter"
 msgstr ""
 
@@ -2431,7 +2434,7 @@ msgstr ""
 msgid "Invoice logo"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1097
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1101
 msgid "Invoice number prefix"
 msgstr ""
 
@@ -2494,7 +2497,7 @@ msgstr ""
 msgid "Last stay"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:498
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:502
 msgid "Latest start time"
 msgstr ""
 
@@ -2502,7 +2505,7 @@ msgstr ""
 msgid "Leave it as it is"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1060 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:76
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1064 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:76
 msgid "Legal & invoice"
 msgstr ""
 
@@ -2675,7 +2678,7 @@ msgid_plural "Minimum %d hours"
 msgstr[0] ""
 msgstr[1] ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:475
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:479
 msgid "Minutes between start times"
 msgstr ""
 
@@ -2930,11 +2933,11 @@ msgstr ""
 msgid "Nothing was sent. Check that email notifications are on and that the daily summary template is enabled."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1177
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1181
 msgid "Notice"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:74 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:789
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:74 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:793
 msgid "Notifications"
 msgstr ""
 
@@ -2942,7 +2945,7 @@ msgstr ""
 msgid "Number of guests"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1101
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1105
 msgid "Numbers run PREFIX-YEAR-0001 and restart each year."
 msgstr ""
 
@@ -2966,7 +2969,7 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:859
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:863
 msgid "Off keeps the settings and the button below, but nothing is sent on a schedule."
 msgstr ""
 
@@ -2978,12 +2981,12 @@ msgstr ""
 msgid "On"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:574
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:578
 msgid "On the days listed above, that one fixed block is the whole daytime offer — free start times are not shown, and an overnight stay is the other option. On every other day guests pick their own start time."
 msgstr ""
 
 #. translators: 1: start time, 2: end time, both 24-hour.
-#: backend/Pricing/SlotGenerator.php:169
+#: backend/Pricing/SlotGenerator.php:196
 msgid "On this day the daytime booking runs from %1$s to %2$s. For other times, please book an overnight stay."
 msgstr ""
 
@@ -2991,7 +2994,7 @@ msgstr ""
 msgid "Once we have received your payment, you will receive a separate confirmation by email."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:831
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:835
 msgid "One email a day with that day's figures: bookings, money in, cancellations, and the list of who is arriving."
 msgstr ""
 
@@ -3008,7 +3011,7 @@ msgstr ""
 msgid "One hour more"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1015
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1019
 msgid "One line per line, as it should appear on the invoice."
 msgstr ""
 
@@ -3201,7 +3204,7 @@ msgstr ""
 
 #: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:212 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:298 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:73 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:138
 #: frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:69 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:128 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:187 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:47
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:633 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:73 frontend/site/app/src/components/BookingModal/BookingModal.jsx:486
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:637 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:73 frontend/site/app/src/components/BookingModal/BookingModal.jsx:486
 msgid "Payment"
 msgstr ""
 
@@ -3275,7 +3278,7 @@ msgstr ""
 msgid "Payment status changed"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1148
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1152
 msgid "Payment term (days)"
 msgstr ""
 
@@ -3457,19 +3460,19 @@ msgstr ""
 msgid "Print Report"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:988
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:992
 msgid "Printed at the top of the invoice and shown in the header of every guest email."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1178
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1182
 msgid "Printed last, after a bold \"Hinweis:\" label."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:754
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:758
 msgid "Printed on the invoice in groups of four, so a guest can read it across without losing their place."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1085
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1089
 msgid "Privacy policy page"
 msgstr ""
 
@@ -3714,7 +3717,7 @@ msgstr ""
 msgid "Save booking"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1192
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1196
 msgid "Save settings"
 msgstr ""
 
@@ -3727,7 +3730,7 @@ msgid "Saved with the apartment, then read on the next scheduled sync."
 msgstr ""
 
 #: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:733 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:561 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:882 frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:196
-#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:589 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1191
+#: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:589 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1195
 msgid "Saving…"
 msgstr ""
 
@@ -3809,11 +3812,11 @@ msgstr ""
 msgid "Send a test to"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:875
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:879
 msgid "Send at"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:929
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:933
 msgid "Send summary now"
 msgstr ""
 
@@ -3821,7 +3824,7 @@ msgstr ""
 msgid "Send test"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:853
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:857
 msgid "Send the summary automatically"
 msgstr ""
 
@@ -3829,15 +3832,15 @@ msgstr ""
 msgid "Send this booking back to pending? The dates become bookable again."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:888
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:892
 msgid "Send to"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:928 frontend/site/app/src/components/BookingModal/BookingModal.jsx:734
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:932 frontend/site/app/src/components/BookingModal/BookingModal.jsx:734
 msgid "Sending…"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:941
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:945
 msgid "Sends the saved settings, so save first if you have just changed the addresses."
 msgstr ""
 
@@ -4098,7 +4101,7 @@ msgstr ""
 msgid "Taken in this window"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:673
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:677
 msgid "Taken off the whole bill. At 0 there is no discount and no discount line anywhere — not on the checkout, not on the invoice."
 msgstr ""
 
@@ -4118,7 +4121,7 @@ msgstr ""
 msgid "Tap the Share button at the bottom of Safari."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1132
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1136
 msgid "Tax rate (%)"
 msgstr ""
 
@@ -4132,7 +4135,7 @@ msgstr ""
 msgid "Telefon:"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1026
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1030
 msgid "Telephone"
 msgstr ""
 
@@ -4152,7 +4155,7 @@ msgstr ""
 msgid "Template saved."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1075
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1079
 msgid "Terms & conditions page"
 msgstr ""
 
@@ -4216,7 +4219,7 @@ msgstr ""
 msgid "That customer no longer exists."
 msgstr ""
 
-#: backend/Pricing/SlotGenerator.php:155
+#: backend/Pricing/SlotGenerator.php:182
 msgid "That day is no longer open for daytime bookings."
 msgstr ""
 
@@ -4294,6 +4297,10 @@ msgstr ""
 
 #: backend/APIs/BookingsController.php:349
 msgid "The booking could not be updated."
+msgstr ""
+
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:450
+msgid "The booking form opens on this length, and anything shorter is refused — on the guest form and in the admin alike."
 msgstr ""
 
 #. translators: %d: how many rows are ticked.
@@ -4378,11 +4385,11 @@ msgstr ""
 msgid "The invoice has been issued. Its number and rate are fixed from here on."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1064
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1068
 msgid "The invoice the guest receives, and the pages it and the booking flow link to."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:502
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:506
 msgid "The last time a booking may begin. A booking may still finish after it."
 msgstr ""
 
@@ -4398,15 +4405,19 @@ msgstr ""
 msgid "The logo, header and footer are added automatically from Settings."
 msgstr ""
 
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:466
+msgid "The longest a single booking may run. Anything longer is refused, wherever it is booked from."
+msgstr ""
+
 #: backend/APIs/SettingsController.php:556
 msgid "The longest stay cannot be shorter than the shortest one."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:818
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:822
 msgid "The master switch. Off stops every guest email, whatever the individual templates say."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1116
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1120
 msgid "The next number to issue. Only ever raises the sequence — it cannot reuse a number already sent."
 msgstr ""
 
@@ -4689,7 +4700,7 @@ msgstr ""
 msgid "Turnaround blocked after each stay."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:622
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:626
 msgid "Turnaround time is set per apartment. Open an apartment and choose its cleaning time — 30, 45 or 60 minutes — and that gap is kept free before and after every booking in it."
 msgstr ""
 
@@ -4784,11 +4795,11 @@ msgstr ""
 msgid "User Guide"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:705
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:709
 msgid "VAT on hourly bookings (%)"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:688
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:692
 msgid "VAT on overnight stays (%)"
 msgstr ""
 
@@ -4926,7 +4937,7 @@ msgstr ""
 msgid "Where each one stands right now."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1049
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1053
 msgid "Where notifications for you are sent. Leave empty to use the WordPress admin address."
 msgstr ""
 
@@ -4950,7 +4961,7 @@ msgstr ""
 msgid "WordPress could not send the email. Check the template is switched on and that the site can send mail."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1136
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1140
 msgid "Worked back out of the price, which is what the guest pays. 0 shows no tax line."
 msgstr ""
 

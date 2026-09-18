@@ -144,6 +144,33 @@ final class SlotGenerator {
 			);
 		}
 
+		/*
+		 * And the other end of the same setting.
+		 *
+		 * Only the shortest length was ever checked here. The duration picker
+		 * stops at the longest one, so the modal looked right — but the rule
+		 * lived in the picker and nowhere else, and this endpoint is public:
+		 * a posted length of twenty-four hours was priced and accepted against
+		 * a property whose longest booking is eight.
+		 *
+		 * Floored at the minimum, the way for_date() reads it, so settings
+		 * that somehow end up inverted refuse nothing rather than everything.
+		 */
+		$maximum = max( $minimum, (int) SettingsRepository::number( SettingsRepository::MAX_HOURS ) );
+
+		if ( $hours > $maximum ) {
+			return sprintf(
+				/* translators: %d: the longest bookable length, in hours. */
+				_n(
+					'Bookings run to %d hour at most.',
+					'Bookings run to %d hours at most.',
+					$maximum,
+					'booking-suite'
+				),
+				$maximum
+			);
+		}
+
 		if ( ! self::is_fixed_block_day( $date ) ) {
 			return null;
 		}

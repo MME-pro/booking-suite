@@ -448,7 +448,7 @@ export default function SettingsPage() {
 											'booking-suite'
 										) }
 										description={ __(
-											'Guests only. The booking form opens on this length, and anything shorter is refused. You are not held to it when booking from the admin.',
+											'The booking form opens on this length, and anything shorter is refused — on the guest form and in the admin alike.',
 											'booking-suite'
 										) }
 									/>
@@ -461,6 +461,10 @@ export default function SettingsPage() {
 										touched={ touched }
 										label={ __(
 											'Longest booking (hours)',
+											'booking-suite'
+										) }
+										description={ __(
+											'The longest a single booking may run. Anything longer is refused, wherever it is booked from.',
 											'booking-suite'
 										) }
 									/>

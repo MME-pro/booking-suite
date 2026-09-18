@@ -391,6 +391,7 @@ return array(
 	'Guests' => 'Gäste',
 	'From %d hour.' => array( 'Ab %d Stunde.', 'Ab %d Stunden.' ),
 	'Bookings start at %d hour.' => array( 'Buchungen beginnen ab %d Stunde.', 'Buchungen beginnen ab %d Stunden.' ),
+	'Bookings run to %d hour at most.' => array( 'Buchungen dauern höchstens %d Stunde.', 'Buchungen dauern höchstens %d Stunden.' ),
 	'Up to %d guest.' => array( 'Bis zu %d Gast.', 'Bis zu %d Gäste.' ),
 	'This apartment takes at most %d guest.' => array( 'Diese Wohnung ist für höchstens %d Gast ausgelegt.', 'Diese Wohnung ist für höchstens %d Gäste ausgelegt.' ),
 	'%1$s on %2$s' => '%1$s am %2$s',
@@ -1753,4 +1754,11 @@ Gute Reise und bis bald.
 	'That booking no longer exists.' => 'Diese Buchung existiert nicht mehr.',
 	'The payment could not be recorded.' => 'Die Zahlung konnte nicht erfasst werden.',
 	'Open your booking page' => 'Buchungsseite öffnen',
+
+	/*
+	 * The booking-length rules, stated where the owner sets them. Both ends
+	 * apply on the guest form and in the admin alike.
+	 */
+	'The booking form opens on this length, and anything shorter is refused — on the guest form and in the admin alike.' => 'Das Buchungsformular startet mit dieser Dauer; alles Kürzere wird abgelehnt — im Gästeformular wie im Adminbereich.',
+	'The longest a single booking may run. Anything longer is refused, wherever it is booked from.' => 'Die maximale Dauer einer einzelnen Buchung. Alles Längere wird abgelehnt, unabhängig davon, wo gebucht wird.',
 );
