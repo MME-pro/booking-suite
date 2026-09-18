@@ -242,18 +242,20 @@ final class SettingsRepository {
 		self::MIN_HOURS        => '4',
 		self::MAX_HOURS        => '8',
 		/*
-		 * Off. An empty day list means guests pick their own start time every
-		 * day of the week, which is what an hourly property normally wants.
+		 * Friday and Saturday, 11:30 to 15:30 — four hours, finishing half an
+		 * hour before the overnight window opens at 16:00, so a day guest is
+		 * out before an evening arrival is due. On those days that one block
+		 * is the whole daytime offer; an overnight stay is the alternative.
 		 *
-		 * This used to default to Friday and Saturday, 11:30 to 15:30 — on
-		 * those days one fixed block replaced the whole slot grid. It was a
-		 * strong default for something nobody had asked for, and since the
-		 * setting is no longer on the Settings screen, a site that inherited
-		 * it had no way to see it was on, let alone turn it off. The times
-		 * stay here so the feature still works for anyone who sets the days
-		 * back through the REST layer.
+		 * This was briefly emptied, on the reasoning that a default nobody had
+		 * chosen should not keep running once its setting left the Settings
+		 * screen. That was wrong twice over: the weekend block was not an
+		 * accident of the defaults, it is how the property actually sells its
+		 * weekends — and taking it out took the offer off the guest's screen.
+		 * Restored, and it stays a default rather than a stored value so that
+		 * every install keeps behaving the way this one already did.
 		 */
-		self::DAYTIME_SLOT_DAYS  => '',
+		self::DAYTIME_SLOT_DAYS  => '5,6',
 		self::DAYTIME_SLOT_START => '11:30',
 		self::DAYTIME_SLOT_END   => '15:30',
 		self::INVOICE_LOGO     => '',

@@ -2060,10 +2060,10 @@
     },
     {
         "single": "BIC: %s",
-        "line": 530,
+        "line": 532,
         "comment": "translators: %s: the bank's BIC.",
         "refs": [
-            "backend/Repositories/SettingsRepository.php:530"
+            "backend/Repositories/SettingsRepository.php:532"
         ],
         "comments": {
             "translators: %s: the bank's BIC.": true
@@ -4295,10 +4295,10 @@
     },
     {
         "single": "E-Mail: %s",
-        "line": 434,
+        "line": 436,
         "comment": "translators: %s: the company's email address.",
         "refs": [
-            "backend/Repositories/SettingsRepository.php:434"
+            "backend/Repositories/SettingsRepository.php:436"
         ],
         "comments": {
             "translators: %s: the company's email address.": true
@@ -5322,10 +5322,10 @@
     },
     {
         "single": "IBAN: %s",
-        "line": 525,
+        "line": 527,
         "comment": "translators: %s: the IBAN, in groups of four.",
         "refs": [
-            "backend/Repositories/SettingsRepository.php:525"
+            "backend/Repositories/SettingsRepository.php:527"
         ],
         "comments": {
             "translators: %s: the IBAN, in groups of four.": true
@@ -9369,10 +9369,10 @@
     },
     {
         "single": "Tel: %s",
-        "line": 429,
+        "line": 431,
         "comment": "translators: %s: the company's telephone number.",
         "refs": [
-            "backend/Repositories/SettingsRepository.php:429",
+            "backend/Repositories/SettingsRepository.php:431",
             "backend/Support/Invoice.php:410"
         ],
         "comments": {

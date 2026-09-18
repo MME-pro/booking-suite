@@ -942,7 +942,7 @@ msgid "BIC:"
 msgstr "BIC:"
 
 #. translators: %s: the bank's BIC.
-#: backend/Repositories/SettingsRepository.php:530
+#: backend/Repositories/SettingsRepository.php:532
 msgid "BIC: %s"
 msgstr "BIC: %s"
 
@@ -1903,7 +1903,7 @@ msgid "E-Mail:"
 msgstr "E-Mail:"
 
 #. translators: %s: the company's email address.
-#: backend/Repositories/SettingsRepository.php:434
+#: backend/Repositories/SettingsRepository.php:436
 msgid "E-Mail: %s"
 msgstr "E-Mail: %s"
 
@@ -2339,7 +2339,7 @@ msgid "IBAN:"
 msgstr "IBAN:"
 
 #. translators: %s: the IBAN, in groups of four.
-#: backend/Repositories/SettingsRepository.php:525
+#: backend/Repositories/SettingsRepository.php:527
 msgid "IBAN: %s"
 msgstr "IBAN: %s"
 
@@ -4091,7 +4091,7 @@ msgstr "Steuersatz (%)"
 
 #. translators: %s: the company's telephone number.
 #. translators: %s: the guest's telephone number.
-#: backend/Repositories/SettingsRepository.php:429 backend/Support/Invoice.php:410
+#: backend/Repositories/SettingsRepository.php:431 backend/Support/Invoice.php:410
 msgid "Tel: %s"
 msgstr "Tel: %s"
 
