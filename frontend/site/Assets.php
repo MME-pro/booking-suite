@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Frontend\Site;
 
+use BookingSuite\Backend\APIs\PublicApartmentsController;
 use BookingSuite\Backend\PostTypes\ApartmentPostType;
 use BookingSuite\Backend\Repositories\SettingsRepository;
 
@@ -391,6 +392,20 @@ final class Assets {
 				array(),
 				$script_modified ? (string) $script_modified : VERSION,
 				true
+			);
+
+			/*
+			 * Where to ask for a re-rendered grid. No nonce: the route is
+			 * public and read-only, and demanding one would break the search
+			 * for anyone served a cached page — the nonce would have expired
+			 * with the cache entry long before the guest pressed Search.
+			 */
+			wp_localize_script(
+				self::SHOWCASE_HANDLE,
+				'bksShowcase',
+				array(
+					'endpoint' => rest_url( PublicApartmentsController::NAMESPACE . '/' . PublicApartmentsController::SHOWCASE_ROUTE ),
+				)
 			);
 		}
 

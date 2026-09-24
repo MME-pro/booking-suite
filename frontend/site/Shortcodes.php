@@ -573,30 +573,49 @@ final class Shortcodes {
 	 * @param array<string, string>|string $atts
 	 */
 	public static function render_showcase( $atts = array() ): string {
-		$atts = shortcode_atts(
-			array(
-				'ids'        => '',
-				'columns'    => '3',
-				'limit'      => '0',
-				'guests'     => '',
-				'orderby'    => 'name',
-				'order'      => 'asc',
-				'heading'    => '',
-				'subheading' => '',
-				'label'      => '',
-				'price'      => 'yes',
-				'excerpt'    => 'yes',
-				'link'       => 'yes',
-				'search'     => 'yes',
-				'hours'      => '',
-				'time'       => '',
-			),
-			(array) $atts,
-			self::SHOWCASE
-		);
+		$atts = shortcode_atts( self::SHOWCASE_DEFAULTS, (array) $atts, self::SHOWCASE );
 
 		$search = self::showcase_search_values( $atts );
 
+		// Only load the bundle on pages that actually use the shortcode.
+		Assets::enqueue_app();
+		Assets::enqueue_showcase();
+
+		$header = self::showcase_header( $atts )
+			. ( 'no' === $atts['search'] ? '' : self::showcase_search_bar( $search ) );
+
+		/*
+		 * The cards live in their own element so a search can replace them on
+		 * their own. Without JavaScript the form reloads the page and this is
+		 * rendered afresh; with it, showcase.js swaps what is inside this
+		 * element and leaves the header and the open menus alone.
+		 *
+		 * The attributes ride along as JSON because the endpoint that renders
+		 * the replacement has no other way to know them — they were written
+		 * into the shortcode, not into the URL. Every one of them is re-read
+		 * through shortcode_atts() and clamped on the way back in, so a guest
+		 * editing them changes what they themselves see and nothing more.
+		 */
+		return sprintf(
+			'<div class="bks-site-root bks-showcase" data-bks-showcase data-bks-showcase-atts="%1$s">%2$s<div class="bks-showcase__results" data-bks-showcase-results>%3$s</div></div>',
+			esc_attr( (string) wp_json_encode( $atts ) ),
+			$header,
+			self::showcase_results( $atts, $search )
+		);
+	}
+
+	/**
+	 * The cards for one search: the grid, or the reason there is no grid.
+	 *
+	 * Split out of showcase() so the shortcode and the REST route that answers
+	 * an AJAX search render the same markup from the same code. A second
+	 * renderer for the same cards would drift from this one the first time a
+	 * card changed.
+	 *
+	 * @param array<string, string> $atts
+	 * @param array<string, mixed>  $search
+	 */
+	public static function showcase_results( array $atts, array $search ): string {
 		// A party size typed into the search bar is a stronger statement of
 		// intent than the one written into the shortcode, so it wins.
 		if ( $search['guests'] > 0 ) {
@@ -612,15 +631,6 @@ final class Shortcodes {
 		 * an apartment only survives if some start on that day still fits.
 		 */
 		$apartments = self::showcase_available( $apartments, $search );
-
-		// Only load the bundle on pages that actually use the shortcode.
-		Assets::enqueue_app();
-		Assets::enqueue_showcase();
-
-		$columns = min( 4, max( 1, absint( $atts['columns'] ) ?: 3 ) );
-
-		$header = self::showcase_header( $atts )
-			. ( 'no' === $atts['search'] ? '' : self::showcase_search_bar( $search ) );
 
 		if ( ! $apartments ) {
 			/*
@@ -640,11 +650,7 @@ final class Shortcodes {
 				)
 				: __( 'No apartments are available just now.', 'booking-suite' );
 
-			return '<div class="bks-site-root bks-showcase">'
-				. $header
-				. '<p class="bks-showcase__empty">'
-				. esc_html( $message )
-				. '</p></div>';
+			return '<p class="bks-showcase__empty">' . esc_html( $message ) . '</p>';
 		}
 
 		/*
@@ -664,6 +670,8 @@ final class Shortcodes {
 			$cards .= self::showcase_card( $apartment, $atts, $prices, $currency, $search );
 		}
 
+		$columns = min( 4, max( 1, absint( $atts['columns'] ) ?: 3 ) );
+
 		/*
 		 * Below the desktop breakpoint the grid reflows on its own, and the
 		 * narrowest card it will accept is what keeps that reflow honest to the
@@ -673,12 +681,38 @@ final class Shortcodes {
 		$minimum = array( 1 => '100%', 2 => '22rem', 3 => '17rem', 4 => '15rem' );
 
 		return sprintf(
-			'<div class="bks-site-root bks-showcase">%1$s<ul class="bks-showcase__grid" style="--bks-showcase-columns:%2$d;--bks-showcase-min:%3$s">%4$s</ul></div>',
-			$header,
+			'<ul class="bks-showcase__grid" style="--bks-showcase-columns:%1$d;--bks-showcase-min:%2$s">%3$s</ul>',
 			$columns,
 			esc_attr( $minimum[ $columns ] ),
 			$cards
 		);
+	}
+
+	/**
+	 * Resolve raw attributes the AJAX endpoint was handed back into the shape
+	 * showcase_results() expects.
+	 *
+	 * The same defaults the shortcode uses, so a request carrying nothing
+	 * renders what `[booking_suite_apartment_showcase]` alone would.
+	 *
+	 * @param array<string, mixed> $raw
+	 *
+	 * @return array<string, string>
+	 */
+	public static function showcase_atts( array $raw ): array {
+		return shortcode_atts( self::SHOWCASE_DEFAULTS, array_map( 'strval', $raw ), self::SHOWCASE );
+	}
+
+	/**
+	 * Read a search out of plain query arguments rather than the request.
+	 *
+	 * @param array<string, mixed> $args
+	 * @param array<string, string> $atts
+	 *
+	 * @return array<string, mixed>
+	 */
+	public static function showcase_search_from( array $args, array $atts ): array {
+		return self::showcase_search_values( $atts, $args );
 	}
 
 	/**
@@ -738,6 +772,33 @@ final class Shortcodes {
 		'time'   => 'bks_time',
 		'hours'  => 'bks_hours',
 		'guests' => 'bks_guests',
+	);
+
+	/**
+	 * Defaults for [booking_suite_apartment_showcase].
+	 *
+	 * A constant rather than a literal inside the renderer because the AJAX
+	 * endpoint resolves the same attributes, and two copies of this list would
+	 * disagree the first time one of them gained an option.
+	 *
+	 * @var array<string, string>
+	 */
+	public const SHOWCASE_DEFAULTS = array(
+		'ids'        => '',
+		'columns'    => '3',
+		'limit'      => '0',
+		'guests'     => '',
+		'orderby'    => 'name',
+		'order'      => 'asc',
+		'heading'    => '',
+		'subheading' => '',
+		'label'      => '',
+		'price'      => 'yes',
+		'excerpt'    => 'yes',
+		'link'       => 'yes',
+		'search'     => 'yes',
+		'hours'      => '',
+		'time'       => '',
 	);
 
 	/**
@@ -818,31 +879,38 @@ final class Shortcodes {
 	 * JavaScript at all. Nothing is trusted: the date has to parse, and the
 	 * numbers are clamped to the range the form offers.
 	 *
+	 * The AJAX route passes the same arguments explicitly, because a REST
+	 * request carries them in its own body rather than in this request's query
+	 * string. Both ways land on the same clamping below.
+	 *
 	 * @param array<string, string> $atts
+	 * @param array<string, mixed>|null $args Query arguments, or null to read $_GET.
 	 *
 	 * @return array{date: string, hours: int, guests: int}
 	 */
-	private static function showcase_search_values( array $atts ): array {
+	private static function showcase_search_values( array $atts, ?array $args = null ): array {
 		$bounds = self::hour_bounds();
 
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- A
 		// public read-only filter; there is nothing here to forge.
-		$date = isset( $_GET[ self::SEARCH_ARGS['date'] ] )
-			? self::valid_date( sanitize_text_field( wp_unslash( (string) $_GET[ self::SEARCH_ARGS['date'] ] ) ) )
+		$query = null === $args ? $_GET : $args;
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+		$date = isset( $query[ self::SEARCH_ARGS['date'] ] )
+			? self::valid_date( sanitize_text_field( wp_unslash( (string) $query[ self::SEARCH_ARGS['date'] ] ) ) )
 			: '';
 
-		$hours = isset( $_GET[ self::SEARCH_ARGS['hours'] ] )
-			? absint( $_GET[ self::SEARCH_ARGS['hours'] ] )
+		$hours = isset( $query[ self::SEARCH_ARGS['hours'] ] )
+			? absint( $query[ self::SEARCH_ARGS['hours'] ] )
 			: absint( $atts['hours'] );
 
-		$guests = isset( $_GET[ self::SEARCH_ARGS['guests'] ] )
-			? absint( $_GET[ self::SEARCH_ARGS['guests'] ] )
+		$guests = isset( $query[ self::SEARCH_ARGS['guests'] ] )
+			? absint( $query[ self::SEARCH_ARGS['guests'] ] )
 			: absint( $atts['guests'] );
 
-		$time = isset( $_GET[ self::SEARCH_ARGS['time'] ] )
-			? sanitize_text_field( wp_unslash( (string) $_GET[ self::SEARCH_ARGS['time'] ] ) )
+		$time = isset( $query[ self::SEARCH_ARGS['time'] ] )
+			? sanitize_text_field( wp_unslash( (string) $query[ self::SEARCH_ARGS['time'] ] ) )
 			: (string) $atts['time'];
-		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		// Only a start the picker actually offers; anything else means "any".
 		if ( ! array_key_exists( $time, self::showcase_times() ) ) {

@@ -19,6 +19,7 @@ use BookingSuite\Backend\Pricing\RateCalculator;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\PriceRulesRepository;
 use BookingSuite\Backend\Repositories\SettingsRepository;
+use BookingSuite\Frontend\Site\Shortcodes;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -30,6 +31,9 @@ final class PublicApartmentsController {
 	public const NAMESPACE = 'booking-suite/v1';
 
 	public const ROUTE = 'public/apartments';
+
+	/** Renders the showcase grid for a search, without reloading the page. */
+	public const SHOWCASE_ROUTE = 'public/showcase';
 
 	/** Image size requested for the card gallery. */
 	private const IMAGE_SIZE = 'large';
@@ -53,6 +57,44 @@ final class PublicApartmentsController {
 					),
 				),
 			)
+		);
+
+		/*
+		 * The showcase search, answered as rendered HTML rather than as data.
+		 * The cards are already built by the shortcode's own renderer, and
+		 * handing the browser JSON would mean writing that renderer a second
+		 * time in JavaScript — two descriptions of one card, drifting apart on
+		 * the first change to either.
+		 */
+		register_rest_route(
+			self::NAMESPACE,
+			'/' . self::SHOWCASE_ROUTE,
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( self::class, 'showcase' ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'atts' => array(
+						'type'     => 'string',
+						'required' => false,
+					),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Render the showcase grid for the search held in the query arguments.
+	 */
+	public static function showcase( WP_REST_Request $request ): WP_REST_Response {
+		$decoded = json_decode( (string) $request->get_param( 'atts' ), true );
+
+		$atts   = Shortcodes::showcase_atts( is_array( $decoded ) ? $decoded : array() );
+		$search = Shortcodes::showcase_search_from( (array) $request->get_query_params(), $atts );
+
+		return new WP_REST_Response(
+			array( 'html' => Shortcodes::showcase_results( $atts, $search ) ),
+			200
 		);
 	}
 

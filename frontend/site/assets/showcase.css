@@ -891,6 +891,24 @@
 	color: var(--bks-site-text-muted, #475569);
 }
 
+/* While a search is in flight ---------------------------------------------
+   The old cards stay in place and fade rather than being cleared, so the
+   grid does not collapse to nothing and throw the page around underneath a
+   guest who is still reading it. Pointer events go, because a card that is
+   about to be replaced should not take a click for the apartment that
+   replaces it. */
+.bks-showcase.is-searching .bks-showcase__results {
+	opacity: 0.55;
+	pointer-events: none;
+	transition: opacity 120ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.bks-showcase.is-searching .bks-showcase__results {
+		transition: none;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 
 	.bks-showcase__card,
