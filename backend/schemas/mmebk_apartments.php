@@ -49,8 +49,17 @@ final class ApartmentsTable {
 
 		// `post_id` is both the primary key and the link to wp_posts: one row
 		// per apartment, no surrogate id to keep in step.
-		// `weekday_rate` covers Sunday–Thursday nights and `weekend_rate`
-		// Friday and Saturday; 0.00 means "not priced yet".
+		// `weekday_rate` covers Sunday–Thursday and `weekend_rate` Friday and
+		// Saturday; 0.00 means "not priced yet".
+		//
+		// `weekday_overnight_rate` and `weekend_overnight_rate` are what an
+		// overnight stay is charged, split the same way. They are separate
+		// columns because a night and an hourly block are different products:
+		// the hourly rate is the base of a staircase, the overnight one is a
+		// package price for the whole 16:00–11:00 window. 0.00 means the
+		// operator has not set one, and the matching hourly rate is used
+		// instead — so an apartment that predates these columns prices exactly
+		// as it did before.
 		//
 		// `surcharge_hour` is charged for each hour above the base, and
 		// `surcharge_guest` for each guest above the included party size. Both
@@ -73,6 +82,8 @@ final class ApartmentsTable {
 			cleaning_min smallint(5) unsigned NOT NULL default 30,
 			weekday_rate decimal(10,2) NOT NULL default 0.00,
 			weekend_rate decimal(10,2) NOT NULL default 0.00,
+			weekday_overnight_rate decimal(10,2) NOT NULL default 0.00,
+			weekend_overnight_rate decimal(10,2) NOT NULL default 0.00,
 			surcharge_hour decimal(10,2) NOT NULL default 20.00,
 			surcharge_guest decimal(10,2) NOT NULL default 20.00,
 			holiday_hesse tinyint(1) unsigned NOT NULL default 0,

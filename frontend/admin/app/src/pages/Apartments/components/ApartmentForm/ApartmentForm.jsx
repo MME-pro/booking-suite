@@ -152,6 +152,14 @@ const schema = z.object( {
 		min: 0,
 		message: __( 'Enter a rate of 0 or more.', 'booking-suite' ),
 	} ),
+	weekdayOvernightRate: numericString( {
+		min: 0,
+		message: __( 'Enter a rate of 0 or more.', 'booking-suite' ),
+	} ),
+	weekendOvernightRate: numericString( {
+		min: 0,
+		message: __( 'Enter a rate of 0 or more.', 'booking-suite' ),
+	} ),
 	surchargeHour: numericString( {
 		min: 0,
 		message: __( 'Enter a rate of 0 or more.', 'booking-suite' ),
@@ -538,8 +546,14 @@ export default function ApartmentForm( {
 
 						<Separator />
 
-						{ /* weekday_rate, weekend_rate */ }
-						<Section title={ __( 'Rates', 'booking-suite' ) }>
+						{ /* weekday_rate, weekend_rate, and the overnight pair */ }
+						<Section
+							title={ __( 'Rates', 'booking-suite' ) }
+							description={ __(
+								'The top row prices an hourly booking; the overnight row prices a night, and is what an overnight stay is charged.',
+								'booking-suite'
+							) }
+						>
 							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 								<RateField
 									form={ form }
@@ -554,6 +568,30 @@ export default function ApartmentForm( {
 									name="weekendRate"
 									label={ __(
 										'Weekend rate (Fri/Sat)',
+										'booking-suite'
+									) }
+								/>
+								<RateField
+									form={ form }
+									name="weekdayOvernightRate"
+									label={ __(
+										'Overnight rate (Sun–Thu)',
+										'booking-suite'
+									) }
+									description={ __(
+										'Charged per night. Leave at 0 to use the weekday rate.',
+										'booking-suite'
+									) }
+								/>
+								<RateField
+									form={ form }
+									name="weekendOvernightRate"
+									label={ __(
+										'Overnight rate (Fri/Sat)',
+										'booking-suite'
+									) }
+									description={ __(
+										'Charged per night. Leave at 0 to use the weekend rate.',
 										'booking-suite'
 									) }
 								/>

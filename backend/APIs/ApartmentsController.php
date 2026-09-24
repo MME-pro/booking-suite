@@ -510,7 +510,14 @@ final class ApartmentsController {
 
 		// The two surcharges validate exactly as the rates do — a negative one
 		// would pay the guest to bring a friend.
-		$rates = array( 'weekday_rate', 'weekend_rate', 'surcharge_hour', 'surcharge_guest' );
+		$rates = array(
+			'weekday_rate',
+			'weekend_rate',
+			'weekday_overnight_rate',
+			'weekend_overnight_rate',
+			'surcharge_hour',
+			'surcharge_guest',
+		);
 
 		foreach ( $rates as $rate ) {
 			if ( ! $has( $rate ) ) {

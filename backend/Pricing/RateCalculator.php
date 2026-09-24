@@ -9,6 +9,10 @@
  * hourly, and climbs the staircase: a base rate covering the first hours, then
  * a surcharge for each hour above them.
  *
+ * The two products read different columns. Overnight takes the apartment's
+ * overnight rates, hourly takes its hourly ones; where no overnight rate is
+ * set, the hourly one stands in.
+ *
  * Both read two rates off the apartment and the rest off the global settings.
  * The per-apartment rate matrix in `price_rules` — many rows, each with its own
  * weekdays, holiday rule, package prices, surcharges and visibility — is not
@@ -80,7 +84,7 @@ final class RateCalculator {
 			 * rate. The hourly staircase prices hourly bookings; an overnight
 			 * stay is a package, and its rate is the package price.
 			 */
-			$rate = round( self::base_rate( $apartment, $date ), 2 );
+			$rate = round( self::overnight_rate( $apartment, $date ), 2 );
 
 			$nights[] = array(
 				'date'       => $date,
@@ -148,6 +152,26 @@ final class RateCalculator {
 		return self::is_weekend_rate( $apartment, $starts_at )
 			? (float) ( $apartment['weekend_rate'] ?? 0 )
 			: (float) ( $apartment['weekday_rate'] ?? 0 );
+	}
+
+	/**
+	 * What one night costs, chosen by the day it starts on.
+	 *
+	 * A night and an hourly block are priced from different columns: the hourly
+	 * rate is the base of a staircase, this is the package price for the whole
+	 * window. An apartment with no overnight rate set falls back to the hourly
+	 * one, which is what every apartment charged before the columns existed —
+	 * 0.00 means "not priced" here as it does everywhere else, so the fallback
+	 * reads an unset rate rather than a free night.
+	 *
+	 * @param array<string, mixed> $apartment
+	 */
+	public static function overnight_rate( array $apartment, string $starts_at ): float {
+		$rate = self::is_weekend_rate( $apartment, $starts_at )
+			? (float) ( $apartment['weekend_overnight_rate'] ?? 0 )
+			: (float) ( $apartment['weekday_overnight_rate'] ?? 0 );
+
+		return $rate > 0 ? $rate : self::base_rate( $apartment, $starts_at );
 	}
 
 	/**
@@ -339,21 +363,36 @@ final class RateCalculator {
 	 * @param array<string, mixed> $apartment
 	 */
 	public static function is_priced( array $apartment ): bool {
-		return (float) ( $apartment['weekday_rate'] ?? 0 ) > 0
-			|| (float) ( $apartment['weekend_rate'] ?? 0 ) > 0;
+		foreach ( array( 'weekday_rate', 'weekend_rate', 'weekday_overnight_rate', 'weekend_overnight_rate' ) as $column ) {
+			if ( (float) ( $apartment[ $column ] ?? 0 ) > 0 ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
-	 * The "from" price shown on a card: the cheapest of the two rates,
+	 * The "from" price shown on a card: the cheaper of the two nights,
 	 * ignoring one that has not been set.
+	 *
+	 * The card reads "from X / night", so this quotes what a night actually
+	 * costs — the overnight rate where there is one, and the hourly rate
+	 * standing in where there is not, exactly as overnight_rate() resolves it.
 	 *
 	 * @param array<string, mixed> $apartment
 	 */
 	public static function lowest_rate( array $apartment ): ?float {
+		$nightly = static function ( string $overnight, string $hourly ) use ( $apartment ): float {
+			$rate = (float) ( $apartment[ $overnight ] ?? 0 );
+
+			return $rate > 0 ? $rate : (float) ( $apartment[ $hourly ] ?? 0 );
+		};
+
 		$rates = array_filter(
 			array(
-				(float) ( $apartment['weekday_rate'] ?? 0 ),
-				(float) ( $apartment['weekend_rate'] ?? 0 ),
+				$nightly( 'weekday_overnight_rate', 'weekday_rate' ),
+				$nightly( 'weekend_overnight_rate', 'weekend_rate' ),
 			),
 			static fn( float $rate ): bool => $rate > 0
 		);

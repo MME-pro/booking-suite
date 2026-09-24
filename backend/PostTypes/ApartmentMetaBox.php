@@ -159,6 +159,8 @@ final class ApartmentMetaBox {
 		$gallery  = array_map( 'absint', (array) ( $apartment['images'] ?? array() ) );
 		$weekday  = (float) ( $apartment['weekday_rate'] ?? 0 );
 		$weekend  = (float) ( $apartment['weekend_rate'] ?? 0 );
+		$weekday_night = (float) ( $apartment['weekday_overnight_rate'] ?? 0 );
+		$weekend_night = (float) ( $apartment['weekend_overnight_rate'] ?? 0 );
 		$per_hour = (float) ( $apartment['surcharge_hour'] ?? RateCalculator::DEFAULT_SURCHARGE );
 		$per_head = (float) ( $apartment['surcharge_guest'] ?? RateCalculator::DEFAULT_SURCHARGE );
 
@@ -229,6 +231,24 @@ final class ApartmentMetaBox {
 						<input type="number" id="bks-weekend-rate" name="bks_weekend_rate" min="0" step="0.01" value="<?php echo esc_attr( number_format( $weekend, 2, '.', '' ) ); ?>" />
 					</p>
 
+					<p class="bks-meta__field">
+						<label for="bks-weekday-overnight-rate">
+							<?php esc_html_e( 'Overnight rate (Sun–Thu)', 'booking-suite' ); ?>
+						</label>
+						<input type="number" id="bks-weekday-overnight-rate" name="bks_weekday_overnight_rate" min="0" step="0.01" value="<?php echo esc_attr( number_format( $weekday_night, 2, '.', '' ) ); ?>" />
+						<span class="bks-meta__hint"><?php esc_html_e( 'Charged per night. Leave at 0 to use the weekday rate.', 'booking-suite' ); ?></span>
+					</p>
+
+					<p class="bks-meta__field">
+						<label for="bks-weekend-overnight-rate">
+							<?php esc_html_e( 'Overnight rate (Fri/Sat)', 'booking-suite' ); ?>
+						</label>
+						<input type="number" id="bks-weekend-overnight-rate" name="bks_weekend_overnight_rate" min="0" step="0.01" value="<?php echo esc_attr( number_format( $weekend_night, 2, '.', '' ) ); ?>" />
+						<span class="bks-meta__hint"><?php esc_html_e( 'Charged per night. Leave at 0 to use the weekend rate.', 'booking-suite' ); ?></span>
+					</p>
+				</div>
+
+				<div class="bks-meta__grid">
 					<p class="bks-meta__field">
 						<label for="bks-surcharge-hour">
 							<?php esc_html_e( 'Per extra hour', 'booking-suite' ); ?>
@@ -812,6 +832,8 @@ final class ApartmentMetaBox {
 				'cleaning_min'        => in_array( $cleaning, ApartmentsTable::CLEANING_MINUTES, true ) ? $cleaning : 30,
 				'weekday_rate'       => self::rate( 'bks_weekday_rate' ),
 				'weekend_rate'       => self::rate( 'bks_weekend_rate' ),
+				'weekday_overnight_rate' => self::rate( 'bks_weekday_overnight_rate' ),
+				'weekend_overnight_rate' => self::rate( 'bks_weekend_overnight_rate' ),
 				'surcharge_hour'      => self::rate( 'bks_surcharge_hour' ),
 				'surcharge_guest'     => self::rate( 'bks_surcharge_guest' ),
 				'internal_short_link' => $links['internal_short_link'],

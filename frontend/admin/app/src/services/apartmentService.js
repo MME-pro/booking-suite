@@ -25,6 +25,8 @@ export const toApartment = ( row ) => ( {
 	cleaningMin: row.cleaning_min,
 	weekdayRate: String( row.weekday_rate ?? 0 ),
 	weekendRate: String( row.weekend_rate ?? 0 ),
+	weekdayOvernightRate: String( row.weekday_overnight_rate ?? 0 ),
+	weekendOvernightRate: String( row.weekend_overnight_rate ?? 0 ),
 	surchargeHour: String( row.surcharge_hour ?? 20 ),
 	surchargeGuest: String( row.surcharge_guest ?? 20 ),
 	active: Boolean( row.active ),
@@ -109,6 +111,14 @@ export const toPayload = ( values ) => {
 
 	if ( has( 'weekendRate' ) ) {
 		payload.weekend_rate = toRate( values.weekendRate );
+	}
+
+	if ( has( 'weekdayOvernightRate' ) ) {
+		payload.weekday_overnight_rate = toRate( values.weekdayOvernightRate );
+	}
+
+	if ( has( 'weekendOvernightRate' ) ) {
+		payload.weekend_overnight_rate = toRate( values.weekendOvernightRate );
 	}
 
 	if ( has( 'surchargeHour' ) ) {

@@ -53,8 +53,17 @@
 	background: #f6f7f7;
 }
 
+/* Two explicit columns, so each overnight rate sits directly under the rate it
+   replaces. auto-fit would reflow that pairing apart at some widths. */
 .bks-meta__grid--rates {
 	margin-bottom: 4px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.bks-meta__hint {
+	font-size: 12px;
+	font-style: italic;
+	color: #646970;
 }
 
 .bks-meta__toggles {

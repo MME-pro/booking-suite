@@ -50,6 +50,12 @@ export const emptyApartment = () => ( {
 	weekdayRate: '0.00',
 	weekendRate: '0.00',
 
+	// 0.00 means "not set", and the matching hourly rate above is used for a
+	// night instead — so a new apartment prices the way it always did until
+	// the operator deliberately splits the two.
+	weekdayOvernightRate: '0.00',
+	weekendOvernightRate: '0.00',
+
 	// 20.00 is what the site-wide surcharges carried before they moved onto
 	// the apartment, so a new room starts where every existing one sits.
 	surchargeHour: '20.00',

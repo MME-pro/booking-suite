@@ -20,7 +20,7 @@ final class Installer {
 	/**
 	 * Bump whenever any table definition changes.
 	 */
-	public const DB_VERSION = 15;
+	public const DB_VERSION = 16;
 
 	private const VERSION_OPTION = 'bksuite_db_version';
 
