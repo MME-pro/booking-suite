@@ -71,7 +71,7 @@ msgid "%1$s · %2$s"
 msgstr "%1$s · %2$s"
 
 #. translators: 1: start time, 2: end time, both 24-hour.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:684
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:671
 msgid "%1$s – %2$s"
 msgstr "%1$s – %2$s"
 
@@ -912,7 +912,7 @@ msgstr "Verfügbar für"
 msgid "Available start times"
 msgstr "Verfügbare Startzeiten"
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:333 frontend/site/app/src/components/BookingModal/StepWhen.jsx:739
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:333 frontend/site/app/src/components/BookingModal/StepWhen.jsx:726
 msgid "Available — you can continue."
 msgstr "Verfügbar — Sie können fortfahren."
 
@@ -1383,7 +1383,7 @@ msgstr "Abreise"
 msgid "Check-out must be after check-in."
 msgstr "Die Abreise muss nach der Anreise liegen."
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:259 frontend/site/app/src/components/BookingModal/StepWhen.jsx:607
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:259 frontend/site/app/src/components/BookingModal/StepWhen.jsx:594
 msgid "Checking availability…"
 msgstr "Verfügbarkeit wird geprüft …"
 
@@ -1403,8 +1403,8 @@ msgstr "Wählen Sie eine Kalenderdatei zum Importieren."
 msgid "Choose a date"
 msgstr "Datum wählen"
 
-#. translators: %s: the overnight window.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:598
+#. translators: %s: the overnight window, e.g. 16:00 – 11:00.
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:585
 msgid "Choose a date to see what is free."
 msgstr "Wählen Sie ein Datum, um zu sehen, was frei ist."
 
@@ -1623,7 +1623,7 @@ msgstr "Buchungen konnten nicht geladen werden"
 msgid "Could not load customers"
 msgstr "Kunden konnten nicht geladen werden"
 
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:614
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:601
 msgid "Could not load the available times."
 msgstr "Die verfügbaren Zeiten konnten nicht geladen werden."
 
@@ -3146,11 +3146,6 @@ msgstr "Übernachtung"
 msgid "Overnight stay (%s)"
 msgstr "Übernachtung (%s)"
 
-#. translators: %s: the overnight window.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:587
-msgid "Overnight stays run %s and always take priority over hourly bookings."
-msgstr "Übernachtungen laufen %s und haben immer Vorrang vor stundenweisen Buchungen."
-
 #. translators: %s: how much too much would have been received.
 #: frontend/admin/app/src/components/RecordPaymentDialog/RecordPaymentDialog.jsx:164
 msgid "Overpaid by %s"
@@ -4342,7 +4337,7 @@ msgstr "Die Farbe muss ein Hex-Wert wie #3858e9 sein."
 msgid "The day's figures, sent on a schedule rather than against a booking. The time and the recipients are set under Settings → Notifications."
 msgstr "Die Zahlen des Tages, zeitgesteuert versendet statt zu einer einzelnen Buchung. Uhrzeit und Empfänger stehen unter Einstellungen → Benachrichtigungen."
 
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:631
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:618
 msgid "The daytime booking on this day is already taken. An overnight stay may still be free."
 msgstr "Die Tagesbuchung an diesem Tag ist bereits vergeben. Eine Übernachtung ist möglicherweise noch frei."
 
@@ -4579,7 +4574,7 @@ msgstr "Das ist ein anderer Tag als der von Ihnen gewählte. Wenn Sie eine Uhrze
 msgid "This payment link is not valid any more. Please use the link in your booking email, or get in touch."
 msgstr "Dieser Zahlungslink ist nicht mehr gültig. Bitte nutzen Sie den Link aus Ihrer Buchungs-E-Mail oder melden Sie sich bei uns."
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:334 frontend/site/app/src/components/BookingModal/StepWhen.jsx:740
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:334 frontend/site/app/src/components/BookingModal/StepWhen.jsx:727
 msgid "Those dates are already taken. Please try another window."
 msgstr "Dieser Zeitraum ist bereits vergeben. Bitte wählen Sie einen anderen."
 
@@ -5097,7 +5092,7 @@ msgstr "%s sparen"
 
 #. translators: %s: end time.
 #. translators: %s: when the booking ends, with the day if it is a later one.
-#: frontend/site/app/src/components/BookingModal/Alternatives.jsx:39 frontend/site/app/src/components/BookingModal/StepWhen.jsx:709
+#: frontend/site/app/src/components/BookingModal/Alternatives.jsx:39 frontend/site/app/src/components/BookingModal/StepWhen.jsx:696
 msgid "until %s"
 msgstr "bis %s"
 

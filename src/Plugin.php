@@ -114,22 +114,45 @@ final class Plugin {
 		add_action( 'admin_init', array( RoomsToPostsMigration::class, 'run' ), 20 );
 		add_action( 'admin_init', array( MetaToTableMigration::class, 'run' ), 21 );
 
-		ApartmentsController::register();
-		BlocksController::register();
-		BookingsController::register();
-		CustomersController::register();
-		EmailTemplatesController::register();
-		ExtrasController::register();
-		GuideController::register();
-		HolidaysController::register();
-		IcalController::register();
-		PaymentsController::register();
-		ReportsController::register();
-		SettingsController::register();
-		SystemController::register();
-		PublicApartmentsController::register();
-		PublicBookingController::register();
-		PublicVerificationController::register();
+		/*
+		 * Hooked by name instead of by calling each controller's register().
+		 *
+		 * Every one of those methods is the same single line — it adds this
+		 * hook and does nothing else — but calling it makes the autoloader
+		 * read the whole class to get there. Sixteen controllers came to
+		 * 207 KB of the 369 KB this plugin compiled on a request that used
+		 * none of them: a guest looking at a photo grid was paying to compile
+		 * the reports and invoicing endpoints.
+		 *
+		 * `Foo::class` is resolved by the compiler from the imports above and
+		 * does not load anything, and WordPress keeps a string callable as a
+		 * string until the hook fires. So these files are now read on REST
+		 * requests and nowhere else. With an opcode cache in front of PHP the
+		 * cost would be paid once and hidden; without one it was paid again on
+		 * every page view.
+		 */
+		foreach (
+			array(
+				ApartmentsController::class,
+				BlocksController::class,
+				BookingsController::class,
+				CustomersController::class,
+				EmailTemplatesController::class,
+				ExtrasController::class,
+				GuideController::class,
+				HolidaysController::class,
+				IcalController::class,
+				PaymentsController::class,
+				ReportsController::class,
+				SettingsController::class,
+				SystemController::class,
+				PublicApartmentsController::class,
+				PublicBookingController::class,
+				PublicVerificationController::class,
+			) as $controller
+		) {
+			add_action( 'rest_api_init', $controller . '::register_routes' );
+		}
 
 		if ( is_admin() ) {
 			AdminMenu::register();

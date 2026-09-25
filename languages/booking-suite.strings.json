@@ -133,10 +133,10 @@
     },
     {
         "single": "%1$s – %2$s",
-        "line": 684,
+        "line": 671,
         "comment": "translators: 1: start time, 2: end time, both 24-hour.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:684"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:671"
         ],
         "comments": {
             "translators: 1: start time, 2: end time, both 24-hour.": true
@@ -1994,7 +1994,7 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:333",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:739"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:726"
         ],
         "comments": []
     },
@@ -3106,7 +3106,7 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:259",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:607"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:594"
         ],
         "comments": []
     },
@@ -3149,13 +3149,13 @@
     },
     {
         "single": "Choose a date to see what is free.",
-        "line": 598,
-        "comment": "translators: %s: the overnight window.",
+        "line": 585,
+        "comment": "translators: %s: the overnight window, e.g. 16:00 – 11:00.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:598"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:585"
         ],
         "comments": {
-            "translators: %s: the overnight window.": true
+            "translators: %s: the overnight window, e.g. 16:00 – 11:00.": true
         }
     },
     {
@@ -3660,10 +3660,10 @@
     },
     {
         "single": "Could not load the available times.",
-        "line": 614,
+        "line": 601,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:614"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:601"
         ],
         "comments": []
     },
@@ -7170,17 +7170,6 @@
         }
     },
     {
-        "single": "Overnight stays run %s and always take priority over hourly bookings.",
-        "line": 587,
-        "comment": "translators: %s: the overnight window.",
-        "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:587"
-        ],
-        "comments": {
-            "translators: %s: the overnight window.": true
-        }
-    },
-    {
         "single": "Overpaid by %s",
         "line": 164,
         "comment": "translators: %s: how much too much would have been received.",
@@ -9948,10 +9937,10 @@
     },
     {
         "single": "The daytime booking on this day is already taken. An overnight stay may still be free.",
-        "line": 631,
+        "line": 618,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:631"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:618"
         ],
         "comments": []
     },
@@ -10479,7 +10468,7 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:334",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:740"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:727"
         ],
         "comments": []
     },
@@ -11656,7 +11645,7 @@
         "comment": "translators: %s: end time.",
         "refs": [
             "frontend/site/app/src/components/BookingModal/Alternatives.jsx:39",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:709"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:696"
         ],
         "comments": {
             "translators: %s: end time.": true,

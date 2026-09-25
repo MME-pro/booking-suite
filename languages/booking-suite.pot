@@ -72,7 +72,7 @@ msgid "%1$s · %2$s"
 msgstr ""
 
 #. translators: 1: start time, 2: end time, both 24-hour.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:684
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:671
 msgid "%1$s – %2$s"
 msgstr ""
 
@@ -913,7 +913,7 @@ msgstr ""
 msgid "Available start times"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:333 frontend/site/app/src/components/BookingModal/StepWhen.jsx:739
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:333 frontend/site/app/src/components/BookingModal/StepWhen.jsx:726
 msgid "Available — you can continue."
 msgstr ""
 
@@ -1384,7 +1384,7 @@ msgstr ""
 msgid "Check-out must be after check-in."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:259 frontend/site/app/src/components/BookingModal/StepWhen.jsx:607
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:259 frontend/site/app/src/components/BookingModal/StepWhen.jsx:594
 msgid "Checking availability…"
 msgstr ""
 
@@ -1404,8 +1404,8 @@ msgstr ""
 msgid "Choose a date"
 msgstr ""
 
-#. translators: %s: the overnight window.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:598
+#. translators: %s: the overnight window, e.g. 16:00 – 11:00.
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:585
 msgid "Choose a date to see what is free."
 msgstr ""
 
@@ -1624,7 +1624,7 @@ msgstr ""
 msgid "Could not load customers"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:614
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:601
 msgid "Could not load the available times."
 msgstr ""
 
@@ -3147,11 +3147,6 @@ msgstr ""
 msgid "Overnight stay (%s)"
 msgstr ""
 
-#. translators: %s: the overnight window.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:587
-msgid "Overnight stays run %s and always take priority over hourly bookings."
-msgstr ""
-
 #. translators: %s: how much too much would have been received.
 #: frontend/admin/app/src/components/RecordPaymentDialog/RecordPaymentDialog.jsx:164
 msgid "Overpaid by %s"
@@ -4343,7 +4338,7 @@ msgstr ""
 msgid "The day's figures, sent on a schedule rather than against a booking. The time and the recipients are set under Settings → Notifications."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:631
+#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:618
 msgid "The daytime booking on this day is already taken. An overnight stay may still be free."
 msgstr ""
 
@@ -4580,7 +4575,7 @@ msgstr ""
 msgid "This payment link is not valid any more. Please use the link in your booking email, or get in touch."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:334 frontend/site/app/src/components/BookingModal/StepWhen.jsx:740
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:334 frontend/site/app/src/components/BookingModal/StepWhen.jsx:727
 msgid "Those dates are already taken. Please try another window."
 msgstr ""
 
@@ -5098,7 +5093,7 @@ msgstr ""
 
 #. translators: %s: end time.
 #. translators: %s: when the booking ends, with the day if it is a later one.
-#: frontend/site/app/src/components/BookingModal/Alternatives.jsx:39 frontend/site/app/src/components/BookingModal/StepWhen.jsx:709
+#: frontend/site/app/src/components/BookingModal/Alternatives.jsx:39 frontend/site/app/src/components/BookingModal/StepWhen.jsx:696
 msgid "until %s"
 msgstr ""
 

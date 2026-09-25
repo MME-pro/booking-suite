@@ -580,19 +580,6 @@ export default function StepWhen( {
 				</button>
 			</div>
 
-			{ isOvernight && (
-				<p className="bks-when__note">
-					{ sprintf(
-						/* translators: %s: the overnight window. */
-						__(
-							'Overnight stays run %s and always take priority over hourly bookings.',
-							'booking-suite'
-						),
-						overnightWindow
-					) }
-				</p>
-			) }
-
 			{ 'idle' === status && (
 				<p className="bks-when__note">
 					{ __(
