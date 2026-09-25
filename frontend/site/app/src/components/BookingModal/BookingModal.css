@@ -3252,3 +3252,206 @@
 	border-color: var(--bks-accent, #6d28d9);
 	color: var(--bks-accent, #6d28d9);
 }
+
+/* Stay summary -------------------------------------------------------------
+   The dates the guest chose, carried through the steps that follow. Sits
+   between the stepper and the body, so it reads as a property of the whole
+   booking rather than as part of whichever step is on screen. */
+
+.bks-staybar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px 16px;
+	padding: 12px 32px;
+	border-bottom: 1px solid var(--bks-site-border, #e2e8f0);
+	background: var(--bks-site-brand-soft, #eff6ff);
+}
+
+.bks-staybar__text {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0;
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.5;
+	color: var(--bks-site-text, #0f172a);
+}
+
+.bks-staybar__sep {
+	margin: 0 8px;
+	color: var(--bks-site-text-muted, #475569);
+	font-weight: 400;
+}
+
+.bks-staybar__edit {
+	flex: none;
+	padding: 4px 10px;
+	border: 1px solid transparent;
+	border-radius: var(--bks-site-radius-xs, 8px);
+	background: none;
+	color: var(--bks-site-brand, #2563eb);
+	font-family: inherit;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background var(--bks-site-transition-fast);
+}
+
+.bks-staybar__edit:hover,
+.bks-staybar__edit:focus-visible {
+	background: var(--bks-site-surface, #ffffff);
+	border-color: var(--bks-site-border, #e2e8f0);
+}
+
+/* Spinner ------------------------------------------------------------------
+   One loader for every wait in the modal. A line of text saying "Loading"
+   reads as a message the guest is meant to act on; a spinner reads as the
+   screen working, which is what is actually happening. */
+
+@keyframes bks-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.bks-loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	min-height: 96px;
+	padding: 20px;
+	color: var(--bks-site-text-muted, #475569);
+	font-size: 14px;
+}
+
+.bks-spinner {
+	flex: none;
+	width: 26px;
+	height: 26px;
+	border: 2.5px solid var(--bks-site-border, #e2e8f0);
+	border-top-color: var(--bks-site-brand, #2563eb);
+	border-radius: 50%;
+	animation: bks-spin 0.7s linear infinite;
+}
+
+.bks-spinner--sm {
+	width: 16px;
+	height: 16px;
+	border-width: 2px;
+}
+
+/*
+ * Reduced motion still needs to say "working". The ring keeps turning because
+ * a frozen spinner is indistinguishable from a broken screen, but slowly
+ * enough not to read as motion in the corner of the eye.
+ */
+@media (prefers-reduced-motion: reduce) {
+	.bks-spinner {
+		animation-duration: 2.4s;
+	}
+}
+
+/* Start-time cards ---------------------------------------------------------
+   The offers on the chosen day. Each is a real choice with a time, a length
+   and a price, so each is given room to say so rather than being a bare
+   rectangle with a range in the middle of it. */
+
+.bks-slots__slot--rich {
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 14px;
+	padding: 14px 16px;
+	text-align: left;
+}
+
+.bks-slots__slot--rich .bks-slot__icon {
+	flex: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	background: var(--bks-site-brand-soft, #eff6ff);
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+	transition: background var(--bks-site-transition-fast);
+}
+
+.bks-slots__slot--rich .bks-slot__body {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+	color: inherit !important;
+	-webkit-text-fill-color: inherit !important;
+	font-size: inherit;
+	font-weight: inherit;
+	overflow: visible;
+	white-space: normal;
+}
+
+.bks-slots__slot--rich .bks-slot__title {
+	color: inherit !important;
+	-webkit-text-fill-color: inherit !important;
+	font-size: 15px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.bks-slots__slot--rich .bks-slot__meta {
+	color: var(--bks-site-text-muted, #475569) !important;
+	-webkit-text-fill-color: var(--bks-site-text-muted, #475569) !important;
+	font-size: 12.5px;
+	font-weight: 400;
+	white-space: nowrap;
+}
+
+.bks-slots__slot--rich .bks-slot__price {
+	margin-left: auto;
+	padding-left: 12px;
+	color: inherit !important;
+	-webkit-text-fill-color: inherit !important;
+	font-size: 15px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+/* On the selected card every part sits on the brand fill, including the
+   icon well, which would otherwise stay a pale blue circle on blue. */
+.bks-slots__slot--rich.is-selected .bks-slot__icon {
+	background: rgba(255, 255, 255, 0.22);
+	color: #ffffff !important;
+	-webkit-text-fill-color: #ffffff !important;
+}
+
+.bks-slots__slot--rich.is-selected .bks-slot__meta {
+	color: rgba(255, 255, 255, 0.85) !important;
+	-webkit-text-fill-color: rgba(255, 255, 255, 0.85) !important;
+}
+
+@media (max-width: 480px) {
+	.bks-staybar {
+		padding: 10px 16px;
+	}
+
+	.bks-slots__slot--rich {
+		gap: 10px;
+		padding: 12px;
+	}
+
+	.bks-slots__slot--rich .bks-slot__icon {
+		width: 32px;
+		height: 32px;
+	}
+
+	.bks-slots__slot--rich .bks-slot__price {
+		padding-left: 8px;
+	}
+}

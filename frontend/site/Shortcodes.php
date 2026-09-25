@@ -431,10 +431,20 @@ final class Shortcodes {
 		 * instead of on today. Absent attributes are simply omitted, which is
 		 * what keeps every existing button unchanged.
 		 */
+		/*
+		 * The apartment's name rides along so the modal can put it in its
+		 * heading the moment it opens. The name is already on this page —
+		 * waiting for the booking-context request to hand it back meant the
+		 * dialog spent its first moment headed "Loading…", which is the worst
+		 * possible answer to "did my click work?".
+		 */
+		$name = get_the_title( $apartment_id );
+
 		return sprintf(
-			'<button type="button" class="%1$s" data-booking-suite-book="%2$d"%3$s>%4$s</button>',
+			'<button type="button" class="%1$s" data-booking-suite-book="%2$d"%3$s%4$s>%5$s</button>',
 			esc_attr( implode( ' ', $classes ) ),
 			$apartment_id,
+			'' !== $name ? ' data-bks-name="' . esc_attr( $name ) . '"' : '',
 			self::stay_attributes( $atts ),
 			esc_html( $label )
 		);

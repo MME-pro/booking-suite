@@ -15,6 +15,7 @@ import { formatPrice, formatWpDate, formatWpTime } from '../../utils/format';
 import { addDays, fromKey, startOfToday, toKey } from '../../utils/date';
 import DateField from '../DateField/DateField';
 import Alternatives from './Alternatives';
+import Spinner from './Spinner';
 
 /** Today, as the guest's own calendar has it. */
 const today = () => toKey( startOfToday() );
@@ -81,11 +82,10 @@ const endLabel = ( slot ) =>
 /**
  * The day a slot finishes on, for the tile.
  *
- * Only the date. The tile already has the start time in large type above it,
- * and repeating a time underneath says nothing — on a 24-hour booking it is
- * the very same figure twice, and the pair is wider than the tile. What the
- * guest cannot work out for themselves is which day it runs into, so that is
- * all this shows; the exact finishing time is in the tooltip.
+ * Only the date, and only for a booking that crosses midnight. A same-day slot
+ * shows its finishing time instead; here the day is the thing the guest cannot
+ * work out for themselves, and on a 24-hour booking the finishing time would
+ * be the very same figure as the start, twice, in a tile too narrow for both.
  *
  * @param {Object} slot The slot.
  * @return {string} The end date, formatted for the site.
@@ -135,6 +135,33 @@ function blockLength( config ) {
 	const span = minutes( to ) - minutes( from );
 
 	return span > 0 ? Math.round( ( span / 60 ) * 100 ) / 100 : 0;
+}
+
+/**
+ * What to say about the stay the guest has chosen.
+ *
+ * The refusal is worded for the thing that was actually picked, because the
+ * way out differs: a taken night means trying other dates, while a taken start
+ * time usually means another time on the same day is still free.
+ *
+ * @param {Object}  quote       The priced stay from the server.
+ * @param {boolean} isOvernight Whether the guest chose a night.
+ * @return {string} A sentence for the guest.
+ */
+function availabilityNote( quote, isOvernight ) {
+	if ( quote.available ) {
+		return __( 'Available — you can continue.', 'booking-suite' );
+	}
+
+	return isOvernight
+		? __(
+				'Those dates are already taken. Please try another window.',
+				'booking-suite'
+		  )
+		: __(
+				'That start time has just been taken. Please choose another.',
+				'booking-suite'
+		  );
 }
 
 export default function StepWhen( {
@@ -567,16 +594,35 @@ export default function StepWhen( {
 			<div className="bks-slots">
 				<button
 					type="button"
-					className={ `bks-slots__slot bks-slots__slot--block${
+					className={ `bks-slots__slot bks-slots__slot--block bks-slots__slot--rich${
 						isOvernight ? ' is-selected' : ''
 					}` }
 					onClick={ () => onOvernight( true ) }
 				>
-					{ sprintf(
-						/* translators: %s: the overnight window, e.g. 16:00 – 11:00. */
-						__( 'Overnight stay (%s)', 'booking-suite' ),
-						overnightWindow
-					) }
+					<span className="bks-slot__icon">
+						<svg
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="1.8"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							aria-hidden="true"
+							focusable="false"
+						>
+							<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+						</svg>
+					</span>
+					<span className="bks-slot__body">
+						<span className="bks-slot__title">
+							{ __( 'Overnight stay', 'booking-suite' ) }
+						</span>
+						<span className="bks-slot__meta">
+							{ overnightWindow }
+						</span>
+					</span>
 				</button>
 			</div>
 
@@ -590,9 +636,9 @@ export default function StepWhen( {
 			) }
 
 			{ 'loading' === status && (
-				<p className="bks-when__note">
-					{ __( 'Checking availability…', 'booking-suite' ) }
-				</p>
+				<Spinner
+					label={ __( 'Checking availability', 'booking-suite' ) }
+				/>
 			) }
 
 			{ 'error' === status && (
@@ -654,7 +700,7 @@ export default function StepWhen( {
 				<div className="bks-slots">
 					<button
 						type="button"
-						className={ `bks-slots__slot bks-slots__slot--block${
+						className={ `bks-slots__slot bks-slots__slot--block bks-slots__slot--rich${
 							stay.startTime === block.start ? ' is-selected' : ''
 						}` }
 						onClick={ () =>
@@ -666,11 +712,53 @@ export default function StepWhen( {
 							} )
 						}
 					>
-						{ sprintf(
-							/* translators: 1: start time, 2: end time, both 24-hour. */
-							__( '%1$s – %2$s', 'booking-suite' ),
-							formatWpTime( block.start ),
-							formatWpTime( block.end )
+						<span className="bks-slot__icon">
+							<svg
+								width="18"
+								height="18"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="1.8"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								aria-hidden="true"
+								focusable="false"
+							>
+								<circle cx="12" cy="12" r="9" />
+								<path d="M12 7v5l3 2" />
+							</svg>
+						</span>
+						<span className="bks-slot__body">
+							<span className="bks-slot__title">
+								{ sprintf(
+									/* translators: 1: start time, 2: end time, both 24-hour. */
+									__( '%1$s – %2$s', 'booking-suite' ),
+									formatWpTime( block.start ),
+									formatWpTime( block.end )
+								) }
+							</span>
+							<span className="bks-slot__meta">
+								{ sprintf(
+									/* translators: %d: how long the booking runs, in hours. */
+									_n(
+										'%d hour',
+										'%d hours',
+										block.hours,
+										'booking-suite'
+									),
+									block.hours
+								) }
+							</span>
+						</span>
+						{ block.total > 0 && (
+							<span className="bks-slot__price">
+								{ formatPrice(
+									block.total,
+									currency,
+									settings.locale
+								) }
+							</span>
 						) }
 					</button>
 				</div>
@@ -700,20 +788,41 @@ export default function StepWhen( {
 						{ formatWpTime( slot.start ) }
 
 						{ /*
-						 * A booking long enough to run past midnight
-						 * ends on a different date, and a tile showing
-						 * only "02:00" reads as ending before it
-						 * started. The day is spelled out whenever it
-						 * is not the one the guest picked.
+						 * When it finishes, under the time it starts.
+						 *
+						 * This was a tooltip, which a phone never shows —
+						 * so on the device most guests book from, a tile
+						 * said when the booking began and nothing about
+						 * when it ended.
+						 *
+						 * A booking long enough to run past midnight ends
+						 * on a different date, and there the day is what
+						 * the guest cannot work out for themselves: a tile
+						 * reading "02:00" looks like it ends before it
+						 * started, so that case shows the date instead.
 						 */ }
-						{ endsLater( slot ) && (
-							<span>{ endDate( slot ) }</span>
-						) }
+						<span>
+							{ endsLater( slot )
+								? endDate( slot )
+								: sprintf(
+										/* translators: %s: the time the booking finishes. */
+										__( 'until %s', 'booking-suite' ),
+										formatWpTime( slot.end )
+								  ) }
+						</span>
 					</button>
 				) ) }
 			</div>
 
-			{ isOvernight && quote && (
+			{ /*
+			 * Shown for whatever the guest picked, a night or a time.
+			 *
+			 * This used to be gated on the overnight mode, so choosing a start
+			 * time answered with nothing at all: the tile took the click and
+			 * the screen said the same as before it. The quote behind this is
+			 * fetched for both modes already — only the sentence was missing.
+			 */ }
+			{ quote && (
 				<p
 					className={
 						quote.available
@@ -722,12 +831,7 @@ export default function StepWhen( {
 					}
 					role="status"
 				>
-					{ quote.available
-						? __( 'Available — you can continue.', 'booking-suite' )
-						: __(
-								'Those dates are already taken. Please try another window.',
-								'booking-suite'
-						  ) }
+					{ availabilityNote( quote, isOvernight ) }
 				</p>
 			) }
 		</div>

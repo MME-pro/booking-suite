@@ -13,6 +13,8 @@ import { bookingService } from '../../services/bookingService';
 import { settings } from '../../services/apartmentService';
 import { formatPrice } from '../../utils/format';
 import { addDays, startOfToday, toKey } from '../../utils/date';
+import Spinner from './Spinner';
+import StaySummary from './StaySummary';
 import StepWhen from './StepWhen';
 import StepOptions from './StepOptions';
 import StepDetails from './StepDetails';
@@ -100,6 +102,7 @@ const emptyGuest = {
 
 export default function BookingModal( {
 	apartmentId,
+	apartmentName = '',
 	initialStay,
 	onClose,
 	onSwitchApartment,
@@ -508,8 +511,17 @@ export default function BookingModal( {
 				ref={ dialogRef }
 			>
 				<header className="bks-booking__header">
+					{ /*
+					 * The name off the trigger until the context arrives with
+					 * its own. They are the same string; this one is simply
+					 * already here, which is the difference between a dialog
+					 * that opens on the apartment and one that opens on a
+					 * progress message.
+					 */ }
 					<h2 className="bks-booking__title">
-						{ apartment?.name ?? __( 'Loading…', 'booking-suite' ) }
+						{ apartment?.name ||
+							apartmentName ||
+							__( 'Book this apartment', 'booking-suite' ) }
 					</h2>
 
 					<button
@@ -558,9 +570,12 @@ export default function BookingModal( {
 
 				<div className="bks-booking__body">
 					{ isLoading && (
-						<p className="bks-booking__loading">
-							{ __( 'Loading…', 'booking-suite' ) }
-						</p>
+						<Spinner
+							label={ __(
+								'Loading this apartment',
+								'booking-suite'
+							) }
+						/>
 					) }
 
 					{ ! isLoading && error && (
@@ -583,6 +598,21 @@ export default function BookingModal( {
 								'booking-suite'
 							) }
 						</p>
+					) }
+
+					{ /*
+					 * Every step after the first, where the chosen dates have
+					 * otherwise left the screen. Not on the first step: the
+					 * controls there already say all of this, and repeating it
+					 * directly above them is noise.
+					 */ }
+					{ ! isLoading && apartment && ! isDone && 'when' !== step && (
+						<StaySummary
+							stay={ stay }
+							quote={ quote }
+							overnightWindow={ overnightWindow }
+							onEdit={ () => setStep( 'when' ) }
+						/>
 					) }
 
 					{ ! isLoading && apartment && ! isDone && (

@@ -130,7 +130,15 @@ export default function BookingLauncher() {
 			}
 
 			event.preventDefault();
-			setOpening( { id, stay: stayFrom( trigger.dataset ) } );
+
+			// The name is on the trigger, so the dialog can be headed
+			// correctly from its first frame rather than saying "Loading…"
+			// until the context request answers.
+			setOpening( {
+				id,
+				name: trigger.dataset.bksName || '',
+				stay: stayFrom( trigger.dataset ),
+			} );
 		};
 
 		document.addEventListener( 'click', onClick );
@@ -154,11 +162,13 @@ export default function BookingLauncher() {
 		<BookingModal
 			key={ opening.id }
 			apartmentId={ opening.id }
+			apartmentName={ opening.name }
 			initialStay={ opening.stay }
 			onClose={ () => setOpening( null ) }
-			onSwitchApartment={ ( { id, date, start } ) =>
+			onSwitchApartment={ ( { id, name, date, start } ) =>
 				setOpening( {
 					id,
+					name: name || '',
 					stay: {
 						...( opening.stay ?? {} ),
 						mode: 'hourly',

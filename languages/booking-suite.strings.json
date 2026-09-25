@@ -111,10 +111,10 @@
     },
     {
         "single": "%1$s on %2$s",
-        "line": 75,
+        "line": 76,
         "comment": "translators: 1: end time, 2: the date it falls on.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:75"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:76"
         ],
         "comments": {
             "translators: 1: end time, 2: the date it falls on.": true
@@ -133,10 +133,10 @@
     },
     {
         "single": "%1$s – %2$s",
-        "line": 671,
+        "line": 736,
         "comment": "translators: 1: start time, 2: end time, both 24-hour.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:671"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:736"
         ],
         "comments": {
             "translators: 1: start time, 2: end time, both 24-hour.": true
@@ -351,7 +351,8 @@
         "comment": "translators: %d: number of guests.",
         "refs": [
             "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:182",
-            "frontend/site/Shortcodes.php:1726",
+            "frontend/site/Shortcodes.php:1736",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:91",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:181",
             "frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:34"
         ],
@@ -362,19 +363,22 @@
     },
     {
         "single": "%d hour",
-        "line": 1164,
+        "line": 1174,
         "plural": "%d hours",
         "comment": "translators: %d: number of hours.",
         "refs": [
-            "frontend/site/Shortcodes.php:1164",
-            "frontend/site/Shortcodes.php:1653",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:662",
+            "frontend/site/Shortcodes.php:1174",
+            "frontend/site/Shortcodes.php:1663",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:692",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:78",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:122",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:217",
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:744",
             "frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:26"
         ],
         "comments": {
-            "translators: %d: number of hours.": true
+            "translators: %d: number of hours.": true,
+            "translators: %d: how long the booking runs, in hours.": true
         }
     },
     {
@@ -466,9 +470,10 @@
         "comment": "translators: %d: number of nights.",
         "refs": [
             "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:674",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:704",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:62",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:127",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:504"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:531"
         ],
         "comments": {
             "translators: %d: number of nights.": true
@@ -746,10 +751,10 @@
     },
     {
         "single": "/ %s",
-        "line": 1664,
+        "line": 1674,
         "comment": "translators: %s: a duration such as \"3 hours\".",
         "refs": [
-            "frontend/site/Shortcodes.php:1664"
+            "frontend/site/Shortcodes.php:1674"
         ],
         "comments": {
             "translators: %s: a duration such as \"3 hours\".": true
@@ -1616,30 +1621,30 @@
     },
     {
         "single": "Any",
-        "line": 1130,
+        "line": 1140,
         "comment": "",
         "refs": [
-            "frontend/site/Shortcodes.php:1130"
+            "frontend/site/Shortcodes.php:1140"
         ],
         "comments": []
     },
     {
         "single": "Any date",
-        "line": 1214,
+        "line": 1224,
         "comment": "",
         "refs": [
-            "frontend/site/Shortcodes.php:1214",
-            "frontend/site/Shortcodes.php:1246",
+            "frontend/site/Shortcodes.php:1224",
+            "frontend/site/Shortcodes.php:1256",
             "frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:54"
         ],
         "comments": []
     },
     {
         "single": "Any time",
-        "line": 1351,
+        "line": 1361,
         "comment": "",
         "refs": [
-            "frontend/site/Shortcodes.php:1351"
+            "frontend/site/Shortcodes.php:1361"
         ],
         "comments": []
     },
@@ -1889,7 +1894,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:622",
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:75",
-            "frontend/site/Shortcodes.php:1240"
+            "frontend/site/Shortcodes.php:1250"
         ],
         "comments": []
     },
@@ -1979,10 +1984,10 @@
     },
     {
         "single": "Available start times",
-        "line": 558,
+        "line": 585,
         "comment": "translators: %d: the largest party the apartment takes.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:558"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:585"
         ],
         "comments": {
             "translators: %d: the largest party the apartment takes.": true
@@ -1994,7 +1999,7 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:333",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:726"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:153"
         ],
         "comments": []
     },
@@ -2103,7 +2108,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460",
             "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:638",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:709"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:739"
         ],
         "comments": []
     },
@@ -2280,19 +2285,20 @@
     },
     {
         "single": "Book subject to payment",
-        "line": 735,
+        "line": 765,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:735"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:765"
         ],
         "comments": []
     },
     {
         "single": "Book this apartment",
-        "line": 506,
+        "line": 509,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:506"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:509",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:524"
         ],
         "comments": []
     },
@@ -2961,7 +2967,8 @@
         "line": 242,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/components/RecordPaymentDialog/RecordPaymentDialog.jsx:242"
+            "frontend/admin/app/src/components/RecordPaymentDialog/RecordPaymentDialog.jsx:242",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:124"
         ],
         "comments": []
     },
@@ -3101,12 +3108,20 @@
         "comments": []
     },
     {
+        "single": "Checking availability",
+        "line": 640,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:640"
+        ],
+        "comments": []
+    },
+    {
         "single": "Checking availability…",
         "line": 259,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepStay.jsx:259",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:594"
+            "frontend/site/app/src/components/BookingModal/StepStay.jsx:259"
         ],
         "comments": []
     },
@@ -3149,14 +3164,12 @@
     },
     {
         "single": "Choose a date to see what is free.",
-        "line": 585,
-        "comment": "translators: %s: the overnight window, e.g. 16:00 – 11:00.",
+        "line": 631,
+        "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:585"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:631"
         ],
-        "comments": {
-            "translators: %s: the overnight window, e.g. 16:00 – 11:00.": true
-        }
+        "comments": []
     },
     {
         "single": "Choose a logo",
@@ -3233,10 +3246,10 @@
     },
     {
         "single": "Choose when you are coming",
-        "line": 693,
+        "line": 723,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:693"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:723"
         ],
         "comments": []
     },
@@ -3364,7 +3377,7 @@
             "frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:183",
             "frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:268",
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:197",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:519"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:531"
         ],
         "comments": []
     },
@@ -3496,7 +3509,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:798",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:485"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:488"
         ],
         "comments": []
     },
@@ -3541,10 +3554,10 @@
     },
     {
         "single": "Continue",
-        "line": 747,
+        "line": 777,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:747"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:777"
         ],
         "comments": []
     },
@@ -3660,10 +3673,10 @@
     },
     {
         "single": "Could not load the available times.",
-        "line": 601,
+        "line": 647,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:601"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:647"
         ],
         "comments": []
     },
@@ -3887,7 +3900,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:601",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:156",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:431",
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:458",
             "frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59"
         ],
         "comments": {
@@ -4235,7 +4248,7 @@
             "frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:315",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:691",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:415",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:484"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:487"
         ],
         "comments": []
     },
@@ -4339,11 +4352,11 @@
     },
     {
         "single": "Duration",
-        "line": 1171,
+        "line": 1181,
         "comment": "",
         "refs": [
-            "frontend/site/Shortcodes.php:1171",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:447",
+            "frontend/site/Shortcodes.php:1181",
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:474",
             "frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:33"
         ],
         "comments": {
@@ -4789,7 +4802,7 @@
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402",
             "frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:260",
             "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:670",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:483",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:486",
             "frontend/site/app/src/components/BookingModal/StepOptions.jsx:44",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:313"
         ],
@@ -4861,10 +4874,10 @@
     },
     {
         "single": "Fixed on this day.",
-        "line": 468,
+        "line": 495,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:468"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:495"
         ],
         "comments": []
     },
@@ -4922,10 +4935,10 @@
     {
         "single": "From %d hour.",
         "plural": "From %d hours.",
-        "line": 476,
+        "line": 503,
         "comment": "translators: %d: the shortest bookable length, in hours.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:476"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:503"
         ],
         "comments": {
             "translators: %d: the shortest bookable length, in hours.": true
@@ -5138,10 +5151,10 @@
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:516",
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:74",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:129",
-            "frontend/site/Shortcodes.php:1126",
+            "frontend/site/Shortcodes.php:1136",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:137",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:175",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:520",
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:547",
             "frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107"
         ],
         "comments": {
@@ -5774,21 +5787,29 @@
         "comments": []
     },
     {
+        "single": "Loading",
+        "line": 26,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/Spinner.jsx:26"
+        ],
+        "comments": []
+    },
+    {
+        "single": "Loading this apartment",
+        "line": 574,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:574"
+        ],
+        "comments": []
+    },
+    {
         "single": "Loading your booking…",
         "line": 80,
         "comment": "",
         "refs": [
             "frontend/site/app/src/PaymentApp.jsx:80"
-        ],
-        "comments": []
-    },
-    {
-        "single": "Loading…",
-        "line": 512,
-        "comment": "",
-        "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:512",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:562"
         ],
         "comments": []
     },
@@ -6261,10 +6282,10 @@
     },
     {
         "single": "Nights",
-        "line": 491,
+        "line": 518,
         "comment": "translators: %d: the shortest bookable length, in hours.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:491"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:518"
         ],
         "comments": {
             "translators: %d: the shortest bookable length, in hours.": true
@@ -6272,11 +6293,11 @@
     },
     {
         "single": "No apartment sleeps %d guest. Try a smaller party.",
-        "line": 643,
+        "line": 653,
         "plural": "No apartment sleeps %d guests. Try a smaller party.",
         "comment": "translators: %d: number of guests searched for.",
         "refs": [
-            "frontend/site/Shortcodes.php:643"
+            "frontend/site/Shortcodes.php:653"
         ],
         "comments": {
             "translators: %d: number of guests searched for.": true
@@ -6284,10 +6305,10 @@
     },
     {
         "single": "No apartments are available just now.",
-        "line": 651,
+        "line": 661,
         "comment": "",
         "refs": [
-            "frontend/site/Shortcodes.php:651"
+            "frontend/site/Shortcodes.php:661"
         ],
         "comments": []
     },
@@ -7154,20 +7175,10 @@
         "line": 88,
         "comment": "",
         "refs": [
-            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:88"
+            "frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:88",
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:620"
         ],
         "comments": []
-    },
-    {
-        "single": "Overnight stay (%s)",
-        "line": 577,
-        "comment": "translators: %s: the overnight window, e.g. 16:00 – 11:00.",
-        "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:577"
-        ],
-        "comments": {
-            "translators: %s: the overnight window, e.g. 16:00 – 11:00.": true
-        }
     },
     {
         "single": "Overpaid by %s",
@@ -7325,7 +7336,7 @@
             "frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:47",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:73",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:637",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:486"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:489"
         ],
         "comments": []
     },
@@ -7743,10 +7754,10 @@
     },
     {
         "single": "Please confirm your email address again — the earlier confirmation has expired.",
-        "line": 369,
+        "line": 372,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:369"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:372"
         ],
         "comments": []
     },
@@ -7898,7 +7909,7 @@
         "comment": "",
         "refs": [
             "backend/Integrations/Elementor/Tags.php:196",
-            "frontend/site/Shortcodes.php:1609",
+            "frontend/site/Shortcodes.php:1619",
             "frontend/site/app/src/components/ApartmentCard/ApartmentCard.jsx:160"
         ],
         "comments": []
@@ -8434,10 +8445,10 @@
     },
     {
         "single": "Review",
-        "line": 487,
+        "line": 490,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:487"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:490"
         ],
         "comments": []
     },
@@ -8488,10 +8499,10 @@
     },
     {
         "single": "Save %s at this length",
-        "line": 421,
+        "line": 448,
         "comment": "translators: %s: amount saved at this length.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:421"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:448"
         ],
         "comments": {
             "translators: %s: amount saved at this length.": true
@@ -8609,7 +8620,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/components/SearchField/SearchField.jsx:13",
-            "frontend/site/Shortcodes.php:1132",
+            "frontend/site/Shortcodes.php:1142",
             "frontend/site/app/src/components/SearchFilterBar/SearchFilterBar.jsx:99"
         ],
         "comments": []
@@ -8806,7 +8817,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:932",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:734"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:764"
         ],
         "comments": []
     },
@@ -9796,6 +9807,15 @@
         "comments": []
     },
     {
+        "single": "That start time has just been taken. Please choose another.",
+        "line": 161,
+        "comment": "",
+        "refs": [
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:161"
+        ],
+        "comments": []
+    },
+    {
         "single": "That time has already passed.",
         "line": 995,
         "comment": "",
@@ -9937,10 +9957,10 @@
     },
     {
         "single": "The daytime booking on this day is already taken. An overnight stay may still be free.",
-        "line": 618,
+        "line": 664,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:618"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:664"
         ],
         "comments": []
     },
@@ -10468,7 +10488,7 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:334",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:727"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:157"
         ],
         "comments": []
     },
@@ -10492,10 +10512,10 @@
     },
     {
         "single": "Time",
-        "line": 1355,
+        "line": 1365,
         "comment": "",
         "refs": [
-            "frontend/site/Shortcodes.php:1355"
+            "frontend/site/Shortcodes.php:1365"
         ],
         "comments": []
     },
@@ -10902,10 +10922,10 @@
     {
         "single": "Up to %d guest.",
         "plural": "Up to %d guests.",
-        "line": 544,
+        "line": 571,
         "comment": "translators: %d: the largest party the apartment takes.",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:544"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:571"
         ],
         "comments": {
             "translators: %d: the largest party the apartment takes.": true
@@ -11277,10 +11297,10 @@
     },
     {
         "single": "When",
-        "line": 482,
+        "line": 485,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:482"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:485"
         ],
         "comments": []
     },
@@ -11450,19 +11470,19 @@
     },
     {
         "single": "Your booking is placed — taking you to the payment details…",
-        "line": 581,
+        "line": 596,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:581"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:596"
         ],
         "comments": []
     },
     {
         "single": "Your booking was placed. Please check your email for the payment details.",
-        "line": 355,
+        "line": 358,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:355"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:358"
         ],
         "comments": []
     },
@@ -11587,11 +11607,11 @@
     },
     {
         "single": "from",
-        "line": 1615,
+        "line": 1625,
         "comment": "",
         "refs": [
-            "frontend/site/Shortcodes.php:1615",
-            "frontend/site/Shortcodes.php:1659"
+            "frontend/site/Shortcodes.php:1625",
+            "frontend/site/Shortcodes.php:1669"
         ],
         "comments": []
     },
@@ -11645,11 +11665,15 @@
         "comment": "translators: %s: end time.",
         "refs": [
             "frontend/site/app/src/components/BookingModal/Alternatives.jsx:39",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:696"
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:48",
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:784",
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:809"
         ],
         "comments": {
             "translators: %s: end time.": true,
-            "translators: %s: when the booking ends, with the day if it is a later one.": true
+            "translators: %s: the check-out date.": true,
+            "translators: %s: when the booking ends, with the day if it is a later one.": true,
+            "translators: %s: the time the booking finishes.": true
         }
     },
     {
