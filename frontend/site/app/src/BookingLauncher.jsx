@@ -65,17 +65,20 @@ const addNights = ( date, nights ) => {
  */
 const stayFrom = ( dataset ) => {
 	const guests = Number.parseInt( dataset.bksGuests, 10 );
-	const date = dataset.bksDate || '';
-
-	// Guests alone is worth carrying: a party size with no date still saves the
-	// guest re-entering it.
-	if ( ! date ) {
-		return guests > 0 ? { guests } : null;
-	}
-
 	const party = guests > 0 ? { guests } : {};
+	const date = dataset.bksDate || '';
 	const hours = Number.parseInt( dataset.bksHours, 10 );
 
+	/*
+	 * A length with no date still belongs in the form.
+	 *
+	 * This used to return early whenever the date was missing, keeping only the
+	 * party size — so a guest who set a duration in the search bar but left the
+	 * arrival on "any date" watched that duration disappear when the modal
+	 * opened. The search bar writes the two independently, and so does the
+	 * shortcode, so they have to be read independently. With no date the modal
+	 * falls back to today, which is what it opens on anyway.
+	 */
 	if ( hours > 0 ) {
 		/*
 		 * The start time is carried only when the guest actually named one. Left
@@ -89,7 +92,20 @@ const stayFrom = ( dataset ) => {
 			? dataset.bksTime
 			: '';
 
-		return { mode: 'hourly', date, hours, startTime, ...party };
+		return {
+			mode: 'hourly',
+			hours,
+			startTime,
+			...( date ? { date } : {} ),
+			...party,
+		};
+	}
+
+	// Nights still need a date, because the window is the arrival plus a
+	// length: without one there is nothing to count from, and picking today on
+	// the guest's behalf would hold dates they never chose.
+	if ( ! date ) {
+		return guests > 0 ? party : null;
 	}
 
 	const nights = Number.parseInt( dataset.bksNights, 10 );

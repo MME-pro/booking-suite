@@ -20,7 +20,7 @@ import { __ } from '@wordpress/i18n';
 export default function Spinner( { label, small = false } ) {
 	return (
 		<span
-			className="bks-loading"
+			className={ `bks-loading${ small ? ' bks-loading--inline' : '' }` }
 			role="status"
 			aria-live="polite"
 			aria-label={ label || __( 'Loading', 'booking-suite' ) }

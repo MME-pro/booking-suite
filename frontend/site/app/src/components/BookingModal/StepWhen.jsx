@@ -441,6 +441,22 @@ export default function StepWhen( {
 	const isUnavailable = ( day ) =>
 		isOvernight && takenNights.has( toKey( day ) );
 
+	/*
+	 * Whether the night the overnight card would book is already gone.
+	 *
+	 * The daytime tiles drop the times that have been taken rather than
+	 * striking them through, because a guest cannot act on a slot that is not
+	 * there. The night was the one offer exempt from that: it was printed on
+	 * every day whether or not anyone could have it, so a guest could pick a
+	 * night that was sold and only find out from the line underneath.
+	 *
+	 * An empty set means the lookup failed rather than that everything is
+	 * free, and the card stays on screen in that case — the quote still
+	 * refuses a night that has gone, which is how this behaved before.
+	 */
+	const overnightTaken =
+		Boolean( stay.date ) && takenNights.has( stay.date );
+
 	const saving =
 		chosen?.discount > 0
 			? sprintf(
@@ -587,10 +603,13 @@ export default function StepWhen( {
 
 			{ /*
 			 * The overnight stay, offered as one of the times rather than as a
-			 * mode to switch into first. It is always here: every day can be
-			 * booked as a night, and on a weekend after 16:00 it is the only
-			 * thing that can be.
+			 * mode to switch into first — on a day whose daytime hours are
+			 * gone it is often the only thing left, and a guest should not
+			 * have to know it exists to find it.
+			 *
+			 * Offered whenever the night itself is free; see overnightTaken.
 			 */ }
+			{ ! overnightTaken && (
 			<div className="bks-slots">
 				<button
 					type="button"
@@ -625,6 +644,7 @@ export default function StepWhen( {
 					</span>
 				</button>
 			</div>
+			) }
 
 			{ 'idle' === status && (
 				<p className="bks-when__note">

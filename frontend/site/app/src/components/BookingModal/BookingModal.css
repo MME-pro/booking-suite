@@ -404,13 +404,21 @@
 	min-width: 160px;
 }
 
+/*
+ * A plain heading rather than a tracked-out micro-label.
+ *
+ * It was 12px uppercase with 0.06em of letter-spacing, which stretches a
+ * German compound past readability — "VERFÜGBARE STARTZEITEN" came out as a
+ * line of separated letters rather than two words.
+ */
 .bks-when__heading {
-	color: var(--bks-site-brand);
-	font-size: 12px;
-	font-weight: 700;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-	margin-top: 8px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	color: var(--bks-site-text, #0f172a);
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: normal;
+	text-transform: none;
 }
 
 .bks-overnight {
@@ -3343,6 +3351,13 @@
 	width: 16px;
 	height: 16px;
 	border-width: 2px;
+}
+
+/* Beside a control or standing in for a figure, rather than filling a panel. */
+.bks-loading--inline {
+	display: inline-flex;
+	min-height: 0;
+	padding: 0;
 }
 
 /*

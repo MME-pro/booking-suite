@@ -794,6 +794,7 @@ return array(
 	'Weekday rate (Sun–Thu)' => 'Wochentagspreis (So–Do)',
 	'Weekend rate (Fri/Sat)' => 'Wochenendpreis (Fr/Sa)',
 	'Checking availability' => 'Verfügbarkeit wird geprüft',
+	'Working out the price' => 'Preis wird berechnet',
 	'Loading' => 'Wird geladen',
 	'Loading this apartment' => 'Apartment wird geladen',
 	'That start time has just been taken. Please choose another.' => 'Diese Startzeit wurde gerade vergeben. Bitte wählen Sie eine andere.',

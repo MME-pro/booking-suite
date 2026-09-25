@@ -569,7 +569,16 @@ export default function BookingModal( {
 				</header>
 
 				<div className="bks-booking__body">
-					{ isLoading && (
+					{ /*
+					 * Only for a step that genuinely has nothing to draw yet.
+					 *
+					 * The first step is not one of them: its date, duration and
+					 * guest fields are answered by the defaults and by whatever
+					 * the trigger carried, none of which waits on the server.
+					 * Covering them with a spinner made the guest watch a
+					 * loader to reach a form that was ready before it appeared.
+					 */ }
+					{ isLoading && 'when' !== step && (
 						<Spinner
 							label={ __(
 								'Loading this apartment',
@@ -578,7 +587,7 @@ export default function BookingModal( {
 						/>
 					) }
 
-					{ ! isLoading && error && (
+					{ error && ! isDone && (
 						<p className="bks-booking__error" role="alert">
 							{ error }
 						</p>
@@ -615,21 +624,29 @@ export default function BookingModal( {
 						/>
 					) }
 
+					{ /*
+					 * Rendered straight away, before the context request has
+					 * answered. Everything this step opens on is already known:
+					 * the defaults, and the date, length and party size the
+					 * trigger carried from the search bar. The capacity and the
+					 * overnight window arrive a moment later and the fields
+					 * they qualify handle their own absence.
+					 */ }
+					{ ! isDone && 'when' === step && (
+						<StepWhen
+							stay={ stay }
+							onChange={ setStay }
+							onSwitchApartment={ onSwitchApartment }
+							quote={ quote }
+							capacity={ apartment?.capacity ?? 0 }
+							apartmentId={ apartmentId }
+							currency={ currency }
+							overnightWindow={ overnightWindow }
+						/>
+					) }
+
 					{ ! isLoading && apartment && ! isDone && (
 						<>
-							{ 'when' === step && (
-								<StepWhen
-									stay={ stay }
-									onChange={ setStay }
-									onSwitchApartment={ onSwitchApartment }
-									quote={ quote }
-									capacity={ apartment.capacity }
-									apartmentId={ apartmentId }
-									currency={ currency }
-									overnightWindow={ overnightWindow }
-								/>
-							) }
-
 							{ 'extras' === step && (
 								<StepOptions
 									extras={ context.extras }
@@ -719,12 +736,33 @@ export default function BookingModal( {
 									</strong>
 								</>
 							) : (
-								<span className="bks-booking__total-label">
-									{ __(
-										'Choose when you are coming',
-										'booking-suite'
+								/*
+								 * Chosen but not yet priced, against nothing
+								 * chosen at all. Both used to print "Choose when
+								 * you are coming", so the moment after a guest
+								 * picked a time the footer told them to pick a
+								 * time — the one place on the screen showing
+								 * what their choice costs, denying they had
+								 * made one.
+								 */
+								<>
+									{ isStayComplete ? (
+										<Spinner
+											small
+											label={ __(
+												'Working out the price',
+												'booking-suite'
+											) }
+										/>
+									) : (
+										<span className="bks-booking__total-label">
+											{ __(
+												'Choose when you are coming',
+												'booking-suite'
+											) }
+										</span>
 									) }
-								</span>
+								</>
 							) }
 						</div>
 
