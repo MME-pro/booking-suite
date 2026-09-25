@@ -299,7 +299,16 @@
 .bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="21"]:checked) .bks-showcase__menu-value > span[data-hours="21"],
 .bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="22"]:checked) .bks-showcase__menu-value > span[data-hours="22"],
 .bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="23"]:checked) .bks-showcase__menu-value > span[data-hours="23"],
-.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="24"]:checked) .bks-showcase__menu-value > span[data-hours="24"] {
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="24"]:checked) .bks-showcase__menu-value > span[data-hours="24"],
+/*
+ * The night, which is the one duration that is not a number of hours.
+ *
+ * The rule above stands the server-rendered label down as soon as anything is
+ * checked, and the per-value rules then put the right one back — so a value
+ * with no rule of its own is hidden by the first and never restored by the
+ * second. Choosing Overnight emptied the trigger completely.
+ */
+.bks-showcase__search-field--duration .bks-showcase__menu:has(input[value="night"]:checked) .bks-showcase__menu-value > span[data-hours="night"] {
 	display: inline;
 }
 
@@ -532,9 +541,27 @@
  * first child, so this works everywhere, and the tick never depends on a
  * feature the trigger's fallback already accounts for.
  */
-.bks-showcase__option input:checked ~ .bks-showcase__option-label {
+/*
+ * Forced, and forced again on hover.
+ *
+ * The colour here is on the inner span, so the forced colour on the row does
+ * not reach it — a theme's own :hover for text inside a label out-specifies an
+ * unforced declaration and turned the chosen option white at the exact moment
+ * the guest pointed at it, which reads as the selection being cleared.
+ */
+.bks-showcase__option input:checked ~ .bks-showcase__option-label,
+.bks-showcase__option:hover input:checked ~ .bks-showcase__option-label,
+.bks-showcase__option:focus-within input:checked ~ .bks-showcase__option-label {
 	font-weight: 600;
-	color: var(--bks-site-brand, #2563eb);
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+/* The unchosen options, whose colour the row sets and the theme also claims. */
+.bks-showcase__option:hover .bks-showcase__option-label,
+.bks-showcase__option:focus-within .bks-showcase__option-label {
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
 }
 
 .bks-showcase__option .bks-showcase__icon--check {
