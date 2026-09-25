@@ -352,7 +352,6 @@
         "refs": [
             "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:182",
             "frontend/site/Shortcodes.php:1884",
-            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:91",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:181",
             "frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:34"
         ],
@@ -372,7 +371,7 @@
             "frontend/site/Shortcodes.php:1811",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:756",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:805",
-            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:78",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:100",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:122",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:217",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:773",
@@ -473,7 +472,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141",
             "frontend/site/app/src/components/BookingModal/BookingModal.jsx:768",
-            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:62",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:70",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:127",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:556"
         ],
@@ -2970,7 +2969,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/components/RecordPaymentDialog/RecordPaymentDialog.jsx:242",
-            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:124"
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:139"
         ],
         "comments": []
     },
@@ -3065,6 +3064,7 @@
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:190",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:542",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:519",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:51",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:107"
         ],
         "comments": []
@@ -3095,6 +3095,7 @@
             "frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:197",
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:564",
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:529",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:57",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:122"
         ],
         "comments": []
@@ -3901,11 +3902,13 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:601",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:82",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:156",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:483",
             "frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59"
         ],
         "comments": {
+            "translators: %d: number of nights.": true,
             "translators: %s: amount saved at this length.": true
         }
     },
@@ -4358,6 +4361,7 @@
         "comment": "",
         "refs": [
             "frontend/site/Shortcodes.php:1319",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:97",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:499",
             "frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:33"
         ],
@@ -5154,12 +5158,14 @@
             "frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:74",
             "frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:129",
             "frontend/site/Shortcodes.php:1247",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:111",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:137",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:175",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:572",
             "frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107"
         ],
         "comments": {
+            "translators: %d: number of hours.": true,
             "translators: %d: number of nights.": true
         }
     },
@@ -6284,9 +6290,10 @@
     },
     {
         "single": "Nights",
-        "line": 543,
-        "comment": "translators: %d: the shortest bookable length, in hours.",
+        "line": 65,
+        "comment": "",
         "refs": [
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:65",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:543"
         ],
         "comments": {
@@ -10509,9 +10516,12 @@
         "line": 1504,
         "comment": "",
         "refs": [
-            "frontend/site/Shortcodes.php:1504"
+            "frontend/site/Shortcodes.php:1504",
+            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:88"
         ],
-        "comments": []
+        "comments": {
+            "translators: %d: number of nights.": true
+        }
     },
     {
         "single": "Time Slot",
@@ -11668,13 +11678,11 @@
         "comment": "translators: %s: end time.",
         "refs": [
             "frontend/site/app/src/components/BookingModal/Alternatives.jsx:39",
-            "frontend/site/app/src/components/BookingModal/StaySummary.jsx:48",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:813",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:838"
         ],
         "comments": {
             "translators: %s: end time.": true,
-            "translators: %s: the check-out date.": true,
             "translators: %s: when the booking ends, with the day if it is a later one.": true,
             "translators: %s: the time the booking finishes.": true
         }

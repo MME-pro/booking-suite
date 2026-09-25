@@ -185,8 +185,7 @@ msgstr ""
 
 #. translators: %d: number of guests.
 #. translators: %d: maximum number of guests.
-#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:182 frontend/site/Shortcodes.php:1884 frontend/site/app/src/components/BookingModal/StaySummary.jsx:91 frontend/site/app/src/components/BookingModal/StepReview.jsx:181
-#: frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:34
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:182 frontend/site/Shortcodes.php:1884 frontend/site/app/src/components/BookingModal/StepReview.jsx:181 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:34
 msgid "%d guest"
 msgid_plural "%d guests"
 msgstr[0] ""
@@ -195,7 +194,7 @@ msgstr[1] ""
 #. translators: %d: number of hours.
 #. translators: %d: how long the booking runs, in hours.
 #: frontend/site/Shortcodes.php:1299 frontend/site/Shortcodes.php:1309 frontend/site/Shortcodes.php:1811 frontend/site/app/src/components/BookingModal/BookingModal.jsx:756
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:805 frontend/site/app/src/components/BookingModal/StaySummary.jsx:78 frontend/site/app/src/components/BookingModal/StepReview.jsx:122 frontend/site/app/src/components/BookingModal/StepStay.jsx:217
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:805 frontend/site/app/src/components/BookingModal/StaySummary.jsx:100 frontend/site/app/src/components/BookingModal/StepReview.jsx:122 frontend/site/app/src/components/BookingModal/StepStay.jsx:217
 #: frontend/site/app/src/components/BookingModal/StepWhen.jsx:773 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:26
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -244,7 +243,7 @@ msgid "%d minutes"
 msgstr ""
 
 #. translators: %d: number of nights.
-#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:768 frontend/site/app/src/components/BookingModal/StaySummary.jsx:62 frontend/site/app/src/components/BookingModal/StepReview.jsx:127
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:768 frontend/site/app/src/components/BookingModal/StaySummary.jsx:70 frontend/site/app/src/components/BookingModal/StepReview.jsx:127
 #: frontend/site/app/src/components/BookingModal/StepWhen.jsx:556
 msgid "%d night"
 msgid_plural "%d nights"
@@ -1328,7 +1327,7 @@ msgstr ""
 msgid "Catalogue"
 msgstr ""
 
-#: frontend/admin/app/src/components/RecordPaymentDialog/RecordPaymentDialog.jsx:242 frontend/site/app/src/components/BookingModal/StaySummary.jsx:124
+#: frontend/admin/app/src/components/RecordPaymentDialog/RecordPaymentDialog.jsx:242 frontend/site/app/src/components/BookingModal/StaySummary.jsx:139
 msgid "Change"
 msgstr ""
 
@@ -1368,7 +1367,8 @@ msgstr ""
 msgid "Check your spam folder if it has not arrived. Nothing is booked until you finish."
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:190 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:542 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:519 frontend/site/app/src/components/BookingModal/StepStay.jsx:107
+#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:190 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:542 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:519 frontend/site/app/src/components/BookingModal/StaySummary.jsx:51
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:107
 msgid "Check-in"
 msgstr ""
 
@@ -1380,7 +1380,8 @@ msgstr ""
 msgid "Check-ins this week"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:197 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:564 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:529 frontend/site/app/src/components/BookingModal/StepStay.jsx:122
+#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:197 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:564 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:529 frontend/site/app/src/components/BookingModal/StaySummary.jsx:57
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:122
 msgid "Check-out"
 msgstr ""
 
@@ -1726,8 +1727,10 @@ msgstr ""
 msgid "Database"
 msgstr ""
 
+#. translators: %d: number of nights.
 #. translators: %s: amount saved at this length.
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:601 frontend/site/app/src/components/BookingModal/StepStay.jsx:156 frontend/site/app/src/components/BookingModal/StepWhen.jsx:483 frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:601 frontend/site/app/src/components/BookingModal/StaySummary.jsx:82 frontend/site/app/src/components/BookingModal/StepStay.jsx:156 frontend/site/app/src/components/BookingModal/StepWhen.jsx:483
+#: frontend/site/app/src/components/SearchFilterBar/DatePickerPopover.jsx:59
 msgid "Date"
 msgstr ""
 
@@ -1930,7 +1933,7 @@ msgid "Drop any of these into a subject or message and the booking fills them in
 msgstr ""
 
 #. translators: %d: number of hours.
-#: frontend/site/Shortcodes.php:1319 frontend/site/app/src/components/BookingModal/StepWhen.jsx:499 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:33
+#: frontend/site/Shortcodes.php:1319 frontend/site/app/src/components/BookingModal/StaySummary.jsx:97 frontend/site/app/src/components/BookingModal/StepWhen.jsx:499 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:33
 msgid "Duration"
 msgstr ""
 
@@ -2262,11 +2265,12 @@ msgstr ""
 msgid "Guest paid on"
 msgstr ""
 
+#. translators: %d: number of hours.
 #. translators: %d: number of nights.
 #: backend/PostTypes/ApartmentMetaBox.php:181 backend/PostTypes/ApartmentPostType.php:95 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:445 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:109
 #: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:630 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:516 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:74
-#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:129 frontend/site/Shortcodes.php:1247 frontend/site/app/src/components/BookingModal/StepStay.jsx:137 frontend/site/app/src/components/BookingModal/StepStay.jsx:175
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:572 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107
+#: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:129 frontend/site/Shortcodes.php:1247 frontend/site/app/src/components/BookingModal/StaySummary.jsx:111 frontend/site/app/src/components/BookingModal/StepStay.jsx:137
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:175 frontend/site/app/src/components/BookingModal/StepWhen.jsx:572 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107
 msgid "Guests"
 msgstr ""
 
@@ -2758,7 +2762,7 @@ msgid "Next photo"
 msgstr ""
 
 #. translators: %d: the shortest bookable length, in hours.
-#: frontend/site/app/src/components/BookingModal/StepWhen.jsx:543
+#: frontend/site/app/src/components/BookingModal/StaySummary.jsx:65 frontend/site/app/src/components/BookingModal/StepWhen.jsx:543
 msgid "Nights"
 msgstr ""
 
@@ -4593,7 +4597,8 @@ msgstr ""
 msgid "Those dates have just been taken. Please choose another window."
 msgstr ""
 
-#: frontend/site/Shortcodes.php:1504
+#. translators: %d: number of nights.
+#: frontend/site/Shortcodes.php:1504 frontend/site/app/src/components/BookingModal/StaySummary.jsx:88
 msgid "Time"
 msgstr ""
 
@@ -5102,10 +5107,9 @@ msgid "save %s"
 msgstr ""
 
 #. translators: %s: end time.
-#. translators: %s: the check-out date.
 #. translators: %s: when the booking ends, with the day if it is a later one.
 #. translators: %s: the time the booking finishes.
-#: frontend/site/app/src/components/BookingModal/Alternatives.jsx:39 frontend/site/app/src/components/BookingModal/StaySummary.jsx:48 frontend/site/app/src/components/BookingModal/StepWhen.jsx:813 frontend/site/app/src/components/BookingModal/StepWhen.jsx:838
+#: frontend/site/app/src/components/BookingModal/Alternatives.jsx:39 frontend/site/app/src/components/BookingModal/StepWhen.jsx:813 frontend/site/app/src/components/BookingModal/StepWhen.jsx:838
 msgid "until %s"
 msgstr ""
 

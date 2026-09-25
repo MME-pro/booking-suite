@@ -3266,53 +3266,102 @@
    between the stepper and the body, so it reads as a property of the whole
    booking rather than as part of whichever step is on screen. */
 
+/*
+ * A panel inside the step, not a strip across the top of it.
+ *
+ * Filled edge to edge with the accent tint it read as a warning the screen
+ * was giving the guest, which is the wrong register for the thing they are
+ * buying. A bordered card on the page's own ground, indented to the body's
+ * gutter, reads as their booking.
+ */
 .bks-staybar {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
-	gap: 8px 16px;
-	padding: 12px 32px;
-	border-bottom: 1px solid var(--bks-site-border, #e2e8f0);
-	background: var(--bks-site-brand-soft, #eff6ff);
+	gap: 12px 24px;
+	margin: 24px 32px 0;
+	padding: 14px 18px;
+	border: 1px solid var(--bks-site-border, #e2e8f0);
+	border-radius: var(--bks-site-radius-xs, 10px);
+	background: var(--bks-site-surface-muted, #f8fafc);
 }
 
-.bks-staybar__text {
+.bks-staybar__facts {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: center;
-	gap: 0;
+	gap: 10px 28px;
+	margin: 0;
+}
+
+.bks-staybar__fact {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+}
+
+/*
+ * The same small caps the search bar puts over its own four fields, so a
+ * guest meets one way of being shown a date on both screens.
+ */
+.bks-staybar__label {
+	margin: 0;
+	font-size: 10.5px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--bks-site-text-muted, #475569);
+}
+
+.bks-staybar__value {
 	margin: 0;
 	font-size: 14px;
 	font-weight: 600;
-	line-height: 1.5;
+	line-height: 1.35;
 	color: var(--bks-site-text, #0f172a);
-}
-
-.bks-staybar__sep {
-	margin: 0 8px;
-	color: var(--bks-site-text-muted, #475569);
-	font-weight: 400;
+	white-space: nowrap;
 }
 
 .bks-staybar__edit {
 	flex: none;
-	padding: 4px 10px;
-	border: 1px solid transparent;
-	border-radius: var(--bks-site-radius-xs, 8px);
-	background: none;
-	color: var(--bks-site-brand, #2563eb);
+	margin-left: auto;
+	padding: 7px 14px;
+	border: 1px solid var(--bks-site-border-strong, #cbd5e1);
+	border-radius: var(--bks-site-radius-pill, 999px);
+	background: var(--bks-site-surface, #ffffff);
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
 	font-family: inherit;
 	font-size: 13px;
 	font-weight: 600;
+	line-height: 1;
 	cursor: pointer;
-	transition: background var(--bks-site-transition-fast);
+	transition:
+		border-color var(--bks-site-transition-fast),
+		color var(--bks-site-transition-fast);
 }
 
 .bks-staybar__edit:hover,
 .bks-staybar__edit:focus-visible {
-	background: var(--bks-site-surface, #ffffff);
-	border-color: var(--bks-site-border, #e2e8f0);
+	border-color: var(--bks-site-brand, #2563eb);
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+@media (max-width: 560px) {
+	.bks-staybar {
+		margin: 16px 16px 0;
+		padding: 12px 14px;
+	}
+
+	.bks-staybar__facts {
+		gap: 10px 18px;
+	}
+
+	.bks-staybar__edit {
+		margin-left: 0;
+	}
 }
 
 /* Spinner ------------------------------------------------------------------
@@ -3452,10 +3501,6 @@
 }
 
 @media (max-width: 480px) {
-	.bks-staybar {
-		padding: 10px 16px;
-	}
-
 	.bks-slots__slot--rich {
 		gap: 10px;
 		padding: 12px;

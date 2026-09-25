@@ -6,10 +6,16 @@
  * booked. A guest halfway through filling in an address had no way to check
  * the night they picked without going back and losing their place.
  *
+ * Written as labelled values rather than as a sentence of dot-separated
+ * fragments, which is the shape the search bar already uses for the same four
+ * facts — and the shape that tells a guest scanning for one of them where to
+ * look. A tinted strip of running text reads as a notice the screen is giving
+ * them; this reads as the booking they are making.
+ *
  * Read from the stay itself rather than from the quote, so it is on screen
  * while the price is still being fetched. The length is the one part that
- * needs the quote, and it is left out until that arrives instead of holding
- * the whole line back.
+ * needs the quote, and it is left out until that arrives rather than holding
+ * the whole row back.
  */
 
 import { __, _n, sprintf } from '@wordpress/i18n';
@@ -38,82 +44,91 @@ export default function StaySummary( {
 		return null;
 	}
 
-	const parts = [ formatWpDate( startDate ) ];
+	const cells = [];
 
 	if ( isOvernight ) {
-		if ( stay.checkOut ) {
-			parts.push(
-				sprintf(
-					/* translators: %s: the check-out date. */
-					__( 'until %s', 'booking-suite' ),
-					formatWpDate( stay.checkOut )
-				)
-			);
-		}
+		cells.push( {
+			label: __( 'Check-in', 'booking-suite' ),
+			value: formatWpDate( startDate ),
+		} );
 
-		parts.push( overnightWindow );
+		if ( stay.checkOut ) {
+			cells.push( {
+				label: __( 'Check-out', 'booking-suite' ),
+				value: formatWpDate( stay.checkOut ),
+			} );
+		}
 
 		const nights = ( quote?.nightBreakdown ?? [] ).length;
 
-		if ( nights > 0 ) {
-			parts.push(
-				sprintf(
-					/* translators: %d: number of nights. */
-					_n( '%d night', '%d nights', nights, 'booking-suite' ),
-					nights
-				)
-			);
-		}
+		cells.push( {
+			label: __( 'Nights', 'booking-suite' ),
+			value:
+				nights > 0
+					? sprintf(
+							/* translators: %d: number of nights. */
+							_n(
+								'%d night',
+								'%d nights',
+								nights,
+								'booking-suite'
+							),
+							nights
+					  )
+					: overnightWindow,
+		} );
 	} else {
+		cells.push( {
+			label: __( 'Date', 'booking-suite' ),
+			value: formatWpDate( startDate ),
+		} );
+
 		if ( stay.startTime ) {
-			parts.push( formatWpTime( stay.startTime ) );
+			cells.push( {
+				label: __( 'Time', 'booking-suite' ),
+				value: formatWpTime( stay.startTime ),
+			} );
 		}
 
 		const hours = quote?.duration?.bookedHours ?? 0;
 
 		if ( hours > 0 ) {
-			parts.push(
-				sprintf(
+			cells.push( {
+				label: __( 'Duration', 'booking-suite' ),
+				value: sprintf(
 					/* translators: %d: number of hours. */
 					_n( '%d hour', '%d hours', hours, 'booking-suite' ),
 					hours
-				)
-			);
+				),
+			} );
 		}
 	}
 
 	const guests = Number.parseInt( stay.guests, 10 ) || 0;
 
 	if ( guests > 0 ) {
-		parts.push(
-			sprintf(
-				/* translators: %d: number of guests. */
-				_n( '%d guest', '%d guests', guests, 'booking-suite' ),
-				guests
-			)
-		);
+		cells.push( {
+			label: __( 'Guests', 'booking-suite' ),
+			value: String( guests ),
+		} );
 	}
 
 	return (
 		<div className="bks-staybar">
-			<p className="bks-staybar__text">
-				{ parts.filter( Boolean ).map( ( part, position ) => (
-					<span
-						key={ `${ position }-${ part }` }
-						className="bks-staybar__part"
-					>
-						{ position > 0 && (
-							<span
-								className="bks-staybar__sep"
-								aria-hidden="true"
-							>
-								·
-							</span>
-						) }
-						{ part }
-					</span>
-				) ) }
-			</p>
+			<dl className="bks-staybar__facts">
+				{ cells
+					.filter( ( cell ) => cell.value )
+					.map( ( cell ) => (
+						<div key={ cell.label } className="bks-staybar__fact">
+							<dt className="bks-staybar__label">
+								{ cell.label }
+							</dt>
+							<dd className="bks-staybar__value">
+								{ cell.value }
+							</dd>
+						</div>
+					) ) }
+			</dl>
 
 			{ onEdit && (
 				<button
