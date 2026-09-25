@@ -282,8 +282,28 @@ export default function BookingModal( {
 			? Boolean( stay.checkIn && stay.checkOut )
 			: Boolean( stay.date && stay.startTime );
 
+	/**
+	 * Whether the first step can answer for itself without asking the server.
+	 *
+	 * A start time only reaches the grid when it is free, and the length beside
+	 * it is priced by the same response — so picking one is choosing from
+	 * answers the server has already given. Quoting it again asked the same
+	 * question a second time, and printed "Available" over a tile that was in
+	 * the list precisely because it was.
+	 *
+	 * A night is different: the picker greys out nights that are gone, but a
+	 * stay spanning several of them is only whole at the server, so that mode
+	 * still asks.
+	 *
+	 * The quote is not skipped, only deferred — extras need it for their own
+	 * availability, so it runs on the way into the next step, which is also
+	 * where a guest changing their mind about the time stops costing a request
+	 * each time.
+	 */
+	const stepAnswersItself = 'when' === step && 'hourly' === stay.mode;
+
 	useEffect( () => {
-		if ( ! isStayComplete || isDone ) {
+		if ( ! isStayComplete || isDone || stepAnswersItself ) {
 			setQuote( null );
 			return undefined;
 		}
@@ -304,7 +324,7 @@ export default function BookingModal( {
 			} );
 
 		return () => controller.abort();
-	}, [ isStayComplete, payload, isDone ] );
+	}, [ isStayComplete, payload, isDone, stepAnswersItself ] );
 
 	/**
 	 * Forget that this address was ever proved, and ask again.
@@ -462,7 +482,21 @@ export default function BookingModal( {
 
 	const canContinue = () => {
 		if ( 'when' === step ) {
-			return isStayComplete && quote?.available;
+			if ( ! isStayComplete ) {
+				return false;
+			}
+
+			/*
+			 * An hourly pick is let through on the strength of the slots
+			 * response: the time was listed because it was free, and the
+			 * estimate exists only when that length came back priced, which
+			 * also rules out an apartment with no rates set. A night waits for
+			 * the quote, since nothing client-side has checked the whole
+			 * window.
+			 */
+			return 'overnight' === stay.mode
+				? Boolean( quote?.available )
+				: Boolean( estimate );
 		}
 
 		if ( 'details' === step ) {

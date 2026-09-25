@@ -11,6 +11,7 @@ namespace BookingSuite\Frontend\Site;
 
 use BookingSuite\Backend\PostTypes\ApartmentPostType;
 use BookingSuite\Backend\Pricing\RateCalculator;
+use BookingSuite\Backend\Pricing\SlotGenerator;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Repositories\PriceRulesRepository;
@@ -785,6 +786,16 @@ final class Shortcodes {
 	);
 
 	/**
+	 * The duration value that means "a night" rather than a number of hours.
+	 *
+	 * A word rather than a number, because every number in this field is a
+	 * length in hours and a night is not one — it is a fixed window the guest
+	 * does not choose the ends of. Anything numeric here, 0 included, would
+	 * have to be remembered as not meaning what it says.
+	 */
+	private const OVERNIGHT_VALUE = 'night';
+
+	/**
 	 * Defaults for [booking_suite_apartment_showcase].
 	 *
 	 * A constant rather than a literal inside the renderer because the AJAX
@@ -820,7 +831,72 @@ final class Shortcodes {
 	 *
 	 * @return array<string, string> 'H:i' => the label to show.
 	 */
-	private static function showcase_times(): array {
+	/**
+	 * How long the fixed daytime block runs, in whole hours.
+	 *
+	 * Read from the same two settings the booking engine reads, so a block
+	 * whose hours are changed in Settings changes here with it.
+	 *
+	 * @return int Hours, or 0 when the block is not configured.
+	 */
+	private static function block_hours(): int {
+		$from = (string) SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_START );
+		$to   = (string) SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_END );
+
+		try {
+			$zone  = wp_timezone();
+			$start = new \DateTimeImmutable( '2000-01-01 ' . $from, $zone );
+			$end   = new \DateTimeImmutable( '2000-01-01 ' . $to, $zone );
+		} catch ( \Exception $e ) {
+			return 0;
+		}
+
+		$hours = ( $end->getTimestamp() - $start->getTimestamp() ) / HOUR_IN_SECONDS;
+
+		return $hours > 0 ? (int) round( $hours ) : 0;
+	}
+
+	/**
+	 * A 24-hour 'HH:MM' shown the way the site writes times.
+	 *
+	 * @param string $key The time, as it is submitted.
+	 */
+	private static function clock_label( string $key ): string {
+		$format = (string) get_option( 'time_format', 'H:i' );
+
+		try {
+			$when = new \DateTimeImmutable( '2000-01-01 ' . $key, wp_timezone() );
+		} catch ( \Exception $e ) {
+			return $key;
+		}
+
+		return wp_date( $format, $when->getTimestamp() );
+	}
+
+	private static function showcase_times( string $date = '' ): array {
+		/*
+		 * A day that runs one fixed block offers exactly one start, and the
+		 * filter has to say so.
+		 *
+		 * Without this the menu was built from the opening hours alone, so a
+		 * Friday offered every half hour from 00:00 while the only bookable
+		 * daytime window was 11:30–15:30. The guest filtered by a time that
+		 * could not be booked, and the grid answered about a window nobody
+		 * could have — which is not a wrong answer to their question so much
+		 * as an answer to a question the site should never have asked.
+		 */
+		if ( '' !== $date && SlotGenerator::is_fixed_block_day( $date ) ) {
+			$start = (string) SettingsRepository::get( SettingsRepository::DAYTIME_SLOT_START );
+
+			if ( '' === $start ) {
+				return array();
+			}
+
+			$key = substr( $start, 0, 5 );
+
+			return array( $key => self::clock_label( $key ) );
+		}
+
 		$step = max( 15, (int) SettingsRepository::number( SettingsRepository::SLOT_STEP ) );
 
 		$open  = SettingsRepository::get( SettingsRepository::DAY_START );
@@ -910,9 +986,14 @@ final class Shortcodes {
 			? self::valid_date( sanitize_text_field( wp_unslash( (string) $query[ self::SEARCH_ARGS['date'] ] ) ) )
 			: '';
 
-		$hours = isset( $query[ self::SEARCH_ARGS['hours'] ] )
-			? absint( $query[ self::SEARCH_ARGS['hours'] ] )
-			: absint( $atts['hours'] );
+		$raw_hours = isset( $query[ self::SEARCH_ARGS['hours'] ] )
+			? sanitize_text_field( wp_unslash( (string) $query[ self::SEARCH_ARGS['hours'] ] ) )
+			: (string) $atts['hours'];
+
+		// Read before the number is, because a night has no length in hours and
+		// absint() would quietly turn the word into a zero.
+		$overnight = self::OVERNIGHT_VALUE === $raw_hours;
+		$hours     = absint( $raw_hours );
 
 		$guests = isset( $query[ self::SEARCH_ARGS['guests'] ] )
 			? absint( $query[ self::SEARCH_ARGS['guests'] ] )
@@ -922,18 +1003,24 @@ final class Shortcodes {
 			? sanitize_text_field( wp_unslash( (string) $query[ self::SEARCH_ARGS['time'] ] ) )
 			: (string) $atts['time'];
 
-		// Only a start the picker actually offers; anything else means "any".
-		if ( ! array_key_exists( $time, self::showcase_times() ) ) {
+		/*
+		 * Only a start this date actually offers; anything else means "any".
+		 * The list narrows to one entry on a fixed-block day, which is how a
+		 * time left over from another date gets dropped rather than carried
+		 * into a day that cannot honour it. A night names no start at all.
+		 */
+		if ( $overnight || ! array_key_exists( $time, self::showcase_times( $date ) ) ) {
 			$time = '';
 		}
 
 		return array(
-			'date'   => $date,
-			'time'   => $time,
+			'date'      => $date,
+			'time'      => $time,
+			'overnight' => $overnight,
 			// Opens at the shortest bookable length, which is the commonest
 			// choice and the one that shows the lowest price.
-			'hours'  => min( $bounds['max'], max( $bounds['min'], $hours ?: $bounds['min'] ) ),
-			'guests' => min( 99, $guests ),
+			'hours'     => min( $bounds['max'], max( $bounds['min'], $hours ?: $bounds['min'] ) ),
+			'guests'    => min( 99, $guests ),
 		);
 	}
 
@@ -960,6 +1047,27 @@ final class Shortcodes {
 	private static function showcase_available( array $apartments, array $search ): array {
 		if ( '' === $search['date'] || ! $apartments ) {
 			return $apartments;
+		}
+
+		/*
+		 * A night is one window the guest never picks the ends of, so it is
+		 * checked directly rather than against the hourly starts — running it
+		 * through those would ask whether some daytime slot were free, which
+		 * is a different question with a different answer.
+		 */
+		if ( ! empty( $search['overnight'] ) ) {
+			$night = RateCalculator::overnight_window( $search['date'] );
+
+			return array_values(
+				array_filter(
+					$apartments,
+					static fn( array $apartment ): bool => BookingsRepository::is_available(
+						(int) $apartment['id'],
+						$night['starts_at'],
+						$night['ends_at']
+					)
+				)
+			);
 		}
 
 		$window = self::showcase_window( $search );
@@ -1110,8 +1218,11 @@ final class Shortcodes {
 		}
 
 		$arrival  = self::showcase_date_menu( $search['date'] );
-		$duration = self::showcase_duration_menu( $search['hours'] );
-		$time     = self::showcase_time_menu( $search['time'] );
+		$duration = self::showcase_duration_menu(
+			$search['overnight'] ? self::OVERNIGHT_VALUE : (string) $search['hours'],
+			$search['date']
+		);
+		$time     = self::showcase_time_menu( $search['time'], $search['date'] );
 
 		/*
 		 * Each field is a label above an icon-and-control row — the same shape
@@ -1162,19 +1273,46 @@ final class Shortcodes {
 	 * inline styles added during the_content arrive after wp_head has already
 	 * printed the stylesheets, so they never reach the page at all.
 	 *
-	 * @param int $current The hours currently chosen.
+	 * @param string $current The hours currently chosen, or OVERNIGHT_VALUE.
+	 * @param string $date    The arrival, which decides what is on offer.
 	 */
-	private static function showcase_duration_menu( int $current ): string {
-		$bounds  = self::hour_bounds();
+	private static function showcase_duration_menu( string $current, string $date = '' ): string {
 		$options = array();
 
-		for ( $hours = $bounds['min']; $hours <= $bounds['max']; $hours++ ) {
-			$options[ (string) $hours ] = sprintf(
-				/* translators: %d: number of hours. */
-				_n( '%d hour', '%d hours', $hours, 'booking-suite' ),
-				$hours
-			);
+		/*
+		 * The lengths this date can actually be booked for.
+		 *
+		 * On a fixed-block day that is one length — the block's own — and the
+		 * staircase of four to eight hours is a list of things the guest cannot
+		 * have. Offering them meant a Friday search for six hours filtered every
+		 * apartment out and blamed availability for it.
+		 *
+		 * The night is offered on every day, because every day can be booked as
+		 * one, and on a day whose block has gone it is the only thing left.
+		 */
+		if ( '' !== $date && SlotGenerator::is_fixed_block_day( $date ) ) {
+			$block = self::block_hours();
+
+			if ( $block > 0 ) {
+				$options[ (string) $block ] = sprintf(
+					/* translators: %d: number of hours. */
+					_n( '%d hour', '%d hours', $block, 'booking-suite' ),
+					$block
+				);
+			}
+		} else {
+			$bounds = self::hour_bounds();
+
+			for ( $hours = $bounds['min']; $hours <= $bounds['max']; $hours++ ) {
+				$options[ (string) $hours ] = sprintf(
+					/* translators: %d: number of hours. */
+					_n( '%d hour', '%d hours', $hours, 'booking-suite' ),
+					$hours
+				);
+			}
 		}
+
+		$options[ self::OVERNIGHT_VALUE ] = __( 'Overnight', 'booking-suite' );
 
 		return self::showcase_menu(
 			'duration',
@@ -1357,8 +1495,9 @@ final class Shortcodes {
 	 *
 	 * @param string $current The chosen 'H:i', or '' for any.
 	 */
-	private static function showcase_time_menu( string $current ): string {
-		$options = array( '' => __( 'Any time', 'booking-suite' ) ) + self::showcase_times();
+	private static function showcase_time_menu( string $current, string $date = '' ): string {
+		$options = array( '' => __( 'Any time', 'booking-suite' ) )
+			+ self::showcase_times( $date );
 
 		return self::showcase_menu(
 			'time',
@@ -1561,6 +1700,14 @@ final class Shortcodes {
 
 		// The button, unchanged — same markup, same modal, same behaviour as the
 		// one on the apartment's own page.
+		/*
+		 * A night travels as a night. The modal reads a length in hours and a
+		 * length in nights as two different kinds of stay, so handing it the
+		 * hourly figure after the guest searched for a night would open it on
+		 * a daytime booking they never asked for.
+		 */
+		$searched_night = ! empty( $search['overnight'] );
+
 		$button = self::render_book_now(
 			array(
 				'id'     => (string) $id,
@@ -1569,8 +1716,9 @@ final class Shortcodes {
 				// Carries the search bar's answers into the modal, so the guest
 				// does not describe the same stay twice.
 				'date'   => (string) ( $search['date'] ?? '' ),
-				'time'   => (string) ( $search['time'] ?? '' ),
-				'hours'  => (string) ( $search['hours'] ?? '' ),
+				'time'   => $searched_night ? '' : (string) ( $search['time'] ?? '' ),
+				'hours'  => $searched_night ? '' : (string) ( $search['hours'] ?? '' ),
+				'nights' => $searched_night ? '1' : '',
 				'guests' => (string) ( $search['guests'] ?? '' ),
 			)
 		);

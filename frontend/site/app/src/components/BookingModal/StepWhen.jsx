@@ -137,32 +137,6 @@ function blockLength( config ) {
 	return span > 0 ? Math.round( ( span / 60 ) * 100 ) / 100 : 0;
 }
 
-/**
- * What to say about the stay the guest has chosen.
- *
- * The refusal is worded for the thing that was actually picked, because the
- * way out differs: a taken night means trying other dates, while a taken start
- * time usually means another time on the same day is still free.
- *
- * @param {Object}  quote       The priced stay from the server.
- * @param {boolean} isOvernight Whether the guest chose a night.
- * @return {string} A sentence for the guest.
- */
-function availabilityNote( quote, isOvernight ) {
-	if ( quote.available ) {
-		return __( 'Available — you can continue.', 'booking-suite' );
-	}
-
-	return isOvernight
-		? __(
-				'Those dates are already taken. Please try another window.',
-				'booking-suite'
-		  )
-		: __(
-				'That start time has just been taken. Please choose another.',
-				'booking-suite'
-		  );
-}
 
 export default function StepWhen( {
 	stay,
@@ -870,14 +844,17 @@ export default function StepWhen( {
 			</div>
 
 			{ /*
-			 * Shown for whatever the guest picked, a night or a time.
+			 * Only for a night, which is the only thing here the guest can
+			 * choose without having been shown first that it is free.
 			 *
-			 * This used to be gated on the overnight mode, so choosing a start
-			 * time answered with nothing at all: the tile took the click and
-			 * the screen said the same as before it. The quote behind this is
-			 * fetched for both modes already — only the sentence was missing.
+			 * A start time carries no such line. It was listed because it was
+			 * available, so answering the click with "Available" told the
+			 * guest what the list had already told them — and the request
+			 * behind that word asked the server a question it had just
+			 * answered. Selecting the tile is the acknowledgement; the price
+			 * appearing below is the confirmation.
 			 */ }
-			{ quote && (
+			{ isOvernight && quote && (
 				<p
 					className={
 						quote.available
@@ -886,7 +863,12 @@ export default function StepWhen( {
 					}
 					role="status"
 				>
-					{ availabilityNote( quote, isOvernight ) }
+					{ quote.available
+						? __( 'Available — you can continue.', 'booking-suite' )
+						: __(
+								'Those dates are already taken. Please try another window.',
+								'booking-suite'
+						  ) }
 				</p>
 			) }
 		</div>

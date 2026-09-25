@@ -418,8 +418,10 @@
 }
 
 .bks-showcase__cal-day:hover {
-	background: var(--bks-site-brand-soft, #eff6ff);
-	color: var(--bks-site-brand, #2563eb);
+	background: var(--bks-site-brand-soft, #eff6ff) !important;
+	background-color: var(--bks-site-brand-soft, #eff6ff) !important;
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
 }
 
 /* Drawn, not removed: dropping past days would shift the rest out of column. */
@@ -429,9 +431,12 @@
 	cursor: default;
 }
 
+/* A day that cannot be chosen must not light up as though it could. */
 .bks-showcase__cal-day.is-past:hover {
-	background: none;
-	color: var(--bks-site-text-faint, #94a3b8);
+	background: none !important;
+	background-color: transparent !important;
+	color: var(--bks-site-text-faint, #94a3b8) !important;
+	-webkit-text-fill-color: var(--bks-site-text-faint, #94a3b8) !important;
 }
 
 .bks-showcase__cal-day input {
@@ -486,9 +491,20 @@
 		color var(--bks-site-transition-fast, 120ms ease);
 }
 
+/*
+ * Forced, like the submit button above.
+ *
+ * These labels sit inside a theme, and a theme's own :hover on a label or an
+ * anchor wins on specificity alone — which turned the chip white on hover, so
+ * the one moment the guest is pointing at an option was the moment it stopped
+ * looking like one. -webkit-text-fill-color goes with the colour because on
+ * WebKit it is what actually paints the glyphs.
+ */
 .bks-showcase__option:hover {
-	background: var(--bks-site-surface-muted, #f8fafc);
-	color: var(--bks-site-text, #0f172a);
+	background: var(--bks-site-brand-soft, #eff6ff) !important;
+	background-color: var(--bks-site-brand-soft, #eff6ff) !important;
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
 }
 
 /*
