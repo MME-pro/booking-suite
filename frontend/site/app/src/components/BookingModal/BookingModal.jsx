@@ -122,6 +122,18 @@ export default function BookingModal( {
 	const [ isBusy, setBusy ] = useState( false );
 	const [ error, setError ] = useState( null );
 	const [ quote, setQuote ] = useState( null );
+
+	/**
+	 * What the chosen length costs, before a start time has been picked.
+	 *
+	 * An hourly price depends on the date and the party size, never on the
+	 * time of day — the server prices every length from a fixed midday start —
+	 * so it is known as soon as the duration is. The quote is still what gets
+	 * booked; this only fills the gap where the footer used to have nothing to
+	 * say, and is dropped the moment the quote arrives or the guest switches
+	 * to a night, which is priced a different way entirely.
+	 */
+	const [ estimate, setEstimate ] = useState( null );
 	const [ booking, setBooking ] = useState( null );
 
 	/*
@@ -638,6 +650,7 @@ export default function BookingModal( {
 							onChange={ setStay }
 							onSwitchApartment={ onSwitchApartment }
 							quote={ quote }
+							onEstimate={ setEstimate }
 							capacity={ apartment?.capacity ?? 0 }
 							apartmentId={ apartmentId }
 							currency={ currency }
@@ -737,16 +750,42 @@ export default function BookingModal( {
 								</>
 							) : (
 								/*
-								 * Chosen but not yet priced, against nothing
-								 * chosen at all. Both used to print "Choose when
-								 * you are coming", so the moment after a guest
-								 * picked a time the footer told them to pick a
-								 * time — the one place on the screen showing
-								 * what their choice costs, denying they had
-								 * made one.
+								 * Three states that used to be one.
+								 *
+								 * The length is priced before a start time is:
+								 * a guest who has said "seven hours" can be
+								 * told what seven hours costs, and picking
+								 * 11:30 over 14:00 will not change it. Only
+								 * after that, while the server confirms the
+								 * exact window, is there genuinely nothing to
+								 * show — and only before a length is chosen at
+								 * all is "choose when you are coming" the
+								 * honest answer.
 								 */
 								<>
-									{ isStayComplete ? (
+									{ estimate ? (
+										<>
+											<span className="bks-booking__total-label">
+												{ sprintf(
+													/* translators: %d: number of hours. */
+													_n(
+														'%d hour',
+														'%d hours',
+														estimate.hours,
+														'booking-suite'
+													),
+													estimate.hours
+												) }
+											</span>
+											<strong className="bks-booking__total-value">
+												{ formatPrice(
+													estimate.total,
+													currency,
+													settings.locale
+												) }
+											</strong>
+										</>
+									) : isStayComplete ? (
 										<Spinner
 											small
 											label={ __(

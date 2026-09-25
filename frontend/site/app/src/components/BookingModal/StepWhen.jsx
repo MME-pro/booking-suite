@@ -168,6 +168,7 @@ export default function StepWhen( {
 	stay,
 	onChange,
 	quote,
+	onEstimate,
 	capacity,
 	apartmentId,
 	currency,
@@ -424,6 +425,40 @@ export default function StepWhen( {
 
 	// The billing break means some lengths cost less than the one below them.
 	const chosen = durations.find( ( option ) => option.hours === stay.hours );
+
+	/*
+	 * Hand the chosen length's price up to the footer.
+	 *
+	 * The server prices every length from a fixed midday start, so this figure
+	 * does not move when the guest picks 11:30 over 14:00 — which is why it can
+	 * be shown before either is picked. A night is priced per night rather than
+	 * per hour, so that mode reports nothing and waits for the quote.
+	 *
+	 * The dependencies are the two numbers rather than the option object: the
+	 * effect sends a fresh object every time it runs, and depending on an
+	 * object that this component re-creates would run it forever.
+	 */
+	useEffect( () => {
+		if ( ! onEstimate ) {
+			return;
+		}
+
+		/*
+		 * A priced option, not merely a listed one. Until the slots response
+		 * lands the lengths come from a local fallback that carries no totals,
+		 * and sending one of those would put a formatted NaN where the price
+		 * goes — worse than the empty space it replaced.
+		 */
+		const priced =
+			! isOvernight &&
+			chosen &&
+			Number.isFinite( chosen.total ) &&
+			chosen.total > 0;
+
+		onEstimate(
+			priced ? { hours: chosen.hours, total: chosen.total } : null
+		);
+	}, [ isOvernight, chosen?.hours, chosen?.total, onEstimate ] );
 
 	/**
 	 * Whether a day cannot be the start of this stay.
