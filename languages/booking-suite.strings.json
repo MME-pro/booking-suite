@@ -369,8 +369,8 @@
             "frontend/site/Shortcodes.php:1299",
             "frontend/site/Shortcodes.php:1309",
             "frontend/site/Shortcodes.php:1811",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:756",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:805",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:765",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:814",
             "frontend/site/app/src/components/BookingModal/StaySummary.jsx:100",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:122",
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:217",
@@ -471,7 +471,7 @@
         "comment": "translators: %d: number of nights.",
         "refs": [
             "frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:768",
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:777",
             "frontend/site/app/src/components/BookingModal/StaySummary.jsx:70",
             "frontend/site/app/src/components/BookingModal/StepReview.jsx:127",
             "frontend/site/app/src/components/BookingModal/StepWhen.jsx:556"
@@ -2109,7 +2109,7 @@
         "refs": [
             "frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460",
             "frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:638",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:850"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:859"
         ],
         "comments": []
     },
@@ -2286,10 +2286,10 @@
     },
     {
         "single": "Book subject to payment",
-        "line": 876,
+        "line": 885,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:876"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:885"
         ],
         "comments": []
     },
@@ -3249,10 +3249,10 @@
     },
     {
         "single": "Choose when you are coming",
-        "line": 832,
+        "line": 841,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:832"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:841"
         ],
         "comments": []
     },
@@ -3557,10 +3557,10 @@
     },
     {
         "single": "Continue",
-        "line": 888,
+        "line": 897,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:888"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:897"
         ],
         "comments": []
     },
@@ -8827,7 +8827,7 @@
         "comment": "",
         "refs": [
             "frontend/admin/app/src/pages/Settings/SettingsPage.jsx:932",
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:875"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:884"
         ],
         "comments": []
     },
@@ -11400,10 +11400,10 @@
     },
     {
         "single": "Working out the price",
-        "line": 825,
+        "line": 834,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:825"
+            "frontend/site/app/src/components/BookingModal/BookingModal.jsx:834"
         ],
         "comments": []
     },

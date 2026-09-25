@@ -3275,16 +3275,38 @@
  * gutter, reads as their booking.
  */
 .bks-staybar {
+	/*
+	 * Pinned to the foot of the scrolling body, so it stays in view while the
+	 * fields above it scroll past. sticky rather than fixed: it takes part in
+	 * the flow, so short steps simply end with it instead of having it float
+	 * over their last line.
+	 *
+	 * The offset is zero because the body's own bottom padding already holds
+	 * it clear of the footer beneath.
+	 */
+	position: sticky;
+	bottom: 0;
+	z-index: 1;
+
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
 	gap: 12px 24px;
-	margin: 24px 32px 0;
+
+	/*
+	 * No side margin: this sits inside the body, whose padding already sets
+	 * the gutter. Adding another here indented the panel further than the
+	 * fields it belongs to, which read as a different column.
+	 */
+	margin: 24px 0 0;
 	padding: 14px 18px;
 	border: 1px solid var(--bks-site-border, #e2e8f0);
 	border-radius: var(--bks-site-radius-xs, 10px);
+
+	/* Opaque, because the form scrolls underneath it. */
 	background: var(--bks-site-surface-muted, #f8fafc);
+	box-shadow: 0 -6px 16px -12px rgba(15, 23, 42, 0.35);
 }
 
 .bks-staybar__facts {
@@ -3351,7 +3373,7 @@
 
 @media (max-width: 560px) {
 	.bks-staybar {
-		margin: 16px 16px 0;
+		margin: 16px 0 0;
 		padding: 12px 14px;
 	}
 

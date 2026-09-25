@@ -193,8 +193,8 @@ msgstr[1] ""
 
 #. translators: %d: number of hours.
 #. translators: %d: how long the booking runs, in hours.
-#: frontend/site/Shortcodes.php:1299 frontend/site/Shortcodes.php:1309 frontend/site/Shortcodes.php:1811 frontend/site/app/src/components/BookingModal/BookingModal.jsx:756
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:805 frontend/site/app/src/components/BookingModal/StaySummary.jsx:100 frontend/site/app/src/components/BookingModal/StepReview.jsx:122 frontend/site/app/src/components/BookingModal/StepStay.jsx:217
+#: frontend/site/Shortcodes.php:1299 frontend/site/Shortcodes.php:1309 frontend/site/Shortcodes.php:1811 frontend/site/app/src/components/BookingModal/BookingModal.jsx:765
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:814 frontend/site/app/src/components/BookingModal/StaySummary.jsx:100 frontend/site/app/src/components/BookingModal/StepReview.jsx:122 frontend/site/app/src/components/BookingModal/StepStay.jsx:217
 #: frontend/site/app/src/components/BookingModal/StepWhen.jsx:773 frontend/site/app/src/components/SearchFilterBar/DurationField.jsx:26
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -243,7 +243,7 @@ msgid "%d minutes"
 msgstr ""
 
 #. translators: %d: number of nights.
-#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:768 frontend/site/app/src/components/BookingModal/StaySummary.jsx:70 frontend/site/app/src/components/BookingModal/StepReview.jsx:127
+#: frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:141 frontend/site/app/src/components/BookingModal/BookingModal.jsx:777 frontend/site/app/src/components/BookingModal/StaySummary.jsx:70 frontend/site/app/src/components/BookingModal/StepReview.jsx:127
 #: frontend/site/app/src/components/BookingModal/StepWhen.jsx:556
 msgid "%d night"
 msgid_plural "%d nights"
@@ -962,7 +962,7 @@ msgstr ""
 msgid "BUCHUNGSBESTÄTIGUNG"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:638 frontend/site/app/src/components/BookingModal/BookingModal.jsx:850
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:460 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:638 frontend/site/app/src/components/BookingModal/BookingModal.jsx:859
 msgid "Back"
 msgstr ""
 
@@ -1040,7 +1040,7 @@ msgstr ""
 msgid "Book now button"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:876
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:885
 msgid "Book subject to payment"
 msgstr ""
 
@@ -1449,7 +1449,7 @@ msgstr ""
 msgid "Choose logo"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:832
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:841
 msgid "Choose when you are coming"
 msgstr ""
 
@@ -1580,7 +1580,7 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:888
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:897
 msgid "Continue"
 msgstr ""
 
@@ -3852,7 +3852,7 @@ msgstr ""
 msgid "Send to"
 msgstr ""
 
-#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:932 frontend/site/app/src/components/BookingModal/BookingModal.jsx:875
+#: frontend/admin/app/src/pages/Settings/SettingsPage.jsx:932 frontend/site/app/src/components/BookingModal/BookingModal.jsx:884
 msgid "Sending…"
 msgstr ""
 
@@ -4985,7 +4985,7 @@ msgstr ""
 msgid "Worked back out of the price, which is what the guest pays. 0 shows no tax line."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:825
+#: frontend/site/app/src/components/BookingModal/BookingModal.jsx:834
 msgid "Working out the price"
 msgstr ""
 

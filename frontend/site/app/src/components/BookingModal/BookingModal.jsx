@@ -656,21 +656,6 @@ export default function BookingModal( {
 					) }
 
 					{ /*
-					 * Every step after the first, where the chosen dates have
-					 * otherwise left the screen. Not on the first step: the
-					 * controls there already say all of this, and repeating it
-					 * directly above them is noise.
-					 */ }
-					{ ! isLoading && apartment && ! isDone && 'when' !== step && (
-						<StaySummary
-							stay={ stay }
-							quote={ quote }
-							overnightWindow={ overnightWindow }
-							onEdit={ () => setStep( 'when' ) }
-						/>
-					) }
-
-					{ /*
 					 * Rendered straight away, before the context request has
 					 * answered. Everything this step opens on is already known:
 					 * the defaults, and the date, length and party size the
@@ -741,6 +726,30 @@ export default function BookingModal( {
 								/>
 							) }
 						</>
+					) }
+
+					{ /*
+					 * The stay, under the step rather than over it, and pinned
+					 * to the foot of the scrolling area.
+					 *
+					 * Above the fields it was the first thing read on a screen
+					 * that exists to collect a name, and it scrolled away the
+					 * moment the guest started typing — so the one fact they
+					 * might want to check while filling the form in was the one
+					 * fact the form pushed off screen. Here it stays with the
+					 * price and the button, which is where the rest of what
+					 * they are agreeing to already lives.
+					 *
+					 * Not on the first step: the controls there say all of this
+					 * already, and repeating it under them is noise.
+					 */ }
+					{ ! isLoading && apartment && ! isDone && 'when' !== step && (
+						<StaySummary
+							stay={ stay }
+							quote={ quote }
+							overnightWindow={ overnightWindow }
+							onEdit={ () => setStep( 'when' ) }
+						/>
 					) }
 				</div>
 
