@@ -916,7 +916,7 @@ msgstr ""
 msgid "Available start times"
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:333 frontend/site/app/src/components/BookingModal/StepWhen.jsx:867
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:333
 msgid "Available — you can continue."
 msgstr ""
 
@@ -4585,7 +4585,7 @@ msgstr ""
 msgid "This payment link is not valid any more. Please use the link in your booking email, or get in touch."
 msgstr ""
 
-#: frontend/site/app/src/components/BookingModal/StepStay.jsx:334 frontend/site/app/src/components/BookingModal/StepWhen.jsx:868
+#: frontend/site/app/src/components/BookingModal/StepStay.jsx:334 frontend/site/app/src/components/BookingModal/StepWhen.jsx:874
 msgid "Those dates are already taken. Please try another window."
 msgstr ""
 

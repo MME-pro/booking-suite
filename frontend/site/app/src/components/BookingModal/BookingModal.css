@@ -719,6 +719,47 @@
 	-webkit-text-fill-color: rgba(255, 255, 255, 0.95) !important;
 }
 
+/*
+ * A chosen slot keeps its fill while the pointer is on it.
+ *
+ * The plain :hover rule above carries one more class than .is-selected does,
+ * so hovering the tile the guest had already picked swapped its brand fill for
+ * the pale hover wash — while the sub-label underneath stayed white, because
+ * nothing put that back. White on near-white: the date under the time simply
+ * vanished for as long as the pointer rested there.
+ *
+ * These must stay after that rule. They tie with it on specificity and win on
+ * order alone.
+ */
+.bks-slots__slot.is-selected:hover,
+.bks-slots__slot.is-selected:focus-visible {
+	border-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	background: var(--bks-site-brand-hover, #1d4ed8) !important;
+	background-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	color: #ffffff !important;
+	-webkit-text-fill-color: #ffffff !important;
+}
+
+.bks-slots__slot.is-selected:hover span,
+.bks-slots__slot.is-selected:focus-visible span {
+	color: rgba(255, 255, 255, 0.95) !important;
+	-webkit-text-fill-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* The richer cards carry an icon well and a meta line that follow the same. */
+.bks-slots__slot--rich.is-selected:hover .bks-slot__icon,
+.bks-slots__slot--rich.is-selected:focus-visible .bks-slot__icon {
+	background: rgba(255, 255, 255, 0.22) !important;
+	color: #ffffff !important;
+	-webkit-text-fill-color: #ffffff !important;
+}
+
+.bks-slots__slot--rich.is-selected:hover .bks-slot__meta,
+.bks-slots__slot--rich.is-selected:focus-visible .bks-slot__meta {
+	color: rgba(255, 255, 255, 0.85) !important;
+	-webkit-text-fill-color: rgba(255, 255, 255, 0.85) !important;
+}
+
 .bks-slots__slot.is-taken {
 	background: var(--bks-site-surface-muted, #f8fafc);
 	border-color: var(--bks-site-border, #e2e8f0) !important;

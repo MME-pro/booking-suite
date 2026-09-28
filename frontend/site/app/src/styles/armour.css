@@ -932,3 +932,63 @@
 	border-width: 0 !important;
 	border-style: none !important;
 }
+
+/* Opt-ins: the three controls the list above had missed -------------------- */
+
+/*
+ * Found by walking every hover and focus rule in the guest stylesheets and
+ * asking which set a colour that nothing here defends. These three did, and
+ * they are the failure the note at the top of this file predicts: a control
+ * added later, styled in its own component, and never written down here — so
+ * the theme paints it the moment a guest points at it.
+ *
+ * Each repeats what its component declares. Changing a colour in one place and
+ * not the other is a bug; the components stay the source of truth.
+ */
+
+/* The "Clear" link in the date and guest dropdowns. */
+.bks-site-root .bks-filter__clear {
+	color: var(--bks-site-text-muted, #475569) !important;
+	-webkit-text-fill-color: var(--bks-site-text-muted, #475569) !important;
+}
+
+.bks-site-root .bks-filter__clear:hover,
+.bks-site-root .bks-filter__clear:focus-visible {
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+}
+
+/* The invoice link on the finished-booking screen. */
+.bks-site-root .bks-done__download,
+.bks-site-root .bks-done__link {
+	color: var(--bks-ink, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-ink, #0f172a) !important;
+}
+
+.bks-site-root .bks-done__download:hover,
+.bks-site-root .bks-done__download:focus-visible,
+.bks-site-root .bks-done__link:hover,
+.bks-site-root .bks-done__link:focus-visible {
+	color: var(--bks-accent, #6d28d9) !important;
+	-webkit-text-fill-color: var(--bks-accent, #6d28d9) !important;
+}
+
+/*
+ * The hint on the payment screen's copy row. Its own rule already carries the
+ * root, so only the force was missing.
+ *
+ * The two result states are excluded deliberately. "Copied" is green and the
+ * clipboard refusal is amber, and both are declared !important at a single
+ * class — which this rule, at three, would have outranked. Forcing the hint
+ * brand-coloured while the pointer is still on the row would have painted over
+ * the only confirmation that the copy worked.
+ */
+.bks-site-root
+	.bks-pay__copyrow:hover
+	.bks-pay__copyhint:not(.bks-pay__copyhint--copied):not(.bks-pay__copyhint--failed),
+.bks-site-root
+	.bks-pay__copyrow:focus-visible
+	.bks-pay__copyhint:not(.bks-pay__copyhint--copied):not(.bks-pay__copyhint--failed) {
+	color: var(--bks-site-brand, #7c3aed) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #7c3aed) !important;
+}

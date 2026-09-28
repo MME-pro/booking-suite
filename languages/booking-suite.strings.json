@@ -1999,8 +1999,7 @@
         "line": 333,
         "comment": "",
         "refs": [
-            "frontend/site/app/src/components/BookingModal/StepStay.jsx:333",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:867"
+            "frontend/site/app/src/components/BookingModal/StepStay.jsx:333"
         ],
         "comments": []
     },
@@ -10489,7 +10488,7 @@
         "comment": "",
         "refs": [
             "frontend/site/app/src/components/BookingModal/StepStay.jsx:334",
-            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:868"
+            "frontend/site/app/src/components/BookingModal/StepWhen.jsx:874"
         ],
         "comments": []
     },

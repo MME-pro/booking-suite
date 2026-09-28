@@ -854,21 +854,27 @@ export default function StepWhen( {
 			 * answered. Selecting the tile is the acknowledgement; the price
 			 * appearing below is the confirmation.
 			 */ }
-			{ isOvernight && quote && (
-				<p
-					className={
-						quote.available
-							? 'bks-step__available'
-							: 'bks-step__unavailable'
-					}
-					role="status"
-				>
-					{ quote.available
-						? __( 'Available — you can continue.', 'booking-suite' )
-						: __(
-								'Those dates are already taken. Please try another window.',
-								'booking-suite'
-						  ) }
+			{ /*
+			 * The refusal, and only the refusal.
+			 *
+			 * Nothing on this screen can be chosen without having been offered
+			 * first: the start times are the free ones, and the night is not
+			 * drawn at all when it has gone. So "Available" was telling the
+			 * guest what putting the option in front of them had already told
+			 * them — a line of praise for picking something that was there to
+			 * be picked.
+			 *
+			 * A night can still be refused, because the grid checks the first
+			 * night and the guest may have asked for several, and a refusal is
+			 * worth a sentence: it is the one answer the screen has not given
+			 * already.
+			 */ }
+			{ isOvernight && quote && ! quote.available && (
+				<p className="bks-step__unavailable" role="status">
+					{ __(
+						'Those dates are already taken. Please try another window.',
+						'booking-suite'
+					) }
 				</p>
 			) }
 		</div>
