@@ -992,3 +992,83 @@
 	color: var(--bks-site-brand, #7c3aed) !important;
 	-webkit-text-fill-color: var(--bks-site-brand, #7c3aed) !important;
 }
+
+/* Opt-ins: the start-time slots ------------------------------------------- */
+
+/*
+ * The slots were armoured for border, radius and padding, and never for
+ * colour. That left the one property the theme most wants to set.
+ *
+ * Elementor writes its kit against bare elements on the body —
+ * `.elementor-kit-85 button:hover { background-color: #091826; color: #fff }`
+ * on the live site — which reaches every button we render, because our root is
+ * inside that body like everything else. It carries no !important, so it loses
+ * to a forced declaration; what it does not lose to is a gap, and colour on
+ * these four states was a gap.
+ *
+ * All four are spelled out rather than relying on the neutral default above.
+ * That default resolves buttons to `inherit`, which is the right answer for a
+ * control with no colour of its own and the wrong one for a slot, whose whole
+ * job is to look chosen or not chosen at a glance.
+ *
+ * Values repeat BookingModal.css. Changing one and not the other is a bug.
+ */
+
+.bks-site-root .bks-slots__slot {
+	background-color: var(--bks-site-surface, #ffffff) !important;
+	color: var(--bks-site-text, #0f172a) !important;
+	-webkit-text-fill-color: var(--bks-site-text, #0f172a) !important;
+}
+
+.bks-site-root .bks-slots__slot:hover:not(.is-taken):not(.is-selected),
+.bks-site-root .bks-slots__slot:focus-visible:not(.is-taken):not(.is-selected) {
+	background-color: var(--bks-site-brand-soft, #eff6ff) !important;
+	color: var(--bks-site-brand, #2563eb) !important;
+	-webkit-text-fill-color: var(--bks-site-brand, #2563eb) !important;
+}
+
+/*
+ * A chosen slot, pointed at or not. Both are written out because the theme's
+ * hover rule applies to it too, and because a chosen slot that loses its fill
+ * under the pointer reads as having been un-chosen.
+ */
+.bks-site-root .bks-slots__slot.is-selected {
+	background-color: var(--bks-site-brand, #2563eb) !important;
+	color: #ffffff !important;
+	-webkit-text-fill-color: #ffffff !important;
+}
+
+.bks-site-root .bks-slots__slot.is-selected:hover,
+.bks-site-root .bks-slots__slot.is-selected:focus-visible {
+	background-color: var(--bks-site-brand-hover, #1d4ed8) !important;
+	color: #ffffff !important;
+	-webkit-text-fill-color: #ffffff !important;
+}
+
+/* The sub-label under the time, and the richer cards' icon and meta line. */
+.bks-site-root .bks-slots__slot span {
+	-webkit-text-fill-color: currentcolor !important;
+}
+
+.bks-site-root .bks-slots__slot.is-selected span,
+.bks-site-root .bks-slots__slot.is-selected:hover span,
+.bks-site-root .bks-slots__slot.is-selected .bks-slot__meta,
+.bks-site-root .bks-slots__slot.is-selected:hover .bks-slot__meta {
+	color: rgba(255, 255, 255, 0.9) !important;
+	-webkit-text-fill-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.bks-site-root .bks-slots__slot.is-selected .bks-slot__icon,
+.bks-site-root .bks-slots__slot.is-selected:hover .bks-slot__icon {
+	background-color: rgba(255, 255, 255, 0.22) !important;
+	color: #ffffff !important;
+	-webkit-text-fill-color: #ffffff !important;
+}
+
+/* Gone, and it must keep looking gone however the theme paints a button. */
+.bks-site-root .bks-slots__slot.is-taken,
+.bks-site-root .bks-slots__slot.is-taken:hover {
+	background-color: var(--bks-site-surface-muted, #f8fafc) !important;
+	color: var(--bks-site-text-faint, #94a3b8) !important;
+	-webkit-text-fill-color: var(--bks-site-text-faint, #94a3b8) !important;
+}
