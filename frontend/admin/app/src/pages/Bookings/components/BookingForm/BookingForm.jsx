@@ -11,6 +11,7 @@
  * check-in, at least one guest, a well-formed email) now fail fast in the UI.
  */
 
+import { label } from '../../data/status';
 import { useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import { useForm } from 'react-hook-form';
@@ -263,7 +264,6 @@ const blank = () => ( {
 	phone: '',
 } );
 
-const label = ( value ) => String( value ).replace( /_/g, ' ' );
 
 export default function BookingForm( { booking = null, onClose, onSaved } ) {
 	const isEdit = null !== booking;

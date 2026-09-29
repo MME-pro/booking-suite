@@ -20,7 +20,15 @@ final class PaymentsTable {
 	/** Bank transfer is the only method supported today. */
 	public const METHODS = array( 'transfer', 'cash', 'card' );
 
-	public const STATUSES = array( 'pending', 'paid', 'failed', 'refunded' );
+	/**
+	 * `void` is a payment that was expected and then stopped being expected.
+	 *
+	 * Not `failed`, which says an attempt was made and did not go through.
+	 * Nothing was attempted here: the booking's day passed with the money
+	 * still outstanding, so the row is closed rather than left pending for
+	 * ever. See BookingsTable's `lapsed`.
+	 */
+	public const STATUSES = array( 'pending', 'paid', 'failed', 'refunded', 'void' );
 
 	public static function table(): string {
 		return Db::table( self::NAME );

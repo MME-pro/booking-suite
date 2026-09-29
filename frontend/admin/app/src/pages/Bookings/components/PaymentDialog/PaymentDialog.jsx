@@ -6,6 +6,7 @@
  * behind the receipt, and when the guest says they paid) is fetched behind it.
  */
 
+import { label } from '../../data/status';
 import { useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import { ExternalLink, Receipt } from 'lucide-react';
@@ -33,7 +34,6 @@ const PAYMENT_CLASSES = {
 	refunded: 'bg-muted text-muted-foreground hover:bg-muted',
 };
 
-const label = ( value ) => String( value || '' ).replace( /_/g, ' ' );
 
 export default function PaymentDialog( {
 	booking: initial,

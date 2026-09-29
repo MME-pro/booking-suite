@@ -29,6 +29,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\IcalFeedsRepository;
 use BookingSuite\Backend\Support\IcalFeed;
@@ -49,7 +50,7 @@ final class IcalController {
 	public const ROUTE = 'ical';
 
 	/** Matches Menu::CAPABILITY. */
-	private const CAPABILITY = 'manage_options';
+	private const CAPABILITY = Capabilities::MANAGE_APARTMENTS;
 
 	/** Largest .ics body accepted, in bytes. A listing export is a few KB. */
 	private const MAX_SIZE = 2097152;

@@ -81,12 +81,12 @@ msgid "%1$s, %2$s"
 msgstr "%1$s, %2$s"
 
 #. translators: %d: number of active apartments
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:97
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:98
 msgid "%d active"
 msgstr "%d aktiv"
 
 #. translators: %d: total number of bookings
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:46
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:47
 msgid "%d all time"
 msgstr "%d insgesamt"
 
@@ -369,7 +369,7 @@ msgid "%s total"
 msgstr "%s gesamt"
 
 #. translators: %s: a VAT rate.
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:956
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:964
 msgid "%s%%"
 msgstr "%s %%"
 
@@ -460,7 +460,7 @@ msgstr "Eine Schaltfläche, die das Buchungsfenster öffnet. Sie wird automatisc
 msgid "A code was just sent. Please wait a moment before asking for another."
 msgstr "Es wurde gerade ein Code gesendet. Bitte warten Sie einen Moment, bevor Sie einen neuen anfordern."
 
-#: backend/APIs/ApartmentsController.php:462
+#: backend/APIs/ApartmentsController.php:463
 msgid "A name is required."
 msgstr "Ein Name ist erforderlich."
 
@@ -504,7 +504,7 @@ msgstr "Akzentfarbe als Hex-Wert"
 msgid "Access"
 msgstr "Zugriff"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:294
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:302
 msgid "Accommodation"
 msgstr "Beherbergung"
 
@@ -585,7 +585,7 @@ msgstr "Legen Sie ein Extra an — ein Frühstück, einen Stellplatz, einen Beam
 msgid "Add as many as you like. Left empty, the summary goes to the notification address on the Company tab."
 msgstr "Beliebig viele Adressen möglich. Bleibt die Liste leer, geht die Übersicht an die Benachrichtigungsadresse im Reiter Unternehmen."
 
-#: backend/APIs/SettingsController.php:373
+#: backend/APIs/SettingsController.php:374
 msgid "Add at least one address for the summary to go to."
 msgstr "Bitte mindestens eine Adresse angeben, an die die Übersicht gehen soll."
 
@@ -682,7 +682,7 @@ msgstr "Alle verfügbar"
 
 #. translators: %d: number of apartments
 #. translators: %d: number of active apartments
-#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:200 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:104
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:200 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:105
 msgid "All bookable"
 msgstr "Alle buchbar"
 
@@ -691,7 +691,7 @@ msgid "All channels"
 msgstr "Alle Kanäle"
 
 #. translators: %d: total number of bookings
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:382 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:59
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:382 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:60
 msgid "All clear"
 msgstr "Alles frei"
 
@@ -748,11 +748,11 @@ msgid_plural "Other apartments that are free"
 msgstr[0] "Eine andere Wohnung ist frei"
 msgstr[1] "Andere Wohnungen sind frei"
 
-#: backend/APIs/BookingsController.php:1144
+#: backend/APIs/BookingsController.php:1155
 msgid "Another booking already holds those dates."
 msgstr "Eine andere Buchung belegt diesen Zeitraum bereits."
 
-#: backend/APIs/BookingsController.php:292
+#: backend/APIs/BookingsController.php:303
 msgid "Another booking already holds those dates. Cancel that one first."
 msgstr "Eine andere Buchung belegt diesen Zeitraum bereits. Stornieren Sie zuerst jene Buchung."
 
@@ -780,7 +780,7 @@ msgstr "Gibt es etwas, das wir wissen sollten?"
 msgid "Anzahl der Std."
 msgstr "Anzahl der Std."
 
-#: backend/PostTypes/ApartmentPostType.php:320 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:106 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:164 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:618
+#: backend/PostTypes/ApartmentPostType.php:320 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:106 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:164 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:626
 #: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:427 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:71 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:117 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:113
 #: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:175
 msgid "Apartment"
@@ -799,7 +799,7 @@ msgstr "Apartment-Liste"
 msgid "Apartment name"
 msgstr "Name des Apartments"
 
-#: backend/APIs/ApartmentsController.php:610
+#: backend/APIs/ApartmentsController.php:611
 msgid "Apartment not found."
 msgstr "Apartment nicht gefunden."
 
@@ -843,9 +843,9 @@ msgstr "Apartment: Name"
 msgid "Apartment: Price from"
 msgstr "Apartment: Preis ab"
 
-#: backend/PostTypes/ApartmentPostType.php:319 frontend/admin/Menu.php:155 frontend/admin/Menu.php:156 frontend/admin/Menu.php:253
-#: frontend/admin/Menu.php:254 frontend/admin/app/src/App.jsx:37 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:398 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:264
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:93
+#: backend/PostTypes/ApartmentPostType.php:319 frontend/admin/Menu.php:165 frontend/admin/Menu.php:166 frontend/admin/Menu.php:263
+#: frontend/admin/Menu.php:264 frontend/admin/app/src/App.jsx:37 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:398 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:264
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:94
 msgid "Apartments"
 msgstr "Apartments"
 
@@ -857,7 +857,7 @@ msgstr "Apartment-Status"
 msgid "Apply Filter"
 msgstr "Filter anwenden"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:269 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:170
+#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:269 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:178
 msgid "Approve"
 msgstr "Bestätigen"
 
@@ -870,7 +870,7 @@ msgstr "%s bestätigen"
 msgid "Approve booking"
 msgstr "Buchung bestätigen"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:622 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:75 frontend/site/Shortcodes.php:1388
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:630 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:75 frontend/site/Shortcodes.php:1388
 msgid "Arrival"
 msgstr "Anreise"
 
@@ -882,19 +882,19 @@ msgstr "Anreisedatum und -uhrzeit"
 msgid "Arrives"
 msgstr "Anreise"
 
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:86
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:87
 msgid "Arriving in the next 7 days"
 msgstr "Anreise in den nächsten 7 Tagen"
 
-#: backend/APIs/HolidaysController.php:97
+#: backend/APIs/HolidaysController.php:98
 msgid "Ask for a shorter range."
 msgstr "Wählen Sie einen kürzeren Zeitraum."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:96
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:97
 msgid "At least one guest."
 msgstr "Mindestens ein Gast."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:104
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:105
 msgid "At least one hour."
 msgstr "Mindestens eine Stunde."
 
@@ -902,7 +902,7 @@ msgstr "Mindestens eine Stunde."
 msgid "Attributes"
 msgstr "Attribute"
 
-#: backend/Support/Pwa.php:217 frontend/admin/Menu.php:173 frontend/admin/Menu.php:174 frontend/admin/app/src/App.jsx:61
+#: backend/Support/Pwa.php:217 frontend/admin/Menu.php:183 frontend/admin/Menu.php:184 frontend/admin/app/src/App.jsx:61
 msgid "Availability"
 msgstr "Verfügbarkeit"
 
@@ -944,6 +944,10 @@ msgstr "Zahlung ausstehend"
 msgid "Awaiting payment"
 msgstr "Zahlung ausstehend"
 
+#: frontend/admin/app/src/pages/Bookings/data/status.js:47
+msgid "Awaiting transfer"
+msgstr "Warten auf Überweisung"
+
 #: backend/Support/BookingEmails.php:510 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:768 frontend/site/app/src/components/BookingModal/StepDone.jsx:113 frontend/site/app/src/components/BookingModal/StepTransfer.jsx:307
 msgid "BIC"
 msgstr "BIC"
@@ -965,11 +969,11 @@ msgstr "BUCHUNGSBESTÄTIGUNG"
 msgid "Back"
 msgstr "Zurück"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:393
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:401
 msgid "Back to bookings"
 msgstr "Zurück zu den Buchungen"
 
-#: backend/APIs/BookingsController.php:526
+#: backend/APIs/BookingsController.php:537
 msgid "Balance after the booking was changed."
 msgstr "Restbetrag nach Änderung der Buchung."
 
@@ -1065,7 +1069,7 @@ msgstr "Mehr als einmal gebucht"
 msgid "Booked value"
 msgstr "Gebuchter Wert"
 
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:65
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:66
 msgid "Booked value, refunds excluded"
 msgstr "Gebuchter Wert, ohne Erstattungen"
 
@@ -1073,12 +1077,20 @@ msgstr "Gebuchter Wert, ohne Erstattungen"
 msgid "Booking"
 msgstr "Buchung"
 
+#: backend/Capabilities.php:218
+msgid "Booking Admin"
+msgstr "Buchungen Administrator"
+
+#: backend/Capabilities.php:222
+msgid "Booking Employee"
+msgstr "Buchungen Mitarbeiter"
+
 #: frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:245
 msgid "Booking Status Distribution"
 msgstr "Verteilung der Buchungsstatus"
 
 #: backend/Integrations/ElementorTags.php:45 backend/PostTypes/ApartmentMetaBox.php:71 backend/Support/Pwa.php:133 backend/Support/Pwa.php:167
-#: frontend/admin/Menu.php:113 frontend/admin/Menu.php:114 frontend/admin/app/src/App.jsx:88
+#: frontend/admin/Menu.php:123 frontend/admin/Menu.php:124 frontend/admin/app/src/App.jsx:88
 msgid "Booking Suite"
 msgstr "Booking Suite"
 
@@ -1091,9 +1103,13 @@ msgstr "Booking Suite %s"
 msgid "Booking Suite opens full screen from its own icon, with no browser bars."
 msgstr "Booking Suite öffnet sich mit eigenem Symbol im Vollbild, ohne Browserleisten."
 
-#: frontend/admin/Assets.php:189
+#: frontend/admin/Assets.php:202
 msgid "Booking Suite: the admin interface has not been built yet."
 msgstr "Booking Suite: Die Verwaltungsoberfläche wurde noch nicht erstellt."
+
+#: backend/Capabilities.php:214
+msgid "Booking Super Admin"
+msgstr "Buchungen Super-Administrator"
 
 #: frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:166
 msgid "Booking activity"
@@ -1131,7 +1147,7 @@ msgstr "Buchungsdetails"
 msgid "Booking history, newest first."
 msgstr "Buchungsverlauf, neueste zuerst."
 
-#: backend/APIs/BookingsController.php:1155
+#: backend/APIs/BookingsController.php:1166
 msgid "Booking not found."
 msgstr "Buchung nicht gefunden."
 
@@ -1139,7 +1155,7 @@ msgstr "Buchung nicht gefunden."
 msgid "Booking number"
 msgstr "Buchungsnummer"
 
-#: backend/Repositories/EmailTemplatesRepository.php:118 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:440
+#: backend/Repositories/EmailTemplatesRepository.php:118 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:448
 msgid "Booking reference"
 msgstr "Buchungsnummer"
 
@@ -1179,7 +1195,7 @@ msgstr "Booking.com"
 msgid "Booking.com: Rates & Availability → Sync calendars."
 msgstr "Booking.com: Preise & Verfügbarkeit → Kalender synchronisieren."
 
-#: backend/Support/Pwa.php:168 backend/Support/Pwa.php:209 frontend/admin/Menu.php:144 frontend/admin/Menu.php:145
+#: backend/Support/Pwa.php:168 backend/Support/Pwa.php:209 frontend/admin/Menu.php:154 frontend/admin/Menu.php:155
 #: frontend/admin/app/src/App.jsx:41 frontend/admin/app/src/pages/Customers/components/CustomersTable/CustomersTable.jsx:92 frontend/admin/app/src/pages/Dashboard/DashboardPage.jsx:194 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:373
 #: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:465 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:84
 msgid "Bookings"
@@ -1199,14 +1215,14 @@ msgid "Bookings are priced and invoiced in this currency."
 msgstr "Buchungen werden in dieser Währung berechnet und abgerechnet."
 
 #. translators: %d: the longest bookable length, in hours.
-#: backend/Pricing/SlotGenerator.php:164
+#: backend/Pricing/SlotGenerator.php:203
 msgid "Bookings run to %d hour at most."
 msgid_plural "Bookings run to %d hours at most."
 msgstr[0] "Buchungen dauern höchstens %d Stunde."
 msgstr[1] "Buchungen dauern höchstens %d Stunden."
 
 #. translators: %d: the shortest bookable length, in hours.
-#: backend/Pricing/SlotGenerator.php:137
+#: backend/Pricing/SlotGenerator.php:176
 msgid "Bookings start at %d hour."
 msgid_plural "Bookings start at %d hours."
 msgstr[0] "Buchungen beginnen ab %d Stunde."
@@ -1216,7 +1232,7 @@ msgstr[1] "Buchungen beginnen ab %d Stunden."
 msgid "Bookings taken in each period."
 msgstr "Buchungen je Zeitraum."
 
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:39
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:40
 msgid "Bookings today"
 msgstr "Buchungen heute"
 
@@ -1248,7 +1264,7 @@ msgstr "Schaltflächen, ausgewählte Zeiten und Fokusrahmen im Buchungsablauf."
 msgid "By the hour"
 msgstr "Stundenweise"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:71
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:72
 msgid "Calculate automatically"
 msgstr "Automatisch berechnen"
 
@@ -1257,8 +1273,8 @@ msgstr "Automatisch berechnen"
 msgid "Calculated price: %s"
 msgstr "Berechneter Preis: %s"
 
-#: backend/APIs/IcalController.php:667 backend/Support/IcalParser.php:91 backend/Support/Pwa.php:213 frontend/admin/Menu.php:163
-#: frontend/admin/Menu.php:164 frontend/admin/app/src/App.jsx:57 frontend/admin/app/src/pages/Calendar/components/LockChip/LockChip.jsx:53
+#: backend/APIs/IcalController.php:668 backend/Support/IcalParser.php:91 backend/Support/Pwa.php:213 frontend/admin/Menu.php:173
+#: frontend/admin/Menu.php:174 frontend/admin/app/src/App.jsx:57 frontend/admin/app/src/pages/Calendar/components/LockChip/LockChip.jsx:53
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -1289,7 +1305,7 @@ msgstr "Kalenderansicht"
 
 #. translators: %s: apartment name.
 #: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:359 frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:660 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:379 frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:320
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:706 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:787 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:874 frontend/admin/app/src/pages/Customers/CustomersPage.jsx:330
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:706 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:795 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:874 frontend/admin/app/src/pages/Customers/CustomersPage.jsx:330
 #: frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:489 frontend/admin/app/src/pages/Extras/ExtrasPage.jsx:533 frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:582 frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:443
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -1298,7 +1314,7 @@ msgstr "Abbrechen"
 msgid "Cancellation Rate"
 msgstr "Stornoquote"
 
-#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:184 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:29 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:55
+#: frontend/admin/app/src/pages/Bookings/data/status.js:52 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:184 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:29 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:55
 msgid "Cancelled"
 msgstr "Storniert"
 
@@ -1330,15 +1346,15 @@ msgstr "Katalog"
 msgid "Change"
 msgstr "Ändern"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:857
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:865
 msgid "Change the type"
 msgstr "Art ändern"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:515
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:523
 msgid "Change to hourly"
 msgstr "Auf stundenweise umstellen"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:519
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:527
 msgid "Change to overnight"
 msgstr "Auf Übernachtung umstellen"
 
@@ -1358,7 +1374,7 @@ msgstr "Wird pro Nacht berechnet. Bei 0 gilt der Wochentagspreis."
 msgid "Charged per night. Leave at 0 to use the weekend rate."
 msgstr "Wird pro Nacht berechnet. Bei 0 gilt der Wochenendpreis."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:645
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:653
 msgid "Charges"
 msgstr "Positionen"
 
@@ -1375,7 +1391,7 @@ msgstr "Anreise"
 msgid "Check-in cannot be in the past."
 msgstr "Die Anreise kann nicht in der Vergangenheit liegen."
 
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:84
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:85
 msgid "Check-ins this week"
 msgstr "Anreisen diese Woche"
 
@@ -1384,7 +1400,7 @@ msgstr "Anreisen diese Woche"
 msgid "Check-out"
 msgstr "Abreise"
 
-#: backend/APIs/PublicBookingController.php:781 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:147
+#: backend/APIs/PublicBookingController.php:781 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:148
 msgid "Check-out must be after check-in."
 msgstr "Die Abreise muss nach der Anreise liegen."
 
@@ -1404,7 +1420,7 @@ msgstr "Wird geprüft…"
 msgid "Children"
 msgstr "Kinder"
 
-#: backend/APIs/IcalController.php:327
+#: backend/APIs/IcalController.php:328
 msgid "Choose a calendar file to import."
 msgstr "Wählen Sie eine Kalenderdatei zum Importieren."
 
@@ -1424,7 +1440,7 @@ msgstr "Logo auswählen"
 msgid "Choose an apartment, a date and a time to see the price."
 msgstr "Wählen Sie Wohnung, Datum und Uhrzeit, um den Preis zu sehen."
 
-#: backend/APIs/BookingsController.php:856 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:91
+#: backend/APIs/BookingsController.php:867 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:92
 msgid "Choose an apartment."
 msgstr "Wählen Sie ein Apartment."
 
@@ -1432,7 +1448,7 @@ msgstr "Wählen Sie ein Apartment."
 msgid "Choose an image"
 msgstr "Bild auswählen"
 
-#: backend/APIs/BlocksController.php:227
+#: backend/APIs/BlocksController.php:228
 msgid "Choose at least one apartment to lock."
 msgstr "Wählen Sie mindestens ein Apartment zum Sperren."
 
@@ -1440,7 +1456,7 @@ msgstr "Wählen Sie mindestens ein Apartment zum Sperren."
 msgid "Choose at least one apartment."
 msgstr "Wählen Sie mindestens ein Apartment."
 
-#: backend/APIs/BlocksController.php:226
+#: backend/APIs/BlocksController.php:227
 msgid "Choose at least one extra to lock."
 msgstr "Wählen Sie mindestens ein Extra zum Sperren."
 
@@ -1456,7 +1472,7 @@ msgstr "Wählen Sie, wann Sie kommen"
 msgid "Choose which apartment the calendar belongs to."
 msgstr "Wählen Sie, zu welchem Apartment der Kalender gehört."
 
-#: backend/APIs/IcalController.php:615
+#: backend/APIs/IcalController.php:616
 msgid "Choose which apartment this calendar belongs to."
 msgstr "Wählen Sie, zu welchem Apartment dieser Kalender gehört."
 
@@ -1481,7 +1497,7 @@ msgid "Cleaning time"
 msgstr "Reinigungszeit"
 
 #. translators: %s: comma-separated list of allowed minutes.
-#: backend/APIs/ApartmentsController.php:501
+#: backend/APIs/ApartmentsController.php:502
 msgid "Cleaning time must be one of: %s."
 msgstr "Die Reinigungszeit muss einer dieser Werte sein: %s."
 
@@ -1505,6 +1521,10 @@ msgstr "Suche zurücksetzen"
 #: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:197 frontend/site/app/src/components/BookingModal/BookingModal.jsx:577
 msgid "Close"
 msgstr "Schließen"
+
+#: backend/Support/BookingLifecycle.php:277
+msgid "Closed automatically: the booking date passed unpaid."
+msgstr "Automatisch geschlossen: Der Buchungstermin verstrich unbezahlt."
 
 #: frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:188
 msgid "Closes every apartment for the window, including any added later."
@@ -1551,7 +1571,7 @@ msgstr "Firmenname"
 msgid "Complete your payment — %s"
 msgstr "Zahlung abschließen — %s"
 
-#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:183 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:28 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:54
+#: frontend/admin/app/src/pages/Bookings/data/status.js:51 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:183 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:28 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:54
 msgid "Completed"
 msgstr "Abgeschlossen"
 
@@ -1559,7 +1579,7 @@ msgstr "Abgeschlossen"
 msgid "Comprehensive analytics and reports for your room booking business."
 msgstr "Ausführliche Auswertungen und Berichte zu Ihren Buchungen."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:798 frontend/site/app/src/components/BookingModal/BookingModal.jsx:534
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:806 frontend/site/app/src/components/BookingModal/BookingModal.jsx:534
 msgid "Confirm"
 msgstr "Bestätigen"
 
@@ -1567,7 +1587,8 @@ msgstr "Bestätigen"
 msgid "Confirm your email"
 msgstr "E-Mail-Adresse bestätigen"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:391 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:182 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:27 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:53
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:391 frontend/admin/app/src/pages/Bookings/data/status.js:50 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:182 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:27
+#: frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:53
 msgid "Confirmed"
 msgstr "Bestätigt"
 
@@ -1668,17 +1689,17 @@ msgstr "Zeitraum %1$s bis %2$s."
 msgid "Create export links"
 msgstr "Export-Links erstellen"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:546 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:878
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:554 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:886
 msgid "Create invoice"
 msgstr "Rechnung erstellen"
 
 #. translators: %s: a VAT rate.
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:969
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:977
 msgid "Create the invoice"
 msgstr "Rechnung jetzt erstellen"
 
 #. translators: %s: a VAT rate.
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:968
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:976
 msgid "Creating…"
 msgstr "Wird erstellt …"
 
@@ -1698,7 +1719,7 @@ msgstr "Kunde"
 msgid "Customer Analytics"
 msgstr "Kundenauswertung"
 
-#: frontend/admin/Menu.php:182 frontend/admin/Menu.php:183 frontend/admin/app/src/App.jsx:49 frontend/admin/app/src/pages/Customers/CustomersPage.jsx:146
+#: frontend/admin/Menu.php:192 frontend/admin/Menu.php:193 frontend/admin/app/src/App.jsx:49 frontend/admin/app/src/pages/Customers/CustomersPage.jsx:146
 msgid "Customers"
 msgstr "Kunden"
 
@@ -1718,7 +1739,7 @@ msgstr "Tagesübersicht"
 msgid "Daily summary (owner)"
 msgstr "Tagesübersicht (Betreiber)"
 
-#: frontend/admin/Menu.php:135 frontend/admin/Menu.php:136 frontend/admin/app/src/App.jsx:33
+#: frontend/admin/Menu.php:145 frontend/admin/Menu.php:146 frontend/admin/app/src/App.jsx:33
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -1829,7 +1850,7 @@ msgstr[1] "%d Zahlungen löschen?"
 msgid "Delete %s"
 msgstr "%s löschen"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:326 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:317 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:321 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:497
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:326 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:317 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:321 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:505
 #: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:441
 msgid "Delete booking"
 msgstr "Buchung löschen"
@@ -1868,7 +1889,7 @@ msgstr "Zustellung"
 msgid "Departs"
 msgstr "Abreise"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:626 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:76
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:634 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:76
 msgid "Departure"
 msgstr "Abreise"
 
@@ -1977,7 +1998,7 @@ msgstr "Apartment bearbeiten"
 msgid "Edit Extra"
 msgstr "Extra bearbeiten"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:478 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:395
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:486 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:395
 msgid "Edit booking"
 msgstr "Buchung bearbeiten"
 
@@ -1989,7 +2010,7 @@ msgstr "Bearbeitet"
 msgid "Email"
 msgstr "E-Mail"
 
-#: frontend/admin/Menu.php:218 frontend/admin/Menu.php:219 frontend/admin/app/src/App.jsx:69
+#: frontend/admin/Menu.php:228 frontend/admin/Menu.php:229 frontend/admin/app/src/App.jsx:69
 msgid "Email Templates"
 msgstr "E-Mail-Vorlagen"
 
@@ -2038,7 +2059,7 @@ msgstr "Geben Sie einen Preis von 0 oder mehr ein."
 msgid "Enter a rate of 0 or more."
 msgstr "Geben Sie einen Preis von 0 oder mehr ein."
 
-#: backend/APIs/EmailTemplatesController.php:249 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:114
+#: backend/APIs/EmailTemplatesController.php:250 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:115
 msgid "Enter a valid email address."
 msgstr "Geben Sie eine gültige E-Mail-Adresse ein."
 
@@ -2046,11 +2067,11 @@ msgstr "Geben Sie eine gültige E-Mail-Adresse ein."
 msgid "Enter how many guests fit."
 msgstr "Geben Sie an, wie viele Gäste Platz finden."
 
-#: backend/APIs/PaymentsController.php:236
+#: backend/APIs/PaymentsController.php:251
 msgid "Enter how much was received."
 msgstr "Bitte geben Sie den erhaltenen Betrag an."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:128
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:129
 msgid "Enter the agreed total."
 msgstr "Geben Sie den vereinbarten Gesamtbetrag ein."
 
@@ -2094,7 +2115,7 @@ msgstr "Alle Pfade unten hängen daran. Admin-Routen erfordern einen angemeldete
 msgid "Everyone who has booked"
 msgstr "Alle, die gebucht haben"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:300
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:308
 msgid "Everything else"
 msgstr "Alles Übrige"
 
@@ -2119,8 +2140,8 @@ msgstr "Export-Links (.ics)"
 msgid "Extra"
 msgstr "Extra"
 
-#: backend/PostTypes/ApartmentMetaBox.php:88 frontend/admin/Menu.php:191 frontend/admin/Menu.php:192 frontend/admin/app/src/App.jsx:65
-#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:260 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:670 frontend/site/app/src/components/BookingModal/BookingModal.jsx:532
+#: backend/PostTypes/ApartmentMetaBox.php:88 frontend/admin/Menu.php:201 frontend/admin/Menu.php:202 frontend/admin/app/src/App.jsx:65
+#: frontend/admin/app/src/pages/Availability/AvailabilityPage.jsx:402 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:260 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:678 frontend/site/app/src/components/BookingModal/BookingModal.jsx:532
 #: frontend/site/app/src/components/BookingModal/StepOptions.jsx:44 frontend/site/app/src/components/BookingModal/StepReview.jsx:313
 msgid "Extras"
 msgstr "Extras"
@@ -2205,23 +2226,23 @@ msgstr "Gesamt:"
 msgid "Gesamtbetrag:"
 msgstr "Gesamtbetrag:"
 
-#: backend/APIs/BookingsController.php:874
+#: backend/APIs/BookingsController.php:885
 msgid "Give a date, a start time and a length."
 msgstr "Geben Sie Datum, Startzeit und Dauer an."
 
-#: backend/APIs/BookingsController.php:959
+#: backend/APIs/BookingsController.php:970
 msgid "Give a date."
 msgstr "Geben Sie ein Datum an."
 
-#: backend/APIs/HolidaysController.php:83 backend/APIs/PublicBookingController.php:364
+#: backend/APIs/HolidaysController.php:84 backend/APIs/PublicBookingController.php:364
 msgid "Give a start and an end date."
 msgstr "Geben Sie ein Start- und ein Enddatum an."
 
-#: backend/APIs/BlocksController.php:177
+#: backend/APIs/BlocksController.php:178
 msgid "Give a start and an end for the lock."
 msgstr "Geben Sie Beginn und Ende der Sperre an."
 
-#: backend/APIs/BookingsController.php:913
+#: backend/APIs/BookingsController.php:924
 msgid "Give an arrival and a departure date."
 msgstr "Geben Sie ein Anreise- und ein Abreisedatum an."
 
@@ -2237,7 +2258,7 @@ msgstr "Geben Sie dem Apartment einen Namen."
 msgid "Google Calendar"
 msgstr "Google Kalender"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:371 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:68 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:169
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:371 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:69 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:169
 msgid "Gross"
 msgstr "Brutto"
 
@@ -2245,7 +2266,7 @@ msgstr "Brutto"
 msgid "Group by"
 msgstr "Gruppieren nach"
 
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:314 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:107 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:573 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:114
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:314 frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:107 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:581 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:114
 #: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:196 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:74 frontend/admin/app/src/pages/Calendar/components/BookingChip/BookingChip.jsx:252 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:116
 #: frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:176 frontend/admin/app/src/pages/Calendar/components/TimeGrid/TimeGrid.jsx:119 frontend/admin/app/src/pages/Calendar/components/TimeGrid/TimeGrid.jsx:137 frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:61
 #: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:54 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:154 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:80
@@ -2256,24 +2277,24 @@ msgstr "Gast"
 msgid "Guest emails"
 msgstr "Gäste-E-Mails"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:759
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:767
 msgid "Guest notes"
 msgstr "Anmerkungen des Gastes"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:747 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:105
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:755 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:105
 msgid "Guest paid on"
 msgstr "Gast hat gezahlt am"
 
 #. translators: %d: number of hours.
 #. translators: %d: number of nights.
 #: backend/PostTypes/ApartmentMetaBox.php:181 backend/PostTypes/ApartmentPostType.php:95 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:445 frontend/admin/app/src/pages/Apartments/components/ApartmentsTable/ApartmentsTable.jsx:109
-#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:630 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:516 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:74
+#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:177 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:638 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:516 frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:74
 #: frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:129 frontend/site/Shortcodes.php:1247 frontend/site/app/src/components/BookingModal/StaySummary.jsx:111 frontend/site/app/src/components/BookingModal/StepStay.jsx:137
 #: frontend/site/app/src/components/BookingModal/StepStay.jsx:175 frontend/site/app/src/components/BookingModal/StepWhen.jsx:572 frontend/site/app/src/components/SearchFilterBar/GuestDropdown.jsx:107
 msgid "Guests"
 msgstr "Gäste"
 
-#: backend/APIs/ApartmentsController.php:473
+#: backend/APIs/ApartmentsController.php:474
 msgid "Guests must be between 1 and 65535."
 msgstr "Die Gästezahl muss zwischen 1 und 65535 liegen."
 
@@ -2285,7 +2306,7 @@ msgstr "Gäste, die der Grundpreis abdeckt"
 msgid "HTML"
 msgstr "HTML"
 
-#: backend/APIs/HolidaysController.php:127
+#: backend/APIs/HolidaysController.php:128
 msgid "Hesse"
 msgstr "Hessen"
 
@@ -2314,7 +2335,7 @@ msgstr "Verlauf"
 msgid "Hold the dates for (hours)"
 msgstr "Termin reservieren für (Stunden)"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:89
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:98
 msgid "Hourly booking"
 msgstr "Stundenweise Buchung"
 
@@ -2434,7 +2455,7 @@ msgid "Invoice"
 msgstr "Rechnung"
 
 #. translators: 1: the invoice number, 2: the VAT rate as a percentage.
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:898
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:906
 msgid "Invoice %1$s, drawn at %2$s%% VAT."
 msgstr "Rechnung %1$s, erstellt mit %2$s %% MwSt."
 
@@ -2482,6 +2503,10 @@ msgstr "Kontoinhaber:"
 msgid "Kosten"
 msgstr "Kosten"
 
+#: frontend/admin/app/src/pages/Bookings/data/status.js:53
+msgid "Lapsed"
+msgstr "Verfallen"
+
 #: frontend/admin/app/src/pages/Reports/ReportsPage.jsx:61
 msgid "Last 30 Days"
 msgstr "Letzte 30 Tage"
@@ -2499,13 +2524,13 @@ msgid "Last name"
 msgstr "Nachname"
 
 #. translators: 1: number of dated entries read, 2: when it was read.
-#: backend/APIs/IcalController.php:548 backend/PostTypes/ApartmentMetaBox.php:720 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:987
+#: backend/APIs/IcalController.php:549 backend/PostTypes/ApartmentMetaBox.php:720 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:987
 msgid "Last read %1$d entries on %2$s"
 msgstr "Zuletzt %1$d Einträge gelesen am %2$s"
 
 #. translators: %s: the reason the read failed.
 #. translators: %s: the reason the last read failed.
-#: backend/APIs/IcalController.php:543 backend/PostTypes/ApartmentMetaBox.php:714 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:981
+#: backend/APIs/IcalController.php:544 backend/PostTypes/ApartmentMetaBox.php:714 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:981
 msgid "Last read failed: %s"
 msgstr "Letztes Lesen fehlgeschlagen: %s"
 
@@ -2517,7 +2542,7 @@ msgstr "Letzter Aufenthalt"
 msgid "Latest start time"
 msgstr "Späteste Startzeit"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:854
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:862
 msgid "Leave it as it is"
 msgstr "Unverändert lassen"
 
@@ -2624,12 +2649,12 @@ msgstr "Manuell"
 msgid "Mark %s as paid"
 msgstr "%s als bezahlt markieren"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:188 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:360 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:190 frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:158
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:196 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:360 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:190 frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:158
 #: frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:231 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:231
 msgid "Mark as paid"
 msgstr "Als bezahlt markieren"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:179
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:187
 msgid "Mark completed"
 msgstr "Als abgeschlossen markieren"
 
@@ -2722,7 +2747,7 @@ msgid "Name, email, phone or city…"
 msgstr "Name, E-Mail, Telefon oder Stadt …"
 
 #. translators: %d: total number of bookings
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:381 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:58
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:381 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:59
 msgid "Needs action"
 msgstr "Aktion erforderlich"
 
@@ -2833,7 +2858,7 @@ msgstr "Zu diesem Apartment werden keine Extras angeboten."
 msgid "No extras match your search"
 msgstr "Keine Extras passen zu Ihrer Suche"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:692
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:700
 msgid "No extras were booked. The total is accommodation and any guest charge."
 msgstr "Es wurden keine Extras gebucht. Die Summe umfasst die Unterkunft und etwaige Gästezuschläge."
 
@@ -2845,7 +2870,7 @@ msgstr "Noch keine Extras"
 msgid "No extras yet."
 msgstr "Noch keine Extras."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:584
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:592
 msgid "No name given"
 msgstr "Kein Name angegeben"
 
@@ -2936,7 +2961,7 @@ msgstr "Nichts gesperrt"
 msgid "Nothing more to do — your booking is confirmed."
 msgstr "Es ist nichts weiter zu tun — Ihre Buchung ist bestätigt."
 
-#: backend/APIs/BookingsController.php:304
+#: backend/APIs/BookingsController.php:315
 msgid "Nothing to change."
 msgstr "Nichts zu ändern."
 
@@ -2948,7 +2973,7 @@ msgstr "Nichts zu lesen – es ist noch kein Kalender-Link gespeichert."
 msgid "Nothing to report yet"
 msgstr "Noch nichts auszuwerten"
 
-#: backend/APIs/SettingsController.php:393
+#: backend/APIs/SettingsController.php:394
 msgid "Nothing was sent. Check that email notifications are on and that the daily summary template is enabled."
 msgstr "Es wurde nichts gesendet. Bitte prüfen, ob E-Mail-Benachrichtigungen aktiv sind und die Vorlage für die Tagesübersicht aktiviert ist."
 
@@ -3005,7 +3030,7 @@ msgid "On the days listed above, that one fixed block is the whole daytime offer
 msgstr "An den oben genannten Tagen ist dieser eine feste Block das gesamte Tagesangebot – freie Startzeiten werden nicht angezeigt, die Alternative ist eine Übernachtung. An allen anderen Tagen wählen Gäste ihre Startzeit selbst."
 
 #. translators: 1: start time, 2: end time, both 24-hour.
-#: backend/Pricing/SlotGenerator.php:196
+#: backend/Pricing/SlotGenerator.php:235
 msgid "On this day the daytime booking runs from %1$s to %2$s. For other times, please book an overnight stay."
 msgstr "An diesem Tag läuft die Tagesbuchung von %1$s bis %2$s. Für andere Zeiten buchen Sie bitte eine Übernachtung."
 
@@ -3080,7 +3105,7 @@ msgstr "Öffnet das Buchungsfenster für einen Übernachtungsaufenthalt mit dies
 msgid "Open the booking window on this date, as YYYY-MM-DD, instead of on today."
 msgstr "Öffnet das Buchungsfenster an diesem Datum im Format JJJJ-MM-TT statt am heutigen Tag."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:914
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:922
 msgid "Open the invoice"
 msgstr "Rechnung öffnen"
 
@@ -3088,7 +3113,7 @@ msgstr "Rechnung öffnen"
 msgid "Open the payment page"
 msgstr "Zahlungsseite öffnen"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:737 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:159 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:168
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:745 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:159 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:168
 msgid "Open uploaded receipt"
 msgstr "Hochgeladenen Beleg öffnen"
 
@@ -3136,7 +3161,7 @@ msgstr "Nicht auf Lager"
 msgid "Out of stock"
 msgstr "Nicht auf Lager"
 
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:72
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:73
 msgid "Outstanding"
 msgstr "Offen"
 
@@ -3152,9 +3177,13 @@ msgstr "Übernachtungspreis (Fr/Sa)"
 msgid "Overnight rate (Sun–Thu)"
 msgstr "Übernachtungspreis (So–Do)"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:88 frontend/site/app/src/components/BookingModal/StepWhen.jsx:648
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:97 frontend/site/app/src/components/BookingModal/StepWhen.jsx:648
 msgid "Overnight stay"
 msgstr "Übernachtung"
+
+#: frontend/admin/app/src/pages/Bookings/data/status.js:63
+msgid "Overpaid"
+msgstr "Überzahlt"
 
 #. translators: %s: how much too much would have been received.
 #: frontend/admin/app/src/components/RecordPaymentDialog/RecordPaymentDialog.jsx:164
@@ -3162,7 +3191,7 @@ msgid "Overpaid by %s"
 msgstr "Überzahlt um %s"
 
 #. translators: %s: how much too much came in, with currency.
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:134
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:142
 msgid "Overpayment — difference: %s"
 msgstr "Überzahlung — Differenz: %s"
 
@@ -3174,13 +3203,17 @@ msgstr "Betreiber-E-Mails"
 msgid "PNG, JPG, JPEG"
 msgstr "PNG, JPG, JPEG"
 
+#: frontend/admin/app/src/pages/Bookings/data/status.js:62
+msgid "Paid"
+msgstr "Bezahlt"
+
 #. translators: %s: how much too much would have been received.
 #: frontend/admin/app/src/components/RecordPaymentDialog/RecordPaymentDialog.jsx:170
 msgid "Paid in full"
 msgstr "Vollständig bezahlt"
 
 #. translators: %s: the amount received, with currency.
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:145
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:153
 msgid "Paid in full — %s received"
 msgstr "Vollständig bezahlt — %s erhalten"
 
@@ -3192,17 +3225,21 @@ msgstr "Bezahlt, abzüglich Erstattungen"
 msgid "Parameters"
 msgstr "Parameter"
 
+#: frontend/admin/app/src/pages/Bookings/data/status.js:61
+msgid "Part paid"
+msgstr "Teilweise bezahlt"
+
 #. translators: %s: the amount still owed, with currency.
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:122
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:130
 msgid "Partially paid — outstanding: %s"
 msgstr "Teilweise bezahlt — offen: %s"
 
 #. translators: %d: number of active apartments
-#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:201 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:105
+#: frontend/admin/app/src/pages/Apartments/ApartmentsPage.jsx:201 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:106
 msgid "Partly offline"
 msgstr "Teilweise offline"
 
-#: backend/APIs/ApartmentsController.php:322 backend/APIs/IcalController.php:622
+#: backend/APIs/ApartmentsController.php:323 backend/APIs/IcalController.php:623
 msgid "Paste the calendar link the portal gave you — it should start with https://"
 msgstr "Fügen Sie den Kalender-Link ein, den Sie vom Portal erhalten haben – er sollte mit https:// beginnen."
 
@@ -3241,7 +3278,11 @@ msgstr "Zahlungsverlauf"
 msgid "Payment method"
 msgstr "Zahlungsart"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:710 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:117 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:130
+#: frontend/admin/app/src/pages/Bookings/data/status.js:49
+msgid "Payment overdue"
+msgstr "Zahlung überfällig"
+
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:718 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:117 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:130
 msgid "Payment proof"
 msgstr "Zahlungsnachweis"
 
@@ -3258,7 +3299,7 @@ msgstr "Screenshot des Zahlungsbelegs hochgeladen"
 msgid "Payment receipt uploaded"
 msgstr "Zahlungsbeleg hochgeladen"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:723 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:142 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:151
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:731 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:142 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:151
 msgid "Payment receipt uploaded by the guest"
 msgstr "Vom Gast hochgeladener Zahlungsbeleg"
 
@@ -3298,7 +3339,7 @@ msgstr "Zahlungsstatus geändert"
 msgid "Payment term (days)"
 msgstr "Zahlungsziel (Tage)"
 
-#: frontend/admin/Menu.php:200 frontend/admin/Menu.php:201 frontend/admin/app/src/App.jsx:45
+#: frontend/admin/Menu.php:210 frontend/admin/Menu.php:211 frontend/admin/app/src/App.jsx:45
 msgid "Payments"
 msgstr "Zahlungen"
 
@@ -3310,7 +3351,7 @@ msgstr "Zahlungen erscheinen hier, sobald Buchungen über die Website eingehen."
 msgid "Peak Booking Hours"
 msgstr "Stärkste Buchungszeiten"
 
-#: frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:180 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:25 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:51
+#: frontend/admin/app/src/pages/Bookings/data/status.js:55 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:180 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:25 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:51
 msgid "Pending"
 msgstr "Ausstehend"
 
@@ -3319,7 +3360,7 @@ msgid "Pending Requests"
 msgstr "Offene Anfragen"
 
 #. translators: %d: total number of bookings
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:52
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:53
 msgid "Pending bookings"
 msgstr "Ausstehende Buchungen"
 
@@ -3347,7 +3388,7 @@ msgstr "Telefon"
 msgid "Photo gallery"
 msgstr "Fotogalerie"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:139
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:140
 msgid "Pick a check-in date."
 msgstr "Wählen Sie ein Anreisedatum."
 
@@ -3359,7 +3400,7 @@ msgstr "Farbe wählen"
 msgid "Pick a colour."
 msgstr "Wählen Sie eine Farbe."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:161
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:162
 msgid "Pick a date."
 msgstr "Wählen Sie ein Datum."
 
@@ -3367,7 +3408,7 @@ msgstr "Wählen Sie ein Datum."
 msgid "Pick a start date."
 msgstr "Wählen Sie ein Startdatum."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:169
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:170
 msgid "Pick a start time."
 msgstr "Wählen Sie eine Startzeit."
 
@@ -3375,7 +3416,7 @@ msgstr "Wählen Sie eine Startzeit."
 msgid "Pick an end date."
 msgstr "Wählen Sie ein Enddatum."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:886
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:894
 msgid "Pick the VAT treatment. It is written onto the invoice and kept, so the same document prints the same way later even if the rates change."
 msgstr "Wählen Sie die steuerliche Behandlung. Sie wird auf der Rechnung festgehalten, damit dasselbe Dokument später unverändert gedruckt wird, auch wenn sich die Sätze ändern."
 
@@ -3508,7 +3549,7 @@ msgstr "RECHNUNG"
 msgid "Rates"
 msgstr "Preise"
 
-#: backend/APIs/ApartmentsController.php:530
+#: backend/APIs/ApartmentsController.php:531
 msgid "Rates cannot be negative."
 msgstr "Preise dürfen nicht negativ sein."
 
@@ -3524,7 +3565,7 @@ msgstr "Grund"
 msgid "Receipt"
 msgstr "Beleg"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:446 frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:121 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:105 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:86
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:454 frontend/admin/app/src/pages/Payments/components/PaymentCard/PaymentCard.jsx:121 frontend/admin/app/src/pages/Payments/components/PaymentViewDialog/PaymentViewDialog.jsx:105 frontend/admin/app/src/pages/Payments/components/PaymentsTable/PaymentsTable.jsx:86
 msgid "Received"
 msgstr "Erhalten"
 
@@ -3544,7 +3585,7 @@ msgstr "Rechnungsempfänger:"
 msgid "Rechnungsnummer:"
 msgstr "Rechnungsnummer:"
 
-#: frontend/admin/app/src/components/RecordPaymentDialog/RecordPaymentDialog.jsx:210 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:537 frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:325
+#: frontend/admin/app/src/components/RecordPaymentDialog/RecordPaymentDialog.jsx:210 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:545 frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:325
 msgid "Record a payment"
 msgstr "Zahlung erfassen"
 
@@ -3561,11 +3602,11 @@ msgstr "Erfasst"
 msgid "Recorded all time"
 msgstr "Insgesamt erfasst"
 
-#: backend/APIs/BookingsController.php:591
+#: backend/APIs/BookingsController.php:602
 msgid "Recorded from the booking, which was already marked paid."
 msgstr "Aus der Buchung übernommen, die bereits als bezahlt markiert war."
 
-#: backend/APIs/BookingsController.php:443
+#: backend/APIs/BookingsController.php:454
 msgid "Recorded when the booking was marked paid."
 msgstr "Erfasst, als die Buchung als bezahlt markiert wurde."
 
@@ -3597,7 +3638,7 @@ msgstr "Aktualisieren"
 msgid "Refresh bookings list"
 msgstr "Buchungsliste aktualisieren"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:37 frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:277
+#: frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:37 frontend/admin/app/src/pages/Bookings/data/status.js:64 frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:277
 msgid "Refunded"
 msgstr "Erstattet"
 
@@ -3609,7 +3650,7 @@ msgstr "Ohne Erstattungen"
 msgid "Release"
 msgstr "Freigeben"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:204
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:212
 msgid "Release dates"
 msgstr "Zeitraum freigeben"
 
@@ -3650,7 +3691,7 @@ msgstr "Wiederkehrende Termine werden nicht importiert."
 msgid "Replace logo"
 msgstr "Logo ersetzen"
 
-#: frontend/admin/Menu.php:209 frontend/admin/Menu.php:210 frontend/admin/app/src/App.jsx:53 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:196
+#: frontend/admin/Menu.php:219 frontend/admin/Menu.php:220 frontend/admin/app/src/App.jsx:53 frontend/admin/app/src/pages/Reports/ReportsPage.jsx:196
 msgid "Reports & Analytics"
 msgstr "Berichte & Auswertungen"
 
@@ -3662,11 +3703,12 @@ msgstr "Die Anfrage ist fehlgeschlagen."
 msgid "Requests made through the booking form on your site will appear here."
 msgstr "Anfragen über das Buchungsformular Ihrer Website erscheinen hier."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:161
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:169
 msgid "Reserve"
 msgstr "Reservieren"
 
-#: backend/Support/IcalExporter.php:257 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:181 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:26 frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:52
+#: backend/Support/IcalExporter.php:257 frontend/admin/app/src/pages/Bookings/data/status.js:56 frontend/admin/app/src/pages/Calendar/CalendarPage.jsx:181 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:26
+#: frontend/admin/app/src/pages/Reports/components/ReportCharts/ReportCharts.jsx:52
 msgid "Reserved"
 msgstr "Reserviert"
 
@@ -3744,7 +3786,7 @@ msgstr "Speichern Sie das Apartment zuerst – die Export-Links können erstellt
 msgid "Saved with the apartment, then read on the next scheduled sync."
 msgstr "Wird mit dem Apartment gespeichert und beim nächsten planmäßigen Abgleich gelesen."
 
-#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:771 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:561 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:882 frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:196
+#: frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:771 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:569 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:882 frontend/admin/app/src/pages/EmailTemplates/components/TemplateEditor/TemplateEditor.jsx:196
 #: frontend/admin/app/src/pages/Extras/components/ExtraForm/ExtraForm.jsx:589 frontend/admin/app/src/pages/Settings/SettingsPage.jsx:1195
 msgid "Saving…"
 msgstr "Wird gespeichert …"
@@ -3843,7 +3885,7 @@ msgstr "Test senden"
 msgid "Send the summary automatically"
 msgstr "Übersicht automatisch senden"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:206
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:214
 msgid "Send this booking back to pending? The dates become bookable again."
 msgstr "Diese Buchung wieder auf „ausstehend“ setzen? Der Zeitraum wird dadurch wieder buchbar."
 
@@ -3890,7 +3932,7 @@ msgstr "Wird gesendet, wenn eine Zahlung als bezahlt markiert wird — im Adminb
 msgid "Sent when a request is approved and the dates are held."
 msgstr "Wird gesendet, wenn eine Anfrage bestätigt und der Zeitraum reserviert wird."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:72
+#: frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:73
 msgid "Set the price myself"
 msgstr "Preis selbst festlegen"
 
@@ -3898,7 +3940,7 @@ msgstr "Preis selbst festlegen"
 msgid "Set up the apartment guests will see and book."
 msgstr "Richten Sie das Apartment ein, das Gäste sehen und buchen."
 
-#: frontend/admin/Menu.php:227 frontend/admin/Menu.php:228 frontend/admin/app/src/App.jsx:73
+#: frontend/admin/Menu.php:237 frontend/admin/Menu.php:238 frontend/admin/app/src/App.jsx:73
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -3910,7 +3952,7 @@ msgstr "Einstellungen gespeichert."
 msgid "Settings section"
 msgstr "Einstellungsbereich"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:121 frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:146 frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:35 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:80
+#: frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:121 frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:146 frontend/admin/app/src/pages/Bookings/components/BookingPayments/BookingPayments.jsx:35 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:81
 #: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:242
 msgid "Settled"
 msgstr "Beglichen"
@@ -4000,7 +4042,7 @@ msgstr "Reihenfolge"
 msgid "Sort direction."
 msgstr "Sortierrichtung."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:634
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:642
 msgid "Source"
 msgstr "Quelle"
 
@@ -4014,7 +4056,7 @@ msgstr "Startzeit"
 msgid "Status"
 msgstr "Status"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:612 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:419 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:122 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:181
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:620 frontend/admin/app/src/pages/Bookings/components/BookingForm/BookingForm.jsx:419 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:122 frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:181
 msgid "Stay"
 msgstr "Aufenthalt"
 
@@ -4107,7 +4149,7 @@ msgstr "System"
 msgid "Taken by phone, email or at the door."
 msgstr "Telefonisch, per E-Mail oder vor Ort aufgenommen."
 
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:41
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:42
 msgid "Taken in the last 24 hours"
 msgstr "In den letzten 24 Stunden erfasst"
 
@@ -4197,19 +4239,19 @@ msgstr "Vielen Dank — Ihre Buchung ist eingegangen"
 msgid "That address is already on the list."
 msgstr "Diese Adresse steht bereits auf der Liste."
 
-#: backend/APIs/BookingsController.php:949
+#: backend/APIs/BookingsController.php:960
 msgid "That apartment does not exist."
 msgstr "Diese Wohnung existiert nicht."
 
-#: backend/APIs/IcalController.php:569
+#: backend/APIs/IcalController.php:570
 msgid "That apartment no longer exists."
 msgstr "Dieses Apartment existiert nicht mehr."
 
-#: backend/APIs/PaymentsController.php:226
+#: backend/APIs/PaymentsController.php:241
 msgid "That booking no longer exists."
 msgstr "Diese Buchung existiert nicht mehr."
 
-#: backend/APIs/ApartmentsController.php:337
+#: backend/APIs/ApartmentsController.php:338
 msgid "That calendar is listed twice. Each subscription needs its own link."
 msgstr "Dieser Kalender ist zweimal aufgeführt. Jedes Abonnement braucht seinen eigenen Link."
 
@@ -4217,7 +4259,7 @@ msgstr "Dieser Kalender ist zweimal aufgeführt. Jedes Abonnement braucht seinen
 msgid "That calendar is too large to be a listing export."
 msgstr "Dieser Kalender ist zu groß für einen Inserats-Export."
 
-#: backend/APIs/IcalController.php:673 backend/Support/IcalImporter.php:417
+#: backend/APIs/IcalController.php:674 backend/Support/IcalImporter.php:417
 msgid "That calendar subscription no longer exists."
 msgstr "Dieses Kalender-Abo existiert nicht mehr."
 
@@ -4229,11 +4271,11 @@ msgstr "Dieser Code ist abgelaufen. Bitte fordern Sie einen neuen an."
 msgid "That code is not right. Please check it and try again."
 msgstr "Dieser Code stimmt nicht. Bitte prüfen Sie ihn und versuchen Sie es erneut."
 
-#: backend/APIs/CustomersController.php:105
+#: backend/APIs/CustomersController.php:106
 msgid "That customer no longer exists."
 msgstr "Diesen Kunden gibt es nicht mehr."
 
-#: backend/Pricing/SlotGenerator.php:182
+#: backend/Pricing/SlotGenerator.php:221
 msgid "That day is no longer open for daytime bookings."
 msgstr "Dieser Tag ist für Tagesbuchungen nicht mehr geöffnet."
 
@@ -4241,11 +4283,11 @@ msgstr "Dieser Tag ist für Tagesbuchungen nicht mehr geöffnet."
 msgid "That does not look like an email address."
 msgstr "Das sieht nicht nach einer E-Mail-Adresse aus."
 
-#: backend/APIs/EmailTemplatesController.php:302
+#: backend/APIs/EmailTemplatesController.php:303
 msgid "That email template does not exist."
 msgstr "Diese E-Mail-Vorlage existiert nicht."
 
-#: backend/APIs/ExtrasController.php:287
+#: backend/APIs/ExtrasController.php:288
 msgid "That extra no longer exists."
 msgstr "Dieses Extra existiert nicht mehr."
 
@@ -4257,11 +4299,11 @@ msgstr "Diese Datei konnte nicht gelesen werden."
 msgid "That file is not a calendar. Export the .ics file from the portal and upload it unchanged."
 msgstr "Diese Datei ist kein Kalender. Exportieren Sie die .ics-Datei aus dem Portal und laden Sie sie unverändert hoch."
 
-#: backend/APIs/IcalController.php:338 frontend/admin/app/src/services/icalService.js:62
+#: backend/APIs/IcalController.php:339 frontend/admin/app/src/services/icalService.js:62
 msgid "That file is too large to be a calendar export."
 msgstr "Diese Datei ist zu groß für einen Kalender-Export."
 
-#: backend/APIs/CustomersController.php:182
+#: backend/APIs/CustomersController.php:183
 msgid "That guest no longer exists."
 msgstr "Dieser Gast existiert nicht mehr."
 
@@ -4269,15 +4311,15 @@ msgstr "Dieser Gast existiert nicht mehr."
 msgid "That is not a usable calendar address."
 msgstr "Das ist keine verwendbare Kalender-Adresse."
 
-#: backend/APIs/BlocksController.php:288
+#: backend/APIs/BlocksController.php:289
 msgid "That lock no longer exists."
 msgstr "Diese Sperre existiert nicht mehr."
 
-#: backend/APIs/PaymentsController.php:155 backend/APIs/PaymentsController.php:362
+#: backend/APIs/PaymentsController.php:156 backend/APIs/PaymentsController.php:377
 msgid "That payment no longer exists."
 msgstr "Diese Zahlung existiert nicht mehr."
 
-#: backend/APIs/ApartmentsController.php:584
+#: backend/APIs/ApartmentsController.php:585
 msgid "That short link is already used by another apartment."
 msgstr "Dieser Kurzlink wird bereits von einem anderen Apartment verwendet."
 
@@ -4289,11 +4331,11 @@ msgstr "Das sollte ein Link sein, der mit https:// oder webcal:// beginnt."
 msgid "That time has already passed."
 msgstr "Dieser Zeitpunkt liegt bereits in der Vergangenheit."
 
-#: backend/APIs/ApartmentsController.php:227
+#: backend/APIs/ApartmentsController.php:228
 msgid "The apartment could not be saved."
 msgstr "Das Apartment konnte nicht gespeichert werden."
 
-#: backend/APIs/ApartmentsController.php:270
+#: backend/APIs/ApartmentsController.php:271
 msgid "The apartment could not be updated."
 msgstr "Das Apartment konnte nicht aktualisiert werden."
 
@@ -4301,15 +4343,15 @@ msgstr "Das Apartment konnte nicht aktualisiert werden."
 msgid "The apartments could not be loaded."
 msgstr "Die Apartments konnten nicht geladen werden."
 
-#: backend/APIs/BookingsController.php:664
+#: backend/APIs/BookingsController.php:675
 msgid "The booking could not be deleted."
 msgstr "Die Buchung konnte nicht gelöscht werden."
 
-#: backend/APIs/BookingsController.php:244 backend/APIs/PublicBookingController.php:650
+#: backend/APIs/BookingsController.php:255 backend/APIs/PublicBookingController.php:650
 msgid "The booking could not be saved."
 msgstr "Die Buchung konnte nicht gespeichert werden."
 
-#: backend/APIs/BookingsController.php:349
+#: backend/APIs/BookingsController.php:360
 msgid "The booking could not be updated."
 msgstr "Die Buchung konnte nicht aktualisiert werden."
 
@@ -4331,7 +4373,7 @@ msgstr "Die Markenfarbe des Buchungsablaufs für Gäste. Hover-, Klick- und Tön
 msgid "The calendar could not be reached: %s"
 msgstr "Der Kalender konnte nicht erreicht werden: %s"
 
-#: backend/APIs/IcalController.php:395
+#: backend/APIs/IcalController.php:396
 msgid "The calendar subscription could not be saved."
 msgstr "Das Kalender-Abo konnte nicht gespeichert werden."
 
@@ -4339,7 +4381,7 @@ msgstr "Das Kalender-Abo konnte nicht gespeichert werden."
 msgid "The code could not be sent. Please check the address and try again."
 msgstr "Der Code konnte nicht gesendet werden. Bitte prüfen Sie die Adresse und versuchen Sie es erneut."
 
-#: backend/APIs/ApartmentsController.php:486
+#: backend/APIs/ApartmentsController.php:487
 msgid "The colour must be a hex value such as #3858e9."
 msgstr "Die Farbe muss ein Hex-Wert wie #3858e9 sein."
 
@@ -4359,11 +4401,11 @@ msgstr "Der Termin endet vor seinem Beginn."
 msgid "The event has no readable start date."
 msgstr "Der Termin hat kein lesbares Startdatum."
 
-#: backend/APIs/ExtrasController.php:172
+#: backend/APIs/ExtrasController.php:173
 msgid "The extra could not be saved."
 msgstr "Das Extra konnte nicht gespeichert werden."
 
-#: backend/APIs/ExtrasController.php:227
+#: backend/APIs/ExtrasController.php:228
 msgid "The extra needs a name."
 msgstr "Das Extra braucht einen Namen."
 
@@ -4391,11 +4433,11 @@ msgstr "Telefonnummer des Gastes"
 msgid "The guest-facing apartment grid, with an optional date and guest search bar above it."
 msgstr "Das Apartment-Raster für Gäste, wahlweise mit einer Suchleiste für Datum und Gäste darüber."
 
-#: backend/APIs/BookingsController.php:729
+#: backend/APIs/BookingsController.php:740
 msgid "The invoice could not be prepared for this booking."
 msgstr "Die Rechnung konnte für diese Buchung nicht vorbereitet werden."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:882
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:890
 msgid "The invoice has been issued. Its number and rate are fixed from here on."
 msgstr "Die Rechnung wurde ausgestellt. Nummer und Steuersatz stehen ab jetzt fest."
 
@@ -4407,11 +4449,11 @@ msgstr "Die Rechnung für den Gast und die Seiten, auf die sie und der Buchungsa
 msgid "The last time a booking may begin. A booking may still finish after it."
 msgstr "Die späteste Zeit, zu der eine Buchung beginnen darf. Sie darf danach noch enden."
 
-#: backend/APIs/BlocksController.php:251
+#: backend/APIs/BlocksController.php:252
 msgid "The lock could not be saved."
 msgstr "Die Sperre konnte nicht gespeichert werden."
 
-#: backend/APIs/BlocksController.php:184 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:64
+#: backend/APIs/BlocksController.php:185 frontend/admin/app/src/pages/Availability/components/LockDialog/LockDialog.jsx:64
 msgid "The lock must end after it starts."
 msgstr "Die Sperre muss nach ihrem Beginn enden."
 
@@ -4423,7 +4465,7 @@ msgstr "Logo, Kopf- und Fußzeile werden automatisch aus den Einstellungen ergä
 msgid "The longest a single booking may run. Anything longer is refused, wherever it is booked from."
 msgstr "Die maximale Dauer einer einzelnen Buchung. Alles Längere wird abgelehnt, unabhängig davon, wo gebucht wird."
 
-#: backend/APIs/SettingsController.php:556
+#: backend/APIs/SettingsController.php:557
 msgid "The longest stay cannot be shorter than the shortest one."
 msgstr "Die längste Buchung kann nicht kürzer als die kürzeste sein."
 
@@ -4439,7 +4481,7 @@ msgstr "Die nächste zu vergebende Nummer. Sie kann die Zählung nur nach vorn s
 msgid "The one-time verification code"
 msgstr "Der einmalige Bestätigungscode"
 
-#: backend/APIs/PaymentsController.php:267
+#: backend/APIs/PaymentsController.php:282
 msgid "The payment could not be recorded."
 msgstr "Die Zahlung konnte nicht erfasst werden."
 
@@ -4453,7 +4495,7 @@ msgstr "Die Zahlungen werden entfernt und jede Buchung wird anhand des Rests neu
 msgid "The portal answered with status %d. Check the calendar link is still valid."
 msgstr "Das Portal antwortete mit Status %d. Prüfen Sie, ob der Kalender-Link noch gültig ist."
 
-#: backend/APIs/ExtrasController.php:244
+#: backend/APIs/ExtrasController.php:245
 msgid "The price cannot be negative."
 msgstr "Der Preis darf nicht negativ sein."
 
@@ -4461,7 +4503,7 @@ msgstr "Der Preis darf nicht negativ sein."
 msgid "The same value as the post title — changing it here renames the apartment everywhere."
 msgstr "Derselbe Wert wie der Beitragstitel — eine Änderung hier benennt das Apartment überall um."
 
-#: backend/APIs/ExtrasController.php:266
+#: backend/APIs/ExtrasController.php:267
 msgid "The stock quantity cannot be negative."
 msgstr "Die Bestandsmenge darf nicht negativ sein."
 
@@ -4483,7 +4525,7 @@ msgstr "Nur der Vorname"
 msgid "Then press “Initiate Transfer” below. It tells us your payment is on its way — it does not move any money itself."
 msgstr "Klicken Sie anschließend unten auf „Überweisung veranlassen\". Damit teilen Sie uns mit, dass Ihre Zahlung unterwegs ist — es wird dadurch kein Geld bewegt."
 
-#: backend/APIs/EmailTemplatesController.php:263
+#: backend/APIs/EmailTemplatesController.php:264
 msgid "There are no bookings yet, so there is nothing to fill the placeholders with."
 msgstr "Es gibt noch keine Buchungen, daher lassen sich die Platzhalter nicht füllen."
 
@@ -4512,7 +4554,7 @@ msgstr "Dieser Monat"
 msgid "This Year"
 msgstr "Dieses Jahr"
 
-#: backend/APIs/IcalController.php:629
+#: backend/APIs/IcalController.php:630
 msgid "This apartment already subscribes to that calendar."
 msgstr "Dieses Apartment hat diesen Kalender bereits abonniert."
 
@@ -4556,11 +4598,11 @@ msgid "This booking has been cancelled"
 msgstr "Diese Buchung wurde storniert"
 
 #. translators: 1: the current booking type, 2: the type it would become.
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:839
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:847
 msgid "This booking is filed as “%1$s”. Filing it as “%2$s” instead changes the VAT rate its invoice is drawn at. Any invoice already issued keeps the rate it was issued with."
 msgstr "Diese Buchung ist als „%1$s“ erfasst. Eine Erfassung als „%2$s“ ändert den MwSt.-Satz, mit dem die Rechnung erstellt wird. Bereits ausgestellte Rechnungen behalten ihren Satz."
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:831
+#: frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:839
 msgid "This changes the tax treatment"
 msgstr "Das ändert die steuerliche Behandlung"
 
@@ -4569,7 +4611,7 @@ msgid "This customer has no bookings yet."
 msgstr "Dieser Kunde hat noch keine Buchungen."
 
 #. translators: %d: how many bookings the customer still has.
-#: backend/APIs/CustomersController.php:117
+#: backend/APIs/CustomersController.php:118
 msgid "This customer still has %d booking. Delete or reassign it first."
 msgid_plural "This customer still has %d bookings. Delete or reassign them first."
 msgstr[0] "Dieser Kunde hat noch %d Buchung. Löschen oder übertragen Sie sie zuerst."
@@ -4609,7 +4651,7 @@ msgstr "Zeitfenster"
 msgid "To"
 msgstr "Bis"
 
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:79
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:80
 msgid "To collect"
 msgstr "Einzuziehen"
 
@@ -4629,7 +4671,7 @@ msgstr "Zu viele falsche Codes. Bitte fordern Sie einen neuen an."
 msgid "Top Performing Rooms"
 msgstr "Beste Zimmer"
 
-#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:205 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:453 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:684 frontend/admin/app/src/pages/Bookings/components/BookingForm/PriceBreakdown.jsx:174
+#: frontend/admin/app/src/pages/Bookings/components/BookingCard/BookingCard.jsx:205 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:461 frontend/admin/app/src/pages/Bookings/components/BookingDetail/BookingDetail.jsx:692 frontend/admin/app/src/pages/Bookings/components/BookingForm/PriceBreakdown.jsx:174
 #: frontend/admin/app/src/pages/Bookings/components/BookingHistory/BookingHistory.jsx:77 frontend/admin/app/src/pages/Bookings/components/BookingsTable/BookingsTable.jsx:132 frontend/admin/app/src/pages/Bookings/components/PaymentDialog/PaymentDialog.jsx:95 frontend/admin/app/src/pages/Calendar/components/DayBookingsTable/DayBookingsTable.jsx:131
 #: frontend/admin/app/src/pages/Customers/components/CustomerHistoryDialog/CustomerHistoryDialog.jsx:190 frontend/admin/app/src/pages/Dashboard/components/BookingsChart/BookingsChart.jsx:125
 msgid "Total"
@@ -4666,7 +4708,7 @@ msgid "Total Value"
 msgstr "Gesamtwert"
 
 #. translators: %s: the discount, e.g. "5%".
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:63 frontend/site/app/src/components/BookingModal/StepReview.jsx:358
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:64 frontend/site/app/src/components/BookingModal/StepReview.jsx:358
 msgid "Total amount"
 msgstr "Gesamtbetrag"
 
@@ -4678,6 +4720,10 @@ msgstr "Insgesamt verfügbare Menge dieses Extras (z. B. 3 für 3 Beamer)."
 #: frontend/admin/app/src/pages/Payments/PaymentsPage.jsx:268
 msgid "Transactions"
 msgstr "Transaktionen"
+
+#: frontend/admin/app/src/pages/Bookings/data/status.js:48
+msgid "Transfer declared"
+msgstr "Überweisung gemeldet"
 
 #: backend/Support/IcalParser.php:89
 msgid "Tripadvisor"
@@ -4755,7 +4801,11 @@ msgstr "Unbekannte Booking-Suite-Seite."
 msgid "Unlimited"
 msgstr "Unbegrenzt"
 
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:74
+#: frontend/admin/app/src/pages/Bookings/data/status.js:60
+msgid "Unpaid"
+msgstr "Unbezahlt"
+
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:75
 msgid "Unpaid and part-paid bookings"
 msgstr "Unbezahlte und teilbezahlte Buchungen"
 
@@ -4782,7 +4832,7 @@ msgid_plural "Up to %d guests."
 msgstr[0] "Bis zu %d Gast."
 msgstr[1] "Bis zu %d Gäste."
 
-#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:89
+#: frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:90
 msgid "Upcoming"
 msgstr "Bevorstehend"
 
@@ -4810,7 +4860,7 @@ msgstr "Dieses Bild verwenden"
 msgid "Use this logo"
 msgstr "Dieses Logo verwenden"
 
-#: frontend/admin/Menu.php:237 frontend/admin/Menu.php:238 frontend/admin/app/src/App.jsx:77
+#: frontend/admin/Menu.php:247 frontend/admin/Menu.php:248 frontend/admin/app/src/App.jsx:77
 msgid "User Guide"
 msgstr "Anleitung"
 
@@ -4878,7 +4928,7 @@ msgid "Vrbo"
 msgstr "Vrbo"
 
 #. translators: %d: total number of bookings
-#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:377 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:54
+#: frontend/admin/app/src/pages/Bookings/BookingsPage.jsx:377 frontend/admin/app/src/pages/Dashboard/components/StatGrid/StatGrid.jsx:55
 msgid "Waiting on confirmation"
 msgstr "Wartet auf Bestätigung"
 
@@ -4976,7 +5026,7 @@ msgstr "Wer kommt"
 msgid "Why the booking was cancelled"
 msgstr "Grund der Stornierung"
 
-#: backend/APIs/EmailTemplatesController.php:288
+#: backend/APIs/EmailTemplatesController.php:289
 msgid "WordPress could not send the email. Check the template is switched on and that the site can send mail."
 msgstr "WordPress konnte die E-Mail nicht senden. Prüfen Sie, ob die Vorlage aktiviert ist und die Website E-Mails versenden kann."
 
@@ -4991,6 +5041,10 @@ msgstr "Preis wird berechnet"
 #: frontend/site/app/src/components/BookingModal/StepReview.jsx:106
 msgid "Working out the price…"
 msgstr "Preis wird berechnet …"
+
+#: frontend/admin/app/src/pages/Bookings/data/status.js:65
+msgid "Written off"
+msgstr "Abgeschrieben"
 
 #. translators: %d: seconds until another code can be sent.
 #: frontend/site/app/src/components/BookingModal/StepVerify.jsx:176
@@ -5096,7 +5150,7 @@ msgid "name@example.com"
 msgstr "name@example.com"
 
 #. translators: %s: the reason the last read failed.
-#: backend/APIs/IcalController.php:544 backend/PostTypes/ApartmentMetaBox.php:715 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:983
+#: backend/APIs/IcalController.php:545 backend/PostTypes/ApartmentMetaBox.php:715 frontend/admin/app/src/pages/Apartments/components/ApartmentForm/ApartmentForm.jsx:983
 msgid "no reason given"
 msgstr "kein Grund angegeben"
 

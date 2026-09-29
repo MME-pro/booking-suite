@@ -7,6 +7,8 @@
  * apart the first time a status is added.
  */
 
+import { __ } from '@wordpress/i18n';
+
 /**
  * Status colours.
  *
@@ -30,12 +32,58 @@ export const PAYMENT_CLASSES = {
 };
 
 /**
- * A stored status as a human label: 'payment_pending' reads as two words.
+ * What each stored status is called on screen.
+ *
+ * Written out rather than derived from the stored value. Turning
+ * `awaiting_transfer` into "awaiting transfer" produced something readable in
+ * English and nothing at all in any other language — the status filters came
+ * out in English on a German site, because a machine value with its
+ * underscores removed is still a machine value.
+ *
+ * The keys are every status the server may send, including the two retired
+ * ones that older rows still carry.
+ */
+const STATUS_LABELS = {
+	awaiting_transfer: __( 'Awaiting transfer', 'booking-suite' ),
+	transfer_declared: __( 'Transfer declared', 'booking-suite' ),
+	payment_overdue: __( 'Payment overdue', 'booking-suite' ),
+	confirmed: __( 'Confirmed', 'booking-suite' ),
+	completed: __( 'Completed', 'booking-suite' ),
+	cancelled: __( 'Cancelled', 'booking-suite' ),
+	lapsed: __( 'Lapsed', 'booking-suite' ),
+	// Retired names, still on older rows.
+	pending: __( 'Pending', 'booking-suite' ),
+	reserved: __( 'Reserved', 'booking-suite' ),
+};
+
+const PAYMENT_LABELS = {
+	unpaid: __( 'Unpaid', 'booking-suite' ),
+	partial: __( 'Part paid', 'booking-suite' ),
+	paid: __( 'Paid', 'booking-suite' ),
+	overpaid: __( 'Overpaid', 'booking-suite' ),
+	refunded: __( 'Refunded', 'booking-suite' ),
+	void: __( 'Written off', 'booking-suite' ),
+};
+
+/**
+ * A stored status as a human label.
+ *
+ * Falls back to the old underscore-stripping for anything not listed above, so
+ * a status added on the server reads tolerably here before this file catches
+ * up rather than rendering as an empty tab.
  *
  * @param {string} value The stored value.
  * @return {string} The label.
  */
-export const label = ( value ) => String( value || '' ).replace( /_/g, ' ' );
+export const label = ( value ) => {
+	const key = String( value || '' );
+
+	return (
+		STATUS_LABELS[ key ] ??
+		PAYMENT_LABELS[ key ] ??
+		key.replace( /_/g, ' ' )
+	);
+};
 
 /**
  * Up to two initials for the avatar, falling back to "G" for Guest.

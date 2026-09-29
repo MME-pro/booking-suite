@@ -17,6 +17,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Frontend\Site\Shortcodes;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -30,7 +31,7 @@ final class GuideController {
 	public const ROUTE = 'guide';
 
 	/** Matches Menu::CAPABILITY. */
-	private const CAPABILITY = 'manage_options';
+	private const CAPABILITY = Capabilities::VIEW_BOOKINGS;
 
 	public static function register(): void {
 		add_action( 'rest_api_init', array( self::class, 'register_routes' ) );

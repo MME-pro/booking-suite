@@ -15,6 +15,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\Repositories\CustomersRepository;
 use WP_Error;
 use WP_REST_Request;
@@ -30,7 +31,7 @@ final class CustomersController {
 	public const ROUTE = 'customers';
 
 	/** Matches Menu::CAPABILITY. */
-	private const CAPABILITY = 'manage_options';
+	private const CAPABILITY = Capabilities::MANAGE_CUSTOMERS;
 
 	public static function register(): void {
 		add_action( 'rest_api_init', array( self::class, 'register_routes' ) );

@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Frontend\Admin;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\PostTypes\ApartmentPostType;
 use BookingSuite\Backend\Support\IcalParser;
 use BookingSuite\Backend\Support\Pwa;
@@ -91,6 +92,18 @@ final class Assets {
 			array(
 				'view'       => $view,
 				'version'    => VERSION,
+				/*
+				 * What this user may do, so the screens can stop offering what
+				 * the server is going to refuse.
+				 *
+				 * Answers only — never the capability names as a list to be
+				 * edited. Nothing here is a permission: the REST route asks
+				 * WordPress the same question again on every request, and this
+				 * only decides whether a control is worth drawing. A button
+				 * that cannot work is worse than no button, because the guest
+				 * of it is the operator and they learn to distrust the screen.
+				 */
+				'can'        => Capabilities::current_user_map(),
 				'adminUrl'   => admin_url(),
 				/*
 				 * The public site root. The apartments list builds each short

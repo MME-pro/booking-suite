@@ -15,6 +15,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\Repositories\ExtrasRepository;
 use WP_Error;
 use WP_REST_Request;
@@ -30,7 +31,7 @@ final class ExtrasController {
 	public const ROUTE = 'extras';
 
 	/** Matches Menu::CAPABILITY. */
-	private const CAPABILITY = 'manage_options';
+	private const CAPABILITY = Capabilities::MANAGE_EXTRAS;
 
 	private const MAX_LENGTH = 191;
 

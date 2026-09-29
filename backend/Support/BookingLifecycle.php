@@ -2,8 +2,9 @@
 /**
  * Moves bookings along once their time has passed.
  *
- * Two transitions, both keyed on `ends_at` — a booking is only ever settled
- * once the window it reserved is behind us:
+ * Two transitions, both keyed on the midnight after the day the booking
+ * finishes on — not on `ends_at` itself. A booking is the desk's business for
+ * the whole of its last day; see BookingsTable::becomes_past_at().
  *
  *   pending   → cancelled   the request was never answered
  *   confirmed → completed   the stay happened
@@ -27,6 +28,7 @@ declare( strict_types=1 );
 namespace BookingSuite\Backend\Support;
 
 use BookingSuite\Backend\Schemas\BookingsTable;
+use BookingSuite\Backend\Schemas\PaymentsTable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -160,12 +162,38 @@ final class BookingLifecycle {
 		 * whose window has now been and gone. Kept for rows written before the
 		 * deadline existed.
 		 */
+		/*
+		 * Both transitions wait for the day to turn over, not for the booking
+		 * to finish.
+		 *
+		 * These compared against `ends_at` directly, so a stay that ended at
+		 * 07:00 was settled at 07:01 — while the day it belonged to still had
+		 * fourteen hours of business left in it. A booking is the desk's
+		 * concern for the whole of the day it finishes on: the guest may still
+		 * walk in and pay, the owner may still want it on the screen they are
+		 * working. See BookingsTable::becomes_past_at().
+		 *
+		 * One boundary and one `now` for both, so a confirmed booking and an
+		 * unanswered one never settle at different moments.
+		 */
+		$past_at = BookingsTable::past_boundary_sql();
+
+		$lapsed = self::lapse( $past_at, $now );
+
+		/*
+		 * Whatever is left of the retired `pending` status.
+		 *
+		 * The lapse above takes every unpaid one first, which is the honest
+		 * answer for them. What can still reach here is a `pending` row that
+		 * was paid or part-paid and never moved on — rare, and cancelling it
+		 * is the behaviour those rows were written under.
+		 */
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$cancelled = (int) $wpdb->query(
 			$wpdb->prepare(
 				"UPDATE $table
 				SET status = 'cancelled', updated_at = %s
-				WHERE status = 'pending' AND ends_at < %s",
+				WHERE status = 'pending' AND $past_at <= %s",
 				$now,
 				$now
 			)
@@ -176,7 +204,7 @@ final class BookingLifecycle {
 			$wpdb->prepare(
 				"UPDATE $table
 				SET status = 'completed', updated_at = %s
-				WHERE status = 'confirmed' AND ends_at < %s",
+				WHERE status = 'confirmed' AND $past_at <= %s",
 				$now,
 				$now
 			)
@@ -184,8 +212,101 @@ final class BookingLifecycle {
 
 		return array(
 			'expired'   => max( 0, $expired ),
+			'lapsed'    => max( 0, $lapsed ),
 			'cancelled' => max( 0, $cancelled ),
 			'completed' => max( 0, $completed ),
 		);
+	}
+
+	/**
+	 * Close out bookings whose day went by with the money still outstanding.
+	 *
+	 * Three things have to be true, and the first is the one that matters: the
+	 * *day* has turned over, not merely the end time. A guest has until
+	 * midnight to walk in and settle; writing the booking off at 10:01 while
+	 * they still had the afternoon to arrive is how this goes wrong.
+	 *
+	 * The amount stops being owed. Left alone these rows sit in the
+	 * outstanding figures for ever, and the longer a site runs the further
+	 * what it believes it is owed drifts from what anyone is going to pay.
+	 *
+	 * Idempotent, and it does not only look forward: a booking that has been
+	 * sitting unpaid since before this existed is swept on the first run, so
+	 * one pass leaves the totals right rather than right from here onwards.
+	 *
+	 * @param string $past_at SQL for the moment a booking becomes past.
+	 * @param string $now     The site's clock, shared with the other passes.
+	 * @return int How many were closed.
+	 */
+	private static function lapse( string $past_at, string $now ): int {
+		global $wpdb;
+
+		$table    = BookingsTable::table();
+		$payments = PaymentsTable::table();
+
+		/*
+		 * Untouched: anything already settled by a person. `cancelled` was
+		 * somebody's decision, `completed` says the stay happened, and a
+		 * booking already lapsed is done. Re-running must change nothing.
+		 */
+		$settled      = array( 'cancelled', 'completed', 'lapsed' );
+		$placeholders = implode( ',', array_fill( 0, count( $settled ), '%s' ) );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$ids = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT id FROM $table
+				WHERE payment_status = 'unpaid'
+					AND status NOT IN ($placeholders)
+					AND $past_at <= %s",
+				array_merge( $settled, array( $now ) )
+			)
+		);
+
+		if ( ! $ids ) {
+			return 0;
+		}
+
+		$in = implode( ',', array_map( 'absint', $ids ) );
+
+		/*
+		 * The note says why the status moved. A row that changes on its own
+		 * between two visits to the screen, with nothing to explain it, reads
+		 * as the system having lost track of something.
+		 */
+		$note = __( 'Closed automatically: the booking date passed unpaid.', 'booking-suite' );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$count = (int) $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE $table
+				SET status = 'lapsed',
+					payment_status = 'void',
+					notes = TRIM(CONCAT(COALESCE(notes, ''), '\n', %s)),
+					updated_at = %s
+				WHERE id IN ($in)",
+				$note,
+				$now
+			)
+		);
+
+		/*
+		 * The money that was expected and never came, closed with it.
+		 *
+		 * Only rows still waiting. A payment that actually landed is left
+		 * exactly as it is — this closes a debt, it does not rewrite what was
+		 * received.
+		 */
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE $payments
+				SET status = 'void', updated_at = %s
+				WHERE booking_id IN ($in) AND status = 'pending'",
+				$now
+			)
+		);
+
+		return $count;
 	}
 }

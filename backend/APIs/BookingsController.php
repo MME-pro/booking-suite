@@ -15,6 +15,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\Pricing\RateCalculator;
 use BookingSuite\Backend\Pricing\SlotGenerator;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
@@ -42,7 +43,7 @@ final class BookingsController {
 	public const ROUTE = 'bookings';
 
 	/** Matches Menu::CAPABILITY. */
-	private const CAPABILITY = 'manage_options';
+	private const CAPABILITY = Capabilities::MANAGE_BOOKINGS;
 
 	public static function register(): void {
 		add_action( 'rest_api_init', array( self::class, 'register_routes' ) );
@@ -179,11 +180,21 @@ final class BookingsController {
 	}
 
 	public static function index( WP_REST_Request $request ): WP_REST_Response {
+		/*
+		 * The desk is shown the bookings it can still act on.
+		 *
+		 * A finished booking is the client's business rather than the desk's,
+		 * so the list stops at the day that has turned over unless the caller
+		 * is allowed the history. Decided here rather than in the browser: a
+		 * filter applied after the rows have been sent is one anyone can take
+		 * off again.
+		 */
 		$bookings = BookingsRepository::all(
 			array(
 				'search'         => (string) $request->get_param( 'search' ),
 				'status'         => (string) $request->get_param( 'status' ),
 				'payment_status' => (string) $request->get_param( 'payment_status' ),
+				'hide_past'      => ! current_user_can( Capabilities::VIEW_PAST_BOOKINGS ),
 			)
 		);
 

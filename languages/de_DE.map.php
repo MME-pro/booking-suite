@@ -793,6 +793,22 @@ return array(
 	'We will email you a confirmation with the bank transfer details. Nothing is charged online.' => 'Wir senden Ihnen eine Bestätigung mit den Überweisungsdaten per E-Mail. Online wird nichts abgebucht.',
 	'Weekday rate (Sun–Thu)' => 'Wochentagspreis (So–Do)',
 	'Weekend rate (Fri/Sat)' => 'Wochenendpreis (Fr/Sa)',
+	// Booking statuses, as the filters and badges show them.
+	'Awaiting transfer' => 'Warten auf Überweisung',
+	'Transfer declared' => 'Überweisung gemeldet',
+	'Payment overdue' => 'Zahlung überfällig',
+	'Lapsed' => 'Verfallen',
+	// Payment statuses.
+	'Unpaid' => 'Unbezahlt',
+	'Part paid' => 'Teilweise bezahlt',
+	'Paid' => 'Bezahlt',
+	'Overpaid' => 'Überzahlt',
+	'Written off' => 'Abgeschrieben',
+	'Closed automatically: the booking date passed unpaid.' => 'Automatisch geschlossen: Der Buchungstermin verstrich unbezahlt.',
+	// The three roles.
+	'Booking Super Admin' => 'Buchungen Super-Administrator',
+	'Booking Admin' => 'Buchungen Administrator',
+	'Booking Employee' => 'Buchungen Mitarbeiter',
 	'Checking availability' => 'Verfügbarkeit wird geprüft',
 	'Working out the price' => 'Preis wird berechnet',
 	'Loading' => 'Wird geladen',

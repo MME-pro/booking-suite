@@ -16,6 +16,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\Repositories\BookingsRepository;
 use BookingSuite\Backend\Repositories\EmailTemplatesRepository;
 use BookingSuite\Backend\Repositories\PaymentsRepository;
@@ -37,7 +38,7 @@ final class PaymentsController {
 	public const ROUTE = 'payments';
 
 	/** Matches Menu::CAPABILITY. */
-	private const CAPABILITY = 'manage_options';
+	private const CAPABILITY = Capabilities::MANAGE_PAYMENTS;
 
 	/**
 	 * Settling a payment moves the booking's own payment status with it, so
@@ -167,17 +168,31 @@ final class PaymentsController {
 	}
 
 	public static function index( WP_REST_Request $request ): WP_REST_Response {
-		return new WP_REST_Response(
-			array(
-				'payments' => PaymentsRepository::all(
-					(string) $request->get_param( 'status' )
-				),
-				'stats'    => PaymentsRepository::stats(),
-				'statuses' => PaymentsTable::STATUSES,
-				'methods'  => PaymentsTable::METHODS,
+		$body = array(
+			'payments' => PaymentsRepository::all(
+				(string) $request->get_param( 'status' )
 			),
-			200
+			'statuses' => PaymentsTable::STATUSES,
+			'methods'  => PaymentsTable::METHODS,
 		);
+
+		/*
+		 * The row of totals above the table, and only that.
+		 *
+		 * Everyone who reaches this endpoint still gets every payment row and
+		 * can still work it — that is the desk's job and taking it away makes
+		 * the role useless. What is held back is the figure summed across all
+		 * of them, which answers a different question: not "what does this
+		 * guest owe" but "how is this installation doing".
+		 *
+		 * Left out of the response rather than hidden on the screen. A figure
+		 * withheld in CSS is one devtools keystroke from anybody.
+		 */
+		if ( current_user_can( Capabilities::VIEW_STATS ) ) {
+			$body['stats'] = PaymentsRepository::stats();
+		}
+
+		return new WP_REST_Response( $body, 200 );
 	}
 
 	/**

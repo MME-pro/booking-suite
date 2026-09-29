@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Frontend\Admin;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\PostTypes\ApartmentPostType;
 
 defined( 'ABSPATH' ) || exit;
@@ -49,7 +50,16 @@ final class Menu {
 
 	public const SLUG_SETTINGS = 'booking-suite-settings';
 
-	public const CAPABILITY = 'manage_options';
+	/*
+	 * What it takes to see the menu at all.
+	 *
+	 * The lowest capability any of the screens behind it needs, so the desk
+	 * gets in. Each screen still answers for itself — the REST route behind it
+	 * checks its own capability — and this only decides whether the door is
+	 * drawn. Setting it any higher would hide the whole plugin from the role
+	 * that spends the most time in it.
+	 */
+	public const CAPABILITY = Capabilities::VIEW_BOOKINGS;
 
 	/**
 	 * Screen ids that host the React app, mapped to the view the app renders.
@@ -143,7 +153,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'Bookings', 'booking-suite' ),
 			__( 'Bookings', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::VIEW_BOOKINGS,
 			self::SLUG_BOOKINGS,
 			array( self::class, 'render_root' )
 		);
@@ -154,7 +164,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'Apartments', 'booking-suite' ),
 			__( 'Apartments', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::MANAGE_APARTMENTS,
 			'edit.php?post_type=' . ApartmentPostType::POST_TYPE
 		);
 
@@ -162,7 +172,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'Calendar', 'booking-suite' ),
 			__( 'Calendar', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::VIEW_CALENDAR,
 			self::SLUG_CALENDAR,
 			array( self::class, 'render_root' )
 		);
@@ -172,7 +182,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'Availability', 'booking-suite' ),
 			__( 'Availability', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::MANAGE_APARTMENTS,
 			self::SLUG_AVAILABILITY,
 			array( self::class, 'render_root' )
 		);
@@ -181,7 +191,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'Customers', 'booking-suite' ),
 			__( 'Customers', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::VIEW_CUSTOMERS,
 			self::SLUG_CUSTOMERS,
 			array( self::class, 'render_root' )
 		);
@@ -190,7 +200,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'Extras', 'booking-suite' ),
 			__( 'Extras', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::VIEW_EXTRAS,
 			self::SLUG_EXTRAS,
 			array( self::class, 'render_root' )
 		);
@@ -199,7 +209,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'Payments', 'booking-suite' ),
 			__( 'Payments', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::VIEW_PAYMENTS,
 			self::SLUG_PAYMENTS,
 			array( self::class, 'render_root' )
 		);
@@ -208,7 +218,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'Reports & Analytics', 'booking-suite' ),
 			__( 'Reports & Analytics', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::VIEW_REPORTS,
 			self::SLUG_REPORTS,
 			array( self::class, 'render_root' )
 		);
@@ -217,7 +227,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'Email Templates', 'booking-suite' ),
 			__( 'Email Templates', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::MANAGE_SETTINGS,
 			self::SLUG_EMAILS,
 			array( self::class, 'render_root' )
 		);
@@ -226,7 +236,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'Settings', 'booking-suite' ),
 			__( 'Settings', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::MANAGE_SETTINGS,
 			self::SLUG_SETTINGS,
 			array( self::class, 'render_root' )
 		);
@@ -236,7 +246,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'User Guide', 'booking-suite' ),
 			__( 'User Guide', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::VIEW_BOOKINGS,
 			self::SLUG_GUIDE,
 			array( self::class, 'render_root' )
 		);
@@ -252,7 +262,7 @@ final class Menu {
 			self::SLUG_DASHBOARD,
 			__( 'Apartments', 'booking-suite' ),
 			__( 'Apartments', 'booking-suite' ),
-			self::CAPABILITY,
+			Capabilities::MANAGE_APARTMENTS,
 			self::SLUG_APARTMENTS,
 			array( self::class, 'render_root' )
 		);

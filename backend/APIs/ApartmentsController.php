@@ -15,6 +15,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\IcalFeedsRepository;
 use BookingSuite\Backend\Schemas\RoomsTable;
@@ -34,7 +35,7 @@ final class ApartmentsController {
 	public const ROUTE = 'apartments';
 
 	/** Matches Menu::CAPABILITY. */
-	private const CAPABILITY = 'manage_options';
+	private const CAPABILITY = Capabilities::MANAGE_APARTMENTS;
 
 	private const MAX_LENGTH = 191;
 

@@ -3,7 +3,7 @@
  * Plugin Name:       Booking Suite
  * Plugin URI:        https://mme-pro.de/
  * Description:       Booking Suite plugin scaffold.
- * Version:           0.25.5
+ * Version:           0.26.0
  * Requires at least: 6.6
  * Requires PHP:      8.1
  * Author:            MME-Pro
@@ -21,7 +21,7 @@ namespace BookingSuite;
 
 defined( 'ABSPATH' ) || exit;
 
-const VERSION     = '0.25.5';
+const VERSION     = '0.26.0';
 const PREFIX      = 'bksuite_';
 const TEXT_DOMAIN = 'booking-suite';
 
@@ -107,6 +107,11 @@ register_activation_hook(
 		 */
 		update_option( PREFIX . 'version', VERSION, false );
 		Backend\Installer::install();
+
+		// The roles exist from the first load rather than from the first visit
+		// to an admin screen, so an owner who activates and then hands the site
+		// to somebody else finds the roles already there to assign.
+		Backend\Capabilities::install();
 		Backend\Support\IcalSync::schedule();
 		Backend\Support\BookingLifecycle::schedule();
 		Backend\Support\DailySummary::schedule();
@@ -136,6 +141,17 @@ register_deactivation_hook(
 
 		// And no business mailing a summary of a system nobody is using.
 		Backend\Support\DailySummary::unschedule();
+
+		/*
+		 * The roles go, and so do the capabilities written onto individual
+		 * user records — a capability on a user outranks the role it came
+		 * from, so removing the role alone would leave anyone who has one
+		 * still holding it after the plugin is switched off.
+		 *
+		 * Bookings, payments and apartments all stay. This removes permission
+		 * to work them, never the work itself.
+		 */
+		Backend\Capabilities::uninstall();
 		flush_rewrite_rules();
 	}
 );

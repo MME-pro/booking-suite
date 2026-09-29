@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\APIs\ApartmentsController;
 use BookingSuite\Backend\APIs\BlocksController;
 use BookingSuite\Backend\APIs\BookingsController;
@@ -79,6 +80,9 @@ final class Plugin {
 
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_init', array( Installer::class, 'maybe_upgrade' ) );
+
+		// The roles, rebuilt whenever the capability map moves.
+		Capabilities::register();
 
 		// The recurring pull of subscribed portal calendars.
 		IcalSync::register();

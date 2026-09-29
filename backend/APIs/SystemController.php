@@ -15,6 +15,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\Installer;
 use BookingSuite\Backend\Repositories\EmailTemplatesRepository;
 use WP_REST_Response;
@@ -31,7 +32,7 @@ final class SystemController {
 	public const ROUTE = 'system-status';
 
 	/** Matches Menu::CAPABILITY. */
-	private const CAPABILITY = 'manage_options';
+	private const CAPABILITY = Capabilities::MANAGE_SETTINGS;
 
 	public static function register(): void {
 		add_action( 'rest_api_init', array( self::class, 'register_routes' ) );

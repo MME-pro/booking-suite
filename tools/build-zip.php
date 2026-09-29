@@ -33,6 +33,13 @@ const SKIP_DIRS = array(
 	'node_modules',
 	'vendor/bin',
 	'.wordpress-org',
+	/*
+	 * Engineering notes. They belong in the repository, where they explain why
+	 * the code looks the way it does, and nowhere near a customer's install —
+	 * they discuss other plugins, unfixed bugs and decisions still being
+	 * argued over.
+	 */
+	'docs',
 );
 
 /** Files never shipped, matched on basename. */

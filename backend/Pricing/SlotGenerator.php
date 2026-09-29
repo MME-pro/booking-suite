@@ -68,8 +68,7 @@ final class SlotGenerator {
 		$ignore       = isset( $options['ignoreBookingId'] ) ? (int) $options['ignoreBookingId'] : null;
 		$step = max( 15, (int) SettingsRepository::number( SettingsRepository::SLOT_STEP ) );
 
-		$open  = new DateTimeImmutable( $date . ' ' . SettingsRepository::get( SettingsRepository::DAY_START ) );
-		$close = new DateTimeImmutable( $date . ' ' . SettingsRepository::get( SettingsRepository::DAY_END ) );
+		list( $open, $close ) = self::opening_window( $date );
 
 		$now      = new DateTimeImmutable( current_time( 'mysql' ) );
 		$duration = (int) round( $hours * MINUTE_IN_SECONDS * 60 );
@@ -128,6 +127,46 @@ final class SlotGenerator {
 	 *
 	 * @return string|null A sentence for whoever asked, or null when allowed.
 	 */
+	/**
+	 * The span of start times a date offers.
+	 *
+	 * The two settings bound when a booking may *start*. They say nothing
+	 * about how long it runs or when it ends — a four-hour booking starting at
+	 * the last offered time finishes long after closing, and that is the
+	 * point. Anything else would make the last few hours of the day
+	 * unbookable for any stay worth taking.
+	 *
+	 * Both ends are inclusive: a window closing at 23:30 offers 23:30 itself.
+	 *
+	 * A closing time that does not follow the opening one wraps into the next
+	 * day, so an evening property can run 20:00–02:00. Without this the pair
+	 * produced a range running backwards and the picker came back empty —
+	 * every start silently refused, with nothing on screen to say why.
+	 *
+	 * Computed here and nowhere else. It was worked out separately in the two
+	 * places that need it, which is how they came to disagree.
+	 *
+	 * @return array{0: DateTimeImmutable, 1: DateTimeImmutable} Open, close.
+	 */
+	private static function opening_window( string $date ): array {
+		$from = (string) SettingsRepository::get( SettingsRepository::DAY_START );
+		$to   = (string) SettingsRepository::get( SettingsRepository::DAY_END );
+
+		$open  = new DateTimeImmutable( $date . ' ' . $from );
+		$close = new DateTimeImmutable( $date . ' ' . $to );
+
+		/*
+		 * Midnight written as the closing time means the end of this day, not
+		 * the start of it. '24:00' already parses that way; '00:00' does not,
+		 * and read literally it would close the property before it opened.
+		 */
+		if ( '00:00' === substr( $to, 0, 5 ) && $open > $close ) {
+			return array( $open, $close->modify( '+1 day' ) );
+		}
+
+		return array( $open, $close < $open ? $close->modify( '+1 day' ) : $close );
+	}
+
 	public static function rule_violation( string $date, string $time, float $hours ): ?string {
 		$minimum = max( 1, (int) SettingsRepository::number( SettingsRepository::MIN_HOURS ) );
 
@@ -515,9 +554,9 @@ final class SlotGenerator {
 
 		$step = max( 15, (int) SettingsRepository::number( SettingsRepository::SLOT_STEP ) );
 
-		$open  = new DateTimeImmutable( $date . ' ' . SettingsRepository::get( SettingsRepository::DAY_START ) );
-		$close = new DateTimeImmutable( $date . ' ' . SettingsRepository::get( SettingsRepository::DAY_END ) );
-		$now   = new DateTimeImmutable( current_time( 'mysql' ) );
+		list( $open, $close ) = self::opening_window( $date );
+
+		$now = new DateTimeImmutable( current_time( 'mysql' ) );
 
 		$duration = (int) round( $hours * HOUR_IN_SECONDS );
 		$found    = array();

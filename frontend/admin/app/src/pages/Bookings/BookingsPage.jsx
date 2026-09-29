@@ -5,6 +5,7 @@
  * failures, Card for the surfaces. Filtering stays client-side and instant.
  */
 
+import { label } from './data/status';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { __, sprintf, _n } from '@wordpress/i18n';
 import {
@@ -208,7 +209,6 @@ export default function BookingsPage() {
 	const countFor = ( value ) =>
 		counts[ value ] ?? ( 'all' === value ? bookings.length : 0 );
 
-	const statusLabel = ( value ) => value.replace( /_/g, ' ' );
 
 	/*
 	 * Quick actions from the list. Each is the same call the detail screen
@@ -455,7 +455,7 @@ export default function BookingsPage() {
 										value={ value }
 										className="capitalize"
 									>
-										{ statusLabel( value ) } (
+										{ label( value ) } (
 										{ countFor( value ) })
 									</SelectItem>
 								) ) }
@@ -482,7 +482,7 @@ export default function BookingsPage() {
 										value={ value }
 										className="gap-2 capitalize"
 									>
-										{ statusLabel( value ) }
+										{ label( value ) }
 										<Badge
 											variant="secondary"
 											className="px-1.5 py-0 text-[11px] font-normal tabular-nums"

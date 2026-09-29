@@ -62,6 +62,25 @@ final class BookingsTable {
 		'confirmed',
 		'completed',
 		'cancelled',
+		/*
+		 * The window went by and the money never came.
+		 *
+		 * Deliberately not called a no-show. Whether anybody turned up is a
+		 * fact about a guest, and this system keeps no record of arrival — it
+		 * would be guessing, and printing a guess about a person on the
+		 * owner's screen is worse than printing nothing. What it does know,
+		 * exactly, is that the booking reached its own end unpaid. That is
+		 * what this word says, and it says it about the booking.
+		 *
+		 * Not `cancelled`, which claims a decision somebody made. Nobody
+		 * decided this; the date simply passed.
+		 *
+		 * Distinct from `payment_overdue`, which is the same debt while the
+		 * stay is still ahead — there the guest may yet pay and the owner may
+		 * yet honour it. Once the day is gone there is nothing left to
+		 * honour, and the amount has to stop being counted as owed.
+		 */
+		'lapsed',
 		// Retired, still readable.
 		'pending',
 		'reserved',
@@ -107,6 +126,65 @@ final class BookingsTable {
 	}
 
 	/**
+	 * When a booking stops being today's business.
+	 *
+	 * Midnight after the day it finishes on, not the moment it finishes. A
+	 * booking that ran 06:00–07:00 is still the desk's concern all day: the
+	 * guest may walk in at four to pay, the owner may want it on the screen
+	 * they are working. Turning it over at 07:01 takes it off their list while
+	 * the day it belongs to is still being worked.
+	 *
+	 * Inclusive at midnight: at exactly 00:00:00 the booking is past.
+	 *
+	 * Measured from the end, never the start. A booking running 23:30–02:30
+	 * finishes on the following day and turns over the midnight after *that* —
+	 * keying it to the start would file it as finished while it was still
+	 * running.
+	 *
+	 * @param string $ends_at 'Y-m-d H:i:s', site local time.
+	 * @return string The instant it becomes past, same format.
+	 */
+	public static function becomes_past_at( string $ends_at ): string {
+		/*
+		 * The date part alone, advanced a day. Deliberately not strtotime()
+		 * plus gmdate(): ends_at is the site's wall clock, gmdate() formats in
+		 * UTC, and the pair would land on the wrong date either side of
+		 * midnight for any site that is not on UTC. Only the calendar matters
+		 * here, so only the calendar is touched.
+		 */
+		try {
+			$day = new \DateTimeImmutable( substr( $ends_at, 0, 10 ) );
+		} catch ( \Exception $e ) {
+			return $ends_at;
+		}
+
+		return $day->modify( '+1 day' )->format( 'Y-m-d 00:00:00' );
+	}
+
+	/**
+	 * The same boundary, as SQL.
+	 *
+	 * The filtering has to happen in the query rather than over the rows it
+	 * returns, or the count and the page disagree and pagination breaks.
+	 *
+	 * `ends_at` is a whole timestamp here, so this is one expression rather
+	 * than the CASE a schema storing a date and a time-of-day separately would
+	 * need — there is no end that appears to precede its own start.
+	 *
+	 * Compare it against a time passed in from PHP, never against NOW(). The
+	 * database server's clock and the site's timezone are not the same thing.
+	 *
+	 * @param string $alias Table alias, or '' for an unqualified column.
+	 */
+	public static function past_boundary_sql( string $alias = '' ): string {
+		// Interpolated into SQL, so it is stripped to what an alias may be.
+		$alias  = preg_replace( '/[^A-Za-z0-9_]/', '', $alias );
+		$column = '' === $alias ? 'ends_at' : $alias . '.ends_at';
+
+		return "TIMESTAMP(DATE_ADD(DATE($column), INTERVAL 1 DAY))";
+	}
+
+	/**
 	 * The statuses that take a window off the board.
 	 *
 	 * A booking is binding the moment the guest presses the order button, so
@@ -140,7 +218,18 @@ final class BookingsTable {
 	 * and a difference the system quietly rounded into "paid" is a difference
 	 * nobody ever looks at again.
 	 */
-	public const PAYMENT_STATUSES = array( 'unpaid', 'partial', 'paid', 'overpaid', 'refunded' );
+	/**
+	 * `void` closes a debt that was never going to be settled.
+	 *
+	 * Nothing came and nothing is owed any longer. Left as `unpaid`, a booking
+	 * whose day has passed sits in the outstanding figures for ever, quietly
+	 * telling the owner they are owed money that nobody is going to bring.
+	 *
+	 * It is not `refunded`: that is money which arrived and went back. This is
+	 * money that never arrived and has stopped being expected. The amount
+	 * drops out of everything owed without ever being counted as taken.
+	 */
+	public const PAYMENT_STATUSES = array( 'unpaid', 'partial', 'paid', 'overpaid', 'refunded', 'void' );
 
 	public static function table(): string {
 		return Db::table( self::NAME );

@@ -622,6 +622,22 @@ final class BookingsRepository {
 			$params   = array_merge( $params, array( $like, $like, $like, $like ) );
 		}
 
+		/*
+		 * Bookings whose day has turned over, kept off the desk's list.
+		 *
+		 * Here in the query rather than over the rows it returns: filtering
+		 * afterwards leaves the count describing one set of rows and the page
+		 * showing another, and pagination stops agreeing with itself.
+		 *
+		 * `now` is passed in rather than taken from NOW(), because the
+		 * database server's clock and the site's timezone are not the same
+		 * thing and only one of them is what the bookings were written in.
+		 */
+		if ( ! empty( $args['hide_past'] ) ) {
+			$where[]  = BookingsTable::past_boundary_sql( 'b' ) . ' > %s';
+			$params[] = current_time( 'mysql' );
+		}
+
 		$payments = PaymentsTable::table();
 
 		// The newest payment row carries the receipt the guest uploaded.

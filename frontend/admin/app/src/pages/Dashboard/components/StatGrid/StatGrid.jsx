@@ -19,6 +19,7 @@ import { StatCard } from '../../../../components/StatCard';
 
 // Shared with the Bookings screen so money reads identically across the admin.
 import { formatMoney } from '../../../Bookings/data/format';
+import { can } from '../../../../settings';
 
 export default function StatGrid( { metrics } ) {
 	const {
@@ -106,9 +107,25 @@ export default function StatGrid( { metrics } ) {
 		},
 	];
 
+	/*
+	 * The two money cards are totals across every booking, which is a
+	 * different question from what any one guest owes. The desk needs the
+	 * second to do its job and has no business with the first.
+	 *
+	 * The rows these are summed from are legitimately on the desk's screen, so
+	 * this is a decision about what to put in front of someone rather than a
+	 * secret being kept — the figures the server genuinely withholds are
+	 * withheld in the response, not here.
+	 */
+	const shown = can( 'viewFinancials' )
+		? cards
+		: cards.filter(
+				( card ) => 'revenue' !== card.id && 'outstanding' !== card.id
+		  );
+
 	return (
 		<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-			{ cards.map( ( { id, Icon, ...card } ) => (
+			{ shown.map( ( { id, Icon, ...card } ) => (
 				<StatCard key={ id } icon={ Icon } { ...card } />
 			) ) }
 		</div>

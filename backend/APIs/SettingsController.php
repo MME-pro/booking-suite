@@ -17,6 +17,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\Repositories\SettingsRepository;
 use BookingSuite\Backend\Support\DailySummary;
 use WP_Error;
@@ -33,7 +34,7 @@ final class SettingsController {
 	public const ROUTE = 'settings';
 
 	/** Matches Menu::CAPABILITY. */
-	private const CAPABILITY = 'manage_options';
+	private const CAPABILITY = Capabilities::MANAGE_SETTINGS;
 
 	/** Currencies the booking flow can price in. */
 	public const CURRENCIES = array( 'EUR', 'USD', 'GBP', 'CHF' );

@@ -9,6 +9,7 @@
  * than window.confirm(), matching the delete flow on the Apartments screen.
  */
 
+import { label } from '../../data/status';
 import { useEffect, useState } from 'react';
 import { __, sprintf } from '@wordpress/i18n';
 import {
@@ -64,6 +65,12 @@ const STATUS_CLASSES = {
 	confirmed: 'bg-success/10 text-success hover:bg-success/10',
 	completed: 'bg-muted text-muted-foreground hover:bg-muted',
 	cancelled: 'bg-destructive/10 text-destructive hover:bg-destructive/10',
+	/*
+	 * Closed out by the calendar rather than by anyone. Grey, like completed:
+	 * both are simply over. Red would read as the operator's decision, which
+	 * this never is.
+	 */
+	lapsed: 'bg-muted text-muted-foreground hover:bg-muted',
 	// Retired names, still on older rows.
 	pending: 'bg-warning/10 text-warning hover:bg-warning/10',
 	reserved: 'bg-primary/10 text-primary hover:bg-primary/10',
@@ -76,6 +83,8 @@ const PAYMENT_CLASSES = {
 	// Money the owner is holding that is not theirs yet.
 	overpaid: 'bg-warning/10 text-warning hover:bg-warning/10',
 	refunded: 'bg-muted text-muted-foreground hover:bg-muted',
+	// Nothing came and nothing is owed any more. Not a warning; a closed book.
+	void: 'bg-muted text-muted-foreground hover:bg-muted',
 };
 
 /**
@@ -89,7 +98,6 @@ const TYPE_LABELS = {
 	hourly: __( 'Hourly booking', 'booking-suite' ),
 };
 
-const label = ( value ) => String( value || '' ).replace( /_/g, ' ' );
 
 /**
  * Where a booking stands financially, in one line.

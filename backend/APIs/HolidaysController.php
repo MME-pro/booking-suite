@@ -17,6 +17,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\Pricing\HesseHolidays;
 use DateTimeImmutable;
 use WP_Error;
@@ -33,7 +34,7 @@ final class HolidaysController {
 	public const ROUTE = 'holidays';
 
 	/** Matches Menu::CAPABILITY. */
-	private const CAPABILITY = 'manage_options';
+	private const CAPABILITY = Capabilities::MANAGE_SETTINGS;
 
 	/** A calendar asks for one month; anything beyond a few years is a mistake. */
 	private const MAX_YEARS = 5;

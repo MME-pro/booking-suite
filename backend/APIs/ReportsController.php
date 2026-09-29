@@ -22,6 +22,7 @@ declare( strict_types=1 );
 
 namespace BookingSuite\Backend\APIs;
 
+use BookingSuite\Backend\Capabilities;
 use BookingSuite\Backend\Repositories\ApartmentsRepository;
 use BookingSuite\Backend\Repositories\SettingsRepository;
 use BookingSuite\Backend\Schemas\BookingsTable;
@@ -40,7 +41,7 @@ final class ReportsController {
 	public const ROUTE = 'reports';
 
 	/** Matches Menu::CAPABILITY. */
-	private const CAPABILITY = 'manage_options';
+	private const CAPABILITY = Capabilities::VIEW_REPORTS;
 
 	/**
 	 * Statuses counted as real business.
